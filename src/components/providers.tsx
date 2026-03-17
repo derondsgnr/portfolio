@@ -5,15 +5,18 @@ import { AnimatePresence, motion } from "motion/react";
 import { Navbar } from "./navbar";
 import { BookingProvider } from "./v2/booking-context";
 import { BookingDrawer } from "./v2/booking-drawer";
+import { useArmAudio } from "@/hooks/useSound";
 
 export function Providers({ children }: { children: React.ReactNode }) {
+  useArmAudio();
   const pathname = usePathname();
   const isCaseStudy = /^\/work\/[^/]+$/.test(pathname ?? "");
+  const isAdmin = pathname?.startsWith("/admin") ?? false;
 
   return (
     <BookingProvider>
       <div className="relative min-h-screen bg-[#0a0a0a] text-white overflow-x-hidden">
-        {!isCaseStudy && <Navbar />}
+        {!isCaseStudy && !isAdmin && <Navbar />}
         <AnimatePresence mode="wait">
           <motion.div
             key={pathname ?? "root"}

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { V2_PROJECTS, V2_TESTIMONIALS, V2_PROCESS } from "./v2-data";
 import { motion, AnimatePresence } from "motion/react";
 
@@ -95,7 +96,7 @@ function CharReveal({
 }
 
 /* ─── Hero ───────────────────────────────────────────────────── */
-function VoidHero() {
+export function VoidHero() {
   return (
     <section className="relative h-screen flex flex-col items-center justify-center">
       {/* Single word, massive, isolated */}
@@ -168,7 +169,7 @@ function VoidHero() {
 }
 
 /* ─── Process ────────────────────────────────────────────────── */
-function VoidProcess() {
+export function VoidProcess() {
   return (
     <section className="relative py-48 px-8">
       <div className="max-w-2xl mx-auto">
@@ -231,7 +232,7 @@ function VoidProcess() {
 }
 
 /* ─── Selected Work ──────────────────────────────────────────── */
-function VoidWork() {
+export function VoidWork({ projects = V2_PROJECTS }: { projects?: typeof V2_PROJECTS } = {}) {
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
 
   return (
@@ -259,9 +260,9 @@ function VoidWork() {
 
       {/* Full-bleed project list */}
       <div className="max-w-6xl mx-auto">
-        {V2_PROJECTS.map((project, i) => (
+        {projects.map((project, i) => (
+          <Link key={project.id} href={`/work/${project.slug}`}>
           <motion.div
-            key={project.id}
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true, amount: 0.3 }}
@@ -335,6 +336,7 @@ function VoidWork() {
               )}
             </AnimatePresence>
           </motion.div>
+          </Link>
         ))}
         <div
           className="h-px"
@@ -346,7 +348,7 @@ function VoidWork() {
 }
 
 /* ─── Philosophy ─────────────────────────────────────────────── */
-function VoidPhilosophy() {
+export function VoidPhilosophy() {
   const words = "I design products that feel inevitable. Not decorated. Not complicated. Inevitable.".split(" ");
 
   return (
@@ -392,7 +394,7 @@ function VoidPhilosophy() {
 }
 
 /* ─── Testimonial ────────────────────────────────────────────── */
-function VoidTestimonial() {
+export function VoidTestimonial() {
   const [current, setCurrent] = useState(0);
   const t = V2_TESTIMONIALS[current];
 
@@ -489,7 +491,7 @@ function VoidTestimonial() {
 }
 
 /* ─── CTA + Footer ───────────────────────────────────────────── */
-function VoidCTA() {
+export function VoidCTA() {
   return (
     <section className="relative py-48 px-8 flex flex-col items-center justify-center min-h-[60vh]">
       <motion.div

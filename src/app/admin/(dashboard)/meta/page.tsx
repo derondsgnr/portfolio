@@ -1,4 +1,6 @@
 import { getGitHubFile } from "@/lib/admin/github";
+
+export const dynamic = "force-dynamic";
 import { getSiteMeta } from "@/lib/content/site-meta";
 import { MetaForm } from "./meta-form";
 

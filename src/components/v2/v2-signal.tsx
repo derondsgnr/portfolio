@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import Link from "next/link";
 import { motion, AnimatePresence, useScroll, useTransform } from "motion/react";
 import { V2_PROJECTS, V2_TESTIMONIALS, V2_PROCESS, V2_SERVICES } from "./v2-data";
 
@@ -85,7 +86,7 @@ function SignalLoader({ onComplete }: { onComplete: () => void }) {
 }
 
 /* ─── Hero ───────────────────────────────────────────────────── */
-function SignalHero() {
+export function SignalHero() {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -209,7 +210,7 @@ function SignalHero() {
 }
 
 /* ─── Process ────────────────────────────────────────────────── */
-function SignalProcess() {
+export function SignalProcess() {
   return (
     <section className="relative py-32 overflow-hidden">
       {/* Horizontal ticker */}
@@ -262,7 +263,7 @@ function SignalProcess() {
 }
 
 /* ─── Work ───────────────────────────────────────────────────── */
-function SignalWork() {
+export function SignalWork({ projects = V2_PROJECTS }: { projects?: typeof V2_PROJECTS } = {}) {
   return (
     <section className="relative py-32 px-8">
       <motion.div
@@ -284,9 +285,9 @@ function SignalWork() {
       </motion.div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-1">
-        {V2_PROJECTS.map((project, i) => (
+        {projects.map((project, i) => (
+          <Link key={project.id} href={`/work/${project.slug}`}>
           <motion.div
-            key={project.id}
             initial={{ opacity: 0, clipPath: "inset(0 100% 0 0)" }}
             whileInView={{ opacity: 1, clipPath: "inset(0 0% 0 0)" }}
             viewport={{ once: true }}
@@ -364,6 +365,7 @@ function SignalWork() {
               </div>
             </div>
           </motion.div>
+          </Link>
         ))}
       </div>
     </section>
@@ -371,7 +373,7 @@ function SignalWork() {
 }
 
 /* ─── Services ───────────────────────────────────────────────── */
-function SignalServices() {
+export function SignalServices() {
   return (
     <section className="relative py-32 px-8">
       <div className="max-w-4xl mx-auto">
@@ -458,7 +460,7 @@ function SignalServices() {
 }
 
 /* ─── Testimonials ───────────────────────────────────────────── */
-function SignalTestimonials() {
+export function SignalTestimonials() {
   return (
     <section className="relative py-32 px-8">
       <div className="max-w-4xl mx-auto">
@@ -534,7 +536,7 @@ function SignalTestimonials() {
 }
 
 /* ─── CTA ────────────────────────────────────────────────────── */
-function SignalCTA() {
+export function SignalCTA() {
   const [blink, setBlink] = useState(true);
   useEffect(() => {
     const t = setInterval(() => setBlink((b) => !b), 500);

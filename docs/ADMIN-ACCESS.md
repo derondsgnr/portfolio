@@ -20,5 +20,7 @@ GITHUB_REPO_NAME=portfolio
 ```
 
 ## Sections
+- **Copy** — hero, about, CTA text for the landing page
 - **Meta / SEO** — title, description, OG image, logo, favicon
 - **Projects** — CRUD for work items (add, edit, delete)
+- **Layout** — reorder sections, swap hero/work/CTA from Synthesis, Void, Signal, Cipher

@@ -99,6 +99,7 @@ import { useBooking } from "../booking-context";
 
 import { ScrambleText } from "../shared/scramble-text";
 import { SignalGrid, ScanLines, CipherBgLayer } from "../shared/texture-layers";
+import { withSound } from "@/hooks/useSound";
 
 /* ─── View Toggle Pill ───────────────────────────────────────── */
 function ViewToggle({ mode, onToggle, labelA, labelB }: { mode: "a" | "b"; onToggle: () => void; labelA: string; labelB: string }) {
@@ -114,7 +115,7 @@ function ViewToggle({ mode, onToggle, labelA, labelB }: { mode: "a" | "b"; onTog
       }}
     >
       <button
-        onClick={() => mode !== "a" && onToggle()}
+        onClick={withSound(() => mode !== "a" && onToggle())}
         className="px-3 py-1.5 rounded-full transition-all duration-300"
         style={{
           fontFamily: "monospace",
@@ -128,7 +129,7 @@ function ViewToggle({ mode, onToggle, labelA, labelB }: { mode: "a" | "b"; onTog
         {labelA}
       </button>
       <button
-        onClick={() => mode !== "b" && onToggle()}
+        onClick={withSound(() => mode !== "b" && onToggle())}
         className="px-3 py-1.5 rounded-full transition-all duration-300"
         style={{
           fontFamily: "monospace",
@@ -166,14 +167,14 @@ function AboutCTA() {
           className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
         >
           <button
-            onClick={() => open("book")}
+            onClick={withSound(() => open("book"))}
             className="text-[11px] tracking-[0.2em] text-[#0A0A0A] bg-[#E2B93B] px-8 py-3.5 hover:bg-white transition-colors duration-300"
             style={{ fontFamily: "monospace" }}
           >
             BOOK A CALL
           </button>
           <button
-            onClick={() => open("message")}
+            onClick={withSound(() => open("message"))}
             className="text-[11px] tracking-[0.2em] text-[#E2B93B] border border-[#E2B93B]/30 px-8 py-3.5 hover:bg-[#E2B93B]/10 transition-colors duration-300"
             style={{ fontFamily: "monospace" }}
           >
@@ -287,7 +288,7 @@ function WorkListView({ projects = V2_PROJECTS }: { projects?: typeof V2_PROJECT
           className="relative cursor-pointer group"
           onMouseEnter={() => setHoveredIdx(i)}
           onMouseLeave={() => setHoveredIdx(null)}
-          onClick={() => (project as any).slug && router.push(`/work/${(project as any).slug}`)}
+          onClick={withSound(() => (project as any).slug && router.push(`/work/${(project as any).slug}`), "navigate")}
         >
           <div className="h-px" style={{ background: "rgba(255,255,255,0.04)" }} />
           <div className="py-10 flex items-baseline justify-between">
@@ -351,7 +352,7 @@ function WorkGridView({ projects = V2_PROJECTS }: { projects?: typeof V2_PROJECT
           transition={{ duration: 0.8, delay: i * 0.15, ease: [0.77, 0, 0.175, 1] }}
           className="relative group overflow-hidden cursor-pointer"
           style={{ aspectRatio: "4/3" }}
-          onClick={() => (project as any).slug && router.push(`/work/${(project as any).slug}`)}
+          onClick={withSound(() => (project as any).slug && router.push(`/work/${(project as any).slug}`), "navigate")}
         >
           <img
             src={project.image}

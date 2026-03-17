@@ -1,4 +1,6 @@
 import { getGitHubFile } from "@/lib/admin/github";
+
+export const dynamic = "force-dynamic";
 import { getProjects } from "@/lib/content/projects";
 import { ProjectsList } from "./projects-list";
 

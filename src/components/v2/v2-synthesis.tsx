@@ -5,6 +5,7 @@ import { useState, useEffect, useRef } from "react";
 import { ScrambleText, CHARS } from "./shared/scramble-text";
 import { SignalGrid, ScanLineOverlay, CipherAmbientGrid } from "./shared/texture-layers";
 import { motion, AnimatePresence, useScroll, useTransform, useInView } from "motion/react";
+import { withSound } from "@/hooks/useSound";
 import {
   V2_PROJECTS,
   V2_TESTIMONIALS,
@@ -48,8 +49,31 @@ import { SynthesisHeroSection, SynthesisAboutSection, SynthesisCTASection } from
 /* ─── Drift Loader ──────────────────────────────────────────── */
 function SynthesisLoader({ onComplete }: { onComplete: () => void }) {
   useEffect(() => {
-    const timer = setTimeout(onComplete, 1600);
-    return () => clearTimeout(timer);
+    const tickTimers: NodeJS.Timeout[] = [];
+    [400, 800, 1200].forEach((ms) => {
+      const t = setTimeout(() => {
+        if (typeof window !== "undefined") {
+          import("@/lib/sound").then(({ playSound, ensureAudioResumed }) => {
+            ensureAudioResumed().then(() => playSound("loaderTick"));
+          });
+        }
+      }, ms);
+      tickTimers.push(t);
+    });
+
+    const timer = setTimeout(() => {
+      tickTimers.forEach(clearTimeout);
+      if (typeof window !== "undefined") {
+        import("@/lib/sound").then(({ playSound, ensureAudioResumed }) => {
+          ensureAudioResumed().then(() => playSound("loaderComplete"));
+        });
+      }
+      onComplete();
+    }, 1600);
+    return () => {
+      tickTimers.forEach(clearTimeout);
+      clearTimeout(timer);
+    };
   }, [onComplete]);
 
   return (
@@ -84,7 +108,7 @@ function SynthesisLoader({ onComplete }: { onComplete: () => void }) {
 }
 
 /* ─── Process — Signal syntax + real context ─────────────────── */
-function SynthesisProcess() {
+export function SynthesisProcess() {
   return (
     <section className="relative py-32 px-8">
       <div className="max-w-5xl mx-auto">
@@ -245,7 +269,7 @@ const SERVICE_ICONS: Record<string, React.ReactNode> = {
 };
 
 /* ─── Capabilities — with affordance descriptions ────────────── */
-function SynthesisCapabilities() {
+export function SynthesisCapabilities() {
   return (
     <section className="relative py-32 px-8">
       <div className="max-w-4xl mx-auto">
@@ -353,7 +377,7 @@ function SynthesisCapabilities() {
 }
 
 /* ─── Void-style projects + Cipher texture ───────────────────── */
-function SynthesisWork({ projects = V2_PROJECTS }: { projects?: typeof V2_PROJECTS }) {
+export function SynthesisWork({ projects = V2_PROJECTS }: { projects?: typeof V2_PROJECTS }) {
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
 
   return (
@@ -378,7 +402,7 @@ function SynthesisWork({ projects = V2_PROJECTS }: { projects?: typeof V2_PROJEC
 
       <div className="max-w-6xl mx-auto">
         {projects.map((project, i) => (
-          <Link key={project.id} href={`/work/${project.slug}`}>
+          <Link key={project.id} href={`/work/${project.slug}`} onClick={withSound(() => {}, "navigate")}>
             <motion.div
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
@@ -487,7 +511,7 @@ function SynthesisWork({ projects = V2_PROJECTS }: { projects?: typeof V2_PROJEC
 }
 
 /* ─── Philosophy — Fracture copy + Cipher decode ─────────────── */
-function SynthesisPhilosophy() {
+export function SynthesisPhilosophy() {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -598,7 +622,7 @@ function SynthesisPhilosophy() {
 }
 
 /* ─── Signal-style Testimonials — left-border vertical list ──── */
-function SynthesisTestimonials() {
+export function SynthesisTestimonials() {
   return (
     <section className="relative py-32 px-8">
       <div className="max-w-4xl mx-auto">
@@ -704,7 +728,13 @@ function SynthesisTestimonials() {
 }
 
 /* ─── Main Export ────────────────────────────────────────────── */
-export function SynthesisVariation({ projects }: { projects?: typeof V2_PROJECTS } = {}) {
+type LandingProp = {
+  hero: { name: string; tagline: string; philosophy: string };
+  about: { label: string; headline: string; headlineAccent: string; bioParagraphs: string[]; stats: { label: string; value: string }[] };
+  cta: { label: string; headline: string; ctaPrimary: string; ctaSecondary: string; subtext: string; tagline: string };
+};
+
+export function SynthesisVariation({ projects, landing }: { projects?: typeof V2_PROJECTS; landing?: LandingProp } = {}) {
   const [loaded, setLoaded] = useState(false);
 
   return (
@@ -724,14 +754,27 @@ export function SynthesisVariation({ projects }: { projects?: typeof V2_PROJECTS
           transition={{ duration: 0.5 }}
           className="relative z-[2]"
         >
-          <SynthesisHeroSection />
-          <SynthesisAboutSection />
+          <SynthesisHeroSection name={landing?.hero.name} tagline={landing?.hero.tagline} philosophy={landing?.hero.philosophy} />
+          <SynthesisAboutSection
+            label={landing?.about.label}
+            headline={landing?.about.headline}
+            headlineAccent={landing?.about.headlineAccent}
+            bioParagraphs={landing?.about.bioParagraphs}
+            stats={landing?.about.stats}
+          />
           <SynthesisCapabilities />
           <SynthesisProcess />
           <SynthesisWork projects={projects} />
           <SynthesisPhilosophy />
           <SynthesisTestimonials />
-          <SynthesisCTASection />
+          <SynthesisCTASection
+            label={landing?.cta.label}
+            headline={landing?.cta.headline}
+            ctaPrimary={landing?.cta.ctaPrimary}
+            ctaSecondary={landing?.cta.ctaSecondary}
+            subtext={landing?.cta.subtext}
+            tagline={landing?.cta.tagline}
+          />
         </motion.div>
       )}
     </main>

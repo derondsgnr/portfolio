@@ -5,6 +5,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
 import { useBooking } from "./v2/booking-context";
+import { withSound } from "@/hooks/useSound";
+import { SoundToggle } from "./sound-toggle";
 
 const NAV_ITEMS = [
   { label: "Work", path: "/work" },
@@ -56,10 +58,12 @@ export function Navbar() {
               </li>
             ))}
 
+            {/* Sound toggle */}
+            <li><SoundToggle /></li>
             {/* CTA button — accent */}
             <li>
               <button
-                onClick={() => open("book")}
+                onClick={withSound(() => open("book"))}
                 className="text-[0.8rem] uppercase tracking-[0.15em] px-5 py-2 border border-[#e2b93b]/40 text-[#e2b93b] hover:bg-[#e2b93b] hover:text-[#0a0a0a] transition-all duration-300"
                 style={{ fontFamily: "var(--font-body)" }}
               >
@@ -131,22 +135,25 @@ export function Navbar() {
               transition={{ delay: 0.6, duration: 0.5 }}
               className="space-y-3"
             >
+              <div className="flex items-center gap-4">
+                <span className="font-mono text-xs text-white/40">Sound</span>
+                <SoundToggle />
+              </div>
               <button
-                onClick={() => {
+                onClick={withSound(() => {
                   setMobileOpen(false);
-                  // Small delay so menu closes first
                   setTimeout(() => open("book"), 300);
-                }}
+                })}
                 className="inline-block text-[0.85rem] uppercase tracking-[0.15em] px-6 py-3 bg-[#e2b93b] text-[#0a0a0a]"
                 style={{ fontFamily: "var(--font-body)" }}
               >
                 Book a call
               </button>
               <button
-                onClick={() => {
+                onClick={withSound(() => {
                   setMobileOpen(false);
                   setTimeout(() => open("message"), 300);
-                }}
+                })}
                 className="block text-[0.75rem] uppercase tracking-[0.15em] text-[#e2b93b]/60 hover:text-[#e2b93b] transition-colors"
                 style={{ fontFamily: "var(--font-body)" }}
               >

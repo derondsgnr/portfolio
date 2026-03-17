@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import Link from "next/link";
 import { motion, AnimatePresence, useInView } from "motion/react";
 import { V2_PROJECTS, V2_TESTIMONIALS, V2_SERVICES } from "./v2-data";
 
@@ -69,7 +70,7 @@ function CipherLoader({ onComplete }: { onComplete: () => void }) {
 }
 
 /* ─── Hero ───────────────────────────────────────────────────── */
-function CipherHero() {
+export function CipherHero() {
   const [decoded, setDecoded] = useState(false);
 
   useEffect(() => {
@@ -186,7 +187,7 @@ function CipherHero() {
 }
 
 /* ─── Services — decode on scroll ────────────────────────────── */
-function CipherServices() {
+export function CipherServices() {
   return (
     <section className="relative py-32 px-8">
       <div className="max-w-4xl mx-auto">
@@ -261,7 +262,7 @@ function CipherServices() {
 }
 
 /* ─── Work — grid with matrix decode hover ───────────────────── */
-function CipherWork() {
+export function CipherWork({ projects = V2_PROJECTS }: { projects?: typeof V2_PROJECTS } = {}) {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
 
   return (
@@ -285,9 +286,9 @@ function CipherWork() {
       </motion.div>
 
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-px" style={{ background: "rgba(255,255,255,0.03)" }}>
-        {V2_PROJECTS.map((project, i) => (
+        {projects.map((project, i) => (
+          <Link key={project.id} href={`/work/${project.slug}`}>
           <motion.div
-            key={project.id}
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
@@ -374,6 +375,7 @@ function CipherWork() {
               </div>
             </div>
           </motion.div>
+          </Link>
         ))}
       </div>
     </section>
@@ -381,7 +383,7 @@ function CipherWork() {
 }
 
 /* ─── Philosophy ─────────────────────────────────────────────── */
-function CipherPhilosophy() {
+export function CipherPhilosophy() {
   return (
     <section className="relative py-48 px-8">
       <div className="max-w-3xl mx-auto">
@@ -472,7 +474,7 @@ function CipherPhilosophy() {
 }
 
 /* ─── Testimonials ───────────────────────────────────────────── */
-function CipherTestimonials() {
+export function CipherTestimonials() {
   return (
     <section className="relative py-32 px-8">
       <div className="max-w-4xl mx-auto">
@@ -571,7 +573,7 @@ function CipherTestimonials() {
 }
 
 /* ─── CTA ────────────────────────────────────────────────────── */
-function CipherCTA() {
+export function CipherCTA() {
   return (
     <section className="relative py-48 px-8 flex flex-col items-center justify-center min-h-[50vh]">
       <motion.div

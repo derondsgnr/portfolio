@@ -52,3 +52,13 @@ export async function saveProjects(projects: unknown[], message?: string): Promi
   const content = JSON.stringify(projects, null, 2);
   return saveContent("content/projects.json", content, message ?? "Update projects");
 }
+
+export async function saveLandingContent(data: unknown, message?: string): Promise<{ ok: boolean; error?: string }> {
+  const content = JSON.stringify(data, null, 2);
+  return saveContent("content/landing.json", content, message ?? "Update landing copy");
+}
+
+export async function savePagesConfig(data: unknown, message?: string): Promise<{ ok: boolean; error?: string }> {
+  const content = JSON.stringify(data, null, 2);
+  return saveContent("content/pages.json", content, message ?? "Update page layout");
+}

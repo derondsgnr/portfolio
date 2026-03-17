@@ -3,6 +3,7 @@
 import { motion } from "motion/react";
 import { ScrambleText } from "../shared/scramble-text";
 import { useBooking } from "../booking-context";
+import { withSound } from "@/hooks/useSound";
 
 export interface SynthesisCTAProps {
   label?: string;
@@ -91,14 +92,14 @@ export function SynthesisCTASection({
           className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
         >
           <button
-            onClick={() => open("book")}
+            onClick={withSound(() => open("book"))}
             className="text-[11px] tracking-[0.2em] text-[#0A0A0A] bg-[#E2B93B] px-8 py-3.5 hover:bg-white transition-colors duration-300"
             style={{ fontFamily: "monospace" }}
           >
             {ctaPrimary}
           </button>
           <button
-            onClick={() => open("message")}
+            onClick={withSound(() => open("message"))}
             className="text-[11px] tracking-[0.2em] text-[#E2B93B] border border-[#E2B93B]/30 px-8 py-3.5 hover:bg-[#E2B93B]/10 transition-colors duration-300"
             style={{ fontFamily: "monospace" }}
           >
