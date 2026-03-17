@@ -1,0 +1,5 @@
+[
+  { "label": "Work", "path": "/work" },
+  { "label": "Craft", "path": "/craft" },
+  { "label": "About", "path": "/about" }
+]

@@ -59,7 +59,7 @@ function EchoLoader({ onComplete }: { onComplete: () => void }) {
 }
 
 /* ─── Hero — stacked/echoed title creating depth ─────────────── */
-function EchoHero() {
+export function EchoHero() {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -157,7 +157,7 @@ function EchoHero() {
 }
 
 /* ─── Process — echoed/repeated words ────────────────────────── */
-function EchoProcess() {
+export function EchoProcess() {
   return (
     <section className="relative py-40 px-8">
       <div className="max-w-5xl mx-auto">
@@ -222,8 +222,11 @@ function EchoProcess() {
   );
 }
 
+type WorkProject = { id: string; title: string; category: string; year: string; image: string };
+
 /* ─── Work — cards with shadow copies ────────────────────────── */
-function EchoWork() {
+export function EchoWork({ projects }: { projects?: WorkProject[] } = {}) {
+  const items = projects ?? V2_PROJECTS;
   return (
     <section className="relative py-32 px-8">
       <motion.div
@@ -246,7 +249,7 @@ function EchoWork() {
       </motion.div>
 
       <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16">
-        {V2_PROJECTS.map((project, i) => (
+        {items.map((project, i) => (
           <motion.div
             key={project.id}
             initial={{ opacity: 0, y: 60 }}
@@ -344,7 +347,7 @@ function EchoWork() {
 }
 
 /* ─── Philosophy — pull quote with echo rings ────────────────── */
-function EchoPhilosophy() {
+export function EchoPhilosophy() {
   return (
     <section className="relative py-48 px-8 flex items-center justify-center min-h-[80vh]">
       {/* Background rings */}
@@ -394,7 +397,7 @@ function EchoPhilosophy() {
 }
 
 /* ─── Testimonials — stacked cards with peek ─────────────────── */
-function EchoTestimonials() {
+export function EchoTestimonials() {
   const [current, setCurrent] = useState(0);
 
   return (
@@ -503,7 +506,7 @@ function EchoTestimonials() {
 }
 
 /* ─── CTA ────────────────────────────────────────────────────── */
-function EchoCTA() {
+export function EchoCTA() {
   return (
     <section className="relative py-48 px-8 flex flex-col items-center justify-center">
       {/* Pulsing rings behind CTA */}

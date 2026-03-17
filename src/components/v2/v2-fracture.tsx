@@ -61,7 +61,7 @@ function FractureLoader({ onComplete }: { onComplete: () => void }) {
 }
 
 /* ─── Hero ───────────────────────────────────────────────────── */
-function FractureHero() {
+export function FractureHero() {
   return (
     <section className="relative h-screen overflow-hidden flex items-center">
       {/* Giant cropped background text — like Aristide */}
@@ -207,7 +207,7 @@ function FractureHero() {
 }
 
 /* ─── Process — scattered at angles ──────────────────────────── */
-function FractureProcess() {
+export function FractureProcess() {
   const angles = [-3, 2, -1.5, 3];
   const offsets = ["0%", "25%", "10%", "35%"];
 
@@ -261,8 +261,11 @@ function FractureProcess() {
   );
 }
 
+type WorkProject = { id: string; title: string; category: string; year: string; image: string };
+
 /* ─── Work — broken/overlapping cards ────────────────────────── */
-function FractureWork() {
+export function FractureWork({ projects }: { projects?: WorkProject[] } = {}) {
+  const items = projects ?? V2_PROJECTS;
   return (
     <section className="relative py-32 px-8">
       <motion.div
@@ -285,7 +288,7 @@ function FractureWork() {
       </motion.div>
 
       <div className="relative max-w-6xl mx-auto">
-        {V2_PROJECTS.map((project, i) => {
+        {items.map((project, i) => {
           const rotations = [-2, 1.5, -1, 2.5];
           const translateY = [0, -30, 20, -10];
           const translateX = [0, 40, -20, 60];
@@ -365,7 +368,7 @@ function FractureWork() {
 }
 
 /* ─── Philosophy — angled text blocks ────────────────────────── */
-function FracturePhilosophy() {
+export function FracturePhilosophy() {
   return (
     <section className="relative py-48 px-8">
       <div className="max-w-5xl mx-auto relative">
@@ -441,7 +444,7 @@ function FracturePhilosophy() {
 }
 
 /* ─── Testimonials — fanned cards (inspired by Lando socials) ── */
-function FractureTestimonials() {
+export function FractureTestimonials() {
   const [active, setActive] = useState(2);
 
   return (
@@ -544,7 +547,7 @@ function FractureTestimonials() {
 }
 
 /* ─── CTA ────────────────────────────────────────────────────── */
-function FractureCTA() {
+export function FractureCTA() {
   return (
     <section className="relative py-48 px-8">
       <div className="max-w-5xl mx-auto text-center relative">

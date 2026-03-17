@@ -32,6 +32,21 @@ export default function AdminDashboardLayout({
           <Link href="/admin/layout-builder" className="font-mono text-xs text-white/60 hover:text-white">
             Layout
           </Link>
+          <Link href="/admin/theme" className="font-mono text-xs text-white/60 hover:text-white">
+            Theme
+          </Link>
+          <Link href="/admin/nav" className="font-mono text-xs text-white/60 hover:text-white">
+            Nav
+          </Link>
+          <Link href="/admin/global" className="font-mono text-xs text-white/60 hover:text-white">
+            Global
+          </Link>
+          <Link href="/admin/integrations" className="font-mono text-xs text-white/60 hover:text-white">
+            Integrations
+          </Link>
+          <Link href="/admin/media" className="font-mono text-xs text-white/60 hover:text-white">
+            Media
+          </Link>
           <Link href="/" className="font-mono text-xs text-white/40 hover:text-white">
             View site
           </Link>

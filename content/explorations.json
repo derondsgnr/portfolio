@@ -1,0 +1,110 @@
+[
+  {
+    "id": "ex-01",
+    "title": "Void Gradient 001",
+    "category": "Graphics",
+    "type": "image",
+    "image": "https://images.unsplash.com/photo-1754738381797-6066f4759065?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+    "tools": ["Figma", "Photoshop"],
+    "date": "2025"
+  },
+  {
+    "id": "ex-02",
+    "title": "Fluid Motion Loop",
+    "category": "Motion",
+    "type": "video",
+    "image": "https://images.unsplash.com/photo-1772037441173-3840bb55b7ed?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+    "tools": ["After Effects", "Cinema 4D"],
+    "date": "2025"
+  },
+  {
+    "id": "ex-03",
+    "title": "Neon Signal",
+    "category": "Graphics",
+    "type": "image",
+    "image": "https://images.unsplash.com/photo-1759266585548-dc7d1b412fcf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+    "tools": ["Illustrator"],
+    "date": "2025"
+  },
+  {
+    "id": "ex-04",
+    "title": "Geometric Deconstruct",
+    "category": "Graphics",
+    "type": "image",
+    "image": "https://images.unsplash.com/photo-1640346876473-f76a73c71539?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+    "tools": ["Figma"],
+    "date": "2024"
+  },
+  {
+    "id": "ex-05",
+    "title": "Chromatic Drift",
+    "category": "Motion",
+    "type": "video",
+    "image": "https://images.unsplash.com/photo-1616651181620-9906d6e43fc3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+    "tools": ["After Effects", "Figma"],
+    "date": "2024"
+  },
+  {
+    "id": "ex-06",
+    "title": "Brutalist Grid 002",
+    "category": "Graphics",
+    "type": "image",
+    "image": "https://images.unsplash.com/photo-1764083292858-1576bce9e678?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+    "tools": ["Photoshop", "Figma"],
+    "date": "2024"
+  },
+  {
+    "id": "ex-07",
+    "title": "Glitch Sequence",
+    "category": "Motion",
+    "type": "video",
+    "image": "https://images.unsplash.com/photo-1770520218894-d9f464825dfa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+    "tools": ["After Effects"],
+    "date": "2024"
+  },
+  {
+    "id": "ex-08",
+    "title": "Sphere Study",
+    "category": "Graphics",
+    "type": "image",
+    "image": "https://images.unsplash.com/photo-1730047250434-8821bfd28e25?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+    "tools": ["Blender", "Figma"],
+    "date": "2024"
+  },
+  {
+    "id": "ex-09",
+    "title": "Type In Motion",
+    "category": "Motion",
+    "type": "video",
+    "image": "https://images.unsplash.com/photo-1635870025058-c1f6e70515be?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+    "tools": ["After Effects", "Illustrator"],
+    "date": "2025"
+  },
+  {
+    "id": "ex-10",
+    "title": "Light Trail 003",
+    "category": "Graphics",
+    "type": "image",
+    "image": "https://images.unsplash.com/photo-1644705198676-f488845bba05?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+    "tools": ["Photoshop"],
+    "date": "2025"
+  },
+  {
+    "id": "ex-11",
+    "title": "Dark Matter",
+    "category": "Graphics",
+    "type": "image",
+    "image": "https://images.unsplash.com/photo-1771612983055-e5390a38176b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+    "tools": ["Figma", "Photoshop"],
+    "date": "2025"
+  },
+  {
+    "id": "ex-12",
+    "title": "Particle Cascade",
+    "category": "Motion",
+    "type": "video",
+    "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+    "tools": ["Cinema 4D", "After Effects"],
+    "date": "2024"
+  }
+]

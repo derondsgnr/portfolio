@@ -58,7 +58,7 @@ function GravityLoader({ onComplete }: { onComplete: () => void }) {
 }
 
 /* ─── Hero — name drops with weight ──────────────────────────── */
-function GravityHero() {
+export function GravityHero() {
   return (
     <section className="relative h-screen flex flex-col justify-end overflow-hidden pb-16 px-8">
       {/* Massive name drops from above — sits heavy at bottom */}
@@ -155,7 +155,7 @@ function GravityHero() {
 }
 
 /* ─── Process — words fall in sequence ───────────────────────── */
-function GravityProcess() {
+export function GravityProcess() {
   return (
     <section className="relative py-40 px-8">
       <div className="max-w-6xl mx-auto flex flex-wrap justify-between">
@@ -219,8 +219,11 @@ function GravityProcess() {
   );
 }
 
+type WorkProject = { id: string; title: string; category: string; year: string; image: string };
+
 /* ─── Work — heavy stacking blocks ───────────────────────────── */
-function GravityWork() {
+export function GravityWork({ projects }: { projects?: WorkProject[] } = {}) {
+  const items = projects ?? V2_PROJECTS;
   return (
     <section className="relative py-32 px-8">
       <motion.div
@@ -245,7 +248,7 @@ function GravityWork() {
       </motion.div>
 
       <div className="max-w-6xl mx-auto space-y-2">
-        {V2_PROJECTS.map((project, i) => (
+        {items.map((project, i) => (
           <motion.div
             key={project.id}
             initial={{ y: -80, opacity: 0 }}
@@ -332,7 +335,7 @@ function GravityWork() {
 }
 
 /* ─── Philosophy — heavy bold text with weight ───────────────── */
-function GravityPhilosophy() {
+export function GravityPhilosophy() {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -410,7 +413,7 @@ function GravityPhilosophy() {
 }
 
 /* ─── Testimonials — grounded cards that rise ─────────────────── */
-function GravityTestimonials() {
+export function GravityTestimonials() {
   return (
     <section className="relative py-32 px-8">
       <div className="max-w-6xl mx-auto">
@@ -502,7 +505,7 @@ function GravityTestimonials() {
 }
 
 /* ─── CTA — heavy gold bar ───────────────────────────────────── */
-function GravityCTA() {
+export function GravityCTA() {
   return (
     <section className="relative py-32 px-8">
       {/* Gold ground bar */}

@@ -1,16 +1,15 @@
+"use client";
+
 import { Reveal, LineDraw, TextReveal } from "./motion-primitives";
 import { motion } from "motion/react";
 import { useBooking } from "./v2/booking-context";
-
-const SOCIAL_LINKS = [
-  { label: "Twitter / X", href: "https://twitter.com/derondsgnr" },
-  { label: "LinkedIn", href: "https://linkedin.com/in/derondsgnr" },
-  { label: "Dribbble", href: "https://dribbble.com/derondsgnr" },
-  { label: "Instagram", href: "#" },
-];
+import { useSiteConfig } from "@/contexts/site-config-context";
 
 export function Footer() {
   const { open } = useBooking();
+  const { global } = useSiteConfig();
+  const socialLinks = global.socialLinks;
+  const copyright = global.footerCopyright ?? `© ${new Date().getFullYear()} derondsgnr — All rights reserved`;
 
   return (
     <footer id="cta" className="px-6 md:px-10 pt-24 md:pt-40 pb-8">
@@ -69,7 +68,7 @@ export function Footer() {
               className="inline-block text-[0.85rem] uppercase tracking-[0.15em] px-8 py-4 bg-[#e2b93b] text-[#0a0a0a] hover:bg-[#e2b93b]/80 transition-colors duration-300"
               style={{ fontFamily: "var(--font-body)" }}
             >
-              Book a call
+              {global.ctaButtonLabel || "Book a call"}
             </button>
             <button
               onClick={() => open("message")}
@@ -94,10 +93,10 @@ export function Footer() {
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-8 pt-8">
         <Reveal>
           <ul className="flex flex-wrap items-center gap-x-6 gap-y-2">
-            {SOCIAL_LINKS.map((link) => (
+            {socialLinks.map((link) => (
               <li key={link.label}>
                 <motion.a
-                  href={link.href}
+                  href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-white/40 hover:text-[#e2b93b] transition-colors duration-300 text-[0.8rem] uppercase tracking-[0.15em]"
@@ -117,7 +116,7 @@ export function Footer() {
             className="text-white/20 text-[0.7rem] tracking-[0.15em]"
             style={{ fontFamily: "var(--font-body)" }}
           >
-            &copy; {new Date().getFullYear()} derondsgnr — All rights reserved
+            {copyright}
           </p>
         </Reveal>
       </div>

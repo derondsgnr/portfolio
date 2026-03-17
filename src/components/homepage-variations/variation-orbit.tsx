@@ -26,8 +26,8 @@ import {
   PRINCIPLES,
   TESTIMONIALS,
   PROCESS_WORDS,
-  SOCIAL_LINKS,
 } from "../homepage-data";
+import { useSiteConfig } from "@/contexts/site-config-context";
 
 /* ─── HERO: Scattered, spatial, floating ──────────────────────── */
 function HeroOrbit() {
@@ -744,6 +744,9 @@ function TestimonialsOrbit() {
 
 /* ─── FOOTER ──────────────────────────────────────────────────── */
 function FooterOrbit() {
+  const { global } = useSiteConfig();
+  const socialLinks = global.socialLinks;
+  const copyright = global.footerCopyright ?? `© ${new Date().getFullYear()} derondsgnr`;
   return (
     <SectionTransition mode="fade-up">
       <footer id="cta" className="px-6 md:px-10 pt-24 md:pt-40 pb-8">
@@ -792,10 +795,10 @@ function FooterOrbit() {
         <LineDraw />
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 pt-8">
           <ul className="flex flex-wrap items-center gap-x-6 gap-y-2">
-            {SOCIAL_LINKS.map((link) => (
+            {socialLinks.map((link) => (
               <li key={link.label}>
                 <a
-                  href={link.href}
+                  href={link.url}
                   className="text-white/30 hover:text-[#e2b93b] transition-colors duration-300 text-[0.75rem] uppercase tracking-[0.15em]"
                   style={{ fontFamily: "var(--font-body)" }}
                 >
@@ -808,7 +811,7 @@ function FooterOrbit() {
             className="text-white/15 text-[0.65rem] tracking-[0.15em]"
             style={{ fontFamily: "var(--font-body)" }}
           >
-            &copy; {new Date().getFullYear()} derondsgnr
+            {copyright}
           </p>
         </div>
       </footer>

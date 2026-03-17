@@ -10,5 +10,7 @@
       { "id": "testimonials", "variation": "synthesis" },
       { "id": "cta", "variation": "synthesis" }
     ]
-  }
+  },
+  "work": { "sections": [] },
+  "about": { "sections": [] }
 }

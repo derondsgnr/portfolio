@@ -24,8 +24,8 @@ import {
   PRINCIPLES,
   TESTIMONIALS,
   PROCESS_WORDS,
-  SOCIAL_LINKS,
 } from "../homepage-data";
+import { useSiteConfig } from "@/contexts/site-config-context";
 
 /* ─── HERO: Name so large it crops, creating architecture ─────── */
 function HeroCollision() {
@@ -735,6 +735,9 @@ function TestimonialsCollision() {
 
 /* ─── FOOTER ──────────────────────────────────────────────────── */
 function FooterCollision() {
+  const { global } = useSiteConfig();
+  const socialLinks = global.socialLinks;
+  const copyright = global.footerCopyright ?? `© ${new Date().getFullYear()} derondsgnr`;
   return (
     <SectionTransition mode="fade-up">
       <footer id="cta" className="px-6 md:px-10 pt-24 md:pt-40 pb-8">
@@ -806,10 +809,10 @@ function FooterCollision() {
         <LineDraw />
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 pt-8">
           <ul className="flex flex-wrap items-center gap-x-6 gap-y-2">
-            {SOCIAL_LINKS.map((link) => (
+            {socialLinks.map((link) => (
               <li key={link.label}>
                 <a
-                  href={link.href}
+                  href={link.url}
                   className="text-white/35 hover:text-[#e2b93b] transition-colors duration-300"
                   style={{
                     fontFamily: "var(--font-body)",
@@ -832,7 +835,7 @@ function FooterCollision() {
               letterSpacing: "-0.01em",
             }}
           >
-            &copy; {new Date().getFullYear()} derondsgnr
+            {copyright}
           </p>
         </div>
       </footer>

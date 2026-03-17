@@ -23,10 +23,10 @@ const nextConfig: NextConfig = {
             value: [
               "default-src 'self'",
               "img-src 'self' https: data: blob:",
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com",
               "style-src 'self' 'unsafe-inline' https:",
               "font-src 'self' https: data:",
-              "connect-src 'self' https://*.supabase.co https://*.supabase.in https://*.vercel-insights.com",
+              "connect-src 'self' https://*.supabase.co https://*.supabase.in https://*.vercel-insights.com https://www.googletagmanager.com https://*.google-analytics.com https://*.analytics.google.com",
               "frame-ancestors 'none'",
             ].join("; "),
           },

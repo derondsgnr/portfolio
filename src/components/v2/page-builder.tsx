@@ -7,6 +7,7 @@ import { SectionRenderer } from "@/lib/section-registry";
 import type { PageConfig } from "@/lib/content/pages";
 import type { Project } from "@/lib/content/projects";
 import type { LandingContent } from "@/lib/content/landing";
+import type { PageCopy } from "@/lib/content/copy";
 
 function SimpleLoader({ onComplete }: { onComplete: () => void }) {
   useEffect(() => {
@@ -55,9 +56,10 @@ type Props = {
   pageConfig: PageConfig;
   projects: Project[];
   landing: LandingContent;
+  pageCopy?: PageCopy;
 };
 
-export function PageBuilder({ pageConfig, projects, landing }: Props) {
+export function PageBuilder({ pageConfig, projects, landing, pageCopy }: Props) {
   const [loaded, setLoaded] = useState(false);
 
   return (
@@ -77,13 +79,15 @@ export function PageBuilder({ pageConfig, projects, landing }: Props) {
           transition={{ duration: 0.5 }}
           className="relative z-[2]"
         >
-          {pageConfig.sections.map(({ id, variation }) => (
+          {pageConfig.sections.map(({ id, variation, overrides }) => (
             <SectionRenderer
               key={`${id}-${variation}`}
               id={id}
               variation={variation}
               projects={projects}
               landing={landing}
+              pageCopy={pageCopy}
+              sectionOverrides={overrides}
             />
           ))}
         </motion.div>

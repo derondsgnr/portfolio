@@ -5,19 +5,16 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
 import { useBooking } from "./v2/booking-context";
+import { useSiteConfig } from "@/contexts/site-config-context";
 import { withSound } from "@/hooks/useSound";
 import { SoundToggle } from "./sound-toggle";
-
-const NAV_ITEMS = [
-  { label: "Work", path: "/work" },
-  { label: "Craft", path: "/craft" },
-  { label: "About", path: "/about" },
-];
 
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
   const { open } = useBooking();
+  const { nav, global } = useSiteConfig();
+  const ctaLabel = global.ctaButtonLabel || "Book a call";
 
   return (
     <>
@@ -39,10 +36,24 @@ export function Navbar() {
 
           {/* Desktop nav */}
           <ul className="hidden md:flex items-center gap-8">
-            {NAV_ITEMS.map((item) => (
-              <li key={item.path}>
+            {nav.map((item) => {
+              const href = item.path ?? item.href ?? "#";
+              const isExternal = !!item.href;
+              return (
+              <li key={item.label}>
+                {isExternal ? (
+                  <a
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="relative text-white/70 hover:text-white transition-colors duration-300 text-[0.85rem] uppercase tracking-[0.15em]"
+                    style={{ fontFamily: "var(--font-body)" }}
+                  >
+                    {item.label}
+                  </a>
+                ) : (
                 <Link
-                  href={item.path}
+                  href={href}
                   className="relative text-white/70 hover:text-white transition-colors duration-300 text-[0.85rem] uppercase tracking-[0.15em]"
                   style={{ fontFamily: "var(--font-body)" }}
                 >
@@ -55,8 +66,10 @@ export function Navbar() {
                     />
                   )}
                 </Link>
+                )}
               </li>
-            ))}
+            );
+            })}
 
             {/* Sound toggle */}
             <li><SoundToggle /></li>
@@ -64,10 +77,10 @@ export function Navbar() {
             <li>
               <button
                 onClick={withSound(() => open("book"))}
-                className="text-[0.8rem] uppercase tracking-[0.15em] px-5 py-2 border border-[#e2b93b]/40 text-[#e2b93b] hover:bg-[#e2b93b] hover:text-[#0a0a0a] transition-all duration-300"
+                className="text-[0.8rem] uppercase tracking-[0.15em] px-5 py-2 border transition-all duration-300 [border-color:color-mix(in_srgb,var(--color-accent)_40%,transparent)] [color:var(--color-accent)] hover:[background:var(--color-accent)] hover:[color:var(--color-background)]"
                 style={{ fontFamily: "var(--font-body)" }}
               >
-                Book a call
+                {ctaLabel}
               </button>
             </li>
           </ul>
@@ -105,27 +118,32 @@ export function Navbar() {
             animate={{ clipPath: "inset(0 0 0% 0)" }}
             exit={{ clipPath: "inset(0 0 100% 0)" }}
             transition={{ duration: 0.6, ease: [0.77, 0, 0.175, 1] }}
-            className="fixed inset-0 z-40 bg-[#0a0a0a] flex flex-col justify-between px-8 pb-12 pt-24"
+            className="fixed inset-0 z-40 flex flex-col justify-between px-8 pb-12 pt-24"
+            style={{ backgroundColor: "var(--color-background)" }}
           >
             <nav className="space-y-2">
-              {NAV_ITEMS.map((item, i) => (
+              {nav.map((item, i) => {
+                const href = item.path ?? item.href ?? "#";
+                const isExternal = !!item.href;
+                return (
                 <motion.div
-                  key={item.path}
+                  key={item.label}
                   initial={{ opacity: 0, x: -30 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.3 + i * 0.1, duration: 0.5 }}
                 >
-                  <Link
-                    href={item.path}
-                    onClick={() => setMobileOpen(false)}
-                    className="block"
-                  >
-                    <h2 className="text-white hover:text-white/60 transition-colors duration-300">
-                      {item.label}
-                    </h2>
-                  </Link>
+                  {isExternal ? (
+                    <a href={href} target="_blank" rel="noopener noreferrer" onClick={() => setMobileOpen(false)} className="block">
+                      <h2 className="text-white hover:text-white/60 transition-colors duration-300">{item.label}</h2>
+                    </a>
+                  ) : (
+                    <Link href={href} onClick={() => setMobileOpen(false)} className="block">
+                      <h2 className="text-white hover:text-white/60 transition-colors duration-300">{item.label}</h2>
+                    </Link>
+                  )}
                 </motion.div>
-              ))}
+              );
+              })}
             </nav>
 
             {/* Mobile CTA */}
@@ -144,18 +162,18 @@ export function Navbar() {
                   setMobileOpen(false);
                   setTimeout(() => open("book"), 300);
                 })}
-                className="inline-block text-[0.85rem] uppercase tracking-[0.15em] px-6 py-3 bg-[#e2b93b] text-[#0a0a0a]"
-                style={{ fontFamily: "var(--font-body)" }}
+                className="inline-block text-[0.85rem] uppercase tracking-[0.15em] px-6 py-3"
+                style={{ fontFamily: "var(--font-body)", backgroundColor: "var(--color-accent)", color: "var(--color-background)" }}
               >
-                Book a call
+                {ctaLabel}
               </button>
               <button
                 onClick={withSound(() => {
                   setMobileOpen(false);
                   setTimeout(() => open("message"), 300);
                 })}
-                className="block text-[0.75rem] uppercase tracking-[0.15em] text-[#e2b93b]/60 hover:text-[#e2b93b] transition-colors"
-                style={{ fontFamily: "var(--font-body)" }}
+                className="block text-[0.75rem] uppercase tracking-[0.15em] transition-colors hover:[color:var(--color-accent)]"
+                style={{ color: "color-mix(in srgb, var(--color-accent) 60%, transparent)", fontFamily: "var(--font-body)" }}
               >
                 Or send a message &rarr;
               </button>

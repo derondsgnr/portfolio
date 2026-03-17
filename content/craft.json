@@ -1,0 +1,58 @@
+[
+  {
+    "id": "c-01",
+    "title": "Typography Exploration",
+    "category": "Type",
+    "description": "Experimental lettering compositions pushing the boundaries of editorial design.",
+    "image": "https://images.unsplash.com/photo-1734543920075-59872330bec2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080"
+  },
+  {
+    "id": "c-02",
+    "title": "Geometric Study",
+    "category": "Visual",
+    "description": "Abstract geometric compositions exploring form, color, and negative space.",
+    "image": "https://images.unsplash.com/photo-1688141585146-1fb4a1358c87?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080"
+  },
+  {
+    "id": "c-03",
+    "title": "Brand Identity Concept",
+    "category": "Branding",
+    "description": "Speculative brand systems for fictional companies and side ventures.",
+    "image": "https://images.unsplash.com/photo-1765448808249-a3610f38e612?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080"
+  },
+  {
+    "id": "c-04",
+    "title": "Illustration Series",
+    "category": "Illustration",
+    "description": "Minimalist illustration explorations blending digital and hand-drawn approaches.",
+    "image": "https://images.unsplash.com/photo-1763013373616-2d81a44ab7ec?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080"
+  },
+  {
+    "id": "c-05",
+    "title": "Component System",
+    "category": "UI",
+    "description": "Atomic design tokens and component libraries for personal and client projects.",
+    "image": "https://images.unsplash.com/photo-1672689956124-18666b4cdae4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080"
+  },
+  {
+    "id": "c-06",
+    "title": "Motion Study",
+    "category": "Motion",
+    "description": "Micro-interactions and motion design principles captured in looping compositions.",
+    "image": "https://images.unsplash.com/photo-1761331081358-95583c97ddb1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080"
+  },
+  {
+    "id": "c-07",
+    "title": "Data Visualization",
+    "category": "DataViz",
+    "description": "Creative approaches to presenting complex datasets in beautiful, human-readable formats.",
+    "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080"
+  },
+  {
+    "id": "c-08",
+    "title": "3D Interface Concepts",
+    "category": "3D",
+    "description": "Spatial UI explorations imagining the next dimension of digital interfaces.",
+    "image": "https://images.unsplash.com/photo-1633356122544-f134324a6cee?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080"
+  }
+]

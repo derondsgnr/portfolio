@@ -3,7 +3,11 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence, useInView } from "motion/react";
 import { useRouter } from "next/navigation";
-import { V2_PROJECTS, V2_CRAFT_ITEMS, V2_ABOUT, V2_SERVICES_DETAILED, V2_EXPLORATIONS } from "../v2-data";
+import { V2_PROJECTS, V2_ABOUT } from "../v2-data";
+import type { CraftItem } from "@/lib/content/craft";
+import type { Exploration } from "@/lib/content/explorations";
+import type { MediaConfig } from "@/lib/content/media";
+import type { PageCopy } from "@/lib/content/copy";
 import { useBooking } from "../booking-context";
 
 /* ═══════════════════════════════════════════════════════════════
@@ -99,6 +103,7 @@ import { useBooking } from "../booking-context";
 
 import { ScrambleText } from "../shared/scramble-text";
 import { SignalGrid, ScanLines, CipherBgLayer } from "../shared/texture-layers";
+import { useSiteConfig } from "@/contexts/site-config-context";
 import { withSound } from "@/hooks/useSound";
 
 /* ─── View Toggle Pill ───────────────────────────────────────── */
@@ -147,16 +152,21 @@ function ViewToggle({ mode, onToggle, labelA, labelB }: { mode: "a" | "b"; onTog
 }
 
 /* ─── About page CTA with booking integration ──────────────── */
-function AboutCTA() {
+function AboutCTA({ copy }: { copy?: PageCopy }) {
   const { open } = useBooking();
+  const label = copy?.cta?.label ?? "[READY TO DECODE YOUR NEXT PROJECT?]";
+  const headline = copy?.cta?.headline ?? "LET'S BUILD";
+  const ctaPrimary = copy?.cta?.ctaPrimary ?? "BOOK A CALL";
+  const ctaSecondary = copy?.cta?.ctaSecondary ?? "SEND A MESSAGE";
+  const subtext = copy?.cta?.subtext ?? "FREE 30-MINUTE DISCOVERY CALL";
   return (
     <section className="relative z-[2] py-32 px-8 overflow-hidden">
       <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 60% 50% at 50% 40%, rgba(226,185,59,0.06) 0%, transparent 70%)" }} />
       <div className="max-w-4xl mx-auto text-center relative z-10">
-        <span style={{ fontFamily: "monospace", fontSize: "9px", letterSpacing: "0.3em", color: "rgba(226,185,59,0.3)" }}>[READY TO DECODE YOUR NEXT PROJECT?]</span>
+        <span style={{ fontFamily: "monospace", fontSize: "9px", letterSpacing: "0.3em", color: "rgba(226,185,59,0.3)" }}>{label}</span>
         <motion.div initial={{ y: 40, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="mt-6">
           <span style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(3rem, 10vw, 8rem)", lineHeight: 0.95, letterSpacing: "-0.03em", textTransform: "uppercase", color: "#f0f0f0", display: "block" }}>
-            <ScrambleText text="LET'S BUILD" speed={40} />
+            <ScrambleText text={headline} speed={40} />
           </span>
         </motion.div>
         <motion.div
@@ -171,18 +181,18 @@ function AboutCTA() {
             className="text-[11px] tracking-[0.2em] text-[#0A0A0A] bg-[#E2B93B] px-8 py-3.5 hover:bg-white transition-colors duration-300"
             style={{ fontFamily: "monospace" }}
           >
-            BOOK A CALL
+            {ctaPrimary}
           </button>
           <button
             onClick={withSound(() => open("message"))}
             className="text-[11px] tracking-[0.2em] text-[#E2B93B] border border-[#E2B93B]/30 px-8 py-3.5 hover:bg-[#E2B93B]/10 transition-colors duration-300"
             style={{ fontFamily: "monospace" }}
           >
-            SEND A MESSAGE
+            {ctaSecondary}
           </button>
         </motion.div>
         <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.8, duration: 0.6 }} className="mt-6" style={{ fontFamily: "monospace", fontSize: "10px", letterSpacing: "0.15em", color: "rgba(255,255,255,0.2)" }}>
-          FREE 30-MINUTE DISCOVERY CALL
+          {subtext}
         </motion.p>
       </div>
     </section>
@@ -191,18 +201,16 @@ function AboutCTA() {
 
 /* ─── Fracture-style footer ──────────────────────────────────── */
 function SynthesisFooter() {
-  const SOCIAL_LINKS = [
-    { label: "Twitter / X", url: "https://twitter.com/derondsgnr" },
-    { label: "LinkedIn", url: "https://linkedin.com/in/derondsgnr" },
-    { label: "Dribbble", url: "https://dribbble.com/derondsgnr" },
-  ];
+  const { global } = useSiteConfig();
+  const socialLinks = global.socialLinks;
+  const copyright = global.footerCopyright ?? `© ${new Date().getFullYear()} DERONDSGNR`;
   return (
     <div className="relative z-[2] py-8 px-8">
       <motion.div style={{ transform: "rotate(-1.5deg)" }}>
-        <span style={{ fontFamily: "monospace", fontSize: "9px", letterSpacing: "0.15em", color: "rgba(255,255,255,0.1)", textTransform: "uppercase" }}>&copy; {new Date().getFullYear()} DERONDSGNR</span>
+        <span style={{ fontFamily: "monospace", fontSize: "9px", letterSpacing: "0.15em", color: "rgba(255,255,255,0.1)", textTransform: "uppercase" }}>{copyright}</span>
       </motion.div>
       <div className="flex justify-end gap-6 mt-4" style={{ transform: "rotate(1.5deg)" }}>
-        {SOCIAL_LINKS.map((link) => (
+        {(socialLinks ?? []).map((link) => (
           <a key={link.label} href={link.url} target="_blank" rel="noopener noreferrer" className="hover:text-[#E2B93B] transition-colors" style={{ fontFamily: "monospace", fontSize: "9px", letterSpacing: "0.15em", color: "rgba(255,255,255,0.1)", textTransform: "uppercase" }}>
             {link.label}
           </a>
@@ -216,12 +224,17 @@ function SynthesisFooter() {
    WORK PAGE — Signal hero + toggle: List (Synthesis) / Grid (Signal)
    ═══════════════════════════════════════════════════════════════ */
 
-function SignalWorkHero({ projects = V2_PROJECTS }: { projects?: typeof V2_PROJECTS }) {
+function SignalWorkHero({ projects = V2_PROJECTS, copy }: { projects?: typeof V2_PROJECTS; copy?: PageCopy }) {
   const [blink, setBlink] = useState(true);
   useEffect(() => {
     const t = setInterval(() => setBlink((b) => !b), 500);
     return () => clearInterval(t);
   }, []);
+
+  const accessLabel = copy?.hero?.accessLabel ?? "> ACCESSING WORK_ARCHIVE...";
+  const title = copy?.hero?.title ?? "WORK";
+  const countSuffix = copy?.hero?.countSuffix ?? "TRANSMISSIONS FOUND";
+  const activeLabel = copy?.hero?.activeLabel ?? "SIGNAL: ACTIVE";
 
   return (
     <section className="relative z-[2] pt-32 pb-16 px-8">
@@ -231,7 +244,7 @@ function SignalWorkHero({ projects = V2_PROJECTS }: { projects?: typeof V2_PROJE
         transition={{ duration: 1, ease: [0.77, 0, 0.175, 1] }}
       >
         <span style={{ fontFamily: "monospace", fontSize: "10px", letterSpacing: "0.3em", color: "#E2B93B" }}>
-          &gt; ACCESSING WORK_ARCHIVE...
+          {accessLabel}
         </span>
       </motion.div>
 
@@ -242,7 +255,7 @@ function SignalWorkHero({ projects = V2_PROJECTS }: { projects?: typeof V2_PROJE
         className="mt-8"
       >
         <span style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(4rem, 12vw, 12rem)", lineHeight: 0.85, letterSpacing: "-0.03em", textTransform: "uppercase", color: "#f0f0f0", display: "block" }}>
-          <ScrambleText text="WORK" speed={40} />
+          <ScrambleText text={title} speed={40} />
         </span>
       </motion.div>
 
@@ -261,10 +274,10 @@ function SignalWorkHero({ projects = V2_PROJECTS }: { projects?: typeof V2_PROJE
         className="mt-6 flex justify-between items-center"
       >
         <span style={{ fontFamily: "monospace", fontSize: "9px", color: "rgba(255,255,255,0.2)", letterSpacing: "0.1em" }}>
-          {projects.length} TRANSMISSIONS FOUND
+          {projects.length} {countSuffix}
         </span>
         <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#E2B93B" }}>
-          SIGNAL: ACTIVE{blink ? "_" : " "}
+          {activeLabel}{blink ? "_" : " "}
         </span>
       </motion.div>
     </section>
@@ -386,7 +399,7 @@ function WorkGridView({ projects = V2_PROJECTS }: { projects?: typeof V2_PROJECT
   );
 }
 
-export function SynthesisWorkPage({ projects }: { projects?: typeof V2_PROJECTS } = {}) {
+export function SynthesisWorkPage({ projects, copy }: { projects?: typeof V2_PROJECTS; copy?: PageCopy } = {}) {
   const [view, setView] = useState<"a" | "b">("a");
 
   return (
@@ -395,7 +408,7 @@ export function SynthesisWorkPage({ projects }: { projects?: typeof V2_PROJECTS 
       <ScanLines />
       <CipherBgLayer />
 
-      <SignalWorkHero projects={projects} />
+      <SignalWorkHero projects={projects} copy={copy} />
 
       {/* Toggle + content */}
       <section className="relative z-[2] px-8 pb-32">
@@ -432,47 +445,61 @@ export function SynthesisWorkPage({ projects }: { projects?: typeof V2_PROJECTS 
    CRAFT PAGE — Synthesis hero + toggle: Grid (asymmetric) / List (Cipher)
    ═══════════════════════════════════════════════════════════════ */
 
-function SynthesisCraftHero() {
+function SynthesisCraftHero({ copy, heroBackground }: { copy?: PageCopy; heroBackground?: string }) {
+  const label = copy?.hero?.label ?? "> EXPERIMENTS.MAP()";
   return (
-    <section className="relative z-[2] pt-32 pb-16 px-8">
-      <span style={{ fontFamily: "monospace", fontSize: "10px", letterSpacing: "0.3em", color: "#E2B93B" }}>
-        &gt; EXPERIMENTS.MAP()
-      </span>
-      <motion.div
-        initial={{ y: -200, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ type: "spring", stiffness: 80, damping: 12, mass: 3, delay: 0.3 }}
-        className="mt-8"
-      >
-        <span style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(5rem, 16vw, 16rem)", lineHeight: 0.85, letterSpacing: "-0.04em", textTransform: "uppercase", color: "#f0f0f0", display: "block" }}>
-          <ScrambleText text="CRAFT" speed={40} />
+    <section className="relative z-[2] pt-32 pb-16 px-8 overflow-hidden">
+      {heroBackground && (
+        <div
+          className="absolute inset-0 pointer-events-none opacity-30"
+          style={{
+            backgroundImage: `url(${heroBackground})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        />
+      )}
+      <div className="relative z-10">
+        <span style={{ fontFamily: "monospace", fontSize: "10px", letterSpacing: "0.3em", color: "#E2B93B" }}>
+          {label}
         </span>
-      </motion.div>
-      <motion.p
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1, duration: 0.8 }}
-        className="mt-6 max-w-md"
-        style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "0.85rem", lineHeight: 1.7, fontWeight: 300, fontStyle: "italic", color: "rgba(255,255,255,0.25)" }}
-      >
-        The work between the work. Explorations, side frequencies, experiments in form.
-      </motion.p>
-      <motion.div
-        initial={{ scaleX: 0 }}
-        animate={{ scaleX: 1 }}
-        transition={{ delay: 1.2, duration: 1.5, ease: [0.77, 0, 0.175, 1] }}
-        className="h-px origin-left mt-8"
-        style={{ background: "linear-gradient(90deg, rgba(226,185,59,0.4), transparent)" }}
-      />
+        <motion.div
+          initial={{ y: -200, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ type: "spring", stiffness: 80, damping: 12, mass: 3, delay: 0.3 }}
+          className="mt-8"
+        >
+          <span style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(5rem, 16vw, 16rem)", lineHeight: 0.85, letterSpacing: "-0.04em", textTransform: "uppercase", color: "#f0f0f0", display: "block" }}>
+            <ScrambleText text="CRAFT" speed={40} />
+          </span>
+        </motion.div>
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1, duration: 0.8 }}
+          className="mt-6 max-w-md"
+          style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "0.85rem", lineHeight: 1.7, fontWeight: 300, fontStyle: "italic", color: "rgba(255,255,255,0.25)" }}
+        >
+          The work between the work. Explorations, side frequencies, experiments in form.
+        </motion.p>
+        <motion.div
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ delay: 1.2, duration: 1.5, ease: [0.77, 0, 0.175, 1] }}
+          className="h-px origin-left mt-8"
+          style={{ background: "linear-gradient(90deg, rgba(226,185,59,0.4), transparent)" }}
+        />
+      </div>
     </section>
   );
 }
 
 /* Synthesis asymmetric grid view */
-function CraftGridView() {
+function CraftGridView({ craftItems }: { craftItems: CraftItem[] }) {
+  if (craftItems.length === 0) return null;
   return (
     <div className="max-w-6xl mx-auto">
-      {V2_CRAFT_ITEMS.map((item, i) => {
+      {craftItems.map((item, i) => {
         const positions = [
           { ml: "0%", w: "50%", aspect: "4/5" },
           { ml: "45%", w: "45%", aspect: "3/2" },
@@ -519,10 +546,11 @@ function CraftGridView() {
 }
 
 /* Cipher-style list view */
-function CraftListView() {
+function CraftListView({ craftItems }: { craftItems: CraftItem[] }) {
+  if (craftItems.length === 0) return null;
   return (
     <div className="max-w-4xl mx-auto">
-      {V2_CRAFT_ITEMS.map((item, i) => (
+      {craftItems.map((item, i) => (
         <div key={item.id}>
           <div className="h-px" style={{ background: "rgba(255,255,255,0.03)" }} />
           <motion.div
@@ -581,11 +609,12 @@ function usePrefersReducedMotion() {
 }
 
 /* ─── Gallery with open affordance ───────────────────────────── */
-function ExplorationsGallery({ onOpen }: { onOpen: (index: number) => void }) {
+function ExplorationsGallery({ explorations, onOpen }: { explorations: Exploration[]; onOpen: (index: number) => void }) {
   const reduced = usePrefersReducedMotion();
+  if (explorations.length === 0) return null;
   return (
     <div className="columns-2 md:columns-3 gap-3" role="list" aria-label="Graphics and motion explorations">
-      {V2_EXPLORATIONS.map((item, i) => (
+      {explorations.map((item, i) => (
         <motion.div
           key={item.id}
           role="listitem"
@@ -641,8 +670,9 @@ function ExplorationsGallery({ onOpen }: { onOpen: (index: number) => void }) {
 }
 
 /* ─── Full-screen Aristide-style media viewer ────────────────── */
-function ExplorationViewer({ activeIndex, onClose, onNavigate }: { activeIndex: number; onClose: () => void; onNavigate: (index: number) => void }) {
-  const item = V2_EXPLORATIONS[activeIndex];
+function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: { explorations: Exploration[]; activeIndex: number; onClose: () => void; onNavigate: (index: number) => void }) {
+  const item = explorations[activeIndex];
+  if (!item) return null;
   const listRef = useRef<HTMLDivElement>(null);
   const mobileThumbRef = useRef<HTMLDivElement>(null);
   const viewerRef = useRef<HTMLDivElement>(null);
@@ -654,8 +684,8 @@ function ExplorationViewer({ activeIndex, onClose, onNavigate }: { activeIndex: 
   const reduced = usePrefersReducedMotion();
 
   const goNext = useCallback(() => {
-    if (activeIndex < V2_EXPLORATIONS.length - 1) { setDirection(1); onNavigate(activeIndex + 1); }
-  }, [activeIndex, onNavigate]);
+    if (activeIndex < explorations.length - 1) { setDirection(1); onNavigate(activeIndex + 1); }
+  }, [activeIndex, explorations.length, onNavigate]);
 
   const goPrev = useCallback(() => {
     if (activeIndex > 0) { setDirection(-1); onNavigate(activeIndex - 1); }
@@ -750,14 +780,14 @@ function ExplorationViewer({ activeIndex, onClose, onNavigate }: { activeIndex: 
   // Preload adjacent images
   useEffect(() => {
     const preload = (idx: number) => {
-      if (idx >= 0 && idx < V2_EXPLORATIONS.length) {
+      if (idx >= 0 && idx < explorations.length) {
         const img = new Image();
-        img.src = V2_EXPLORATIONS[idx].image;
+        img.src = explorations[idx].image;
       }
     };
     preload(activeIndex + 1);
     preload(activeIndex - 1);
-  }, [activeIndex]);
+  }, [activeIndex, explorations]);
 
   // Scroll active item into view
   useEffect(() => {
@@ -773,10 +803,10 @@ function ExplorationViewer({ activeIndex, onClose, onNavigate }: { activeIndex: 
   useEffect(() => { setShowMobileList(false); }, [activeIndex]);
 
   // Screen reader live region
-  const srAnnounce = `${item.title}, ${item.category}, ${activeIndex + 1} of ${V2_EXPLORATIONS.length}`;
+  const srAnnounce = `${item.title}, ${item.category}, ${activeIndex + 1} of ${explorations.length}`;
 
   // Progress fraction
-  const progress = (activeIndex + 1) / V2_EXPLORATIONS.length;
+  const progress = (activeIndex + 1) / explorations.length;
 
   // Direction-aware media transitions
   const mediaVariants = reduced
@@ -832,7 +862,7 @@ function ExplorationViewer({ activeIndex, onClose, onNavigate }: { activeIndex: 
         </button>
         <div className="px-3 py-1 rounded-full" style={{ background: "rgba(226,185,59,0.1)", border: "1px solid rgba(226,185,59,0.2)" }}>
           <span style={{ fontFamily: "monospace", fontSize: "10px", color: "#E2B93B", letterSpacing: "0.15em" }}>
-            {String(activeIndex + 1).padStart(2, "0")}/{String(V2_EXPLORATIONS.length).padStart(2, "0")}
+            {String(activeIndex + 1).padStart(2, "0")}/{String(explorations.length).padStart(2, "0")}
           </span>
         </div>
         <button
@@ -934,7 +964,7 @@ function ExplorationViewer({ activeIndex, onClose, onNavigate }: { activeIndex: 
           </div>
         </div>
         <div ref={mobileThumbRef} data-thumb-strip className="flex gap-1.5 px-4 pb-3 overflow-x-auto" style={{ scrollbarWidth: "none" }}>
-          {V2_EXPLORATIONS.map((exp, i) => (
+          {explorations.map((exp, i) => (
             <button
               key={exp.id}
               data-thumb={i}
@@ -979,9 +1009,9 @@ function ExplorationViewer({ activeIndex, onClose, onNavigate }: { activeIndex: 
                 <div className="w-10 h-0.5 rounded-full" style={{ background: "rgba(255,255,255,0.2)" }} />
               </div>
               <div className="px-4 pb-2">
-                <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#E2B93B", letterSpacing: "0.2em" }}>ARCHIVE [{String(activeIndex + 1).padStart(2, "0")}/{String(V2_EXPLORATIONS.length).padStart(2, "0")}]</span>
+                <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#E2B93B", letterSpacing: "0.2em" }}>ARCHIVE [{String(activeIndex + 1).padStart(2, "0")}/{String(explorations.length).padStart(2, "0")}]</span>
               </div>
-              {V2_EXPLORATIONS.map((exp, i) => (
+              {explorations.map((exp, i) => (
                 <div
                   key={exp.id}
                   role="option"
@@ -1019,13 +1049,13 @@ function ExplorationViewer({ activeIndex, onClose, onNavigate }: { activeIndex: 
         <div className="px-4 py-5 border-b" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
           <ScrambleText
             key={activeIndex}
-            text={`ARCHIVE [${String(activeIndex + 1).padStart(2, "0")}/${String(V2_EXPLORATIONS.length).padStart(2, "0")}]`}
+            text={`ARCHIVE [${String(activeIndex + 1).padStart(2, "0")}/${String(explorations.length).padStart(2, "0")}]`}
             speed={25}
             style={{ fontFamily: "monospace", fontSize: "9px", color: "#E2B93B", letterSpacing: "0.2em" }}
           />
         </div>
         <div ref={listRef} data-sidebar-list className="flex-1 overflow-y-auto" style={{ scrollbarWidth: "none" }} role="listbox" aria-label="Exploration items">
-          {V2_EXPLORATIONS.map((exp, i) => (
+          {explorations.map((exp, i) => (
             <div
               key={exp.id}
               data-index={i}
@@ -1070,10 +1100,10 @@ function ExplorationViewer({ activeIndex, onClose, onNavigate }: { activeIndex: 
           </button>
           <button
             onClick={goNext}
-            disabled={activeIndex === V2_EXPLORATIONS.length - 1}
+            disabled={activeIndex === explorations.length - 1}
             aria-label="Next item"
             className="flex-1 py-2 cursor-pointer transition-all duration-200 hover:border-[#E2B93B] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#E2B93B] disabled:hover:border-[rgba(255,255,255,0.08)]"
-            style={{ border: "1px solid rgba(255,255,255,0.08)", fontFamily: "monospace", fontSize: "9px", color: activeIndex === V2_EXPLORATIONS.length - 1 ? "rgba(255,255,255,0.1)" : "rgba(255,255,255,0.4)", letterSpacing: "0.1em", background: "transparent" }}
+            style={{ border: "1px solid rgba(255,255,255,0.08)", fontFamily: "monospace", fontSize: "9px", color: activeIndex === explorations.length - 1 ? "rgba(255,255,255,0.1)" : "rgba(255,255,255,0.4)", letterSpacing: "0.1em", background: "transparent" }}
           >
             NEXT →
           </button>
@@ -1083,7 +1113,7 @@ function ExplorationViewer({ activeIndex, onClose, onNavigate }: { activeIndex: 
   );
 }
 
-export function SynthesisCraftPage() {
+export function SynthesisCraftPage({ copy, craftItems = [], explorations = [], media }: { copy?: PageCopy; craftItems?: CraftItem[]; explorations?: Exploration[]; media?: MediaConfig } = {}) {
   const [tab, setTab] = useState<"projects" | "explorations">("projects");
   const [view, setView] = useState<"a" | "b">("a");
   const [viewerIndex, setViewerIndex] = useState<number | null>(null);
@@ -1094,7 +1124,7 @@ export function SynthesisCraftPage() {
       <ScanLines />
       <CipherBgLayer />
 
-      <SynthesisCraftHero />
+      <SynthesisCraftHero copy={copy} heroBackground={media?.heroBackground} />
 
       <section className="relative z-[2] px-8 pb-32">
         <div className="max-w-6xl mx-auto">
@@ -1153,7 +1183,7 @@ export function SynthesisCraftPage() {
             {/* Item count — only on Explorations tab */}
             {tab === "explorations" && (
               <span style={{ fontFamily: "monospace", fontSize: "9px", color: "rgba(255,255,255,0.15)", letterSpacing: "0.1em" }}>
-                {V2_EXPLORATIONS.length} ARTIFACTS INDEXED
+                {explorations.length} ARTIFACTS INDEXED
               </span>
             )}
           </motion.div>
@@ -1168,7 +1198,7 @@ export function SynthesisCraftPage() {
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.4 }}
               >
-                {view === "a" ? <CraftGridView /> : <CraftListView />}
+                {view === "a" ? <CraftGridView craftItems={craftItems} /> : <CraftListView craftItems={craftItems} />}
               </motion.div>
             ) : (
               <motion.div
@@ -1178,7 +1208,7 @@ export function SynthesisCraftPage() {
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.4 }}
               >
-                <ExplorationsGallery onOpen={(i) => setViewerIndex(i)} />
+                <ExplorationsGallery explorations={explorations} onOpen={(i) => setViewerIndex(i)} />
               </motion.div>
             )}
           </AnimatePresence>
@@ -1191,6 +1221,7 @@ export function SynthesisCraftPage() {
       <AnimatePresence>
         {viewerIndex !== null && (
           <ExplorationViewer
+            explorations={explorations}
             activeIndex={viewerIndex}
             onClose={() => setViewerIndex(null)}
             onNavigate={(i) => setViewerIndex(i)}
@@ -1205,9 +1236,13 @@ export function SynthesisCraftPage() {
    ABOUT PAGE — Signal hero + Cipher body
    ══════════════════════════════════════════════════════════════ */
 
-export function SynthesisAboutPage() {
+export function SynthesisAboutPage({ copy }: { copy?: PageCopy } = {}) {
   const [decoded, setDecoded] = useState(false);
   useEffect(() => { setTimeout(() => setDecoded(true), 500); }, []);
+
+  const heroLabel = copy?.hero?.label ?? "> OPERATOR_PROFILE.READ()";
+  const heroName = copy?.hero?.name ?? "DERON";
+  const heroTagline = copy?.hero?.tagline ?? "PRODUCT_DESIGNER // BUILDER";
 
   return (
     <main className="relative bg-[#0A0A0A] min-h-screen">
@@ -1223,7 +1258,7 @@ export function SynthesisAboutPage() {
           transition={{ duration: 0.8 }}
         >
           <span style={{ fontFamily: "monospace", fontSize: "10px", letterSpacing: "0.3em", color: "#E2B93B" }}>
-            &gt; OPERATOR_PROFILE.READ()
+            {heroLabel}
           </span>
         </motion.div>
         <motion.span
@@ -1233,7 +1268,7 @@ export function SynthesisAboutPage() {
           className="block mt-8"
           style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(4rem, 14vw, 14rem)", lineHeight: 0.85, letterSpacing: "-0.03em", textTransform: "uppercase", color: "#f0f0f0" }}
         >
-          {decoded ? <ScrambleText text="DERON" speed={40} /> : "?????"}
+          {decoded ? <ScrambleText text={heroName} speed={40} /> : "?????"}
         </motion.span>
         <motion.div
           initial={{ clipPath: "inset(0 0 0 100%)" }}
@@ -1242,7 +1277,7 @@ export function SynthesisAboutPage() {
           className="mt-4"
         >
           <span style={{ fontFamily: "monospace", fontSize: "12px", letterSpacing: "0.5em", color: "#E2B93B", textTransform: "uppercase" }}>
-            PRODUCT_DESIGNER // BUILDER
+            {heroTagline}
           </span>
         </motion.div>
 
@@ -1392,7 +1427,7 @@ export function SynthesisAboutPage() {
       </section>
 
       {/* Philosophy / CTA */}
-      <AboutCTA />
+      <AboutCTA copy={copy} />
 
       <SynthesisFooter />
     </main>

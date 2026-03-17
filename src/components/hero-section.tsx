@@ -9,7 +9,8 @@ export function HeroSection() {
         initial={{ scaleX: 0 }}
         animate={{ scaleX: 1 }}
         transition={{ duration: 1.8, delay: 1, ease: [0.77, 0, 0.175, 1] }}
-        className="absolute top-[35%] right-0 w-[40%] h-px bg-[#e2b93b]/20 origin-right hidden md:block"
+        className="absolute top-[35%] right-0 w-[40%] h-px origin-right hidden md:block"
+        style={{ backgroundColor: "color-mix(in srgb, var(--color-accent) 20%, transparent)" }}
       />
 
       {/* Background typographic element — massive, faded, bleeds off screen */}
@@ -36,8 +37,8 @@ export function HeroSection() {
         {/* Eyebrow */}
         <Reveal delay={0.5}>
           <p
-            className="text-[#e2b93b] text-[0.75rem] uppercase tracking-[0.3em] mb-6 md:mb-8"
-            style={{ fontFamily: "var(--font-body)" }}
+            className="text-[0.75rem] uppercase tracking-[0.3em] mb-6 md:mb-8"
+            style={{ fontFamily: "var(--font-body)", color: "var(--color-accent)" }}
           >
             Product Designer & Builder
           </p>
@@ -65,7 +66,7 @@ export function HeroSection() {
                 fontSize: "clamp(3.5rem, 14vw, 14rem)",
                 lineHeight: 0.9,
                 letterSpacing: "-0.02em",
-                WebkitTextStroke: "1.5px rgba(226, 185, 59, 0.4)",
+                WebkitTextStroke: "1.5px color-mix(in srgb, var(--color-accent) 40%, transparent)",
                 color: "transparent",
               }}
             >

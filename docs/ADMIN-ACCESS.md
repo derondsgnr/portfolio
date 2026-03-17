@@ -20,7 +20,12 @@ GITHUB_REPO_NAME=portfolio
 ```
 
 ## Sections
-- **Copy** — hero, about, CTA text for the landing page
+- **Copy** — hero, about, CTA text for all pages (homepage, work, about, craft). To add a new page, add its key to `content/copy.json`.
 - **Meta / SEO** — title, description, OG image, logo, favicon
 - **Projects** — CRUD for work items (add, edit, delete)
-- **Layout** — reorder sections, swap hero/work/CTA from Synthesis, Void, Signal, Cipher
+- **Layout** — per-page builder for Homepage, Work, About: add/remove/reorder sections, swap variations (Synthesis, Void, Signal, Cipher, Drift, Echo, Fracture, Gravity), edit section overrides
+- **Theme** — fonts, colors, spacing tokens (affects entire site)
+- **Integrations** — Google Analytics (GA4), Google Tag Manager — enable and paste IDs
+- **Nav** — add/remove/reorder nav items, edit labels and paths (internal) or hrefs (external)
+- **Global** — social links, footer copyright, footer tagline, CTA button label
+- **Media** — hero background URL, craft item images, exploration images

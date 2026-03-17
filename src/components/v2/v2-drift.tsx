@@ -47,7 +47,7 @@ function DriftLoader({ onComplete }: { onComplete: () => void }) {
 }
 
 /* ─── Hero ───────────────────────────────────────────────────── */
-function DriftHero() {
+export function DriftHero() {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -148,7 +148,7 @@ function DriftHero() {
 }
 
 /* ─── Process — words drift at different speeds ──────────────── */
-function DriftProcess() {
+export function DriftProcess() {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -189,8 +189,11 @@ function DriftProcess() {
   );
 }
 
+type WorkProject = { id: string; title: string; category: string; year: string; image: string };
+
 /* ─── Work — horizontal scroll section ───────────────────────── */
-function DriftWork() {
+export function DriftWork({ projects }: { projects?: WorkProject[] } = {}) {
+  const items = projects ?? V2_PROJECTS;
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -222,7 +225,7 @@ function DriftWork() {
         </motion.div>
 
         <motion.div style={{ x }} className="flex gap-8 pl-[5vw]">
-          {V2_PROJECTS.map((project, i) => (
+          {items.map((project, i) => (
             <div
               key={project.id}
               className="flex-shrink-0 group cursor-pointer"
@@ -290,7 +293,7 @@ function DriftWork() {
 }
 
 /* ─── Philosophy — two columns drift in from opposite sides ──── */
-function DriftPhilosophy() {
+export function DriftPhilosophy() {
   return (
     <section className="relative py-48 px-8">
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-24">
@@ -343,7 +346,7 @@ function DriftPhilosophy() {
 }
 
 /* ─── Testimonials — horizontal momentum carousel ────────────── */
-function DriftTestimonials() {
+export function DriftTestimonials() {
   return (
     <section className="relative py-32 overflow-hidden">
       <motion.div
@@ -424,7 +427,7 @@ function DriftTestimonials() {
 }
 
 /* ─── CTA ────────────────────────────────────────────────────── */
-function DriftCTA() {
+export function DriftCTA() {
   return (
     <section className="relative py-48 px-8 overflow-hidden">
       <div className="max-w-4xl mx-auto text-center relative">

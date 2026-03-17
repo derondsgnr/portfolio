@@ -26,8 +26,8 @@ import {
   PRINCIPLES,
   TESTIMONIALS,
   PROCESS_WORDS,
-  SOCIAL_LINKS,
 } from "../homepage-data";
+import { useSiteConfig } from "@/contexts/site-config-context";
 
 /* ─── HERO: Full viewport, stacked, cinematic ─────────────────── */
 function HeroMonument() {
@@ -675,6 +675,9 @@ function TestimonialsMonument() {
 
 /* ─── FOOTER ──────────────────────────────────────────────────── */
 function FooterMonument() {
+  const { global } = useSiteConfig();
+  const socialLinks = global.socialLinks;
+  const copyright = global.footerCopyright ?? `© ${new Date().getFullYear()} DERONDSGNR`;
   return (
     <SectionTransition mode="fade-up">
       <footer id="cta" className="px-6 md:px-10 pt-24 md:pt-40 pb-8">
@@ -728,10 +731,10 @@ function FooterMonument() {
         <WipeDivider />
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 pt-8">
           <ul className="flex flex-wrap items-center gap-x-8 gap-y-2">
-            {SOCIAL_LINKS.map((link) => (
+            {socialLinks.map((link) => (
               <li key={link.label}>
                 <a
-                  href={link.href}
+                  href={link.url}
                   className="text-white/20 hover:text-[#e2b93b] transition-colors duration-300"
                   style={{
                     fontFamily: "var(--font-body)",
@@ -756,7 +759,7 @@ function FooterMonument() {
               fontWeight: 400,
             }}
           >
-            &copy; {new Date().getFullYear()} DERONDSGNR
+            {copyright}
           </p>
         </div>
       </footer>

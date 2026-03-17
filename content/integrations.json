@@ -1,0 +1,10 @@
+{
+  "googleAnalytics": {
+    "enabled": false,
+    "measurementId": ""
+  },
+  "googleTagManager": {
+    "enabled": false,
+    "containerId": ""
+  }
+}

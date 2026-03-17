@@ -31,7 +31,7 @@ export function SynthesisHeroSection({
     <section ref={ref} className="relative h-screen flex flex-col justify-end overflow-hidden pb-16 px-8">
       <motion.div
         className="absolute left-0 right-0 h-px z-10"
-        style={{ top: scanY, background: "rgba(226,185,59,0.3)" }}
+        style={{ top: scanY, background: "color-mix(in srgb, var(--color-accent) 30%, transparent)" }}
       />
       <div
         className="absolute inset-0 pointer-events-none overflow-hidden"
@@ -76,7 +76,7 @@ export function SynthesisHeroSection({
         >
           <span
             style={{
-              fontFamily: "'Anton', sans-serif",
+              fontFamily: "var(--font-heading)",
               fontSize: "clamp(6rem, 20vw, 22rem)",
               lineHeight: 0.8,
               letterSpacing: "-0.04em",
@@ -101,13 +101,13 @@ export function SynthesisHeroSection({
           transition={{ delay: 1, duration: 1, ease: [0.77, 0, 0.175, 1] }}
           className="mt-4 flex items-center gap-6"
         >
-          <div style={{ width: 80, height: 3, background: "#E2B93B" }} />
+          <div style={{ width: 80, height: 3, background: "var(--color-accent)" }} />
           <span
             style={{
               fontFamily: "monospace",
               fontSize: "12px",
               letterSpacing: "0.3em",
-              color: "#E2B93B",
+              color: "var(--color-accent)",
               textTransform: "uppercase",
             }}
           >
@@ -122,7 +122,7 @@ export function SynthesisHeroSection({
         >
           <p
             style={{
-              fontFamily: "'Instrument Sans', sans-serif",
+              fontFamily: "var(--font-body)",
               fontSize: "clamp(0.85rem, 1.2vw, 1rem)",
               lineHeight: 1.8,
               fontWeight: 300,
@@ -139,7 +139,7 @@ export function SynthesisHeroSection({
         animate={{ scaleX: 1 }}
         transition={{ delay: 1.2, duration: 1.5, ease: [0.77, 0, 0.175, 1] }}
         className="absolute bottom-0 left-0 right-0 h-1 origin-left"
-        style={{ background: "#E2B93B" }}
+        style={{ background: "var(--color-accent)" }}
       />
       <motion.div
         initial={{ opacity: 0 }}

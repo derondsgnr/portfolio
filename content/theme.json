@@ -1,0 +1,21 @@
+{
+  "fonts": {
+    "primary": "anton",
+    "secondary": "instrument-sans",
+    "pair": "anton-instrument"
+  },
+  "colors": {
+    "primary": "#E2B93B",
+    "secondary": "#1a1a1a",
+    "accent": "#E2B93B",
+    "background": "#0A0A0A",
+    "text": "#f0f0f0"
+  },
+  "spacing": {
+    "xs": "0.25rem",
+    "sm": "0.5rem",
+    "md": "1rem",
+    "lg": "1.5rem",
+    "xl": "2rem"
+  }
+}

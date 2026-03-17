@@ -1,0 +1,10 @@
+{
+  "socialLinks": [
+    { "label": "Twitter / X", "url": "https://twitter.com/derondsgnr" },
+    { "label": "LinkedIn", "url": "https://linkedin.com/in/derondsgnr" },
+    { "label": "Dribbble", "url": "https://dribbble.com/derondsgnr" }
+  ],
+  "footerCopyright": "© 2025 DERONDSGNR",
+  "footerTagline": "Designed & built by hand",
+  "ctaButtonLabel": "Book a call"
+}

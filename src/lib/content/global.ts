@@ -1,0 +1,43 @@
+import { readFile } from "fs/promises";
+import path from "path";
+
+export type SocialLink = {
+  label: string;
+  url: string;
+};
+
+export type GlobalConfig = {
+  socialLinks: SocialLink[];
+  footerCopyright: string;
+  footerTagline: string;
+  ctaButtonLabel: string;
+};
+
+const DEFAULT: GlobalConfig = {
+  socialLinks: [
+    { label: "Twitter / X", url: "https://twitter.com/derondsgnr" },
+    { label: "LinkedIn", url: "https://linkedin.com/in/derondsgnr" },
+    { label: "Dribbble", url: "https://dribbble.com/derondsgnr" },
+  ],
+  footerCopyright: "© 2025 DERONDSGNR",
+  footerTagline: "Designed & built by hand",
+  ctaButtonLabel: "Book a call",
+};
+
+export async function getGlobal(): Promise<GlobalConfig> {
+  try {
+    const filePath = path.join(process.cwd(), "content", "global.json");
+    const raw = await readFile(filePath, "utf-8");
+    const parsed = JSON.parse(raw) as Partial<GlobalConfig>;
+    return {
+      socialLinks: Array.isArray(parsed.socialLinks)
+        ? parsed.socialLinks.filter((s) => s?.label && s?.url)
+        : DEFAULT.socialLinks,
+      footerCopyright: parsed.footerCopyright ?? DEFAULT.footerCopyright,
+      footerTagline: parsed.footerTagline ?? DEFAULT.footerTagline,
+      ctaButtonLabel: parsed.ctaButtonLabel ?? DEFAULT.ctaButtonLabel,
+    };
+  } catch {
+    return DEFAULT;
+  }
+}
