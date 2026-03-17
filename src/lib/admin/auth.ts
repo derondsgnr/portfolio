@@ -16,8 +16,9 @@ export async function verifyAdminSession(): Promise<boolean> {
 }
 
 export async function createAdminSession(password: string): Promise<boolean> {
-  const secret = process.env.ADMIN_SECRET;
-  if (!secret || password !== secret) return false;
+  const secret = process.env.ADMIN_SECRET?.trim();
+  const input = password?.trim();
+  if (!secret || !input || input !== secret) return false;
   return true;
 }
 

@@ -7,6 +7,7 @@ import { login } from "../actions";
 export default function AdminLoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -33,14 +34,25 @@ export default function AdminLoginPage() {
           ADMIN
         </h1>
         <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            autoFocus
-            className="w-full px-4 py-3 bg-[#111] border border-white/10 text-white placeholder:text-white/40 font-mono text-sm focus:outline-none focus:border-[#E2B93B]/50"
-            disabled={loading}
-          />
+          <div className="relative">
+            <input
+              type={showPassword ? "text" : "password"}
+              name="password"
+              placeholder="Password"
+              autoFocus
+              className="w-full px-4 py-3 pr-12 bg-[#111] border border-white/10 text-white placeholder:text-white/40 font-mono text-sm focus:outline-none focus:border-[#E2B93B]/50"
+              disabled={loading}
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword((s) => !s)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 font-mono text-xs text-white/40 hover:text-white"
+              tabIndex={-1}
+              aria-label={showPassword ? "Hide password" : "Show password"}
+            >
+              {showPassword ? "Hide" : "Show"}
+            </button>
+          </div>
           {error && (
             <p className="text-sm text-red-400 font-mono">{error}</p>
           )}
