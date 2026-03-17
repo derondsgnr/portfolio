@@ -353,7 +353,7 @@ function SynthesisCapabilities() {
 }
 
 /* ─── Void-style projects + Cipher texture ───────────────────── */
-function SynthesisWork() {
+function SynthesisWork({ projects = V2_PROJECTS }: { projects?: typeof V2_PROJECTS }) {
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
 
   return (
@@ -377,7 +377,7 @@ function SynthesisWork() {
       </motion.div>
 
       <div className="max-w-6xl mx-auto">
-        {V2_PROJECTS.map((project, i) => (
+        {projects.map((project, i) => (
           <Link key={project.id} href={`/work/${project.slug}`}>
             <motion.div
               initial={{ opacity: 0 }}
@@ -704,7 +704,7 @@ function SynthesisTestimonials() {
 }
 
 /* ─── Main Export ────────────────────────────────────────────── */
-export function SynthesisVariation() {
+export function SynthesisVariation({ projects }: { projects?: typeof V2_PROJECTS } = {}) {
   const [loaded, setLoaded] = useState(false);
 
   return (
@@ -728,7 +728,7 @@ export function SynthesisVariation() {
           <SynthesisAboutSection />
           <SynthesisCapabilities />
           <SynthesisProcess />
-          <SynthesisWork />
+          <SynthesisWork projects={projects} />
           <SynthesisPhilosophy />
           <SynthesisTestimonials />
           <SynthesisCTASection />

@@ -1,0 +1,38 @@
+[
+  {
+    "id": "01",
+    "title": "Dara",
+    "category": "Fintech",
+    "year": "2025",
+    "description": "A personal finance & tax management platform for Nigerian freelancers and SMEs — designed and built entirely with AI-assisted tools.",
+    "image": "https://images.unsplash.com/photo-1623593476737-0fc80f6be51d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+    "slug": "dara"
+  },
+  {
+    "id": "02",
+    "title": "Soro",
+    "category": "Marketplace",
+    "year": "2024",
+    "description": "UX teardown and complete redesign of a Nigerian community marketplace — taking it from 'Craigslist clone' to trusted local commerce.",
+    "image": "https://images.unsplash.com/photo-1746171114403-f4c4877b1f04?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+    "slug": "soro"
+  },
+  {
+    "id": "03",
+    "title": "Pulse",
+    "category": "Mobile Wellness",
+    "year": "2025",
+    "description": "A mindfulness app for high-stress professionals — designed for one-handed use in 90-second sessions.",
+    "image": "https://images.unsplash.com/photo-1633435444831-a343459372a5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+    "slug": "pulse"
+  },
+  {
+    "id": "04",
+    "title": "Kora",
+    "category": "Brand Identity",
+    "year": "2024",
+    "description": "Complete brand identity for a West African design collective — built on constraint, craft, and cultural tension.",
+    "image": "https://images.unsplash.com/photo-1761778304143-4c89e7dd2457?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+    "slug": "kora"
+  }
+]

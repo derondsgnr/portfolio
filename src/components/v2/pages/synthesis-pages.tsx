@@ -215,7 +215,7 @@ function SynthesisFooter() {
    WORK PAGE — Signal hero + toggle: List (Synthesis) / Grid (Signal)
    ═══════════════════════════════════════════════════════════════ */
 
-function SignalWorkHero() {
+function SignalWorkHero({ projects = V2_PROJECTS }: { projects?: typeof V2_PROJECTS }) {
   const [blink, setBlink] = useState(true);
   useEffect(() => {
     const t = setInterval(() => setBlink((b) => !b), 500);
@@ -260,7 +260,7 @@ function SignalWorkHero() {
         className="mt-6 flex justify-between items-center"
       >
         <span style={{ fontFamily: "monospace", fontSize: "9px", color: "rgba(255,255,255,0.2)", letterSpacing: "0.1em" }}>
-          {V2_PROJECTS.length} TRANSMISSIONS FOUND
+          {projects.length} TRANSMISSIONS FOUND
         </span>
         <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#E2B93B" }}>
           SIGNAL: ACTIVE{blink ? "_" : " "}
@@ -271,13 +271,13 @@ function SignalWorkHero() {
 }
 
 /* Synthesis list view (hover-reveal, cipher scramble) */
-function WorkListView() {
+function WorkListView({ projects = V2_PROJECTS }: { projects?: typeof V2_PROJECTS }) {
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
   const router = useRouter();
 
   return (
     <div className="max-w-6xl mx-auto">
-      {V2_PROJECTS.map((project, i) => (
+      {projects.map((project, i) => (
         <motion.div
           key={project.id}
           initial={{ opacity: 0 }}
@@ -337,12 +337,12 @@ function WorkListView() {
 }
 
 /* Signal grid view (2-col with scan textures) */
-function WorkGridView() {
+function WorkGridView({ projects = V2_PROJECTS }: { projects?: typeof V2_PROJECTS }) {
   const router = useRouter();
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-1">
-      {V2_PROJECTS.map((project, i) => (
+      {projects.map((project, i) => (
         <motion.div
           key={project.id}
           initial={{ opacity: 0, clipPath: "inset(0 100% 0 0)" }}
@@ -385,7 +385,7 @@ function WorkGridView() {
   );
 }
 
-export function SynthesisWorkPage() {
+export function SynthesisWorkPage({ projects }: { projects?: typeof V2_PROJECTS } = {}) {
   const [view, setView] = useState<"a" | "b">("a");
 
   return (
@@ -394,7 +394,7 @@ export function SynthesisWorkPage() {
       <ScanLines />
       <CipherBgLayer />
 
-      <SignalWorkHero />
+      <SignalWorkHero projects={projects} />
 
       {/* Toggle + content */}
       <section className="relative z-[2] px-8 pb-32">
@@ -416,7 +416,7 @@ export function SynthesisWorkPage() {
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.4 }}
             >
-              {view === "a" ? <WorkListView /> : <WorkGridView />}
+              {view === "a" ? <WorkListView projects={projects} /> : <WorkGridView projects={projects} />}
             </motion.div>
           </AnimatePresence>
         </div>
