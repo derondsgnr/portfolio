@@ -1,28 +1,26 @@
-import { getGitHubFile } from "@/lib/admin/github";
-import { getGlobal } from "@/lib/content/global";
+import { getContentWithGitHubOverlay } from "@/lib/admin/content-overlay";
+import { getGlobal, type GlobalConfig, type SocialLink } from "@/lib/content/global";
 import { GlobalForm } from "./global-form";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminGlobalPage() {
-  let initial: Awaited<ReturnType<typeof getGlobal>>;
-  const gh = await getGitHubFile("content/global.json");
-  if (gh?.content) {
-    try {
-      const parsed = JSON.parse(gh.content) as Partial<Awaited<ReturnType<typeof getGlobal>>>;
-      const base = await getGlobal();
-      initial = {
-        socialLinks: Array.isArray(parsed.socialLinks) ? parsed.socialLinks : base.socialLinks,
-        footerCopyright: parsed.footerCopyright ?? base.footerCopyright,
-        footerTagline: parsed.footerTagline ?? base.footerTagline,
-        ctaButtonLabel: parsed.ctaButtonLabel ?? base.ctaButtonLabel,
+  const initial = await getContentWithGitHubOverlay(
+    "content/global.json",
+    getGlobal,
+    (base, parsed): GlobalConfig => {
+      const p = parsed as { socialLinks?: unknown[]; footerCopyright?: string; footerTagline?: string; ctaButtonLabel?: string };
+      const links: SocialLink[] = Array.isArray(p?.socialLinks)
+        ? (p.socialLinks as SocialLink[])
+        : base.socialLinks;
+      return {
+        socialLinks: links,
+        footerCopyright: p?.footerCopyright ?? base.footerCopyright,
+        footerTagline: p?.footerTagline ?? base.footerTagline,
+        ctaButtonLabel: p?.ctaButtonLabel ?? base.ctaButtonLabel,
       };
-    } catch {
-      initial = await getGlobal();
     }
-  } else {
-    initial = await getGlobal();
-  }
+  );
 
   return (
     <div>

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "motion/react";
-import { V2_PROJECTS, V2_TESTIMONIALS, V2_PROCESS } from "./v2-data";
+import { V2_PROJECTS, V2_PROCESS } from "./v2-data";
+import { useTestimonials } from "@/contexts/testimonials-context";
 
 /* ═══════════════════════════════════════════════════════════════
    DRIFT — Horizontal momentum meets vertical scroll.
@@ -347,6 +348,8 @@ export function DriftPhilosophy() {
 
 /* ─── Testimonials — horizontal momentum carousel ────────────── */
 export function DriftTestimonials() {
+  const testimonials = useTestimonials();
+  const items = testimonials.length ? [...testimonials, ...testimonials] : [];
   return (
     <section className="relative py-32 overflow-hidden">
       <motion.div
@@ -374,7 +377,7 @@ export function DriftTestimonials() {
         transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
         className="flex gap-8"
       >
-        {[...V2_TESTIMONIALS, ...V2_TESTIMONIALS].map((t, i) => (
+        {items.map((t, i) => (
           <div
             key={`${t.id}-${i}`}
             className="flex-shrink-0 p-8"

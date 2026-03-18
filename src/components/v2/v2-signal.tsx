@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence, useScroll, useTransform } from "motion/react";
-import { V2_PROJECTS, V2_TESTIMONIALS, V2_PROCESS, V2_SERVICES } from "./v2-data";
+import { V2_PROJECTS, V2_PROCESS, V2_SERVICES } from "./v2-data";
+import { useTestimonials } from "@/contexts/testimonials-context";
 
 /* ═══════════════════════════════════════════════════════════════
    SIGNAL — Data transmission aesthetic. 
@@ -461,6 +462,7 @@ export function SignalServices() {
 
 /* ─── Testimonials ───────────────────────────────────────────── */
 export function SignalTestimonials() {
+  const testimonials = useTestimonials();
   return (
     <section className="relative py-32 px-8">
       <div className="max-w-4xl mx-auto">
@@ -482,7 +484,7 @@ export function SignalTestimonials() {
           </span>
         </motion.div>
 
-        {V2_TESTIMONIALS.slice(0, 3).map((t, i) => (
+        {testimonials.slice(0, 3).map((t, i) => (
           <motion.div
             key={t.id}
             initial={{ opacity: 0, y: 20 }}

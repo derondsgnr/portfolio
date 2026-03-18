@@ -1,22 +1,15 @@
-import { getGitHubFile } from "@/lib/admin/github";
-
-export const dynamic = "force-dynamic";
+import { getContentWithGitHubOverlay } from "@/lib/admin/content-overlay";
 import { getProjects } from "@/lib/content/projects";
 import { ProjectsList } from "./projects-list";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminProjectsPage() {
-  let initial: Awaited<ReturnType<typeof getProjects>>;
-  const gh = await getGitHubFile("content/projects.json");
-  if (gh?.content) {
-    try {
-      const parsed = JSON.parse(gh.content);
-      initial = Array.isArray(parsed) ? parsed : await getProjects();
-    } catch {
-      initial = await getProjects();
-    }
-  } else {
-    initial = await getProjects();
-  }
+  const initial = await getContentWithGitHubOverlay(
+    "content/projects.json",
+    getProjects,
+    (local, parsed) => (Array.isArray(parsed) ? parsed : local)
+  );
 
   return (
     <div>

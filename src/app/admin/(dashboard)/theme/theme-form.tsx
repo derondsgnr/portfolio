@@ -2,26 +2,23 @@
 
 import { useState, useRef } from "react";
 import { saveTheme } from "../../actions";
+import { formCx, FormField, SaveButton } from "@/design-system";
 import type { Theme, FontPairId } from "@/lib/content/theme";
 
 function ColorField({
   id,
   label,
   defaultValue,
-  inputClass,
-  labelClass,
 }: {
   id: string;
   label: string;
   defaultValue: string;
-  inputClass: string;
-  labelClass: string;
 }) {
   const colorRef = useRef<HTMLInputElement>(null);
   const textRef = useRef<HTMLInputElement>(null);
   return (
     <div className="flex items-center gap-3">
-      <label htmlFor={id} className={labelClass} style={{ width: 100 }}>
+      <label htmlFor={id} className={formCx.label} style={{ width: 100 }}>
         {label}
       </label>
       <input
@@ -43,7 +40,7 @@ function ColorField({
           const v = e.target.value;
           if (/^#[0-9A-Fa-f]{6}$/.test(v) && colorRef.current) colorRef.current.value = v;
         }}
-        className={`${inputClass} flex-1 font-mono`}
+        className={`${formCx.input} flex-1 font-mono`}
         placeholder="#E2B93B"
       />
     </div>
@@ -138,7 +135,7 @@ export function ThemeForm({ initial }: Props) {
             { id: "color-background", label: "Background", value: initial.colors.background },
             { id: "color-text", label: "Text", value: initial.colors.text },
           ].map(({ id, label, value }) => (
-            <ColorField key={id} id={id} label={label} defaultValue={value} inputClass={inputClass} labelClass={labelClass} />
+            <ColorField key={id} id={id} label={label} defaultValue={value} />
           ))}
         </div>
       </div>

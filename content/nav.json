@@ -1,5 +1,6 @@
 [
   { "label": "Work", "path": "/work" },
   { "label": "Craft", "path": "/craft" },
-  { "label": "About", "path": "/about" }
+  { "label": "About", "path": "/about" },
+  { "label": "Now", "path": "/now" }
 ]

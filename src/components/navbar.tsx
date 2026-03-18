@@ -6,13 +6,13 @@ import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
 import { useBooking } from "./v2/booking-context";
 import { useSiteConfig } from "@/contexts/site-config-context";
-import { withSound } from "@/hooks/useSound";
-import { SoundToggle } from "./sound-toggle";
+import { withSound, useSoundOnHover } from "@/hooks/useSound";
 
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
   const { open } = useBooking();
+  const onHover = useSoundOnHover("hover");
   const { nav, global } = useSiteConfig();
   const ctaLabel = global.ctaButtonLabel || "Book a call";
 
@@ -46,6 +46,7 @@ export function Navbar() {
                     href={href}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onMouseEnter={onHover}
                     className="relative text-white/70 hover:text-white transition-colors duration-300 text-[0.85rem] uppercase tracking-[0.15em]"
                     style={{ fontFamily: "var(--font-body)" }}
                   >
@@ -54,6 +55,7 @@ export function Navbar() {
                 ) : (
                 <Link
                   href={href}
+                  onMouseEnter={onHover}
                   className="relative text-white/70 hover:text-white transition-colors duration-300 text-[0.85rem] uppercase tracking-[0.15em]"
                   style={{ fontFamily: "var(--font-body)" }}
                 >
@@ -71,12 +73,11 @@ export function Navbar() {
             );
             })}
 
-            {/* Sound toggle */}
-            <li><SoundToggle /></li>
             {/* CTA button — accent */}
             <li>
               <button
                 onClick={withSound(() => open("book"))}
+                onMouseEnter={onHover}
                 className="text-[0.8rem] uppercase tracking-[0.15em] px-5 py-2 border transition-all duration-300 [border-color:color-mix(in_srgb,var(--color-accent)_40%,transparent)] [color:var(--color-accent)] hover:[background:var(--color-accent)] hover:[color:var(--color-background)]"
                 style={{ fontFamily: "var(--font-body)" }}
               >
@@ -133,11 +134,11 @@ export function Navbar() {
                   transition={{ delay: 0.3 + i * 0.1, duration: 0.5 }}
                 >
                   {isExternal ? (
-                    <a href={href} target="_blank" rel="noopener noreferrer" onClick={() => setMobileOpen(false)} className="block">
+                    <a href={href} target="_blank" rel="noopener noreferrer" onClick={() => setMobileOpen(false)} onMouseEnter={onHover} className="block">
                       <h2 className="text-white hover:text-white/60 transition-colors duration-300">{item.label}</h2>
                     </a>
                   ) : (
-                    <Link href={href} onClick={() => setMobileOpen(false)} className="block">
+                    <Link href={href} onClick={() => setMobileOpen(false)} onMouseEnter={onHover} className="block">
                       <h2 className="text-white hover:text-white/60 transition-colors duration-300">{item.label}</h2>
                     </Link>
                   )}
@@ -153,11 +154,8 @@ export function Navbar() {
               transition={{ delay: 0.6, duration: 0.5 }}
               className="space-y-3"
             >
-              <div className="flex items-center gap-4">
-                <span className="font-mono text-xs text-white/40">Sound</span>
-                <SoundToggle />
-              </div>
               <button
+                onMouseEnter={onHover}
                 onClick={withSound(() => {
                   setMobileOpen(false);
                   setTimeout(() => open("book"), 300);
@@ -168,6 +166,7 @@ export function Navbar() {
                 {ctaLabel}
               </button>
               <button
+                onMouseEnter={onHover}
                 onClick={withSound(() => {
                   setMobileOpen(false);
                   setTimeout(() => open("message"), 300);

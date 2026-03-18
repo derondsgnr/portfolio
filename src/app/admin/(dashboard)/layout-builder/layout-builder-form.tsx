@@ -19,7 +19,7 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { savePagesConfig } from "../../actions";
-import { SECTION_OPTIONS } from "@/lib/section-registry";
+import { SECTION_OPTIONS } from "@/lib/section-options";
 import { getSectionSchema } from "@/lib/section-schemas";
 import type { PageSectionConfig } from "@/lib/content/pages";
 import type { PagesConfig } from "@/lib/content/pages";

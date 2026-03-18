@@ -24,9 +24,9 @@ import {
 import {
   PROJECTS,
   PRINCIPLES,
-  TESTIMONIALS,
   PROCESS_WORDS,
 } from "../homepage-data";
+import { useTestimonials } from "@/contexts/testimonials-context";
 import { useSiteConfig } from "@/contexts/site-config-context";
 
 /* ─── HERO: Scattered, spatial, floating ──────────────────────── */
@@ -603,8 +603,9 @@ function AboutOrbit() {
 /* ─── TESTIMONIALS: Horizontal ticker strip ───────────────────── */
 function TestimonialsOrbit() {
   const [current, setCurrent] = useState(0);
-  const total = TESTIMONIALS.length;
-  const t = TESTIMONIALS[current];
+  const testimonials = useTestimonials();
+  const total = testimonials.length;
+  const t = testimonials[current];
 
   return (
     <SectionTransition mode="fade">
@@ -616,7 +617,7 @@ function TestimonialsOrbit() {
             transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
             className="flex items-center gap-12 w-max"
           >
-            {[...TESTIMONIALS, ...TESTIMONIALS].map((tm, i) => (
+            {[...testimonials, ...testimonials].map((tm, i) => (
               <span
                 key={`${tm.id}-${i}`}
                 className={`text-[0.65rem] uppercase tracking-[0.2em] whitespace-nowrap ${

@@ -3,12 +3,13 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { V2_TESTIMONIALS } from "./v2/v2-data";
+import { useTestimonials } from "@/contexts/testimonials-context";
 
 export function ReviewsSection() {
   const [current, setCurrent] = useState(0);
-  const total = V2_TESTIMONIALS.length;
-  const testimonial = V2_TESTIMONIALS[current];
+  const testimonials = useTestimonials();
+  const total = testimonials.length;
+  const testimonial = testimonials[current];
 
   const goNext = () => setCurrent((prev) => (prev + 1) % total);
   const goPrev = () => setCurrent((prev) => (prev - 1 + total) % total);

@@ -1,26 +1,22 @@
-import { getGitHubFile } from "@/lib/admin/github";
-export const dynamic = "force-dynamic";
+import { getContentWithGitHubOverlay } from "@/lib/admin/content-overlay";
 import { getTheme } from "@/lib/content/theme";
 import { ThemeForm } from "./theme-form";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminThemePage() {
-  let initial: Awaited<ReturnType<typeof getTheme>>;
-  const gh = await getGitHubFile("content/theme.json");
-  if (gh?.content) {
-    try {
-      const base = await getTheme();
-      const parsed = JSON.parse(gh.content) as Partial<Awaited<ReturnType<typeof getTheme>>>;
-      initial = {
-        fonts: { ...base.fonts, ...parsed.fonts },
-        colors: { ...base.colors, ...parsed.colors },
-        spacing: { ...base.spacing, ...parsed.spacing },
+  const initial = await getContentWithGitHubOverlay(
+    "content/theme.json",
+    getTheme,
+    (local, parsed) => {
+      const p = parsed as { fonts?: object; colors?: object; spacing?: object };
+      return {
+        fonts: { ...local.fonts, ...p.fonts },
+        colors: { ...local.colors, ...p.colors },
+        spacing: { ...local.spacing, ...p.spacing },
       };
-    } catch {
-      initial = await getTheme();
     }
-  } else {
-    initial = await getTheme();
-  }
+  );
 
   return (
     <div>

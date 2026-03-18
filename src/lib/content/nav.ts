@@ -11,6 +11,7 @@ const DEFAULT_NAV: NavItem[] = [
   { label: "Work", path: "/work" },
   { label: "Craft", path: "/craft" },
   { label: "About", path: "/about" },
+  { label: "Now", path: "/now" },
 ];
 
 export async function getNav(): Promise<NavItem[]> {

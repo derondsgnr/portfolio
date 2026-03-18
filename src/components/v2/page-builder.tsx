@@ -1,9 +1,14 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useState, useEffect } from "react";
 import { SignalGrid, ScanLineOverlay, CipherAmbientGrid } from "./shared/texture-layers";
 import { AnimatePresence, motion } from "motion/react";
-import { SectionRenderer } from "@/lib/section-registry";
+
+const SectionRenderer = dynamic(
+  () => import("@/lib/section-registry").then((m) => ({ default: m.SectionRenderer })),
+  { ssr: true }
+);
 import type { PageConfig } from "@/lib/content/pages";
 import type { Project } from "@/lib/content/projects";
 import type { LandingContent } from "@/lib/content/landing";

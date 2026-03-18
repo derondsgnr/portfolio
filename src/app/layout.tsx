@@ -5,9 +5,11 @@ import { Providers } from "@/components/providers";
 import { AnalyticsScripts } from "@/components/analytics-scripts";
 import { getSiteMeta } from "@/lib/content/site-meta";
 import { getIntegrations } from "@/lib/content/integrations";
+import { getTestimonials } from "@/lib/content/testimonials";
 import { getTheme } from "@/lib/content/theme";
 import { getNav } from "@/lib/content/nav";
 import { getGlobal } from "@/lib/content/global";
+import { getSounds } from "@/lib/content/sounds";
 
 const anton = Anton({ weight: "400", subsets: ["latin"], variable: "--font-anton" });
 const instrumentSans = Instrument_Sans({ subsets: ["latin"], variable: "--font-instrument" });
@@ -48,7 +50,7 @@ export async function generateMetadata(): Promise<Metadata> {
       description: meta.description,
       images: ogImage ? [ogImage] : undefined,
     },
-    icons: meta.favicon ? { icon: meta.favicon } : undefined,
+    icons: meta.favicon && meta.favicon !== "/favicon.ico" ? { icon: meta.favicon } : { icon: "/icon" },
   };
 }
 
@@ -57,11 +59,13 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [integrations, theme, nav, global] = await Promise.all([
+  const [integrations, theme, nav, global, sounds, testimonials] = await Promise.all([
     getIntegrations(),
     getTheme(),
     getNav(),
     getGlobal(),
+    getSounds(),
+    getTestimonials(),
   ]);
   const pair = theme.fonts.pair in FONT_PAIR_VARS ? theme.fonts.pair : "anton-instrument";
   const fonts = FONT_PAIR_VARS[pair];
@@ -89,7 +93,7 @@ export default async function RootLayout({
     <html lang="en" className={allFontVars}>
       <body>
         <style dangerouslySetInnerHTML={{ __html: `:root { ${themeStyles} }` }} />
-        <Providers nav={nav} global={global}>{children}</Providers>
+        <Providers nav={nav} global={global} sounds={sounds} testimonials={testimonials}>{children}</Providers>
         <AnalyticsScripts integrations={integrations} />
       </body>
     </html>

@@ -1,7 +1,11 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { SynthesisVariation } from "../v2/v2-synthesis";
-import { PageBuilder } from "../v2/page-builder";
+
+const PageBuilder = dynamic(() => import("../v2/page-builder").then((m) => ({ default: m.PageBuilder })), {
+  ssr: true,
+});
 import type { Project } from "@/lib/content/projects";
 import type { LandingContent } from "@/lib/content/landing";
 import type { PageConfig } from "@/lib/content/pages";

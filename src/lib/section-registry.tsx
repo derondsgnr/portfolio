@@ -1,6 +1,9 @@
 "use client";
 
-import { SynthesisHeroSection, SynthesisAboutSection, SynthesisCTASection } from "@/components/v2/sections";
+import { SynthesisHeroSection } from "@/components/v2/sections/synthesis-hero";
+import { SynthesisAboutSection } from "@/components/v2/sections/synthesis-about";
+import { SynthesisCTASection } from "@/components/v2/sections/synthesis-cta";
+import { getSectionKey } from "./section-options";
 import { VoidHero, VoidProcess, VoidWork, VoidPhilosophy, VoidTestimonial, VoidCTA } from "@/components/v2/v2-void";
 import { SignalHero, SignalProcess, SignalWork, SignalServices, SignalTestimonials, SignalCTA } from "@/components/v2/v2-signal";
 import { CipherHero, CipherWork, CipherServices, CipherPhilosophy, CipherTestimonials, CipherCTA } from "@/components/v2/v2-cipher";
@@ -141,21 +144,7 @@ const REGISTRY: Record<string, React.ComponentType<SectionProps>> = {
   cta_gravity: () => <GravityCTA />,
 };
 
-export const SECTION_OPTIONS: Record<string, string[]> = {
-  hero: ["synthesis", "void", "signal", "cipher", "drift", "echo", "fracture", "gravity"],
-  about: ["synthesis"],
-  capabilities: ["synthesis"],
-  process: ["synthesis", "void", "signal", "drift", "echo", "fracture", "gravity"],
-  work: ["synthesis", "void", "signal", "cipher", "drift", "echo", "fracture", "gravity"],
-  philosophy: ["synthesis", "void", "cipher", "drift", "echo", "fracture", "gravity"],
-  services: ["signal", "cipher"],
-  testimonials: ["synthesis", "void", "signal", "cipher", "drift", "echo", "fracture", "gravity"],
-  cta: ["synthesis", "void", "signal", "cipher", "drift", "echo", "fracture", "gravity"],
-};
-
-export function getSectionKey(id: string, variation: string): string {
-  return `${id}_${variation}`;
-}
+export { SECTION_OPTIONS, getSectionKey } from "./section-options";
 
 export function SectionRenderer({
   id,

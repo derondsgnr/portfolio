@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { V2_PROJECTS, V2_TESTIMONIALS, V2_PROCESS } from "./v2-data";
+import { V2_PROJECTS, V2_PROCESS } from "./v2-data";
+import { useTestimonials } from "@/contexts/testimonials-context";
 import { motion, AnimatePresence } from "motion/react";
 
 /* ═══════════════════════════════════════════════════════════════
@@ -396,15 +397,18 @@ export function VoidPhilosophy() {
 /* ─── Testimonial ────────────────────────────────────────────── */
 export function VoidTestimonial() {
   const [current, setCurrent] = useState(0);
-  const t = V2_TESTIMONIALS[current];
+  const testimonials = useTestimonials();
+  const t = testimonials[current];
 
   useEffect(() => {
     const timer = setInterval(
-      () => setCurrent((c) => (c + 1) % V2_TESTIMONIALS.length),
+      () => setCurrent((c) => (c + 1) % Math.max(1, testimonials.length)),
       6000
     );
     return () => clearInterval(timer);
-  }, []);
+  }, [testimonials.length]);
+
+  if (!testimonials.length || !t) return null;
 
   return (
     <section className="relative py-48 px-8">
@@ -471,7 +475,7 @@ export function VoidTestimonial() {
 
         {/* Dots */}
         <div className="flex gap-2 justify-center mt-16">
-          {V2_TESTIMONIALS.map((_, i) => (
+          {testimonials.map((_, i) => (
             <button
               key={i}
               onClick={() => setCurrent(i)}

@@ -5,13 +5,9 @@ import { useState, useEffect, useRef } from "react";
 import { ScrambleText, CHARS } from "./shared/scramble-text";
 import { SignalGrid, ScanLineOverlay, CipherAmbientGrid } from "./shared/texture-layers";
 import { motion, AnimatePresence, useScroll, useTransform, useInView } from "motion/react";
-import { withSound } from "@/hooks/useSound";
-import {
-  V2_PROJECTS,
-  V2_TESTIMONIALS,
-  V2_SERVICES_DETAILED,
-  V2_PROCESS_DETAILED,
-} from "./v2-data";
+import { withSound, useSoundOnHover } from "@/hooks/useSound";
+import { V2_PROJECTS, V2_SERVICES_DETAILED, V2_PROCESS_DETAILED } from "./v2-data";
+import { useTestimonials } from "@/contexts/testimonials-context";
 import { SynthesisHeroSection, SynthesisAboutSection, SynthesisCTASection } from "./sections";
 
 /* ═══════════════════════════════════════════════════════════════
@@ -379,6 +375,7 @@ export function SynthesisCapabilities() {
 /* ─── Void-style projects + Cipher texture ───────────────────── */
 export function SynthesisWork({ projects = V2_PROJECTS }: { projects?: typeof V2_PROJECTS }) {
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
+  const onHover = useSoundOnHover("hover");
 
   return (
     <section className="relative py-32 px-8">
@@ -409,7 +406,10 @@ export function SynthesisWork({ projects = V2_PROJECTS }: { projects?: typeof V2
               viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.8, delay: 0.1 }}
               className="relative cursor-pointer group"
-              onMouseEnter={() => setHoveredIdx(i)}
+              onMouseEnter={() => {
+                setHoveredIdx(i);
+                onHover();
+              }}
               onMouseLeave={() => setHoveredIdx(null)}
             >
               <div className="h-px" style={{ background: "rgba(255,255,255,0.04)" }} />
@@ -623,6 +623,7 @@ export function SynthesisPhilosophy() {
 
 /* ─── Signal-style Testimonials — left-border vertical list ──── */
 export function SynthesisTestimonials() {
+  const testimonials = useTestimonials();
   return (
     <section className="relative py-32 px-8">
       <div className="max-w-4xl mx-auto">
@@ -644,7 +645,7 @@ export function SynthesisTestimonials() {
           </span>
         </motion.div>
 
-        {V2_TESTIMONIALS.slice(0, 4).map((t, i) => (
+        {testimonials.slice(0, 4).map((t, i) => (
           <motion.div
             key={t.id}
             initial={{ opacity: 0, y: 20 }}
@@ -699,14 +700,22 @@ export function SynthesisTestimonials() {
                 >
                   &mdash; {t.name.toUpperCase()} / {t.role.toUpperCase()}
                 </p>
-                {/* Company badge */}
+                {/* Company badge / logo */}
                 <div className="flex items-center gap-2 mt-1">
-                  <span
-                    className="inline-flex items-center justify-center w-4 h-4 bg-[#E2B93B]/10 border border-[#E2B93B]/20 text-[#E2B93B] text-[7px]"
-                    style={{ fontFamily: "monospace" }}
-                  >
-                    {t.company.charAt(0)}
-                  </span>
+                  {t.companyLogo ? (
+                    <img
+                      src={t.companyLogo}
+                      alt={t.company}
+                      className="h-5 w-auto object-contain opacity-80"
+                    />
+                  ) : (
+                    <span
+                      className="inline-flex items-center justify-center w-4 h-4 bg-[#E2B93B]/10 border border-[#E2B93B]/20 text-[#E2B93B] text-[7px]"
+                      style={{ fontFamily: "monospace" }}
+                    >
+                      {t.company.charAt(0)}
+                    </span>
+                  )}
                   <span
                     style={{
                       fontFamily: "monospace",

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "motion/react";
-import { V2_PROJECTS, V2_TESTIMONIALS, V2_PROCESS } from "./v2-data";
+import { V2_PROJECTS, V2_PROCESS } from "./v2-data";
+import { useTestimonials } from "@/contexts/testimonials-context";
 
 /* ═══════════════════════════════════════════════════════════════
    GRAVITY — Everything has weight. Elements drop, settle, ground.
@@ -414,6 +415,7 @@ export function GravityPhilosophy() {
 
 /* ─── Testimonials — grounded cards that rise ─────────────────── */
 export function GravityTestimonials() {
+  const testimonials = useTestimonials();
   return (
     <section className="relative py-32 px-8">
       <div className="max-w-6xl mx-auto">
@@ -438,7 +440,7 @@ export function GravityTestimonials() {
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {V2_TESTIMONIALS.slice(0, 3).map((t, i) => (
+          {testimonials.slice(0, 3).map((t, i) => (
             <motion.div
               key={t.id}
               initial={{ y: 100 + i * 30, opacity: 0 }}

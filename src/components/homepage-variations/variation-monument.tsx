@@ -24,9 +24,9 @@ import {
 import {
   PROJECTS,
   PRINCIPLES,
-  TESTIMONIALS,
   PROCESS_WORDS,
 } from "../homepage-data";
+import { useTestimonials } from "@/contexts/testimonials-context";
 import { useSiteConfig } from "@/contexts/site-config-context";
 
 /* ─── HERO: Full viewport, stacked, cinematic ─────────────────── */
@@ -518,8 +518,9 @@ function AboutMonument() {
 /* ─── TESTIMONIALS: Quote fills the screen ────────────────────── */
 function TestimonialsMonument() {
   const [current, setCurrent] = useState(0);
-  const total = TESTIMONIALS.length;
-  const t = TESTIMONIALS[current];
+  const testimonials = useTestimonials();
+  const total = testimonials.length;
+  const t = testimonials[current];
 
   return (
     <SectionTransition mode="fade">

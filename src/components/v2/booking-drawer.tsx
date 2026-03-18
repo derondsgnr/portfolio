@@ -3,9 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { useBooking } from "./booking-context";
-import { projectId, publicAnonKey } from "@/lib/supabase/info";
-
-const API_BASE = `https://${projectId}.supabase.co/functions/v1/make-server-3fa6479f`;
+import { submitContactForm } from "@/app/actions/contact";
 
 /* ═══════════════════════════════════════════════════════════════
    BOOKING DRAWER — Hybrid "Book a Call" + "Send a Message"
@@ -22,7 +20,7 @@ const API_BASE = `https://${projectId}.supabase.co/functions/v1/make-server-3fa6
      - Synthesis aesthetic throughout
    ═══════════════════════════════════════════════════════════════ */
 
-const CAL_URL = "https://cal.com/derondsgnr/30min";
+const BOOKING_URL = process.env.NEXT_PUBLIC_BOOKING_URL?.trim() || "";
 
 const BUDGET_OPTIONS = [
   "Under $5k",
@@ -35,6 +33,7 @@ const BUDGET_OPTIONS = [
 export function BookingDrawer() {
   const { isOpen, activeTab, close, setTab } = useBooking();
   const drawerRef = useRef<HTMLDivElement>(null);
+  const hasBooking = Boolean(BOOKING_URL);
 
   // Lock body scroll when open
   useEffect(() => {
@@ -119,21 +118,22 @@ export function BookingDrawer() {
               </button>
             </div>
 
-            {/* ─── Tab switcher ─── */}
+            {/* ─── Tab switcher (only when booking URL is configured) ─── */}
+            {hasBooking && (
             <div className="px-6 md:px-10 flex items-center gap-1 mb-4">
               <button
                 onClick={() => setTab("book")}
-                className="px-4 py-2 text-[10px] tracking-[0.15em] transition-all duration-300"
-                style={{
-                  fontFamily: "monospace",
-                  textTransform: "uppercase",
-                  color: activeTab === "book" ? "#0A0A0A" : "rgba(255,255,255,0.3)",
-                  background: activeTab === "book" ? "#E2B93B" : "transparent",
-                  border: activeTab === "book" ? "1px solid #E2B93B" : "1px solid rgba(255,255,255,0.08)",
-                }}
-              >
-                BOOK A CALL
-              </button>
+                  className="px-4 py-2 text-[10px] tracking-[0.15em] transition-all duration-300"
+                  style={{
+                    fontFamily: "monospace",
+                    textTransform: "uppercase",
+                    color: activeTab === "book" ? "#0A0A0A" : "rgba(255,255,255,0.3)",
+                    background: activeTab === "book" ? "#E2B93B" : "transparent",
+                    border: activeTab === "book" ? "1px solid #E2B93B" : "1px solid rgba(255,255,255,0.08)",
+                  }}
+                >
+                  BOOK A CALL
+                </button>
               <button
                 onClick={() => setTab("message")}
                 className="px-4 py-2 text-[10px] tracking-[0.15em] transition-all duration-300"
@@ -148,11 +148,12 @@ export function BookingDrawer() {
                 SEND A MESSAGE
               </button>
             </div>
+            )}
 
             {/* ─── Content ─── */}
             <div className="flex-1 overflow-y-auto px-6 md:px-10 pb-8">
               <AnimatePresence mode="wait">
-                {activeTab === "book" ? (
+                {activeTab === "book" && hasBooking ? (
                   <motion.div
                     key="book"
                     initial={{ opacity: 0, x: -20 }}
@@ -160,9 +161,9 @@ export function BookingDrawer() {
                     exit={{ opacity: 0, x: 20 }}
                     transition={{ duration: 0.25 }}
                   >
-                    <CalEmbed />
+                    <CalEmbed url={BOOKING_URL} />
                   </motion.div>
-                ) : (
+                ) : activeTab === "message" || !hasBooking ? (
                   <motion.div
                     key="message"
                     initial={{ opacity: 0, x: 20 }}
@@ -172,7 +173,7 @@ export function BookingDrawer() {
                   >
                     <ContactForm onSuccess={close} />
                   </motion.div>
-                )}
+                ) : null}
               </AnimatePresence>
             </div>
           </motion.div>
@@ -182,8 +183,8 @@ export function BookingDrawer() {
   );
 }
 
-/* ─── Cal.com Embed ──────────────────────────────────────────── */
-function CalEmbed() {
+/* ─── Booking embed (Calendly or Cal.com) ────────────────────── */
+function CalEmbed({ url }: { url: string }) {
   const [loaded, setLoaded] = useState(false);
 
   return (
@@ -213,7 +214,11 @@ function CalEmbed() {
           </div>
         )}
         <iframe
-          src={`${CAL_URL}?embed=true&theme=dark&layout=month_view`}
+          src={
+            url.includes("cal.com")
+              ? `${url}?embed=true&theme=dark&layout=month_view`
+              : url
+          }
           className="w-full border-0"
           style={{
             height: "520px",
@@ -221,7 +226,7 @@ function CalEmbed() {
             transition: "opacity 0.4s ease",
           }}
           onLoad={() => setLoaded(true)}
-          title="Book a call with derondsgnr"
+          title="Book a call"
           allow="payment"
         />
       </div>
@@ -232,10 +237,10 @@ function CalEmbed() {
           className="text-[9px] tracking-[0.15em] text-[#333]"
           style={{ fontFamily: "monospace" }}
         >
-          POWERED BY CAL.COM
+          {url.includes("calendly.com") ? "POWERED BY CALENDLY" : "POWERED BY CAL.COM"}
         </span>
         <a
-          href={CAL_URL}
+          href={url}
           target="_blank"
           rel="noopener noreferrer"
           className="text-[10px] tracking-[0.15em] text-[#E2B93B]/50 hover:text-[#E2B93B] transition-colors"
@@ -266,22 +271,14 @@ function ContactForm({ onSuccess }: { onSuccess: () => void }) {
     setError("");
 
     try {
-      const res = await fetch(`${API_BASE}/contact`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${publicAnonKey}`,
-        },
-        body: JSON.stringify({
-          name: name.trim() || "Anonymous",
-          email: email.trim(),
-          message: message.trim(),
-          budget: budget || "Not specified",
-        }),
-      });
+      const formData = new FormData();
+      formData.set("name", name);
+      formData.set("email", email);
+      formData.set("message", message);
+      formData.set("budget", budget);
 
-      const data = await res.json();
-      if (data.success) {
+      const result = await submitContactForm(formData);
+      if (result.ok) {
         setSubmitted(true);
         setTimeout(() => {
           onSuccess();
@@ -295,8 +292,8 @@ function ContactForm({ onSuccess }: { onSuccess: () => void }) {
           }, 400);
         }, 2000);
       } else {
-        setError(data.error || "Something went wrong. Try again.");
-        console.error("Contact form error:", data.error);
+        setError(result.error ?? "Something went wrong. Try again.");
+        console.error("Contact form error:", result.error);
       }
     } catch (err) {
       setError("Network error. Please try again.");

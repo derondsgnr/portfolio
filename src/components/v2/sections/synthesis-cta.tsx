@@ -3,7 +3,7 @@
 import { motion } from "motion/react";
 import { ScrambleText } from "../shared/scramble-text";
 import { useBooking } from "../booking-context";
-import { withSound } from "@/hooks/useSound";
+import { withSound, useSoundOnHover } from "@/hooks/useSound";
 
 export interface SynthesisCTAProps {
   label?: string;
@@ -33,6 +33,7 @@ export function SynthesisCTASection({
   socialLinks = DEFAULT_SOCIAL,
 }: SynthesisCTAProps) {
   const { open } = useBooking();
+  const onHover = useSoundOnHover("hover");
 
   return (
     <section id="cta" className="relative py-48 px-8 overflow-hidden">
@@ -93,6 +94,7 @@ export function SynthesisCTASection({
         >
           <button
             onClick={withSound(() => open("book"))}
+            onMouseEnter={onHover}
             className="text-[11px] tracking-[0.2em] text-[#0A0A0A] bg-[#E2B93B] px-8 py-3.5 hover:bg-white transition-colors duration-300"
             style={{ fontFamily: "monospace" }}
           >
@@ -100,6 +102,7 @@ export function SynthesisCTASection({
           </button>
           <button
             onClick={withSound(() => open("message"))}
+            onMouseEnter={onHover}
             className="text-[11px] tracking-[0.2em] text-[#E2B93B] border border-[#E2B93B]/30 px-8 py-3.5 hover:bg-[#E2B93B]/10 transition-colors duration-300"
             style={{ fontFamily: "monospace" }}
           >
@@ -193,6 +196,7 @@ export function SynthesisCTASection({
               href={link.url}
               target="_blank"
               rel="noopener noreferrer"
+              onMouseEnter={onHover}
               className="hover:text-[#E2B93B] transition-colors"
               style={{
                 fontFamily: "monospace",

@@ -1,0 +1,107 @@
+{
+  "status": "deep-work",
+  "focus": "Portfolio refresh — Now page + Blog system",
+  "streak": 12,
+  "streakStart": "2026-03-07",
+  "toolsToday": ["Figma", "Cursor"],
+  "activity": [
+    {
+      "id": "a-01",
+      "date": "2026-03-18",
+      "type": "design",
+      "description": "UI component audit, Now page layout wireframes",
+      "tool": "Figma",
+      "duration": "3h 20m"
+    },
+    {
+      "id": "a-02",
+      "date": "2026-03-18",
+      "type": "code",
+      "description": "Blog reader component + route wiring",
+      "tool": "Cursor",
+      "duration": "2h 10m"
+    },
+    {
+      "id": "a-03",
+      "date": "2026-03-17",
+      "type": "design",
+      "description": "Blog index editorial grid design",
+      "tool": "Figma",
+      "duration": "4h"
+    },
+    {
+      "id": "a-04",
+      "date": "2026-03-16",
+      "type": "code",
+      "description": "Case study engine fixes, reader view polish",
+      "tool": "Cursor",
+      "duration": "3h 45m"
+    },
+    {
+      "id": "a-05",
+      "date": "2026-03-15",
+      "type": "planning",
+      "description": "Portfolio roadmap + feature prioritization",
+      "tool": "Notion",
+      "duration": "1h 30m"
+    },
+    {
+      "id": "a-06",
+      "date": "2026-03-14",
+      "type": "design",
+      "description": "Synthesis homepage iteration — hero rework",
+      "tool": "Figma",
+      "duration": "5h"
+    },
+    {
+      "id": "a-07",
+      "date": "2026-03-13",
+      "type": "code",
+      "description": "Booking drawer + Cal.com embed integration",
+      "tool": "Cursor",
+      "duration": "2h"
+    }
+  ],
+  "todos": [
+    {
+      "id": "t-01",
+      "text": "Figma component system review",
+      "startTime": "09:00",
+      "endTime": "11:00",
+      "category": "design",
+      "completed": true
+    },
+    {
+      "id": "t-02",
+      "text": "Blog reader component build",
+      "startTime": "11:00",
+      "endTime": "12:30",
+      "category": "code",
+      "completed": false
+    },
+    {
+      "id": "t-03",
+      "text": "Now page + admin UI",
+      "startTime": "14:00",
+      "endTime": "16:00",
+      "category": "code",
+      "completed": false
+    },
+    {
+      "id": "t-04",
+      "text": "Blog post draft — 'On AI and Design'",
+      "startTime": "16:00",
+      "endTime": "17:30",
+      "category": "writing",
+      "completed": false
+    },
+    {
+      "id": "t-05",
+      "text": "Review + respond to client messages",
+      "startTime": "17:30",
+      "endTime": "18:00",
+      "category": "admin",
+      "completed": false
+    }
+  ]
+}

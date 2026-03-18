@@ -104,10 +104,11 @@ import { useBooking } from "../booking-context";
 import { ScrambleText } from "../shared/scramble-text";
 import { SignalGrid, ScanLines, CipherBgLayer } from "../shared/texture-layers";
 import { useSiteConfig } from "@/contexts/site-config-context";
-import { withSound } from "@/hooks/useSound";
+import { withSound, useSoundOnHover } from "@/hooks/useSound";
 
 /* ─── View Toggle Pill ───────────────────────────────────────── */
 function ViewToggle({ mode, onToggle, labelA, labelB }: { mode: "a" | "b"; onToggle: () => void; labelA: string; labelB: string }) {
+  const onHover = useSoundOnHover("hover");
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
@@ -121,6 +122,7 @@ function ViewToggle({ mode, onToggle, labelA, labelB }: { mode: "a" | "b"; onTog
     >
       <button
         onClick={withSound(() => mode !== "a" && onToggle())}
+        onMouseEnter={onHover}
         className="px-3 py-1.5 rounded-full transition-all duration-300"
         style={{
           fontFamily: "monospace",
@@ -135,6 +137,7 @@ function ViewToggle({ mode, onToggle, labelA, labelB }: { mode: "a" | "b"; onTog
       </button>
       <button
         onClick={withSound(() => mode !== "b" && onToggle())}
+        onMouseEnter={onHover}
         className="px-3 py-1.5 rounded-full transition-all duration-300"
         style={{
           fontFamily: "monospace",
@@ -154,6 +157,7 @@ function ViewToggle({ mode, onToggle, labelA, labelB }: { mode: "a" | "b"; onTog
 /* ─── About page CTA with booking integration ──────────────── */
 function AboutCTA({ copy }: { copy?: PageCopy }) {
   const { open } = useBooking();
+  const onHover = useSoundOnHover("hover");
   const label = copy?.cta?.label ?? "[READY TO DECODE YOUR NEXT PROJECT?]";
   const headline = copy?.cta?.headline ?? "LET'S BUILD";
   const ctaPrimary = copy?.cta?.ctaPrimary ?? "BOOK A CALL";
@@ -178,6 +182,7 @@ function AboutCTA({ copy }: { copy?: PageCopy }) {
         >
           <button
             onClick={withSound(() => open("book"))}
+            onMouseEnter={onHover}
             className="text-[11px] tracking-[0.2em] text-[#0A0A0A] bg-[#E2B93B] px-8 py-3.5 hover:bg-white transition-colors duration-300"
             style={{ fontFamily: "monospace" }}
           >
@@ -185,6 +190,7 @@ function AboutCTA({ copy }: { copy?: PageCopy }) {
           </button>
           <button
             onClick={withSound(() => open("message"))}
+            onMouseEnter={onHover}
             className="text-[11px] tracking-[0.2em] text-[#E2B93B] border border-[#E2B93B]/30 px-8 py-3.5 hover:bg-[#E2B93B]/10 transition-colors duration-300"
             style={{ fontFamily: "monospace" }}
           >

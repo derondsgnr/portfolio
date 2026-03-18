@@ -2,6 +2,7 @@
 node_modules/
 .pnp
 .pnp.js
+.pnpm-store/
 
 # Build
 .next/
@@ -38,6 +39,7 @@ src/components/figma/
 
 # Source reference (migrated from)
 Portfolio 2/
+Portfolio 3/
 Portfolio updtaed/
 
 # Misc

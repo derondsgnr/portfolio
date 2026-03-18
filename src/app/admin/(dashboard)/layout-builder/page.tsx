@@ -1,27 +1,26 @@
-import { getGitHubFile } from "@/lib/admin/github";
-import { getPagesConfig } from "@/lib/content/pages";
+import { getContentWithGitHubOverlay } from "@/lib/admin/content-overlay";
+import { getPagesConfig, type PageConfig, type PagesConfig } from "@/lib/content/pages";
 import { LayoutBuilderForm } from "./layout-builder-form";
+
+function isValidPageConfig(x: unknown): x is PageConfig {
+  return x != null && typeof x === "object" && Array.isArray((x as PageConfig).sections);
+}
 
 export const dynamic = "force-dynamic";
 
 export default async function LayoutBuilderPage() {
-  let initial: Awaited<ReturnType<typeof getPagesConfig>>;
-  const gh = await getGitHubFile("content/pages.json");
-  if (gh?.content) {
-    try {
-      const parsed = JSON.parse(gh.content) as Awaited<ReturnType<typeof getPagesConfig>>;
-      const fallback = await getPagesConfig();
-      initial = {
-        homepage: parsed.homepage ?? fallback.homepage,
-        work: parsed.work ?? fallback.work,
-        about: parsed.about ?? fallback.about,
+  const initial = await getContentWithGitHubOverlay(
+    "content/pages.json",
+    getPagesConfig,
+    (fallback, parsed): PagesConfig => {
+      const p = parsed as { homepage?: unknown; work?: unknown; about?: unknown };
+      return {
+        homepage: isValidPageConfig(p?.homepage) ? p.homepage : fallback.homepage,
+        work: isValidPageConfig(p?.work) ? p.work : fallback.work,
+        about: isValidPageConfig(p?.about) ? p.about : fallback.about,
       };
-    } catch {
-      initial = await getPagesConfig();
     }
-  } else {
-    initial = await getPagesConfig();
-  }
+  );
 
   return (
     <div>

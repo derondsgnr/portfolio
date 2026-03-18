@@ -29,7 +29,7 @@ export async function login(formData: FormData) {
     maxAge: 60 * 60 * 24 * 7, // 7 days
   });
 
-  redirect("/admin");
+  return { success: true };
 }
 
 export async function logout() {
@@ -101,4 +101,46 @@ export async function saveCraftItems(items: unknown[], message?: string): Promis
 export async function saveExplorations(items: unknown[], message?: string): Promise<{ ok: boolean; error?: string }> {
   const content = JSON.stringify(items, null, 2);
   return saveContent("content/explorations.json", content, message ?? "Update explorations");
+}
+
+export async function saveTestimonials(items: unknown[], message?: string): Promise<{ ok: boolean; error?: string }> {
+  const content = JSON.stringify(items, null, 2);
+  return saveContent("content/testimonials.json", content, message ?? "Update testimonials");
+}
+
+export async function saveSounds(data: Record<string, string>, message?: string): Promise<{ ok: boolean; error?: string }> {
+  const content = JSON.stringify(data, null, 2);
+  return saveContent("content/sounds.json", content, message ?? "Update sounds");
+}
+
+/** Blog post — stub for now; wire to content/blog.json when ready */
+export async function saveBlogPost(
+  _slug: string,
+  data: unknown,
+  message?: string
+): Promise<{ ok: boolean; error?: string }> {
+  try {
+    await requireAdmin();
+  } catch {
+    return { ok: false, error: "Unauthorized" };
+  }
+  // TODO: persist to content/blog.json or per-slug
+  return { ok: true };
+}
+
+/** Now page config — persist to content/now.json via GitHub */
+export async function saveNow(data: unknown, message?: string): Promise<{ ok: boolean; error?: string }> {
+  const content = JSON.stringify(data, null, 2);
+  return saveContent("content/now.json", content, message ?? "Update now page");
+}
+
+/** Case studies — stub for now; wire to content/case-studies.json when ready */
+export async function saveCaseStudies(studies: unknown[], _message?: string): Promise<{ ok: boolean; error?: string }> {
+  try {
+    await requireAdmin();
+  } catch {
+    return { ok: false, error: "Unauthorized" };
+  }
+  // TODO: saveContent("content/case-studies.json", JSON.stringify(studies, null, 2), message)
+  return { ok: true };
 }

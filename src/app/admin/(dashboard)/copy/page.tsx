@@ -1,21 +1,15 @@
-import { getGitHubFile } from "@/lib/admin/github";
+import { getContentWithGitHubOverlay } from "@/lib/admin/content-overlay";
 import { getCopyForAdmin } from "@/lib/content/copy";
 import { CopyForm } from "./copy-form";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminCopyPage() {
-  let initial: Awaited<ReturnType<typeof getCopyForAdmin>>;
-  const gh = await getGitHubFile("content/copy.json");
-  if (gh?.content) {
-    try {
-      initial = JSON.parse(gh.content) as Awaited<ReturnType<typeof getCopyForAdmin>>;
-    } catch {
-      initial = await getCopyForAdmin();
-    }
-  } else {
-    initial = await getCopyForAdmin();
-  }
+  const initial = await getContentWithGitHubOverlay(
+    "content/copy.json",
+    getCopyForAdmin,
+    (local, parsed) => (parsed != null && typeof parsed === "object" ? (parsed as Awaited<ReturnType<typeof getCopyForAdmin>>) : local)
+  );
 
   return (
     <div>

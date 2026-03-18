@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { V2_PROJECTS, V2_TESTIMONIALS, V2_PROCESS } from "./v2-data";
+import { V2_PROJECTS, V2_PROCESS } from "./v2-data";
+import { useTestimonials } from "@/contexts/testimonials-context";
 
 /* ═══════════════════════════════════════════════════════════════
    FRACTURE — Break to reveal. Diagonals. Collisions.
@@ -446,6 +447,7 @@ export function FracturePhilosophy() {
 /* ─── Testimonials — fanned cards (inspired by Lando socials) ── */
 export function FractureTestimonials() {
   const [active, setActive] = useState(2);
+  const testimonials = useTestimonials();
 
   return (
     <section className="relative py-32 px-8">
@@ -469,7 +471,7 @@ export function FractureTestimonials() {
       </motion.div>
 
       <div className="relative flex justify-center items-center" style={{ height: "450px" }}>
-        {V2_TESTIMONIALS.slice(0, 5).map((t, i) => {
+        {testimonials.slice(0, 5).map((t, i) => {
           const offset = i - active;
           const rotation = offset * 8;
           const xOffset = offset * 60;

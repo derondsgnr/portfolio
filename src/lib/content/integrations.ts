@@ -1,14 +1,25 @@
 import { readFile } from "fs/promises";
 import path from "path";
 
+/** Custom analytics/tracking integration (Plausible, Fathom, Hotjar, etc.) */
+export type ExtraIntegration = {
+  key: string;
+  label: string;
+  enabled: boolean;
+  scriptUrl?: string;
+  config?: Record<string, string>;
+};
+
 export type IntegrationsConfig = {
   googleAnalytics: { enabled: boolean; measurementId: string };
   googleTagManager: { enabled: boolean; containerId: string };
+  extra?: ExtraIntegration[];
 };
 
 const DEFAULT: IntegrationsConfig = {
   googleAnalytics: { enabled: false, measurementId: "" },
   googleTagManager: { enabled: false, containerId: "" },
+  extra: [],
 };
 
 export async function getIntegrations(): Promise<IntegrationsConfig> {
@@ -16,9 +27,10 @@ export async function getIntegrations(): Promise<IntegrationsConfig> {
     const filePath = path.join(process.cwd(), "content", "integrations.json");
     const raw = await readFile(filePath, "utf-8");
     const parsed = JSON.parse(raw) as Partial<IntegrationsConfig>;
-    const merged = {
+    const merged: IntegrationsConfig = {
       googleAnalytics: { ...DEFAULT.googleAnalytics, ...parsed.googleAnalytics },
       googleTagManager: { ...DEFAULT.googleTagManager, ...parsed.googleTagManager },
+      extra: Array.isArray(parsed.extra) ? parsed.extra : [],
     };
 
     // Env overrides (build-time): non-secret IDs can be set via env
@@ -30,7 +42,7 @@ export async function getIntegrations(): Promise<IntegrationsConfig> {
 
     return merged;
   } catch {
-    const merged = { ...DEFAULT };
+    const merged: IntegrationsConfig = { ...DEFAULT };
     const gaEnv = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
     if (gaEnv) merged.googleAnalytics.measurementId = gaEnv;
     const gtmEnv = process.env.NEXT_PUBLIC_GTM_ID;

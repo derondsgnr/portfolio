@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "motion/react";
-import { V2_PROJECTS, V2_TESTIMONIALS, V2_PROCESS } from "./v2-data";
+import { V2_PROJECTS, V2_PROCESS } from "./v2-data";
+import { useTestimonials } from "@/contexts/testimonials-context";
 
 /* ═══════════════════════════════════════════════════════════════
    ECHO — Layered repetition creates depth and dimension.
@@ -398,6 +399,7 @@ export function EchoPhilosophy() {
 
 /* ─── Testimonials — stacked cards with peek ─────────────────── */
 export function EchoTestimonials() {
+  const testimonials = useTestimonials();
   const [current, setCurrent] = useState(0);
 
   return (
@@ -420,7 +422,7 @@ export function EchoTestimonials() {
                 display: "block",
               }}
             >
-              {current + 1}/{V2_TESTIMONIALS.length}
+              {current + 1}/{testimonials.length}
             </span>
             <span
               className="block mt-4"
@@ -441,7 +443,7 @@ export function EchoTestimonials() {
 
           {/* Right: stacked cards */}
           <div className="relative" style={{ height: 320 }}>
-            {V2_TESTIMONIALS.map((t, i) => {
+            {testimonials.map((t, i) => {
               const offset = i - current;
               if (offset < 0 || offset > 2) return null;
               return (
@@ -459,7 +461,7 @@ export function EchoTestimonials() {
                     background: "#111",
                     border: "1px solid rgba(255,255,255,0.05)",
                   }}
-                  onClick={() => setCurrent((c) => (c + 1) % V2_TESTIMONIALS.length)}
+                  onClick={() => setCurrent((c) => (c + 1) % testimonials.length)}
                 >
                   <p
                     style={{

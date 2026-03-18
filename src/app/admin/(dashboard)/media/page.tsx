@@ -1,4 +1,4 @@
-import { getGitHubFile } from "@/lib/admin/github";
+import { getContentWithGitHubOverlay } from "@/lib/admin/content-overlay";
 import { getMedia } from "@/lib/content/media";
 import { getCraftItems } from "@/lib/content/craft";
 import { getExplorations } from "@/lib/content/explorations";
@@ -10,51 +10,29 @@ import { MediaForm } from "./media-form";
 export const dynamic = "force-dynamic";
 
 export default async function AdminMediaPage() {
-  let mediaInitial: MediaConfig;
-  let craftInitial: CraftItem[];
-  let explorationsInitial: Exploration[];
-
-  const [mediaGh, craftGh, explorationsGh] = await Promise.all([
-    getGitHubFile("content/media.json"),
-    getGitHubFile("content/craft.json"),
-    getGitHubFile("content/explorations.json"),
+  const [mediaInitial, craftInitial, explorationsInitial] = await Promise.all([
+    getContentWithGitHubOverlay(
+      "content/media.json",
+      getMedia,
+      (local, parsed) => {
+        const p = parsed as { heroBackground?: string; sectionBackgrounds?: Record<string, string> };
+        return {
+          heroBackground: p?.heroBackground ?? local.heroBackground ?? "",
+          sectionBackgrounds: p?.sectionBackgrounds ?? local.sectionBackgrounds ?? {},
+        };
+      }
+    ),
+    getContentWithGitHubOverlay(
+      "content/craft.json",
+      getCraftItems,
+      (local, parsed) => (Array.isArray(parsed) ? parsed : local)
+    ),
+    getContentWithGitHubOverlay(
+      "content/explorations.json",
+      getExplorations,
+      (local, parsed) => (Array.isArray(parsed) ? parsed : local)
+    ),
   ]);
-
-  if (mediaGh?.content) {
-    try {
-      const parsed = JSON.parse(mediaGh.content) as Partial<MediaConfig>;
-      mediaInitial = {
-        heroBackground: parsed?.heroBackground ?? "",
-        sectionBackgrounds: parsed?.sectionBackgrounds ?? {},
-      };
-    } catch {
-      mediaInitial = await getMedia();
-    }
-  } else {
-    mediaInitial = await getMedia();
-  }
-
-  if (craftGh?.content) {
-    try {
-      const parsed = JSON.parse(craftGh.content);
-      craftInitial = Array.isArray(parsed) ? parsed : await getCraftItems();
-    } catch {
-      craftInitial = await getCraftItems();
-    }
-  } else {
-    craftInitial = await getCraftItems();
-  }
-
-  if (explorationsGh?.content) {
-    try {
-      const parsed = JSON.parse(explorationsGh.content);
-      explorationsInitial = Array.isArray(parsed) ? parsed : await getExplorations();
-    } catch {
-      explorationsInitial = await getExplorations();
-    }
-  } else {
-    explorationsInitial = await getExplorations();
-  }
 
   return (
     <div>

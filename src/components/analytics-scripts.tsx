@@ -4,12 +4,16 @@ import type { IntegrationsConfig } from "@/lib/content/integrations";
 type Props = { integrations: IntegrationsConfig };
 
 export function AnalyticsScripts({ integrations }: Props) {
-  const { googleAnalytics, googleTagManager } = integrations;
+  const { googleAnalytics, googleTagManager, extra = [] } = integrations;
 
   const gaEnabled =
     googleAnalytics.enabled && Boolean(googleAnalytics.measurementId?.trim());
   const gtmEnabled =
     googleTagManager.enabled && Boolean(googleTagManager.containerId?.trim());
+
+  const extraEnabled = extra.filter(
+    (e) => e.enabled && e.scriptUrl?.trim()
+  );
 
   return (
     <>
@@ -48,6 +52,17 @@ gtag('config', '${googleAnalytics.measurementId}');`}
           />
         </noscript>
       )}
+
+      {/* Custom integrations (Plausible, Fathom, etc.) */}
+      {extraEnabled.map((e) => (
+        <Script
+          key={e.key}
+          id={`extra-${e.key}`}
+          src={e.scriptUrl!}
+          strategy="afterInteractive"
+          {...(e.config ?? {})}
+        />
+      ))}
     </>
   );
 }

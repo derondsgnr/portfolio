@@ -24,13 +24,15 @@ export default function AdminLoginPage() {
       return;
     }
 
+    router.refresh();
     router.push("/admin");
+    setLoading(false);
   }
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center px-6">
+    <div className="min-h-screen flex items-center justify-center px-6" style={{ backgroundColor: "#0A0A0A", color: "#fff" }}>
       <div className="w-full max-w-sm">
-        <h1 className="text-xl font-mono text-white mb-6 tracking-wider">
+        <h1 className="text-xl font-mono mb-6 tracking-wider" style={{ color: "#fff" }}>
           ADMIN
         </h1>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -40,7 +42,8 @@ export default function AdminLoginPage() {
               name="password"
               placeholder="Password"
               autoFocus
-              className="w-full px-4 py-3 pr-12 bg-[#111] border border-white/10 text-white placeholder:text-white/40 font-mono text-sm focus:outline-none focus:border-[#E2B93B]/50"
+              className="w-full px-4 py-3 pr-12 border font-mono text-sm focus:outline-none focus:border-[#E2B93B]/50"
+              style={{ backgroundColor: "#111", borderColor: "rgba(255,255,255,0.1)", color: "#fff" }}
               disabled={loading}
             />
             <button

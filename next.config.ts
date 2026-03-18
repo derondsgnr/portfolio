@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  async rewrites() {
+    return [{ source: "/favicon.ico", destination: "/icon" }];
+  },
   images: {
     remotePatterns: [
       {
@@ -23,9 +26,10 @@ const nextConfig: NextConfig = {
             value: [
               "default-src 'self'",
               "img-src 'self' https: data: blob:",
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://calendly.com https://assets.calendly.com",
               "style-src 'self' 'unsafe-inline' https:",
               "font-src 'self' https: data:",
+              "frame-src 'self' https://cal.com https://calendly.com https://*.calendly.com",
               "connect-src 'self' https://*.supabase.co https://*.supabase.in https://*.vercel-insights.com https://www.googletagmanager.com https://*.google-analytics.com https://*.analytics.google.com",
               "frame-ancestors 'none'",
             ].join("; "),

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { saveNav } from "../../actions";
+import { formCx } from "@/design-system";
 import type { NavItem } from "@/lib/content/nav";
 
 type Props = { initial: NavItem[] };
@@ -70,10 +71,6 @@ export function NavForm({ initial }: Props) {
     handleSave([...items, newItem]);
   }
 
-  const inputClass =
-    "w-full px-4 py-2 bg-[#111] border border-white/10 text-white placeholder:text-white/40 font-mono text-sm focus:outline-none focus:border-[#E2B93B]/50";
-  const labelClass = "block font-mono text-xs text-white/60 mb-1";
-
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -118,33 +115,33 @@ export function NavForm({ initial }: Props) {
             {editing === i ? (
               <div className="flex-1 space-y-3">
                 <div>
-                  <label className={labelClass}>Label</label>
+                  <label className={formCx.label}>Label</label>
                   <input
                     type="text"
                     defaultValue={item.label}
                     id={`nav-label-${i}`}
-                    className={inputClass}
+                    className={formCx.input}
                     placeholder="Work"
                   />
                 </div>
                 <div className="grid grid-cols-2 gap-2">
                   <div>
-                    <label className={labelClass}>Path (internal, e.g. /work)</label>
+                    <label className={formCx.label}>Path (internal, e.g. /work)</label>
                     <input
                       type="text"
                       defaultValue={item.path ?? ""}
                       id={`nav-path-${i}`}
-                      className={inputClass}
+                      className={formCx.input}
                       placeholder="/work"
                     />
                   </div>
                   <div>
-                    <label className={labelClass}>Href (external URL)</label>
+                    <label className={formCx.label}>Href (external URL)</label>
                     <input
                       type="text"
                       defaultValue={item.href ?? ""}
                       id={`nav-href-${i}`}
-                      className={inputClass}
+                      className={formCx.input}
                       placeholder="https://..."
                     />
                   </div>

@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useInView } from "motion/react";
+import { playSound } from "@/lib/sound";
 
 export const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&*!?<>{}[]";
 
-export function useScrambleText(text: string, trigger: boolean, speed = 30) {
+export function useScrambleText(text: string, trigger: boolean, speed = 30, onComplete?: () => void) {
   const [display, setDisplay] = useState(
     text.replace(/[^ ]/g, () => CHARS[Math.floor(Math.random() * CHARS.length)])
   );
@@ -25,10 +26,13 @@ export function useScrambleText(text: string, trigger: boolean, speed = 30) {
           .join("")
       );
       iteration += 1;
-      if (iteration > text.length) clearInterval(interval);
+      if (iteration > text.length) {
+        clearInterval(interval);
+        onComplete?.();
+      }
     }, speed);
     return () => clearInterval(interval);
-  }, [trigger, text, speed]);
+  }, [trigger, text, speed, onComplete]);
 
   return display;
 }
@@ -38,15 +42,21 @@ export function ScrambleText({
   className,
   style,
   speed = 30,
+  onReveal,
 }: {
   text: string;
   className?: string;
   style?: React.CSSProperties;
   speed?: number;
+  onReveal?: () => void;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.5 });
-  const display = useScrambleText(text, inView, speed);
+  const handleComplete = useCallback(() => {
+    playSound("textReveal");
+    onReveal?.();
+  }, [onReveal]);
+  const display = useScrambleText(text, inView, speed, handleComplete);
 
   return (
     <span ref={ref} className={className} style={style}>

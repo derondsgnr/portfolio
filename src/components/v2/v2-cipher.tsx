@@ -3,7 +3,8 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence, useInView } from "motion/react";
-import { V2_PROJECTS, V2_TESTIMONIALS, V2_SERVICES } from "./v2-data";
+import { V2_PROJECTS, V2_SERVICES } from "./v2-data";
+import { useTestimonials } from "@/contexts/testimonials-context";
 
 /* ═══════════════════════════════════════════════════════════════
    CIPHER — Encoded, then decoded. The message reveals itself.
@@ -475,6 +476,7 @@ export function CipherPhilosophy() {
 
 /* ─── Testimonials ───────────────────────────────────────────── */
 export function CipherTestimonials() {
+  const testimonials = useTestimonials();
   return (
     <section className="relative py-32 px-8">
       <div className="max-w-4xl mx-auto">
@@ -497,7 +499,7 @@ export function CipherTestimonials() {
         </motion.div>
 
         <div className="space-y-12">
-          {V2_TESTIMONIALS.slice(0, 4).map((t, i) => (
+          {testimonials.slice(0, 4).map((t, i) => (
             <motion.div
               key={t.id}
               initial={{ opacity: 0, y: 30 }}

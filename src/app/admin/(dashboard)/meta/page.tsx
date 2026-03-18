@@ -1,22 +1,15 @@
-import { getGitHubFile } from "@/lib/admin/github";
-
-export const dynamic = "force-dynamic";
+import { getContentWithGitHubOverlay } from "@/lib/admin/content-overlay";
 import { getSiteMeta } from "@/lib/content/site-meta";
 import { MetaForm } from "./meta-form";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminMetaPage() {
-  // Prefer GitHub (source of truth); fallback to local file
-  let initial: Awaited<ReturnType<typeof getSiteMeta>>;
-  const gh = await getGitHubFile("content/site-meta.json");
-  if (gh?.content) {
-    try {
-      initial = { ...(await getSiteMeta()), ...JSON.parse(gh.content) };
-    } catch {
-      initial = await getSiteMeta();
-    }
-  } else {
-    initial = await getSiteMeta();
-  }
+  const initial = await getContentWithGitHubOverlay(
+    "content/site-meta.json",
+    getSiteMeta,
+    (local, parsed) => ({ ...local, ...(parsed as object) })
+  );
 
   return (
     <div>

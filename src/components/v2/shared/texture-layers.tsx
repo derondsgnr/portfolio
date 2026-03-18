@@ -2,6 +2,11 @@
 
 import { CHARS } from "./scramble-text";
 
+/** Deterministic char index for hydration safety (no Math.random during render) */
+function charIndex(row: number, col: number): number {
+  return ((row * 79 + col * 17) % CHARS.length);
+}
+
 export function SignalGrid() {
   return (
     <div
@@ -55,7 +60,7 @@ export function CipherAmbientGrid() {
         >
           {Array.from({ length: 80 }).map((_, col) => (
             <span key={col}>
-              {CHARS[Math.floor(Math.random() * CHARS.length)]}
+              {CHARS[charIndex(row, col)]}
             </span>
           ))}
         </div>
@@ -78,7 +83,7 @@ export function CipherBg({ opacity = 0.015 }: { opacity?: number }) {
         >
           {Array.from({ length: 80 }).map((_, col) => (
             <span key={col}>
-              {CHARS[Math.floor(Math.random() * CHARS.length)]}
+              {CHARS[charIndex(row, col)]}
             </span>
           ))}
         </div>
@@ -101,7 +106,7 @@ export function CipherBgLayer() {
         >
           {Array.from({ length: 80 }).map((_, col) => (
             <span key={col}>
-              {CHARS[Math.floor(Math.random() * CHARS.length)]}
+              {CHARS[charIndex(row, col)]}
             </span>
           ))}
         </div>

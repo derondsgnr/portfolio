@@ -2,9 +2,6 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence, useInView } from "motion/react";
-import { projectId, publicAnonKey } from "@/lib/supabase/info";
-
-const API_BASE = `https://${projectId}.supabase.co/functions/v1/make-server-3fa6479f`;
 
 interface Comment {
   id: string;
@@ -33,9 +30,7 @@ export function CommentsSection({ slug }: CommentsSectionProps) {
   useEffect(() => {
     async function fetchComments() {
       try {
-        const res = await fetch(`${API_BASE}/comments/${slug}`, {
-          headers: { Authorization: `Bearer ${publicAnonKey}` },
-        });
+        const res = await fetch(`/api/comments/${slug}`);
         const data = await res.json();
         if (data.comments) {
           setComments(data.comments);
@@ -56,12 +51,9 @@ export function CommentsSection({ slug }: CommentsSectionProps) {
 
     setSubmitting(true);
     try {
-      const res = await fetch(`${API_BASE}/comments`, {
+      const res = await fetch("/api/comments", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${publicAnonKey}`,
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ slug, name: name.trim(), text: text.trim() }),
       });
       const data = await res.json();
