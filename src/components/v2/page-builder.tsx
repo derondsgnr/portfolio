@@ -16,11 +16,11 @@ import type { PageCopy } from "@/lib/content/copy";
 
 function SimpleLoader({ onComplete }: { onComplete: () => void }) {
   useEffect(() => {
-    const t = setTimeout(async () => {
+    const t = setTimeout(() => {
       if (typeof window !== "undefined") {
-        const { playSound, ensureAudioResumed } = await import("@/lib/sound");
-        await ensureAudioResumed();
-        playSound("loaderComplete");
+        import("@/lib/sound").then(({ playSound, ensureAudioResumed }) =>
+          ensureAudioResumed().then(() => playSound("loaderComplete"))
+        );
       }
       onComplete();
     }, 1600);
