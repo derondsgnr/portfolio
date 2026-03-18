@@ -21,13 +21,13 @@ import { CUSTOMER_SUPPORT_PLATFORM_CASE_STUDY } from "./customer-support-platfor
 import type { CaseStudy } from "../../types/case-study";
 
 export const ALL_CASE_STUDIES: CaseStudy[] = [
+  BRIDGEPAY_CASE_STUDY,
+  URBAN_CASE_STUDY,
+  CUSTOMER_SUPPORT_PLATFORM_CASE_STUDY,
   DARA_CASE_STUDY,
   PULSE_CASE_STUDY,
   KORA_CASE_STUDY,
   SORO_CASE_STUDY,
-  BRIDGEPAY_CASE_STUDY,
-  URBAN_CASE_STUDY,
-  CUSTOMER_SUPPORT_PLATFORM_CASE_STUDY,
 ];
 
 export function getCaseStudyBySlug(slug: string): CaseStudy | undefined {

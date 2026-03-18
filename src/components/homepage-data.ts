@@ -1,33 +1,13 @@
 /* Shared data for all homepage variations */
 
 export const PROJECTS = [
-  {
-    id: "01",
-    title: "Project Alpha",
-    category: "Product Design",
-    year: "2025",
-    slug: "project-alpha",
-    image:
-      "https://images.unsplash.com/photo-1575388902449-6bca946ad549?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkYXJrJTIwcHJvZHVjdCUyMGRlc2lnbiUyMGludGVyZmFjZSUyMG1vY2t1cHxlbnwxfHx8fDE3NzM2MTQ3OTV8MA&ixlib=rb-4.1.0&q=80&w=1080",
-  },
-  {
-    id: "02",
-    title: "Project Beta",
-    category: "Web Design & Dev",
-    year: "2025",
-    slug: "project-beta",
-    image:
-      "https://images.unsplash.com/photo-1622212993957-6d4631a0ba8b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkYXJrJTIwbWluaW1hbCUyMGFwcCUyMGRlc2lnbiUyMG1vYmlsZXxlbnwxfHx8fDE3NzM2MTQ3OTZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
-  },
-  {
-    id: "03",
-    title: "Project Gamma",
-    category: "AI Product System",
-    year: "2024",
-    slug: "project-gamma",
-    image:
-      "https://images.unsplash.com/photo-1750056393349-dfaf647f7400?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkYXJrJTIwd2Vic2l0ZSUyMGRlc2lnbiUyMG1vZGVybnxlbnwxfHx8fDE3NzM2MTQ3OTZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
-  },
+  { id: "01", title: "Bridgepay", category: "Fintech", year: "2025", slug: "bridgepay", image: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080" },
+  { id: "02", title: "Urban", category: "Transportation", year: "2025", slug: "urban", image: "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080" },
+  { id: "03", title: "Customer Support Platform", category: "B2B", year: "2025", slug: "customer-support-platform", image: "https://images.unsplash.com/photo-1551434678-e076c223a692?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080" },
+  { id: "04", title: "Dara", category: "Fintech", year: "2025", slug: "dara", image: "https://images.unsplash.com/photo-1623593476737-0fc80f6be51d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080" },
+  { id: "05", title: "Soro", category: "Marketplace", year: "2024", slug: "soro", image: "https://images.unsplash.com/photo-1746171114403-f4c4877b1f04?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080" },
+  { id: "06", title: "Pulse", category: "Mobile Wellness", year: "2025", slug: "pulse", image: "https://images.unsplash.com/photo-1633435444831-a343459372a5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080" },
+  { id: "07", title: "Kora", category: "Brand Identity", year: "2024", slug: "kora", image: "https://images.unsplash.com/photo-1761778304143-4c89e7dd2457?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080" },
 ];
 
 export const PRINCIPLES = [
