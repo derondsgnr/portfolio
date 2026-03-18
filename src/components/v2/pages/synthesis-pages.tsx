@@ -9,6 +9,8 @@ import type { Exploration } from "@/lib/content/explorations";
 import type { MediaConfig } from "@/lib/content/media";
 import type { PageCopy } from "@/lib/content/copy";
 import { useBooking } from "../booking-context";
+import { ToolBadges } from "@/components/tool-badge";
+import { ToolBadges } from "@/components/tool-badge";
 
 /* ═══════════════════════════════════════════════════════════════
    SYNTHESIS PAGES — Best-of mashup inner pages
@@ -954,7 +956,7 @@ function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: {
           className="hidden md:flex absolute bottom-8 left-16 right-[280px] items-center gap-8"
         >
           <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#E2B93B", letterSpacing: "0.15em" }}>[{item.category.toUpperCase()}]</span>
-          <span style={{ fontFamily: "monospace", fontSize: "9px", color: "rgba(255,255,255,0.4)", letterSpacing: "0.1em" }}>TOOLS: {item.tools.join(" / ")}</span>
+          <span className="inline-flex items-center gap-2" style={{ fontFamily: "monospace", fontSize: "9px", color: "rgba(255,255,255,0.4)", letterSpacing: "0.1em" }}>TOOLS: <ToolBadges tools={item.tools} size={12} className="text-[#888]" /></span>
           <span style={{ fontFamily: "monospace", fontSize: "9px", color: "rgba(255,255,255,0.3)", letterSpacing: "0.1em" }}>{item.date}</span>
         </motion.div>
       </div>
@@ -965,7 +967,9 @@ function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: {
           <span className="block" style={{ fontFamily: "'Anton', sans-serif", fontSize: "1.2rem", lineHeight: 1, letterSpacing: "-0.02em", textTransform: "uppercase", color: "#f0f0f0" }}>{item.title}</span>
           <div className="flex items-center gap-4 mt-2">
             <span style={{ fontFamily: "monospace", fontSize: "8px", color: "#E2B93B", letterSpacing: "0.15em" }}>[{item.category.toUpperCase()}]</span>
-            <span style={{ fontFamily: "monospace", fontSize: "8px", color: "rgba(255,255,255,0.35)", letterSpacing: "0.1em" }}>{item.tools.join(" / ")}</span>
+            <span className="inline-flex items-center gap-1.5" style={{ fontFamily: "monospace", fontSize: "8px", color: "rgba(255,255,255,0.35)", letterSpacing: "0.1em" }}>
+            <ToolBadges tools={item.tools} size={10} />
+          </span>
             <span style={{ fontFamily: "monospace", fontSize: "8px", color: "rgba(255,255,255,0.25)" }}>{item.date}</span>
           </div>
         </div>
@@ -1379,8 +1383,8 @@ export function SynthesisAboutPage({ copy }: { copy?: PageCopy } = {}) {
               <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#E2B93B", letterSpacing: "0.15em" }}>[TOOLS.LIST()]</span>
               <div className="flex flex-wrap gap-2 mt-3">
                 {V2_ABOUT.tools.map((tool) => (
-                  <span key={tool} style={{ fontFamily: "monospace", fontSize: "10px", color: "rgba(255,255,255,0.3)", border: "1px solid rgba(255,255,255,0.06)", padding: "4px 10px" }}>
-                    {tool}
+                  <span key={tool} className="inline-flex items-center gap-1.5" style={{ fontFamily: "monospace", fontSize: "10px", color: "rgba(255,255,255,0.3)", border: "1px solid rgba(255,255,255,0.06)", padding: "4px 10px" }}>
+                    <ToolBadge tool={tool} size={14} showLabel />
                   </span>
                 ))}
               </div>

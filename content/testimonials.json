@@ -1,47 +1,20 @@
 [
   {
     "id": 1,
-    "quote": "Working with Deron was a game-changer for our product. He didn't just design screens — he restructured how we think about our users.",
-    "name": "Alex Morgan",
+    "quote": "One key thing I would say about Deron, having worked with him for a very long time, is the full attention, detail, and commitment he puts into getting work done. He goes the extra mile to make sure the results surpass your expectations. It has always been a pleasure working with him, and I am super confident you would love working with him too.",
+    "name": "Alabi Hafeez",
     "role": "CEO",
-    "company": "Stealth Startup",
-    "avatar": "https://images.unsplash.com/photo-1769636929231-3cd7f853d038?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+    "company": "Bridgepay",
+    "avatar": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
     "companyLogo": null
   },
   {
     "id": 2,
-    "quote": "Most designers hand you a Figma file and disappear. Deron stayed through the build, caught things our engineers missed.",
-    "name": "Sarah Chen",
-    "role": "Head of Product",
-    "company": "Finova",
-    "avatar": "https://images.unsplash.com/photo-1758600587839-56ba05596c69?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-    "companyLogo": null
-  },
-  {
-    "id": 3,
-    "quote": "He thinks like a founder and designs like an artist. Our conversion rate doubled within six weeks of launching the redesign.",
-    "name": "Marcus Williams",
-    "role": "Founder",
-    "company": "Nexus AI",
-    "avatar": "https://images.unsplash.com/photo-1769636930047-4478f12cf430?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-    "companyLogo": null
-  },
-  {
-    "id": 4,
-    "quote": "Deron brought clarity to chaos. We had ten competing ideas and no direction. He distilled it into one cohesive product experience.",
-    "name": "Elena Petrova",
-    "role": "CTO",
-    "company": "BuildStack",
-    "avatar": "https://images.unsplash.com/photo-1771340589665-cf724a153b46?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-    "companyLogo": null
-  },
-  {
-    "id": 5,
-    "quote": "The speed was unreal. What we expected to take two months was done in three weeks — and the quality didn't suffer.",
-    "name": "David Okafor",
-    "role": "Co-Founder",
-    "company": "PayRoute",
-    "avatar": "https://images.unsplash.com/photo-1763598461615-610264129bea?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+    "quote": "Deron has a keen eye for detail and is always open to feedback to make the project better. Working with him made the entire process enjoyable.",
+    "name": "Latifah Yusuf",
+    "role": "Collaborator",
+    "company": "TechCabal",
+    "avatar": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
     "companyLogo": null
   }
 ]

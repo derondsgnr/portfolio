@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import { V2_PROJECTS, V2_CRAFT_ITEMS, V2_ABOUT, V2_SERVICES_DETAILED } from "../v2-data";
+import { ToolBadge } from "@/components/tool-badge";
 
 /* ═══════════════════════════════════════════════════════════════
    SIGNAL PAGES — Data transmission aesthetic applied to inner pages.
@@ -492,6 +493,7 @@ export function SignalAboutPage() {
                 {V2_ABOUT.tools.map((tool) => (
                   <span
                     key={tool}
+                    className="inline-flex items-center gap-1.5"
                     style={{
                       fontFamily: "monospace",
                       fontSize: "10px",
@@ -501,7 +503,7 @@ export function SignalAboutPage() {
                       letterSpacing: "0.05em",
                     }}
                   >
-                    {tool}
+                    <ToolBadge tool={tool} size={14} showLabel />
                   </span>
                 ))}
               </div>

@@ -15,6 +15,9 @@ import { DARA_CASE_STUDY } from "./dara";
 import { PULSE_CASE_STUDY } from "./pulse";
 import { KORA_CASE_STUDY } from "./kora";
 import { SORO_CASE_STUDY } from "./soro";
+import { BRIDGEPAY_CASE_STUDY } from "./bridgepay";
+import { URBAN_CASE_STUDY } from "./urban";
+import { CUSTOMER_SUPPORT_PLATFORM_CASE_STUDY } from "./customer-support-platform";
 import type { CaseStudy } from "../../types/case-study";
 
 export const ALL_CASE_STUDIES: CaseStudy[] = [
@@ -22,6 +25,9 @@ export const ALL_CASE_STUDIES: CaseStudy[] = [
   PULSE_CASE_STUDY,
   KORA_CASE_STUDY,
   SORO_CASE_STUDY,
+  BRIDGEPAY_CASE_STUDY,
+  URBAN_CASE_STUDY,
+  CUSTOMER_SUPPORT_PLATFORM_CASE_STUDY,
 ];
 
 export function getCaseStudyBySlug(slug: string): CaseStudy | undefined {

@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import { V2_PROJECTS, V2_CRAFT_ITEMS, V2_ABOUT } from "../v2-data";
+import { ToolBadge } from "@/components/tool-badge";
 
 /* ═══════════════════════════════════════════════════════════════
    GRAVITY PAGES — Everything has weight. Elements drop, settle.
@@ -255,8 +256,8 @@ export function GravityAboutPage() {
                 <span style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "10px", letterSpacing: "0.2em", color: "#E2B93B", textTransform: "uppercase" }}>Tools</span>
                 <div className="flex flex-wrap gap-2 mt-3">
                   {V2_ABOUT.tools.map((tool) => (
-                    <span key={tool} style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "0.8rem", color: "rgba(255,255,255,0.3)", padding: "4px 12px", border: "1px solid rgba(255,255,255,0.06)" }}>
-                      {tool}
+                    <span key={tool} className="inline-flex items-center gap-1.5" style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "0.8rem", color: "rgba(255,255,255,0.3)", padding: "4px 12px", border: "1px solid rgba(255,255,255,0.06)" }}>
+                      <ToolBadge tool={tool} size={14} showLabel />
                     </span>
                   ))}
                 </div>

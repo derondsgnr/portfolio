@@ -13,6 +13,7 @@ import {
 } from "@/lib/data/now-data";
 import type { NowConfig } from "@/lib/content/now";
 import type { ActivityEntry, TodoItem } from "@/lib/data/now-data";
+import { ToolBadge } from "@/components/tool-badge";
 
 function formatDate(isoDate: string): string {
   const d = new Date(isoDate + "T00:00:00");
@@ -87,8 +88,8 @@ function ActivityHeatmap({ activity }: { activity: ActivityEntry[] }) {
                     <span className="text-[8px] tracking-[0.1em] px-1.5 py-0.5" style={{ fontFamily: "monospace", color: ACTIVITY_CONFIG[e.type].color, background: ACTIVITY_CONFIG[e.type].bg }}>
                       {ACTIVITY_CONFIG[e.type].label}
                     </span>
-                    <span className="text-[9px] text-[#888]" style={{ fontFamily: "monospace" }}>
-                      {e.tool}
+                    <span className="text-[9px] text-[#888] flex items-center gap-1" style={{ fontFamily: "monospace" }}>
+                      <ToolBadge tool={e.tool} size={12} showLabel />
                     </span>
                   </div>
                 ))}
@@ -123,8 +124,8 @@ function ActivityFeed({ activity }: { activity: ActivityEntry[] }) {
             {ACTIVITY_CONFIG[entry.type].label}
           </span>
           {entry.tool && (
-            <span className="text-[10px] tracking-[0.08em] text-[#555] min-w-[52px] flex-shrink-0 mt-0.5 hidden md:block" style={{ fontFamily: "monospace" }}>
-              {entry.tool}
+            <span className="text-[10px] tracking-[0.08em] text-[#555] min-w-[52px] flex-shrink-0 mt-0.5 hidden md:flex md:items-center" style={{ fontFamily: "monospace" }}>
+              <ToolBadge tool={entry.tool} size={14} showLabel />
             </span>
           )}
           <span className="text-[11px] text-[#888] group-hover:text-[#aaa] transition-colors leading-relaxed flex-1" style={{ fontFamily: "monospace" }}>
@@ -418,10 +419,12 @@ export default function NowClient({ initial }: { initial: NowConfig }) {
           <p className="text-base md:text-lg text-[#999] max-w-xl" style={{ fontFamily: "monospace", lineHeight: 1.7 }}>&quot;{initial.focus}&quot;</p>
         </motion.div>
 
-        <motion.div initial={{ opacity: 0 }} animate={heroInView ? { opacity: 1 } : {}} transition={{ duration: 0.6, delay: 0.45 }} className="flex items-center gap-3">
+        <motion.div initial={{ opacity: 0 }} animate={heroInView ? { opacity: 1 } : {}} transition={{ duration: 0.6, delay: 0.45 }} className="flex items-center gap-3 flex-wrap">
           <span className="text-[9px] tracking-[0.2em] text-[#333]" style={{ fontFamily: "monospace" }}>ACTIVE</span>
           {initial.toolsToday.map((tool) => (
-            <span key={tool} className="text-[10px] tracking-[0.1em] px-3 py-1 border border-[#222] text-[#555]" style={{ fontFamily: "monospace" }}>{tool}</span>
+            <span key={tool} className="text-[10px] tracking-[0.1em] px-3 py-1 border border-[#222] text-[#555] inline-flex items-center gap-1.5" style={{ fontFamily: "monospace" }}>
+              <ToolBadge tool={tool} size={14} showLabel />
+            </span>
           ))}
         </motion.div>
       </div>
