@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useCallback } from "react";
 import { motion, AnimatePresence, useInView } from "motion/react";
 import Link from "next/link";
 import {
@@ -14,6 +14,7 @@ import {
 import type { NowConfig } from "@/lib/content/now";
 import type { ActivityEntry, TodoItem } from "@/lib/data/now-data";
 import { ToolBadge } from "@/components/tool-badge";
+import { saveNow } from "@/app/admin/actions";
 
 function formatDate(isoDate: string): string {
   const d = new Date(isoDate + "T00:00:00");
@@ -240,6 +241,8 @@ function AdminDrawer({
   todos,
   onToggleTodo,
   onAddTodo,
+  onLogActivity,
+  onSaveFocus,
 }: {
   onClose: () => void;
   currentStatus: WorkStatus;
@@ -248,6 +251,8 @@ function AdminDrawer({
   todos: TodoItem[];
   onToggleTodo: (id: string) => void;
   onAddTodo: (todo: Omit<TodoItem, "id" | "completed">) => void;
+  onLogActivity: (entry: Omit<ActivityEntry, "id">) => void;
+  onSaveFocus: (focus: string) => void;
 }) {
   const [activityType, setActivityType] = useState<ActivityType>("design");
   const [activityTool, setActivityTool] = useState("");
@@ -258,11 +263,27 @@ function AdminDrawer({
   const [todoStart, setTodoStart] = useState("");
   const [todoEnd, setTodoEnd] = useState("");
   const [todoCat, setTodoCat] = useState<TodoCategory>("design");
+  const [focusValue, setFocusValue] = useState(currentFocus);
+  const [focusSaved, setFocusSaved] = useState(false);
 
   const handleLogActivity = () => {
     if (!activityDesc) return;
+    onLogActivity({
+      date: new Date().toISOString().split("T")[0],
+      type: activityType,
+      description: activityDesc,
+      tool: activityTool || undefined,
+      duration: activityDuration || undefined,
+    });
     setActivityLogged(true);
     setTimeout(() => { setActivityLogged(false); setActivityDesc(""); setActivityTool(""); setActivityDuration(""); }, 1500);
+  };
+
+  const handleSaveFocus = () => {
+    if (!focusValue) return;
+    onSaveFocus(focusValue);
+    setFocusSaved(true);
+    setTimeout(() => setFocusSaved(false), 1500);
   };
 
   const handleAddTodo = () => {
@@ -298,8 +319,8 @@ function AdminDrawer({
         </div>
         <div>
           <span className="text-[9px] tracking-[0.25em] text-[#444] block mb-3" style={{ fontFamily: "monospace" }}>CURRENT FOCUS</span>
-          <textarea defaultValue={currentFocus} rows={2} className="w-full bg-transparent border border-[#1a1a1a] focus:border-[#E2B93B]/40 px-4 py-3 text-[12px] text-[#aaa] outline-none resize-none transition-colors" style={{ fontFamily: "monospace" }} placeholder="What are you building today?" />
-          <button className="mt-2 text-[9px] tracking-[0.2em] text-[#E2B93B]/60 hover:text-[#E2B93B] transition-colors" style={{ fontFamily: "monospace" }}>SAVE FOCUS →</button>
+          <textarea value={focusValue} onChange={(e) => setFocusValue(e.target.value)} rows={2} className="w-full bg-transparent border border-[#1a1a1a] focus:border-[#E2B93B]/40 px-4 py-3 text-[12px] text-[#aaa] outline-none resize-none transition-colors" style={{ fontFamily: "monospace" }} placeholder="What are you building today?" />
+          <button onClick={handleSaveFocus} className="mt-2 text-[9px] tracking-[0.2em] transition-colors" style={{ fontFamily: "monospace", color: focusSaved ? "#22c55e" : "rgba(226,185,59,0.6)" }}>{focusSaved ? "✓ SAVED" : "SAVE FOCUS →"}</button>
         </div>
         <div>
           <span className="text-[9px] tracking-[0.25em] text-[#444] block mb-4" style={{ fontFamily: "monospace" }}>LOG ACTIVITY</span>
@@ -366,23 +387,45 @@ function AdminDrawer({
 export default function NowClient({ initial }: { initial: NowConfig }) {
   const [showPin, setShowPin] = useState(false);
   const [adminOpen, setAdminOpen] = useState(false);
-  const [status, setStatus] = useState<WorkStatus>(initial.status);
-  const [todos, setTodos] = useState<TodoItem[]>(initial.todos);
-  const statusCfg = STATUS_CONFIG[status];
+  const [config, setConfig] = useState<NowConfig>(initial);
+  const statusCfg = STATUS_CONFIG[config.status];
   const heroRef = useRef<HTMLDivElement>(null);
   const heroInView = useInView(heroRef, { once: true, amount: 0.3 });
+
+  const persist = useCallback((updated: NowConfig) => {
+    setConfig(updated);
+    saveNow(updated);
+  }, []);
 
   const handlePinSuccess = () => {
     setShowPin(false);
     setAdminOpen(true);
   };
 
+  const handleStatusChange = (s: WorkStatus) => {
+    persist({ ...config, status: s });
+  };
+
+  const handleSaveFocus = (focus: string) => {
+    persist({ ...config, focus });
+  };
+
+  const handleLogActivity = (entry: Omit<ActivityEntry, "id">) => {
+    const newEntry: ActivityEntry = { ...entry, id: `a-${Date.now()}` };
+    const toolsToday = entry.tool && !config.toolsToday.includes(entry.tool)
+      ? [...config.toolsToday, entry.tool]
+      : config.toolsToday;
+    persist({ ...config, activity: [newEntry, ...config.activity], toolsToday });
+  };
+
   const handleToggleTodo = (id: string) => {
-    setTodos((prev) => prev.map((t) => (t.id === id ? { ...t, completed: !t.completed } : t)));
+    const todos = config.todos.map((t) => (t.id === id ? { ...t, completed: !t.completed } : t));
+    persist({ ...config, todos });
   };
 
   const handleAddTodo = (todo: Omit<TodoItem, "id" | "completed">) => {
-    setTodos((prev) => [...prev, { ...todo, id: `t-${Date.now()}`, completed: false }]);
+    const newTodo: TodoItem = { ...todo, id: `t-${Date.now()}`, completed: false };
+    persist({ ...config, todos: [...config.todos, newTodo] });
   };
 
   return (
@@ -402,26 +445,26 @@ export default function NowClient({ initial }: { initial: NowConfig }) {
           <motion.div initial={{ opacity: 0, y: 20 }} animate={heroInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7 }} className="flex items-center gap-4">
             <div className="relative w-3 h-3 flex-shrink-0">
               <div className="w-3 h-3 rounded-full" style={{ background: statusCfg.color }} />
-              {(status === "deep-work" || status === "meetings") && <div className="absolute inset-0 rounded-full animate-ping" style={{ background: statusCfg.color, opacity: 0.4 }} />}
+              {(config.status === "deep-work" || config.status === "meetings") && <div className="absolute inset-0 rounded-full animate-ping" style={{ background: statusCfg.color, opacity: 0.4 }} />}
             </div>
             <h1 className="text-5xl md:text-7xl lg:text-9xl uppercase leading-none tracking-tight" style={{ fontFamily: "var(--font-heading)", color: statusCfg.color, letterSpacing: "-0.03em" }}>
               {statusCfg.label}
             </h1>
           </motion.div>
           <motion.div initial={{ opacity: 0, y: 20 }} animate={heroInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7, delay: 0.2 }} className="flex-shrink-0 text-right md:text-left">
-            <div className="text-5xl md:text-6xl lg:text-7xl leading-none" style={{ fontFamily: "var(--font-heading)", color: "#E2B93B", letterSpacing: "-0.02em" }}>{initial.streak}</div>
+            <div className="text-5xl md:text-6xl lg:text-7xl leading-none" style={{ fontFamily: "var(--font-heading)", color: "#E2B93B", letterSpacing: "-0.02em" }}>{config.streak}</div>
             <span className="text-[9px] tracking-[0.25em] text-[#444] block mt-1" style={{ fontFamily: "monospace" }}>DAY STREAK</span>
           </motion.div>
         </div>
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={heroInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, delay: 0.3 }} className="mb-4">
           <span className="text-[9px] tracking-[0.25em] text-[#444] block mb-2" style={{ fontFamily: "monospace" }}>CURRENTLY BUILDING</span>
-          <p className="text-base md:text-lg text-[#999] max-w-xl" style={{ fontFamily: "monospace", lineHeight: 1.7 }}>&quot;{initial.focus}&quot;</p>
+          <p className="text-base md:text-lg text-[#999] max-w-xl" style={{ fontFamily: "monospace", lineHeight: 1.7 }}>&quot;{config.focus}&quot;</p>
         </motion.div>
 
         <motion.div initial={{ opacity: 0 }} animate={heroInView ? { opacity: 1 } : {}} transition={{ duration: 0.6, delay: 0.45 }} className="flex items-center gap-3 flex-wrap">
           <span className="text-[9px] tracking-[0.2em] text-[#333]" style={{ fontFamily: "monospace" }}>ACTIVE</span>
-          {initial.toolsToday.map((tool) => (
+          {config.toolsToday.map((tool) => (
             <span key={tool} className="text-[10px] tracking-[0.1em] px-3 py-1 border border-[#222] text-[#555] inline-flex items-center gap-1.5" style={{ fontFamily: "monospace" }}>
               <ToolBadge tool={tool} size={14} showLabel />
             </span>
@@ -444,7 +487,7 @@ export default function NowClient({ initial }: { initial: NowConfig }) {
             ))}
           </div>
         </div>
-        <ActivityHeatmap activity={initial.activity} />
+        <ActivityHeatmap activity={config.activity} />
       </div>
 
       <div className="h-px bg-gradient-to-r from-transparent via-[#1a1a1a] to-transparent mx-6 md:mx-14 lg:mx-20" />
@@ -454,7 +497,7 @@ export default function NowClient({ initial }: { initial: NowConfig }) {
           <span className="text-[9px] tracking-[0.3em] text-[#444]" style={{ fontFamily: "monospace" }}>RECENT ACTIVITY</span>
           <div className="h-px flex-1 bg-[#1a1a1a]" />
         </div>
-        <ActivityFeed activity={initial.activity} />
+        <ActivityFeed activity={config.activity} />
       </div>
 
       <div className="h-px bg-gradient-to-r from-transparent via-[#1a1a1a] to-transparent mx-6 md:mx-14 lg:mx-20" />
@@ -463,12 +506,12 @@ export default function NowClient({ initial }: { initial: NowConfig }) {
         <div className="flex items-center gap-4 mb-8">
           <span className="text-[9px] tracking-[0.3em] text-[#444]" style={{ fontFamily: "monospace" }}>TODAY&apos;S BLOCKS</span>
           <div className="h-px flex-1 bg-[#1a1a1a]" />
-          <span className="text-[9px] tracking-[0.1em] text-[#333]" style={{ fontFamily: "monospace" }}>{todos.filter((t) => t.completed).length}/{todos.length} done</span>
+          <span className="text-[9px] tracking-[0.1em] text-[#333]" style={{ fontFamily: "monospace" }}>{config.todos.filter((t) => t.completed).length}/{config.todos.length} done</span>
         </div>
-        <TimeBlocks todos={todos} />
+        <TimeBlocks todos={config.todos} />
 
         <div className="mt-8 h-px bg-[#111]">
-          <motion.div className="h-full bg-[#E2B93B]" initial={{ width: 0 }} animate={{ width: `${todos.length ? (todos.filter((t) => t.completed).length / todos.length) * 100 : 0}%` }} transition={{ duration: 1, delay: 0.5 }} />
+          <motion.div className="h-full bg-[#E2B93B]" initial={{ width: 0 }} animate={{ width: `${config.todos.length ? (config.todos.filter((t) => t.completed).length / config.todos.length) * 100 : 0}%` }} transition={{ duration: 1, delay: 0.5 }} />
         </div>
         <div className="flex justify-between mt-2">
           <span className="text-[9px] text-[#2a2a2a]" style={{ fontFamily: "monospace" }}>00:00</span>
@@ -484,7 +527,7 @@ export default function NowClient({ initial }: { initial: NowConfig }) {
         {adminOpen && (
           <>
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setAdminOpen(false)} className="fixed inset-0 z-[80] bg-[#0a0a0a]/60 backdrop-blur-sm" />
-            <AdminDrawer onClose={() => setAdminOpen(false)} currentStatus={status} onStatusChange={setStatus} currentFocus={initial.focus} todos={todos} onToggleTodo={handleToggleTodo} onAddTodo={handleAddTodo} />
+            <AdminDrawer onClose={() => setAdminOpen(false)} currentStatus={config.status} onStatusChange={handleStatusChange} currentFocus={config.focus} todos={config.todos} onToggleTodo={handleToggleTodo} onAddTodo={handleAddTodo} onLogActivity={handleLogActivity} onSaveFocus={handleSaveFocus} />
           </>
         )}
       </AnimatePresence>
