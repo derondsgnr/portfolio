@@ -113,9 +113,9 @@ export async function saveSounds(data: Record<string, string>, message?: string)
   return saveContent("content/sounds.json", content, message ?? "Update sounds");
 }
 
-/** Blog post — stub for now; wire to content/blog.json when ready */
+/** Blog post — read existing blog.json, upsert post by slug, persist via GitHub */
 export async function saveBlogPost(
-  _slug: string,
+  slug: string,
   data: unknown,
   message?: string
 ): Promise<{ ok: boolean; error?: string }> {
@@ -124,8 +124,20 @@ export async function saveBlogPost(
   } catch {
     return { ok: false, error: "Unauthorized" };
   }
-  // TODO: persist to content/blog.json or per-slug
-  return { ok: true };
+  // Read existing posts, upsert, and save
+  let posts: Record<string, unknown>[] = [];
+  try {
+    const existing = await getGitHubFile("content/blog.json");
+    if (existing) {
+      const parsed = JSON.parse(existing.content);
+      if (Array.isArray(parsed)) posts = parsed;
+    }
+  } catch { /* first save — start fresh */ }
+  const idx = posts.findIndex((p) => (p as { slug?: string }).slug === slug);
+  if (idx >= 0) posts[idx] = data as Record<string, unknown>;
+  else posts.push(data as Record<string, unknown>);
+  const content = JSON.stringify(posts, null, 2);
+  return saveContent("content/blog.json", content, message ?? "Update blog post");
 }
 
 /** Now page config — persist to content/now.json via GitHub */
