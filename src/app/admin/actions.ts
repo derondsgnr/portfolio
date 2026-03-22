@@ -146,6 +146,124 @@ export async function saveNow(data: unknown, message?: string): Promise<{ ok: bo
   return saveContent("content/now.json", content, message ?? "Update now page");
 }
 
+// ─── Supabase KV helpers (comments & bookmarks) ─────────────────
+const KV_TABLE = "kv_store_3fa6479f";
+
+function supabaseAdmin() {
+  const projectId = process.env.NEXT_PUBLIC_SUPABASE_PROJECT_ID ?? "meyqmckflkcdblmadrvv";
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!serviceKey) return null;
+  return { url: `https://${projectId}.supabase.co`, key: serviceKey };
+}
+
+async function kvGetByPrefix(prefix: string): Promise<{ key: string; value: unknown }[]> {
+  const sb = supabaseAdmin();
+  if (!sb) return [];
+  const res = await fetch(`${sb.url}/rest/v1/${KV_TABLE}?key=like.${encodeURIComponent(prefix + "%")}&select=key,value`, {
+    headers: { apikey: sb.key, Authorization: `Bearer ${sb.key}` },
+  });
+  if (!res.ok) return [];
+  return res.json();
+}
+
+async function kvSet(key: string, value: unknown): Promise<boolean> {
+  const sb = supabaseAdmin();
+  if (!sb) return false;
+  const res = await fetch(`${sb.url}/rest/v1/${KV_TABLE}`, {
+    method: "POST",
+    headers: {
+      apikey: sb.key, Authorization: `Bearer ${sb.key}`,
+      "Content-Type": "application/json",
+      Prefer: "resolution=merge-duplicates",
+    },
+    body: JSON.stringify({ key, value }),
+  });
+  return res.ok;
+}
+
+async function kvDelete(key: string): Promise<boolean> {
+  const sb = supabaseAdmin();
+  if (!sb) return false;
+  const res = await fetch(`${sb.url}/rest/v1/${KV_TABLE}?key=eq.${encodeURIComponent(key)}`, {
+    method: "DELETE",
+    headers: { apikey: sb.key, Authorization: `Bearer ${sb.key}` },
+  });
+  return res.ok;
+}
+
+/** Fetch all comments from Supabase KV */
+export async function fetchAllComments(): Promise<{ ok: boolean; comments: unknown[]; error?: string }> {
+  try {
+    await requireAdmin();
+  } catch {
+    return { ok: false, comments: [], error: "Unauthorized" };
+  }
+  const rows = await kvGetByPrefix("comment:");
+  const comments = rows.map((r) => ({ ...(r.value as Record<string, unknown>), _kvKey: r.key }));
+  return { ok: true, comments };
+}
+
+/** Update a comment's status in KV */
+export async function updateCommentStatus(kvKey: string, status: string): Promise<{ ok: boolean; error?: string }> {
+  try {
+    await requireAdmin();
+  } catch {
+    return { ok: false, error: "Unauthorized" };
+  }
+  const rows = await kvGetByPrefix(kvKey.slice(0, kvKey.length));
+  const row = rows.find((r) => r.key === kvKey);
+  if (!row) return { ok: false, error: "Comment not found" };
+  const updated = { ...(row.value as Record<string, unknown>), status };
+  const success = await kvSet(kvKey, updated);
+  return success ? { ok: true } : { ok: false, error: "Failed to update" };
+}
+
+/** Delete a comment from KV */
+export async function deleteComment(kvKey: string): Promise<{ ok: boolean; error?: string }> {
+  try {
+    await requireAdmin();
+  } catch {
+    return { ok: false, error: "Unauthorized" };
+  }
+  const success = await kvDelete(kvKey);
+  return success ? { ok: true } : { ok: false, error: "Failed to delete" };
+}
+
+/** Fetch all bookmarks from Supabase KV */
+export async function fetchAllBookmarks(): Promise<{ ok: boolean; bookmarks: unknown[]; error?: string }> {
+  try {
+    await requireAdmin();
+  } catch {
+    return { ok: false, bookmarks: [], error: "Unauthorized" };
+  }
+  const rows = await kvGetByPrefix("bookmark:");
+  const bookmarks = rows.map((r) => r.value);
+  return { ok: true, bookmarks };
+}
+
+/** Save a bookmark to Supabase KV */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function saveBookmark(bookmark: any): Promise<{ ok: boolean; error?: string }> {
+  try {
+    await requireAdmin();
+  } catch {
+    return { ok: false, error: "Unauthorized" };
+  }
+  const success = await kvSet(`bookmark:${bookmark.id}`, bookmark);
+  return success ? { ok: true } : { ok: false, error: "Failed to save" };
+}
+
+/** Delete a bookmark from Supabase KV */
+export async function deleteBookmark(id: string): Promise<{ ok: boolean; error?: string }> {
+  try {
+    await requireAdmin();
+  } catch {
+    return { ok: false, error: "Unauthorized" };
+  }
+  const success = await kvDelete(`bookmark:${id}`);
+  return success ? { ok: true } : { ok: false, error: "Failed to delete" };
+}
+
 /** Case studies — persist to content/case-studies.json via GitHub */
 export async function saveCaseStudies(studies: unknown[], message?: string): Promise<{ ok: boolean; error?: string }> {
   const content = JSON.stringify(studies, null, 2);

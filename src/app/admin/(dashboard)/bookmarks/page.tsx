@@ -5,14 +5,11 @@
  * Personal media board. Import bookmarks from social accounts manually.
  * Filter by platform, category, type. Visual masonry grid.
  *
- * Data stored in localStorage (key: "admin_bookmarks").
- * TODO (Cursor): Sync to Supabase KV (key prefix: bookmark:)
- *   - On add/update: SET bookmark:{id} = Bookmark
- *   - On mount: getByPrefix("bookmark:") → Bookmark[]
- *   - On delete: DEL bookmark:{id}
+ * Data synced to Supabase KV (key prefix: bookmark:).
+ * localStorage used as fast cache; KV is source of truth.
  */
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { adminCx, FormField } from "@/components/admin/admin-primitives";
 import {
@@ -20,6 +17,11 @@ import {
   Youtube, Twitter, Instagram, Github, Figma, Grid, List,
   Bookmark, Tag, Copy,
 } from "lucide-react";
+import {
+  fetchAllBookmarks,
+  saveBookmark,
+  deleteBookmark as deleteBookmarkAction,
+} from "@/app/admin/actions";
 
 // ─── Types ─────────────────────────────────────────────────────────
 type Platform = "youtube" | "twitter" | "instagram" | "tiktok" | "figma" | "dribbble" | "github" | "pinterest" | "other";
@@ -527,7 +529,7 @@ function BookmarkRow({
 function AdminBookmarksPage() {
   const [bookmarks, setBookmarks] = useState<BookmarkItem[]>(() => {
     try {
-      const stored = localStorage.getItem(BM_STORAGE_KEY);
+      const stored = typeof window !== "undefined" ? localStorage.getItem(BM_STORAGE_KEY) : null;
       return stored ? JSON.parse(stored) : MOCK_BOOKMARKS;
     } catch { return MOCK_BOOKMARKS; }
   });
@@ -541,7 +543,19 @@ function AdminBookmarksPage() {
   const [view, setView] = useState<"grid" | "list">("grid");
   const [sortBy, setSortBy] = useState<"newest" | "oldest" | "title">("newest");
 
-  // Persist to localStorage
+  // Load from Supabase KV on mount, fall back to localStorage cache
+  const loadFromKV = useCallback(async () => {
+    const result = await fetchAllBookmarks();
+    if (result.ok && result.bookmarks.length > 0) {
+      const loaded = result.bookmarks as BookmarkItem[];
+      setBookmarks(loaded);
+      try { localStorage.setItem(BM_STORAGE_KEY, JSON.stringify(loaded)); } catch {}
+    }
+  }, []);
+
+  useEffect(() => { loadFromKV(); }, [loadFromKV]);
+
+  // Persist to localStorage as cache
   useEffect(() => {
     try { localStorage.setItem(BM_STORAGE_KEY, JSON.stringify(bookmarks)); }
     catch { /* ignore */ }
@@ -549,15 +563,18 @@ function AdminBookmarksPage() {
 
   function add(bookmark: BookmarkItem) {
     setBookmarks((b) => [bookmark, ...b]);
+    saveBookmark(bookmark);
   }
 
   function update(updated: BookmarkItem) {
     setBookmarks((b) => b.map((bm) => bm.id === updated.id ? updated : bm));
+    saveBookmark(updated);
   }
 
   function remove(id: string) {
     if (!confirm("Delete this bookmark?")) return;
     setBookmarks((b) => b.filter((bm) => bm.id !== id));
+    deleteBookmarkAction(id);
   }
 
   function copyUrl(url: string) {
