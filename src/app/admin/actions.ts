@@ -134,13 +134,8 @@ export async function saveNow(data: unknown, message?: string): Promise<{ ok: bo
   return saveContent("content/now.json", content, message ?? "Update now page");
 }
 
-/** Case studies — stub for now; wire to content/case-studies.json when ready */
-export async function saveCaseStudies(studies: unknown[], _message?: string): Promise<{ ok: boolean; error?: string }> {
-  try {
-    await requireAdmin();
-  } catch {
-    return { ok: false, error: "Unauthorized" };
-  }
-  // TODO: saveContent("content/case-studies.json", JSON.stringify(studies, null, 2), message)
-  return { ok: true };
+/** Case studies — persist to content/case-studies.json via GitHub */
+export async function saveCaseStudies(studies: unknown[], message?: string): Promise<{ ok: boolean; error?: string }> {
+  const content = JSON.stringify(studies, null, 2);
+  return saveContent("content/case-studies.json", content, message ?? "Update case studies");
 }

@@ -9,7 +9,7 @@ import type { Exploration } from "@/lib/content/explorations";
 import type { MediaConfig } from "@/lib/content/media";
 import type { PageCopy } from "@/lib/content/copy";
 import { useBooking } from "../booking-context";
-import { ToolBadges } from "@/components/tool-badge";
+import { ToolBadge, ToolBadges } from "@/components/tool-badge";
 
 /* ═══════════════════════════════════════════════════════════════
    SYNTHESIS PAGES — Best-of mashup inner pages

@@ -89,7 +89,7 @@ function ActivityHeatmap({ activity }: { activity: ActivityEntry[] }) {
                       {ACTIVITY_CONFIG[e.type].label}
                     </span>
                     <span className="text-[9px] text-[#888] flex items-center gap-1" style={{ fontFamily: "monospace" }}>
-                      <ToolBadge tool={e.tool} size={12} showLabel />
+                      {e.tool && <ToolBadge tool={e.tool} size={12} showLabel />}
                     </span>
                   </div>
                 ))}
