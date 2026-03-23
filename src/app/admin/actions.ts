@@ -140,6 +140,15 @@ export async function saveBlogPost(
   return saveContent("content/blog.json", content, message ?? "Update blog post");
 }
 
+/** Blog categories — persist to content/blog-categories.json via GitHub */
+export async function saveBlogCategories(
+  categories: string[],
+  message?: string
+): Promise<{ ok: boolean; error?: string }> {
+  const content = JSON.stringify(categories, null, 2);
+  return saveContent("content/blog-categories.json", content, message ?? "Update blog categories");
+}
+
 /** Blog series — persist to content/blog-series.json via GitHub */
 export async function saveBlogSeries(
   series: unknown[],

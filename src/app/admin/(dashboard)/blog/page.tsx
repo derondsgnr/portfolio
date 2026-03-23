@@ -11,7 +11,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { saveBlogPost, saveBlogSeries } from "@/app/admin/actions";
+import { saveBlogPost, saveBlogSeries, saveBlogCategories } from "@/app/admin/actions";
 import { useAdmin } from "@/components/admin/admin-context";
 import { adminCx, PageHeader, FormField } from "@/components/admin/admin-primitives";
 import { SlideEditor } from "@/components/admin/slide-editor";
@@ -41,7 +41,7 @@ interface ManagedPost {
   status: "published" | "draft" | "archived";
 }
 
-const CATEGORIES = ["Thinking", "Craft", "Case Notes", "Process", "Life", "Industry"];
+const DEFAULT_CATEGORIES = ["Thinking", "Craft", "Case Notes", "Process", "Life", "Industry", "Tools"];
 
 // ─── Map static posts ──────────────────────────────────────────────
 const INITIAL_POSTS: ManagedPost[] = BLOG_POSTS.map((p) => ({
@@ -112,6 +112,7 @@ function PostEditor({
   onClose: () => void;
   isSaving: boolean;
   seriesList: BlogSeries[];
+  categoryList: string[];
 }) {
   const [form, setForm] = useState<ManagedPost>(post);
   const [tagInput, setTagInput] = useState("");
@@ -212,7 +213,7 @@ function PostEditor({
                   <div className="grid grid-cols-2 gap-3">
                     <FormField label="Category">
                       <select className={adminCx.select} value={form.meta.category} onChange={(e) => setMeta("category", e.target.value)}>
-                        {CATEGORIES.map((c) => <option key={c} value={c} style={{ background: "#0A0A0A" }}>{c}</option>)}
+                        {categoryList.map((c) => <option key={c} value={c} style={{ background: "#0A0A0A" }}>{c}</option>)}
                       </select>
                     </FormField>
                     <FormField label="Status">
@@ -543,14 +544,103 @@ function SeriesManager({
   );
 }
 
+// ─── Categories Manager ─────────────────────────────────────────────
+function CategoriesManager({
+  categories,
+  onUpdate,
+}: {
+  categories: string[];
+  onUpdate: (updated: string[]) => void;
+}) {
+  const [items, setItems] = useState(categories);
+  const [newCat, setNewCat] = useState("");
+  const dirty = JSON.stringify(items) !== JSON.stringify(categories);
+
+  function addCategory() {
+    const cat = newCat.trim();
+    if (!cat || items.includes(cat)) return;
+    setItems([...items, cat]);
+    setNewCat("");
+  }
+
+  function removeCategory(idx: number) {
+    setItems(items.filter((_, i) => i !== idx));
+  }
+
+  function moveUp(idx: number) {
+    if (idx === 0) return;
+    const arr = [...items];
+    [arr[idx - 1], arr[idx]] = [arr[idx], arr[idx - 1]];
+    setItems(arr);
+  }
+
+  function moveDown(idx: number) {
+    if (idx === items.length - 1) return;
+    const arr = [...items];
+    [arr[idx], arr[idx + 1]] = [arr[idx + 1], arr[idx]];
+    setItems(arr);
+  }
+
+  return (
+    <div className="max-w-md">
+      <div className="flex items-center justify-between mb-5">
+        <span className="text-[10px] tracking-[0.15em] text-white/25 font-['Instrument_Sans'] uppercase">
+          {items.length} categories
+        </span>
+        {dirty && (
+          <button
+            onClick={() => onUpdate(items)}
+            className="px-5 py-1.5 bg-[#E2B93B] text-[#0A0A0A] font-['Anton'] text-[11px] tracking-[0.12em] hover:bg-white transition-colors"
+          >
+            SAVE
+          </button>
+        )}
+      </div>
+
+      <div className="border border-white/[0.07] overflow-hidden mb-4">
+        {items.map((cat, i) => (
+          <div
+            key={cat}
+            className="flex items-center gap-3 px-4 py-2.5 border-b border-white/[0.05] hover:bg-white/[0.02] transition-colors"
+          >
+            <span className="text-[10px] text-[#E2B93B]/40 font-['Instrument_Sans'] w-4">{i + 1}</span>
+            <span className="text-[12px] text-white/60 font-['Instrument_Sans'] flex-1">{cat}</span>
+            <button onClick={() => moveUp(i)} disabled={i === 0} className="text-[9px] text-white/20 hover:text-white/50 transition-colors disabled:opacity-30">↑</button>
+            <button onClick={() => moveDown(i)} disabled={i === items.length - 1} className="text-[9px] text-white/20 hover:text-white/50 transition-colors disabled:opacity-30">↓</button>
+            <button onClick={() => removeCategory(i)} className="text-white/20 hover:text-red-400/60 transition-colors"><X size={11} /></button>
+          </div>
+        ))}
+      </div>
+
+      <div className="flex gap-2">
+        <input
+          className={adminCx.input}
+          value={newCat}
+          onChange={(e) => setNewCat(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addCategory())}
+          placeholder="New category name"
+        />
+        <button
+          onClick={addCategory}
+          disabled={!newCat.trim() || items.includes(newCat.trim())}
+          className="flex items-center gap-1.5 px-4 py-2 bg-[#E2B93B] text-[#0A0A0A] font-['Anton'] text-[10px] tracking-[0.1em] hover:bg-white transition-colors disabled:opacity-50"
+        >
+          <Plus size={12} /> ADD
+        </button>
+      </div>
+    </div>
+  );
+}
+
 // ─── Blog Admin Page ───────────────────────────────────────────────
 function AdminBlogPage() {
   const { pushHistory, pendingRevert, clearPendingRevert } = useAdmin();
-  const [tab, setTab] = useState<"posts" | "series">("posts");
+  const [tab, setTab] = useState<"posts" | "series" | "categories">("posts");
   const [posts, setPosts] = useState<ManagedPost[]>(INITIAL_POSTS);
   const [seriesList, setSeriesList] = useState<ManagedSeries[]>(
     BLOG_SERIES.map((s) => ({ ...s }))
   );
+  const [categoryList, setCategoryList] = useState<string[]>(DEFAULT_CATEGORIES);
   const [activeSlug, setActiveSlug] = useState<string | null>(null);
   const [savingSlug, setSavingSlug] = useState<string | null>(null);
   const [savingSeries, setSavingSeries] = useState(false);
@@ -625,7 +715,7 @@ function AdminBlogPage() {
 
           {/* Tab bar */}
           <div className="flex items-center gap-1 mb-6">
-            {(["posts", "series"] as const).map((t) => (
+            {(["posts", "series", "categories"] as const).map((t) => (
               <button
                 key={t}
                 onClick={() => setTab(t)}
@@ -675,6 +765,20 @@ function AdminBlogPage() {
               postSlugs={posts.map((p) => p.slug)}
             />
           )}
+
+          {tab === "categories" && (
+            <CategoriesManager
+              categories={categoryList}
+              onUpdate={async (updated) => {
+                const result = await saveBlogCategories(updated, "Update blog categories");
+                if (result.ok) {
+                  setCategoryList(updated);
+                  pushHistory("blog", "Blog", "Updated categories", updated);
+                  setLastSaved(new Date().toLocaleTimeString());
+                }
+              }}
+            />
+          )}
         </div>
       ) : (
         /* Full editor view */
@@ -703,6 +807,7 @@ function AdminBlogPage() {
               onClose={() => setActiveSlug(null)}
               isSaving={savingSlug === activePost.slug}
               seriesList={seriesList}
+              categoryList={categoryList}
             />
           </div>
         </div>
