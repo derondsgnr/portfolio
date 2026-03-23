@@ -150,9 +150,9 @@ export async function saveNow(data: unknown, message?: string): Promise<{ ok: bo
 const KV_TABLE = "kv_store_3fa6479f";
 
 function supabaseAdmin() {
-  const projectId = process.env.NEXT_PUBLIC_SUPABASE_PROJECT_ID ?? "meyqmckflkcdblmadrvv";
+  const projectId = process.env.NEXT_PUBLIC_SUPABASE_PROJECT_ID;
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!serviceKey) return null;
+  if (!projectId || !serviceKey) return null;
   return { url: `https://${projectId}.supabase.co`, key: serviceKey };
 }
 

@@ -183,9 +183,9 @@ function TimeBlocks({ todos }: { todos: TodoItem[] }) {
   );
 }
 
-const ADMIN_PIN = "1234";
+// PIN is passed from the server component via env var — never hardcoded in client bundle
 
-function PinModal({ onSuccess, onClose }: { onSuccess: () => void; onClose: () => void }) {
+function PinModal({ onSuccess, onClose, pin }: { onSuccess: () => void; onClose: () => void; pin: string }) {
   const [digits, setDigits] = useState(["", "", "", ""]);
   const [error, setError] = useState(false);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([null, null, null, null]);
@@ -198,7 +198,7 @@ function PinModal({ onSuccess, onClose }: { onSuccess: () => void; onClose: () =
     setError(false);
     if (val && i < 3) inputRefs.current[i + 1]?.focus();
     if (next.every((d) => d !== "") && val) {
-      if (next.join("") === ADMIN_PIN) onSuccess();
+      if (pin && next.join("") === pin) onSuccess();
       else {
         setError(true);
         setTimeout(() => { setDigits(["", "", "", ""]); setError(false); inputRefs.current[0]?.focus(); }, 700);
@@ -384,7 +384,7 @@ function AdminDrawer({
   );
 }
 
-export default function NowClient({ initial }: { initial: NowConfig }) {
+export default function NowClient({ initial, adminPin = "" }: { initial: NowConfig; adminPin?: string }) {
   const [showPin, setShowPin] = useState(false);
   const [adminOpen, setAdminOpen] = useState(false);
   const [config, setConfig] = useState<NowConfig>(initial);
@@ -435,10 +435,12 @@ export default function NowClient({ initial }: { initial: NowConfig }) {
       <div ref={heroRef} className="relative z-10 px-6 md:px-14 lg:px-20 pt-16 pb-20">
         <div className="flex items-center justify-between mb-16">
           <Link href="/" className="text-[10px] tracking-[0.2em] text-[#444] hover:text-[#E2B93B] transition-colors" style={{ fontFamily: "monospace" }}>← derondsgnr</Link>
-          <button onClick={() => setShowPin(true)} className="group flex items-center gap-2 text-[10px] tracking-[0.15em] text-[#2a2a2a] hover:text-[#E2B93B] transition-colors" style={{ fontFamily: "monospace" }}>
-            <svg width="12" height="14" viewBox="0 0 12 14" fill="none" className="group-hover:stroke-[#E2B93B] transition-colors" stroke="currentColor" strokeWidth="1.5"><rect x="1" y="6" width="10" height="7" rx="1" /><path d="M3.5 6V4a2.5 2.5 0 015 0v2" /></svg>
-            ADMIN
-          </button>
+          {adminPin && (
+            <button onClick={() => setShowPin(true)} className="group flex items-center gap-2 text-[10px] tracking-[0.15em] text-[#2a2a2a] hover:text-[#E2B93B] transition-colors" style={{ fontFamily: "monospace" }}>
+              <svg width="12" height="14" viewBox="0 0 12 14" fill="none" className="group-hover:stroke-[#E2B93B] transition-colors" stroke="currentColor" strokeWidth="1.5"><rect x="1" y="6" width="10" height="7" rx="1" /><path d="M3.5 6V4a2.5 2.5 0 015 0v2" /></svg>
+              ADMIN
+            </button>
+          )}
         </div>
 
         <div className="flex flex-col md:flex-row md:items-end gap-6 md:gap-16 mb-8">
@@ -520,7 +522,7 @@ export default function NowClient({ initial }: { initial: NowConfig }) {
       </div>
 
       <AnimatePresence>
-        {showPin && <PinModal onSuccess={handlePinSuccess} onClose={() => setShowPin(false)} />}
+        {showPin && <PinModal pin={adminPin} onSuccess={handlePinSuccess} onClose={() => setShowPin(false)} />}
       </AnimatePresence>
 
       <AnimatePresence>

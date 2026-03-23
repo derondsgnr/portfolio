@@ -26,6 +26,7 @@ import {
 } from "../homepage-data";
 import { useTestimonials } from "@/contexts/testimonials-context";
 import { useSiteConfig } from "@/contexts/site-config-context";
+import { useBooking } from "@/components/v2/booking-context";
 
 /* ─── HERO: Centered monolith ─────────────────────────────────── */
 function HeroDescent() {
@@ -613,6 +614,7 @@ function TestimonialsDescent() {
 /* ─── FOOTER/CTA ──────────────────────────────────────────────── */
 function FooterDescent() {
   const { global } = useSiteConfig();
+  const { open } = useBooking();
   const socialLinks = global.socialLinks;
   const copyright = global.footerCopyright ?? `© ${new Date().getFullYear()} derondsgnr`;
   return (
@@ -661,9 +663,9 @@ function FooterDescent() {
           </TextReveal>
 
           <Reveal delay={0.4}>
-            <a
-              href="#"
-              className="inline-block px-10 py-4 bg-[#e2b93b] text-[#0a0a0a] hover:bg-[#e2b93b]/80 transition-colors duration-300 mt-14"
+            <button
+              onClick={() => open("book")}
+              className="inline-block px-10 py-4 bg-[#e2b93b] text-[#0a0a0a] hover:bg-[#e2b93b]/80 transition-colors duration-300 mt-14 cursor-pointer"
               style={{
                 fontFamily: "var(--font-body)",
                 fontSize: "0.75rem",
@@ -672,7 +674,7 @@ function FooterDescent() {
               }}
             >
               Book a call
-            </a>
+            </button>
           </Reveal>
         </div>
 

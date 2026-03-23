@@ -28,6 +28,7 @@ import {
 } from "../homepage-data";
 import { useTestimonials } from "@/contexts/testimonials-context";
 import { useSiteConfig } from "@/contexts/site-config-context";
+import { useBooking } from "@/components/v2/booking-context";
 
 /* ─── HERO: Full viewport, stacked, cinematic ─────────────────── */
 function HeroMonument() {
@@ -677,6 +678,7 @@ function TestimonialsMonument() {
 /* ─── FOOTER ──────────────────────────────────────────────────── */
 function FooterMonument() {
   const { global } = useSiteConfig();
+  const { open } = useBooking();
   const socialLinks = global.socialLinks;
   const copyright = global.footerCopyright ?? `© ${new Date().getFullYear()} DERONDSGNR`;
   return (
@@ -713,9 +715,9 @@ function FooterMonument() {
           </TextReveal>
 
           <Reveal delay={0.3}>
-            <a
-              href="#"
-              className="inline-block px-12 py-4 bg-[#e2b93b] text-[#0a0a0a] hover:bg-[#e2b93b]/80 transition-colors duration-300 mt-12"
+            <button
+              onClick={() => open("book")}
+              className="inline-block px-12 py-4 bg-[#e2b93b] text-[#0a0a0a] hover:bg-[#e2b93b]/80 transition-colors duration-300 mt-12 cursor-pointer"
               style={{
                 fontFamily: "var(--font-body)",
                 fontSize: "0.55rem",
@@ -725,7 +727,7 @@ function FooterMonument() {
               }}
             >
               Schedule Now
-            </a>
+            </button>
           </Reveal>
         </div>
 

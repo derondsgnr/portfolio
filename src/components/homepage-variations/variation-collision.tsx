@@ -25,6 +25,7 @@ import {
   PROCESS_WORDS,
 } from "../homepage-data";
 import { useTestimonials } from "@/contexts/testimonials-context";
+import { useBooking } from "@/components/v2/booking-context";
 import { useSiteConfig } from "@/contexts/site-config-context";
 
 /* ─── HERO: Name so large it crops, creating architecture ─────── */
@@ -737,6 +738,7 @@ function TestimonialsCollision() {
 /* ─── FOOTER ──────────────────────────────────────────────────── */
 function FooterCollision() {
   const { global } = useSiteConfig();
+  const { open } = useBooking();
   const socialLinks = global.socialLinks;
   const copyright = global.footerCopyright ?? `© ${new Date().getFullYear()} derondsgnr`;
   return (
@@ -790,9 +792,9 @@ function FooterCollision() {
             </div>
 
             <Reveal delay={0.4} className="mt-8 md:mt-0 shrink-0">
-              <a
-                href="#"
-                className="inline-block px-8 py-4 bg-[#e2b93b] text-[#0a0a0a] hover:bg-[#e2b93b]/80 transition-colors duration-300"
+              <button
+                onClick={() => open("book")}
+                className="inline-block px-8 py-4 bg-[#e2b93b] text-[#0a0a0a] hover:bg-[#e2b93b]/80 transition-colors duration-300 cursor-pointer"
                 style={{
                   fontFamily: "var(--font-body)",
                   fontSize: "0.85rem",
@@ -802,7 +804,7 @@ function FooterCollision() {
                 }}
               >
                 Book a call
-              </a>
+              </button>
             </Reveal>
           </div>
         </div>

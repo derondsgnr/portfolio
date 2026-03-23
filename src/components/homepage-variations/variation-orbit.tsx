@@ -28,6 +28,7 @@ import {
 } from "../homepage-data";
 import { useTestimonials } from "@/contexts/testimonials-context";
 import { useSiteConfig } from "@/contexts/site-config-context";
+import { useBooking } from "@/components/v2/booking-context";
 
 /* ─── HERO: Scattered, spatial, floating ──────────────────────── */
 function HeroOrbit() {
@@ -746,6 +747,7 @@ function TestimonialsOrbit() {
 /* ─── FOOTER ──────────────────────────────────────────────────── */
 function FooterOrbit() {
   const { global } = useSiteConfig();
+  const { open } = useBooking();
   const socialLinks = global.socialLinks;
   const copyright = global.footerCopyright ?? `© ${new Date().getFullYear()} derondsgnr`;
   return (
@@ -782,13 +784,13 @@ function FooterOrbit() {
 
           <div className="md:col-span-4 md:col-start-9 md:flex md:items-end">
             <Reveal delay={0.3}>
-              <a
-                href="#"
-                className="inline-block text-[0.85rem] uppercase tracking-[0.15em] px-8 py-4 bg-[#e2b93b] text-[#0a0a0a] hover:bg-[#e2b93b]/80 transition-colors duration-300"
+              <button
+                onClick={() => open("book")}
+                className="inline-block text-[0.85rem] uppercase tracking-[0.15em] px-8 py-4 bg-[#e2b93b] text-[#0a0a0a] hover:bg-[#e2b93b]/80 transition-colors duration-300 cursor-pointer"
                 style={{ fontFamily: "var(--font-body)" }}
               >
                 Book a call
-              </a>
+              </button>
             </Reveal>
           </div>
         </div>

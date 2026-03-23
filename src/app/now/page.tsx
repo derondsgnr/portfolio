@@ -5,5 +5,6 @@ export const dynamic = "force-dynamic";
 
 export default async function NowPage() {
   const initial = await getNow();
-  return <NowClient initial={initial} />;
+  const adminPin = process.env.NOW_ADMIN_PIN ?? "";
+  return <NowClient initial={initial} adminPin={adminPin} />;
 }

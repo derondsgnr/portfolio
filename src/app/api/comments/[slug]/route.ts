@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 
-const projectId =
-  process.env.NEXT_PUBLIC_SUPABASE_PROJECT_ID ?? "meyqmckflkcdblmadrvv";
+const projectId = process.env.NEXT_PUBLIC_SUPABASE_PROJECT_ID ?? "";
 const publicAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "";
 const API_BASE = `https://${projectId}.supabase.co/functions/v1/make-server-3fa6479f`;
 

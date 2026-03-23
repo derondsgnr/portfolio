@@ -16,7 +16,8 @@ export type ContactPayload = {
 const KV_TABLE = "kv_store_3fa6479f";
 
 function getSupabaseAdmin() {
-  const projectId = process.env.NEXT_PUBLIC_SUPABASE_PROJECT_ID ?? "meyqmckflkcdblmadrvv";
+  const projectId = process.env.NEXT_PUBLIC_SUPABASE_PROJECT_ID;
+  if (!projectId) throw new Error("NEXT_PUBLIC_SUPABASE_PROJECT_ID is required for contact storage");
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL ?? `https://${projectId}.supabase.co`;
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
   if (!key) throw new Error("SUPABASE_SERVICE_ROLE_KEY is required for contact storage");
