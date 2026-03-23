@@ -70,6 +70,13 @@ const DEFAULTS: CopyConfig = {
     hero: { label: "> EXPERIMENTS.MAP()" },
     cta: { ctaPrimary: "BOOK A CALL", ctaSecondary: "SEND A MESSAGE" },
   },
+  blog: {
+    hero: {
+      title: "WRITING",
+      label: "WRITING",
+      philosophy: "Notes from the intersection of design, code, and craft. Long-form thinking, not short-form takes.",
+    },
+  },
 };
 
 function deepMerge<T extends Record<string, unknown>>(target: T, source: Partial<T>): T {
