@@ -106,6 +106,7 @@ function PostEditor({
   onClose,
   isSaving,
   seriesList,
+  categoryList,
 }: {
   post: ManagedPost;
   onSave: (updated: ManagedPost) => void;

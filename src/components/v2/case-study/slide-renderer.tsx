@@ -2,32 +2,9 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion, useInView, AnimatePresence } from "motion/react";
 import type { Slide, NarratorBlock } from "../../../types/case-study";
 import { DeviceMockup } from "./device-mockup";
+import { useScrambleText } from "../shared/scramble-text";
 
 /* ─── Synthesis DNA helpers ──────────────────────────────────── */
-const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&*!?<>{}[]";
-
-function useScrambleText(text: string, trigger: boolean, speed = 30) {
-  const [display, setDisplay] = useState(
-    text.replace(/[^ ]/g, () => CHARS[Math.floor(Math.random() * CHARS.length)])
-  );
-  useEffect(() => {
-    if (!trigger) return;
-    let iteration = 0;
-    const interval = setInterval(() => {
-      setDisplay(
-        text.split("").map((char, idx) => {
-          if (char === " ") return " ";
-          if (idx < iteration) return char;
-          return CHARS[Math.floor(Math.random() * CHARS.length)];
-        }).join("")
-      );
-      iteration += 1;
-      if (iteration > text.length) clearInterval(interval);
-    }, speed);
-    return () => clearInterval(interval);
-  }, [trigger, text, speed]);
-  return display;
-}
 
 function ScrambleHeading({ text, className = "" }: { text: string; className?: string }) {
   const ref = useRef<HTMLHeadingElement>(null);
