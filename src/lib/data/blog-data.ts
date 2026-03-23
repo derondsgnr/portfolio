@@ -145,6 +145,7 @@ export const BLOG_POSTS: BlogPost[] = [
       summary:
         "The designer-who-codes debate is tired. Here's the real reason I ship what I design — and what I've learned from being on both sides of the Figma handoff.",
       readingTime: 5,
+      series: { slug: "craft-and-code", position: 1 },
     },
     slides: [
       {
@@ -303,6 +304,7 @@ export const BLOG_POSTS: BlogPost[] = [
       summary:
         "Design systems are great at enforcing consistency. They're terrible at preserving taste. The two are not the same thing — and conflating them is how good products go beige.",
       readingTime: 5,
+      series: { slug: "craft-and-code", position: 2 },
     },
     slides: [
       {
@@ -368,5 +370,16 @@ export function getFeaturedPost(): BlogPost | undefined {
 }
 
 export function getRelatedPosts(slug: string, count = 3): BlogPost[] {
-  return BLOG_POSTS.filter((p) => p.slug !== slug).slice(0, count);
+  const post = getBlogPost(slug);
+  const others = BLOG_POSTS.filter((p) => p.slug !== slug);
+
+  // Prioritize same-series posts, then same-category, then the rest
+  if (post?.meta.series) {
+    const seriesSlug = post.meta.series.slug;
+    const sameSeries = others.filter((p) => p.meta.series?.slug === seriesSlug);
+    const rest = others.filter((p) => p.meta.series?.slug !== seriesSlug);
+    return [...sameSeries, ...rest].slice(0, count);
+  }
+
+  return others.slice(0, count);
 }

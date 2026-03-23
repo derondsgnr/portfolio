@@ -11,13 +11,15 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { saveBlogPost } from "@/app/admin/actions";
+import { saveBlogPost, saveBlogSeries } from "@/app/admin/actions";
 import { useAdmin } from "@/components/admin/admin-context";
 import { adminCx, PageHeader, FormField } from "@/components/admin/admin-primitives";
 import { SlideEditor } from "@/components/admin/slide-editor";
 import { BLOG_POSTS } from "@/lib/data/blog-data";
+import { BLOG_SERIES } from "@/lib/data/blog-series-data";
+import type { BlogSeries } from "@/types/blog";
 import type { Slide } from "@/types/case-study";
-import { Plus, Eye, Tag, X, ChevronDown, ChevronRight } from "lucide-react";
+import { Plus, Eye, Tag, X, ChevronDown, ChevronRight, Pencil, Trash2 } from "lucide-react";
 
 // ─── Types ─────────────────────────────────────────────────────────
 interface PostMeta {
@@ -29,13 +31,14 @@ interface PostMeta {
   summary: string;
   readingTime: number;
   featured?: boolean;
+  series?: { slug: string; position: number };
 }
 
 interface ManagedPost {
   slug: string;
   meta: PostMeta;
   slides: Slide[];
-  status: "published" | "draft";
+  status: "published" | "draft" | "archived";
 }
 
 const CATEGORIES = ["Thinking", "Craft", "Case Notes", "Process", "Life", "Industry"];
@@ -52,6 +55,7 @@ const INITIAL_POSTS: ManagedPost[] = BLOG_POSTS.map((p) => ({
     summary: p.meta.summary ?? "",
     readingTime: p.meta.readingTime ?? 5,
     featured: p.meta.featured ?? false,
+    series: p.meta.series,
   },
   slides: (p.slides as Slide[]) ?? [],
   status: "published" as const,
@@ -87,6 +91,7 @@ function PostListItem({
         <p className="text-[9px] text-white/25 font-['Instrument_Sans']">
           {post.meta.category} · {post.slides.length} slides
           {post.status === "draft" && <span className="ml-1.5 text-[#E2B93B]/40">DRAFT</span>}
+          {post.status === "archived" && <span className="ml-1.5 text-white/20">ARCHIVED</span>}
         </p>
       </div>
       <ChevronRight size={12} className={`shrink-0 transition-colors ${isActive ? "text-[#E2B93B]/60" : "text-white/15"}`} />
@@ -100,11 +105,13 @@ function PostEditor({
   onSave,
   onClose,
   isSaving,
+  seriesList,
 }: {
   post: ManagedPost;
   onSave: (updated: ManagedPost) => void;
   onClose: () => void;
   isSaving: boolean;
+  seriesList: BlogSeries[];
 }) {
   const [form, setForm] = useState<ManagedPost>(post);
   const [tagInput, setTagInput] = useState("");
@@ -146,6 +153,7 @@ function PostEditor({
           >
             <option value="published" style={{ background: "#0A0A0A" }}>Published</option>
             <option value="draft" style={{ background: "#0A0A0A" }}>Draft</option>
+            <option value="archived" style={{ background: "#0A0A0A" }}>Archived</option>
           </select>
           <a
             href={`/blog/${post.slug}`}
@@ -236,6 +244,53 @@ function PostEditor({
                     <input type="checkbox" checked={form.meta.featured ?? false} onChange={(e) => setMeta("featured", e.target.checked)} className="h-4 w-4 accent-[#E2B93B]" />
                     <span className="text-[11px] text-white/40 font-['Instrument_Sans'] tracking-wider uppercase">Featured post</span>
                   </label>
+
+                  {/* Series assignment */}
+                  <div className="lg:col-span-2 border-t border-white/[0.05] pt-4 mt-2">
+                    <p className="text-[9px] tracking-[0.2em] text-white/25 font-['Instrument_Sans'] uppercase mb-3">Series</p>
+                    <div className="grid grid-cols-2 gap-3">
+                      <FormField label="Series">
+                        <select
+                          className={adminCx.select}
+                          value={form.meta.series?.slug ?? ""}
+                          onChange={(e) => {
+                            const slug = e.target.value;
+                            if (!slug) {
+                              setMeta("series", undefined);
+                            } else {
+                              setMeta("series", {
+                                slug,
+                                position: form.meta.series?.position ?? 1,
+                              });
+                            }
+                          }}
+                        >
+                          <option value="" style={{ background: "#0A0A0A" }}>None</option>
+                          {seriesList.map((s) => (
+                            <option key={s.slug} value={s.slug} style={{ background: "#0A0A0A" }}>
+                              {s.title} ({s.posts.length} parts)
+                            </option>
+                          ))}
+                        </select>
+                      </FormField>
+                      {form.meta.series && (
+                        <FormField label="Position in series">
+                          <input
+                            type="number"
+                            className={adminCx.input}
+                            value={form.meta.series.position}
+                            onChange={(e) =>
+                              setMeta("series", {
+                                ...form.meta.series!,
+                                position: parseInt(e.target.value) || 1,
+                              })
+                            }
+                            min={1}
+                          />
+                        </FormField>
+                      )}
+                    </div>
+                  </div>
                 </div>
               </motion.div>
             )}
@@ -260,12 +315,245 @@ function PostEditor({
   );
 }
 
+// ─── Series Manager ─────────────────────────────────────────────────
+
+interface ManagedSeries {
+  slug: string;
+  title: string;
+  description: string;
+  cover?: string;
+  posts: string[];
+  archived?: boolean;
+}
+
+function SeriesManager({
+  series,
+  onUpdate,
+  isSaving,
+  postSlugs,
+}: {
+  series: ManagedSeries[];
+  onUpdate: (updated: ManagedSeries[]) => void;
+  isSaving: boolean;
+  postSlugs: string[];
+}) {
+  const [editingSlug, setEditingSlug] = useState<string | null>(null);
+  const [form, setForm] = useState<ManagedSeries | null>(null);
+
+  function startEdit(s: ManagedSeries) {
+    setEditingSlug(s.slug);
+    setForm({ ...s });
+  }
+
+  function startNew() {
+    const blank: ManagedSeries = {
+      slug: `series-${Date.now()}`,
+      title: "",
+      description: "",
+      posts: [],
+    };
+    setForm(blank);
+    setEditingSlug("__new__");
+  }
+
+  function saveForm() {
+    if (!form || !form.title.trim()) return;
+    // Auto-generate slug from title if it's a new series with the default slug
+    const finalForm = {
+      ...form,
+      slug: editingSlug === "__new__"
+        ? form.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "")
+        : form.slug,
+    };
+    if (editingSlug === "__new__") {
+      onUpdate([...series, finalForm]);
+    } else {
+      onUpdate(series.map((s) => (s.slug === editingSlug ? finalForm : s)));
+    }
+    setEditingSlug(null);
+    setForm(null);
+  }
+
+  function deleteSeries(slug: string) {
+    onUpdate(series.filter((s) => s.slug !== slug));
+  }
+
+  function cancelEdit() {
+    setEditingSlug(null);
+    setForm(null);
+  }
+
+  if (form && editingSlug) {
+    return (
+      <div className="max-w-2xl">
+        <div className="flex items-center justify-between mb-5">
+          <button
+            onClick={cancelEdit}
+            className="text-[10px] font-['Instrument_Sans'] tracking-[0.15em] uppercase text-white/25 hover:text-white/60 transition-colors"
+          >
+            ← Back to series
+          </button>
+          <button
+            onClick={saveForm}
+            disabled={isSaving || !form.title.trim()}
+            className="px-5 py-1.5 bg-[#E2B93B] text-[#0A0A0A] font-['Anton'] text-[11px] tracking-[0.12em] hover:bg-white transition-colors disabled:opacity-50"
+          >
+            {isSaving ? "SAVING..." : "SAVE SERIES"}
+          </button>
+        </div>
+        <div className="border border-white/[0.07] p-6 space-y-4">
+          <FormField label="Series Title">
+            <input className={adminCx.input} value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} placeholder="e.g. Craft & Code" />
+          </FormField>
+          <FormField label="Slug">
+            <input
+              className={adminCx.input}
+              value={editingSlug === "__new__" ? form.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "") : form.slug}
+              disabled={editingSlug !== "__new__"}
+              readOnly
+            />
+          </FormField>
+          <FormField label="Description">
+            <textarea className={adminCx.textarea} rows={2} value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} placeholder="1-2 sentence summary of the series" />
+          </FormField>
+          <FormField label="Cover Image URL">
+            <input className={adminCx.input} value={form.cover ?? ""} onChange={(e) => setForm({ ...form, cover: e.target.value || undefined })} placeholder="https://..." />
+            {form.cover && <img src={form.cover} alt="" className="mt-2 h-16 w-full object-cover border border-white/[0.05]" onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />}
+          </FormField>
+          <label className="flex items-center gap-3 cursor-pointer">
+            <input type="checkbox" checked={form.archived ?? false} onChange={(e) => setForm({ ...form, archived: e.target.checked })} className="h-4 w-4 accent-[#E2B93B]" />
+            <span className="text-[11px] text-white/40 font-['Instrument_Sans'] tracking-wider uppercase">Archived</span>
+          </label>
+          <FormField label="Posts in series (ordered)">
+            <div className="space-y-2">
+              {form.posts.map((slug, i) => (
+                <div key={slug} className="flex items-center gap-2">
+                  <span className="text-[10px] text-[#E2B93B]/50 font-['Instrument_Sans'] w-5">{i + 1}.</span>
+                  <span className="text-[11px] text-white/50 font-['Instrument_Sans'] flex-1 truncate">{slug}</span>
+                  <button
+                    onClick={() => {
+                      if (i > 0) {
+                        const arr = [...form.posts];
+                        [arr[i - 1], arr[i]] = [arr[i], arr[i - 1]];
+                        setForm({ ...form, posts: arr });
+                      }
+                    }}
+                    className="text-[9px] text-white/20 hover:text-white/50 transition-colors"
+                    disabled={i === 0}
+                  >↑</button>
+                  <button
+                    onClick={() => {
+                      if (i < form.posts.length - 1) {
+                        const arr = [...form.posts];
+                        [arr[i], arr[i + 1]] = [arr[i + 1], arr[i]];
+                        setForm({ ...form, posts: arr });
+                      }
+                    }}
+                    className="text-[9px] text-white/20 hover:text-white/50 transition-colors"
+                    disabled={i === form.posts.length - 1}
+                  >↓</button>
+                  <button
+                    onClick={() => setForm({ ...form, posts: form.posts.filter((_, j) => j !== i) })}
+                    className="text-white/20 hover:text-red-400/60 transition-colors"
+                  ><X size={11} /></button>
+                </div>
+              ))}
+              {/* Add post dropdown */}
+              <select
+                className={adminCx.select}
+                value=""
+                onChange={(e) => {
+                  if (e.target.value && !form.posts.includes(e.target.value)) {
+                    setForm({ ...form, posts: [...form.posts, e.target.value] });
+                  }
+                }}
+              >
+                <option value="" style={{ background: "#0A0A0A" }}>+ Add a post...</option>
+                {postSlugs.filter((s) => !form.posts.includes(s)).map((s) => (
+                  <option key={s} value={s} style={{ background: "#0A0A0A" }}>{s}</option>
+                ))}
+              </select>
+            </div>
+          </FormField>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-5">
+        <span className="text-[10px] tracking-[0.15em] text-white/25 font-['Instrument_Sans'] uppercase">
+          {series.length} series
+        </span>
+        <button
+          onClick={startNew}
+          className="flex items-center gap-2 px-4 py-2.5 bg-[#E2B93B] text-[#0A0A0A] font-['Anton'] text-[11px] tracking-[0.12em] hover:bg-white transition-colors"
+        >
+          <Plus size={13} /> NEW SERIES
+        </button>
+      </div>
+      <div className="max-w-2xl border border-white/[0.07] overflow-hidden">
+        {series.length === 0 && (
+          <div className="px-6 py-8 text-center">
+            <p className="text-[11px] text-white/20 font-['Instrument_Sans']">No series yet. Create one to group related posts.</p>
+          </div>
+        )}
+        {series.map((s) => (
+          <div
+            key={s.slug}
+            className="flex items-center gap-3 px-4 py-3 border-b border-white/[0.05] hover:bg-white/[0.02] transition-colors"
+          >
+            {s.cover ? (
+              <div className="w-10 h-8 shrink-0 bg-cover bg-center border border-white/[0.06]" style={{ backgroundImage: `url(${s.cover})` }} />
+            ) : (
+              <div className="w-10 h-8 shrink-0 bg-white/[0.03] border border-white/[0.05] flex items-center justify-center">
+                <span className="text-[7px] text-white/15 font-['Instrument_Sans']">SER</span>
+              </div>
+            )}
+            <div className="flex-1 min-w-0">
+              <p className="text-[12px] font-['Instrument_Sans'] text-white/75 truncate">{s.title}</p>
+              <p className="text-[9px] text-white/25 font-['Instrument_Sans']">
+                {s.posts.length} post{s.posts.length !== 1 ? "s" : ""} · {s.slug}
+                {s.archived && <span className="ml-1.5 text-white/15">ARCHIVED</span>}
+              </p>
+            </div>
+            <button
+              onClick={() => startEdit(s)}
+              className="text-white/20 hover:text-[#E2B93B]/60 transition-colors p-1"
+              title="Edit series"
+            >
+              <Pencil size={13} />
+            </button>
+            <button
+              onClick={() => {
+                if (confirm(`Delete series "${s.title}"? Posts will not be deleted.`)) {
+                  deleteSeries(s.slug);
+                }
+              }}
+              className="text-white/20 hover:text-red-400/60 transition-colors p-1"
+              title="Delete series"
+            >
+              <Trash2 size={13} />
+            </button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 // ─── Blog Admin Page ───────────────────────────────────────────────
 function AdminBlogPage() {
   const { pushHistory, pendingRevert, clearPendingRevert } = useAdmin();
+  const [tab, setTab] = useState<"posts" | "series">("posts");
   const [posts, setPosts] = useState<ManagedPost[]>(INITIAL_POSTS);
+  const [seriesList, setSeriesList] = useState<ManagedSeries[]>(
+    BLOG_SERIES.map((s) => ({ ...s }))
+  );
   const [activeSlug, setActiveSlug] = useState<string | null>(null);
   const [savingSlug, setSavingSlug] = useState<string | null>(null);
+  const [savingSeries, setSavingSeries] = useState(false);
   const [lastSaved, setLastSaved] = useState<string | null>(null);
 
   useEffect(() => {
@@ -282,7 +570,6 @@ function AdminBlogPage() {
     const result = await saveBlogPost(post.slug, post, `Updated ${post.meta.title}`);
     if (result.ok) {
       const updated = posts.map((p) => (p.slug === post.slug ? post : p));
-      // Handle new posts that aren't in the list yet
       const exists = posts.some((p) => p.slug === post.slug);
       const final = exists ? updated : [...posts, post];
       setPosts(final);
@@ -291,6 +578,17 @@ function AdminBlogPage() {
       setActiveSlug(post.slug);
     }
     setSavingSlug(null);
+  }
+
+  async function handleSeriesUpdate(updated: ManagedSeries[]) {
+    setSavingSeries(true);
+    const result = await saveBlogSeries(updated, "Update blog series");
+    if (result.ok) {
+      setSeriesList(updated);
+      pushHistory("blog", "Blog", "Updated series", updated);
+      setLastSaved(new Date().toLocaleTimeString());
+    }
+    setSavingSeries(false);
   }
 
   function newPost() {
@@ -317,40 +615,70 @@ function AdminBlogPage() {
   return (
     <div>
       {!activePost ? (
-        /* Post list view */
         <div>
           <PageHeader
             index={6}
             title="Blog"
-            description="Write and manage blog posts. Click a post to open the full editor with metadata and slide-by-slide content."
+            description="Write and manage blog posts and series."
             lastSaved={lastSaved}
           />
-          <div className="flex items-center justify-between mb-5">
-            <span className="text-[10px] tracking-[0.15em] text-white/25 font-['Instrument_Sans'] uppercase">
-              {posts.length} post{posts.length !== 1 ? "s" : ""}
-            </span>
-            <button
-              onClick={newPost}
-              className="flex items-center gap-2 px-4 py-2.5 bg-[#E2B93B] text-[#0A0A0A] font-['Anton'] text-[11px] tracking-[0.12em] hover:bg-white transition-colors"
-            >
-              <Plus size={13} /> NEW POST
-            </button>
-          </div>
-          <div className="max-w-2xl border border-white/[0.07] overflow-hidden">
-            {posts.map((post) => (
-              <PostListItem
-                key={post.slug}
-                post={post}
-                isActive={false}
-                onClick={() => setActiveSlug(post.slug)}
-              />
+
+          {/* Tab bar */}
+          <div className="flex items-center gap-1 mb-6">
+            {(["posts", "series"] as const).map((t) => (
+              <button
+                key={t}
+                onClick={() => setTab(t)}
+                className="text-[10px] tracking-[0.15em] px-4 py-2 font-['Instrument_Sans'] uppercase transition-all border"
+                style={{
+                  borderColor: tab === t ? "rgba(226,185,59,0.4)" : "rgba(255,255,255,0.06)",
+                  color: tab === t ? "#E2B93B" : "rgba(255,255,255,0.25)",
+                  background: tab === t ? "rgba(226,185,59,0.06)" : "transparent",
+                }}
+              >
+                {t}
+              </button>
             ))}
           </div>
+
+          {tab === "posts" && (
+            <>
+              <div className="flex items-center justify-between mb-5">
+                <span className="text-[10px] tracking-[0.15em] text-white/25 font-['Instrument_Sans'] uppercase">
+                  {posts.length} post{posts.length !== 1 ? "s" : ""}
+                </span>
+                <button
+                  onClick={newPost}
+                  className="flex items-center gap-2 px-4 py-2.5 bg-[#E2B93B] text-[#0A0A0A] font-['Anton'] text-[11px] tracking-[0.12em] hover:bg-white transition-colors"
+                >
+                  <Plus size={13} /> NEW POST
+                </button>
+              </div>
+              <div className="max-w-2xl border border-white/[0.07] overflow-hidden">
+                {posts.map((post) => (
+                  <PostListItem
+                    key={post.slug}
+                    post={post}
+                    isActive={false}
+                    onClick={() => setActiveSlug(post.slug)}
+                  />
+                ))}
+              </div>
+            </>
+          )}
+
+          {tab === "series" && (
+            <SeriesManager
+              series={seriesList}
+              onUpdate={handleSeriesUpdate}
+              isSaving={savingSeries}
+              postSlugs={posts.map((p) => p.slug)}
+            />
+          )}
         </div>
       ) : (
         /* Full editor view */
         <div className="-mx-10 -my-12 h-screen flex flex-col" style={{ height: "calc(100vh - 0px)" }}>
-          {/* Back nav */}
           <div className="px-6 py-2.5 border-b border-white/[0.05] flex items-center gap-3 bg-[#0A0A0A] shrink-0">
             <button
               onClick={() => setActiveSlug(null)}
@@ -374,6 +702,7 @@ function AdminBlogPage() {
               onSave={savePost}
               onClose={() => setActiveSlug(null)}
               isSaving={savingSlug === activePost.slug}
+              seriesList={seriesList}
             />
           </div>
         </div>

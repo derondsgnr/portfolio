@@ -34,7 +34,9 @@ export function useSiteConfig(): SiteConfig {
       nav: [
         { label: "Work", path: "/work" },
         { label: "Craft", path: "/craft" },
+        { label: "Writing", path: "/blog" },
         { label: "About", path: "/about" },
+        { label: "Now", path: "/now" },
       ],
       global: {
         socialLinks: [

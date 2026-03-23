@@ -4,7 +4,9 @@ import { useState, useRef } from "react";
 import { motion, useInView } from "motion/react";
 import Link from "next/link";
 import { BLOG_POSTS, getFeaturedPost } from "@/lib/data/blog-data";
-import type { BlogPost, BlogCategory } from "@/types/blog";
+import { getAllSeries, getSeriesBySlug, getSeriesPosts } from "@/lib/data/blog-series-data";
+import type { BlogPost, BlogCategory, BlogSeries } from "@/types/blog";
+import { SeriesBadge } from "@/components/v2/blog/series-badge";
 
 /* ─── Helpers ─────────────────────────────────────────────────── */
 
@@ -171,6 +173,18 @@ function PostCard({ post, index }: { post: BlogPost; index: number }) {
           </div>
         </div>
 
+        {/* Series badge */}
+        {post.meta.series && (() => {
+          const s = getSeriesBySlug(post.meta.series.slug);
+          return s ? (
+            <SeriesBadge
+              seriesTitle={s.title}
+              position={post.meta.series.position}
+              total={s.posts.length}
+            />
+          ) : null;
+        })()}
+
         {/* Meta */}
         <span
           className="text-[9px] tracking-[0.1em] text-[#444] block mb-2"
@@ -230,14 +244,26 @@ const ALL_CATEGORIES: (BlogCategory | "All")[] = [
 
 export default function BlogPage() {
   const [activeCategory, setActiveCategory] = useState<BlogCategory | "All">("All");
+  const [filterMode, setFilterMode] = useState<"category" | "series">("category");
+  const [activeSeries, setActiveSeries] = useState<string | null>(null);
   const featured = getFeaturedPost();
   const heroRef = useRef<HTMLDivElement>(null);
   const heroInView = useInView(heroRef, { once: true, amount: 0.3 });
+  const allSeries = getAllSeries();
 
-  const filtered = BLOG_POSTS.filter((p) =>
-    activeCategory === "All" ? true : p.meta.category === activeCategory
-  );
-  const nonFeatured = filtered.filter((p) => !p.meta.featured);
+  // Filter posts based on current mode
+  const filtered =
+    filterMode === "series"
+      ? activeSeries
+        ? getSeriesPosts(activeSeries)
+        : [] // No series selected yet — show empty grid (series cards are above)
+      : BLOG_POSTS.filter((p) =>
+          activeCategory === "All" ? true : p.meta.category === activeCategory
+        );
+  const nonFeatured =
+    filterMode === "series"
+      ? filtered // In series mode, show all in order (no featured treatment)
+      : filtered.filter((p) => !p.meta.featured);
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white pt-24">
@@ -305,19 +331,24 @@ export default function BlogPage() {
         />
       </div>
 
-      {/* ── Category filter ───────────────────────────────────── */}
-      <div className="relative z-10 px-6 md:px-14 lg:px-20 pb-12">
+      {/* ── Filter bar ─────────────────────────────────────────── */}
+      <div className="relative z-10 px-6 md:px-14 lg:px-20 pb-6">
         <div className="flex items-center gap-2 flex-wrap">
+          {/* Category pills */}
           {ALL_CATEGORIES.map((cat) => {
             const hasPost =
               cat === "All" ||
               BLOG_POSTS.some((p) => p.meta.category === cat);
             if (!hasPost) return null;
-            const active = activeCategory === cat;
+            const active = filterMode === "category" && activeCategory === cat;
             return (
               <motion.button
                 key={cat}
-                onClick={() => setActiveCategory(cat)}
+                onClick={() => {
+                  setFilterMode("category");
+                  setActiveSeries(null);
+                  setActiveCategory(cat);
+                }}
                 whileHover={{ y: -1 }}
                 whileTap={{ y: 0 }}
                 className="text-[10px] tracking-[0.15em] px-4 py-2 border transition-all duration-200"
@@ -332,11 +363,112 @@ export default function BlogPage() {
               </motion.button>
             );
           })}
+
+          {/* Divider */}
+          {allSeries.length > 0 && (
+            <div className="w-px h-5 bg-[#1a1a1a] mx-1" />
+          )}
+
+          {/* Series pill */}
+          {allSeries.length > 0 && (
+            <motion.button
+              onClick={() => {
+                if (filterMode === "series") {
+                  setFilterMode("category");
+                  setActiveSeries(null);
+                  setActiveCategory("All");
+                } else {
+                  setFilterMode("series");
+                  setActiveSeries(null);
+                }
+              }}
+              whileHover={{ y: -1 }}
+              whileTap={{ y: 0 }}
+              className="text-[10px] tracking-[0.15em] px-4 py-2 border transition-all duration-200"
+              style={{
+                fontFamily: "monospace",
+                borderColor: filterMode === "series" ? "#E2B93B" : "#1a1a1a",
+                color: filterMode === "series" ? "#E2B93B" : "#444",
+                background:
+                  filterMode === "series"
+                    ? "rgba(226,185,59,0.08)"
+                    : "transparent",
+              }}
+            >
+              SERIES
+            </motion.button>
+          )}
         </div>
       </div>
 
+      {/* ── Series cards strip ─────────────────────────────────── */}
+      {filterMode === "series" && (
+        <div className="relative z-10 px-6 md:px-14 lg:px-20 pb-12">
+          <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-none">
+            {allSeries.map((s) => {
+              const isActive = activeSeries === s.slug;
+              return (
+                <motion.button
+                  key={s.slug}
+                  onClick={() =>
+                    setActiveSeries(isActive ? null : s.slug)
+                  }
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4 }}
+                  className="flex-shrink-0 flex items-center gap-4 border p-3 pr-6 transition-all duration-300 text-left"
+                  style={{
+                    borderColor: isActive ? "#E2B93B" : "#1a1a1a",
+                    background: isActive
+                      ? "rgba(226,185,59,0.05)"
+                      : "#0d0d0d",
+                  }}
+                >
+                  {/* Thumbnail */}
+                  {s.cover && (
+                    <div className="w-14 h-14 flex-shrink-0 overflow-hidden">
+                      <img
+                        src={s.cover}
+                        alt={s.title}
+                        className="w-full h-full object-cover opacity-60"
+                      />
+                    </div>
+                  )}
+                  <div>
+                    <span
+                      className="text-white text-sm uppercase block leading-tight mb-1"
+                      style={{
+                        fontFamily: "var(--font-heading)",
+                        letterSpacing: "-0.02em",
+                      }}
+                    >
+                      {s.title}
+                    </span>
+                    <span
+                      className="text-[9px] tracking-[0.15em] text-[#555] block"
+                      style={{ fontFamily: "monospace" }}
+                    >
+                      {s.posts.length} PARTS
+                    </span>
+                    {/* Progress bar */}
+                    <div className="w-20 h-px bg-[#1a1a1a] mt-2 relative">
+                      <div
+                        className="absolute top-0 left-0 h-full bg-[#E2B93B]"
+                        style={{
+                          width: `${(s.posts.length / s.posts.length) * 100}%`,
+                        }}
+                      />
+                    </div>
+                  </div>
+                </motion.button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
       {/* ── Featured post ─────────────────────────────────────── */}
-      {featured && (activeCategory === "All" || featured.meta.category === activeCategory) && (
+      {filterMode === "category" && featured && (activeCategory === "All" || featured.meta.category === activeCategory) && (
         <div className="relative z-10 px-6 md:px-14 lg:px-20 pb-16">
           <FeaturedCard post={featured} />
         </div>
@@ -350,7 +482,9 @@ export default function BlogPage() {
               className="text-[9px] tracking-[0.3em] text-[#333]"
               style={{ fontFamily: "monospace" }}
             >
-              ALL PIECES
+              {filterMode === "series" && activeSeries
+                ? getSeriesBySlug(activeSeries)?.title.toUpperCase() ?? "SERIES"
+                : "ALL PIECES"}
             </span>
             <div className="h-px flex-1 bg-[#111]" />
           </div>
@@ -374,7 +508,11 @@ export default function BlogPage() {
             className="text-[10px] tracking-[0.2em] text-[#333]"
             style={{ fontFamily: "monospace" }}
           >
-            NO PIECES IN THIS CATEGORY YET
+            {filterMode === "series"
+              ? activeSeries
+                ? "NO PIECES IN THIS SERIES YET"
+                : "SELECT A SERIES ABOVE"
+              : "NO PIECES IN THIS CATEGORY YET"}
           </span>
         </div>
       )}

@@ -10,6 +10,7 @@ export type NavItem = {
 const DEFAULT_NAV: NavItem[] = [
   { label: "Work", path: "/work" },
   { label: "Craft", path: "/craft" },
+  { label: "Writing", path: "/blog" },
   { label: "About", path: "/about" },
   { label: "Now", path: "/now" },
 ];

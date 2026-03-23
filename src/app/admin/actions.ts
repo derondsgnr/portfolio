@@ -140,6 +140,15 @@ export async function saveBlogPost(
   return saveContent("content/blog.json", content, message ?? "Update blog post");
 }
 
+/** Blog series — persist to content/blog-series.json via GitHub */
+export async function saveBlogSeries(
+  series: unknown[],
+  message?: string
+): Promise<{ ok: boolean; error?: string }> {
+  const content = JSON.stringify(series, null, 2);
+  return saveContent("content/blog-series.json", content, message ?? "Update blog series");
+}
+
 /** Now page config — persist to content/now.json via GitHub */
 export async function saveNow(data: unknown, message?: string): Promise<{ ok: boolean; error?: string }> {
   const content = JSON.stringify(data, null, 2);
