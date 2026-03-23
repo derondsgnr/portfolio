@@ -7,6 +7,56 @@ import type { BlogPost } from "@/types/blog";
 import type { Slide } from "@/types/case-study";
 import { SlideRenderer } from "../case-study/slide-renderer";
 import { getRelatedPosts } from "@/lib/data/blog-data";
+import {
+  getSeriesForPost,
+  getAdjacentSeriesPosts,
+} from "@/lib/data/blog-series-data";
+import { SeriesBanner } from "./series-banner";
+import { SeriesNavFooter } from "./series-nav-footer";
+
+/* ─── Share Button ───────────────────────────────────────────── */
+
+function ShareButton({ title, slug, size = "sm" }: { title: string; slug: string; size?: "sm" | "md" }) {
+  const [copied, setCopied] = useState(false);
+
+  async function handleShare() {
+    const url = `${window.location.origin}/blog/${slug}`;
+    if (navigator.share) {
+      try {
+        await navigator.share({ title, url });
+        return;
+      } catch {
+        // User cancelled or not supported — fall through to clipboard
+      }
+    }
+    await navigator.clipboard.writeText(url);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }
+
+  if (size === "sm") {
+    return (
+      <button
+        onClick={handleShare}
+        className="text-[10px] tracking-[0.15em] text-[#444] hover:text-[#E2B93B] transition-colors"
+        style={{ fontFamily: "monospace" }}
+        title="Share this post"
+      >
+        {copied ? "COPIED" : "SHARE"}
+      </button>
+    );
+  }
+
+  return (
+    <button
+      onClick={handleShare}
+      className="flex items-center gap-2 text-[10px] tracking-[0.15em] px-4 py-2 border border-[#1a1a1a] text-[#444] hover:text-[#E2B93B] hover:border-[#E2B93B]/30 transition-all"
+      style={{ fontFamily: "monospace" }}
+    >
+      {copied ? "LINK COPIED ✓" : "SHARE →"}
+    </button>
+  );
+}
 
 /**
  * BLOG READER
@@ -298,6 +348,11 @@ export function BlogReader({ post }: { post: BlogPost }) {
     return <SlideRenderer key={slide.id} slide={slide} />;
   };
 
+  // Series navigation
+  const series = getSeriesForPost(post.slug);
+  const { prev: seriesPrev, next: seriesNext } = getAdjacentSeriesPosts(post.slug);
+  const seriesPosition = post.meta.series?.position ?? 0;
+
   const heroRef = useRef<HTMLDivElement>(null);
   const heroInView = useInView(heroRef, { once: true, amount: 0.2 });
 
@@ -333,13 +388,16 @@ export function BlogReader({ post }: { post: BlogPost }) {
           >
             {post.meta.category.toUpperCase()} · {post.meta.readingTime} MIN READ
           </span>
-          <Link
-            href="/"
-            className="text-[10px] tracking-[0.15em] text-[#444] hover:text-white transition-colors"
-            style={{ fontFamily: "monospace" }}
-          >
-            derondsgnr
-          </Link>
+          <div className="flex items-center gap-4">
+            <ShareButton title={post.meta.title} slug={post.slug} size="sm" />
+            <Link
+              href="/"
+              className="text-[10px] tracking-[0.15em] text-[#444] hover:text-white transition-colors"
+              style={{ fontFamily: "monospace" }}
+            >
+              derondsgnr
+            </Link>
+          </div>
         </div>
       </div>
 
@@ -409,7 +467,7 @@ export function BlogReader({ post }: { post: BlogPost }) {
               {post.meta.summary}
             </p>
 
-            <div className="flex flex-wrap gap-2 md:ml-auto flex-shrink-0">
+            <div className="flex flex-wrap items-center gap-2 md:ml-auto flex-shrink-0">
               {post.meta.tags.map((tag) => (
                 <span
                   key={tag}
@@ -419,10 +477,23 @@ export function BlogReader({ post }: { post: BlogPost }) {
                   {tag}
                 </span>
               ))}
+              <ShareButton title={post.meta.title} slug={post.slug} size="md" />
             </div>
           </motion.div>
         </div>
       </div>
+
+      {/* Series banner — below hero, above slides */}
+      {series && (
+        <div className="relative z-10">
+          <SeriesBanner
+            series={series}
+            currentPosition={seriesPosition}
+            prev={seriesPrev}
+            next={seriesNext}
+          />
+        </div>
+      )}
 
       <div className="relative z-10">
         {toc.length > 0 ? (
@@ -442,6 +513,14 @@ export function BlogReader({ post }: { post: BlogPost }) {
 
       <div className="relative z-10 px-6 md:px-14 lg:px-20 pb-32">
         <AuthorBio />
+        {series && (
+          <SeriesNavFooter
+            series={series}
+            currentPosition={seriesPosition}
+            prev={seriesPrev}
+            next={seriesNext}
+          />
+        )}
         <RelatedPosts slug={post.slug} />
       </div>
     </div>
