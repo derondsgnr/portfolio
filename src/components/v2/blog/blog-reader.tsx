@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, useScroll, useSpring, useInView } from "motion/react";
 import Link from "next/link";
+import Image from "next/image";
 import type { BlogPost } from "@/types/blog";
 import type { Slide } from "@/types/case-study";
 import { SlideRenderer } from "../case-study/slide-renderer";
@@ -183,10 +184,12 @@ function RelatedPosts({ slug }: { slug: string }) {
               style={{ textDecoration: "none" }}
             >
               <div className="relative overflow-hidden aspect-[16/9] mb-4">
-                <img
+                <Image
                   src={post.meta.cover}
                   alt={post.meta.title}
-                  className="w-full h-full object-cover opacity-50 group-hover:opacity-75 transition-opacity duration-500 scale-100 group-hover:scale-105 transition-transform duration-700"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  className="object-cover opacity-50 group-hover:opacity-75 transition-opacity duration-500 scale-100 group-hover:scale-105 transition-transform duration-700"
                 />
                 <div className="absolute top-3 left-3">
                   <span
@@ -403,14 +406,21 @@ export function BlogReader({ post }: { post: BlogPost }) {
 
       <div ref={heroRef} className="relative z-10 pt-24">
         <div className="relative h-[40vh] md:h-[55vh] overflow-hidden">
-          <motion.img
-            src={post.meta.cover}
-            alt={post.meta.title}
-            className="w-full h-full object-cover"
+          <motion.div
+            className="absolute inset-0"
             initial={{ scale: 1.1, opacity: 0 }}
             animate={heroInView ? { scale: 1, opacity: 0.4 } : {}}
             transition={{ duration: 1.2 }}
-          />
+          >
+            <Image
+              src={post.meta.cover}
+              alt={post.meta.title}
+              fill
+              sizes="100vw"
+              priority
+              className="object-cover"
+            />
+          </motion.div>
           <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/40 to-transparent" />
 
           <motion.div

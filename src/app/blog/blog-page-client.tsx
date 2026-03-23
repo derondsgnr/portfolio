@@ -3,6 +3,7 @@
 import { useState, useRef } from "react";
 import { motion, useInView } from "motion/react";
 import Link from "next/link";
+import Image from "next/image";
 import { BLOG_POSTS, getFeaturedPost } from "@/lib/data/blog-data";
 import { getAllSeries, getSeriesBySlug, getSeriesPosts } from "@/lib/data/blog-series-data";
 import type { BlogPost, BlogCategory, BlogSeries } from "@/types/blog";
@@ -45,10 +46,12 @@ function FeaturedCard({ post }: { post: BlogPost }) {
       <Link href={`/blog/${post.slug}`} className="block" style={{ textDecoration: "none" }}>
         <div className="grid md:grid-cols-2 gap-0 items-stretch">
           <div className="relative overflow-hidden aspect-[4/3] md:aspect-auto">
-            <img
+            <Image
               src={post.meta.cover}
               alt={post.meta.title}
-              className="w-full h-full object-cover opacity-60 group-hover:opacity-90 transition-opacity duration-700 scale-100 group-hover:scale-105 transition-transform duration-1000"
+              fill
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-cover opacity-60 group-hover:opacity-90 transition-opacity duration-700 scale-100 group-hover:scale-105 transition-transform duration-1000"
             />
             <div
               className="absolute inset-0 pointer-events-none"
@@ -133,10 +136,12 @@ function PostCard({ post, index }: { post: BlogPost; index: number }) {
     >
       <Link href={`/blog/${post.slug}`} className="group block" style={{ textDecoration: "none" }}>
         <div className="relative overflow-hidden aspect-[16/10] mb-5">
-          <img
+          <Image
             src={post.meta.cover}
             alt={post.meta.title}
-            className="w-full h-full object-cover opacity-50 group-hover:opacity-80 transition-opacity duration-500 scale-100 group-hover:scale-105 transition-transform duration-700"
+            fill
+            sizes="(max-width: 768px) 100vw, 33vw"
+            className="object-cover opacity-50 group-hover:opacity-80 transition-opacity duration-500 scale-100 group-hover:scale-105 transition-transform duration-700"
           />
           <div className="absolute top-3 left-3">
             <span className="text-[9px] tracking-[0.2em] px-2.5 py-1 bg-[#0a0a0a]/80 border border-[#E2B93B]/30 text-[#E2B93B]" style={{ fontFamily: "monospace" }}>
@@ -350,8 +355,8 @@ export default function BlogPageClient({ copy, categories }: BlogPageProps) {
                   }}
                 >
                   {s.cover && (
-                    <div className="w-14 h-14 flex-shrink-0 overflow-hidden">
-                      <img src={s.cover} alt={s.title} className="w-full h-full object-cover opacity-60" />
+                    <div className="w-14 h-14 flex-shrink-0 overflow-hidden relative">
+                      <Image src={s.cover} alt={s.title} fill sizes="56px" className="object-cover opacity-60" />
                     </div>
                   )}
                   <div>

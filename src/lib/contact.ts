@@ -6,6 +6,15 @@
 import { Resend } from "resend";
 import { createClient } from "@supabase/supabase-js";
 
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 export type ContactPayload = {
   name: string;
   email: string;
@@ -62,12 +71,12 @@ export async function submitContact(payload: ContactPayload): Promise<{ ok: bool
       await resend.emails.send({
         from,
         to: toEmail,
-        subject: `[Portfolio] New message from ${contact.name}`,
+        subject: `[Portfolio] New message from ${escapeHtml(contact.name)}`,
         html: `
-          <p><strong>From:</strong> ${contact.name} &lt;${contact.email}&gt;</p>
-          <p><strong>Budget:</strong> ${contact.budget}</p>
+          <p><strong>From:</strong> ${escapeHtml(contact.name)} &lt;${escapeHtml(contact.email)}&gt;</p>
+          <p><strong>Budget:</strong> ${escapeHtml(contact.budget)}</p>
           <hr />
-          <p>${contact.message.replace(/\n/g, "<br>")}</p>
+          <p>${escapeHtml(contact.message).replace(/\n/g, "<br>")}</p>
         `,
       });
     } catch (err) {
