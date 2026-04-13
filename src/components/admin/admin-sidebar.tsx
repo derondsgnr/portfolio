@@ -18,7 +18,7 @@ import {
   BookOpen, Zap, Palette, Image, Volume2, Search,
   Link2, Layout, X, Menu, LogOut, ExternalLink,
   MessageSquare, Bookmark, FileText, Mail, Rocket,
-  CalendarClock, Users, Send, Bot,
+  CalendarClock, Users, Send, Bot, Brain,
 } from "lucide-react";
 import { logout } from "@/app/admin/actions";
 
@@ -58,18 +58,19 @@ const NAV_GROUPS = [
       { number: 21, label: "Leads",          path: "/admin/leads",         icon: Users },
       { number: 22, label: "Outreach",       path: "/admin/outreach",      icon: Send },
       { number: 23, label: "Automations",    path: "/admin/automations",   icon: Bot },
+      { number: 24, label: "Knowledge",      path: "/admin/knowledge",     icon: Brain },
     ],
   },
   {
     id: "system",
     label: "System",
     items: [
-      { number: 24, label: "Navigation",    path: "/admin/nav",           icon: Navigation },
-      { number: 25, label: "Global",        path: "/admin/global",        icon: Globe },
-      { number: 26, label: "Projects",      path: "/admin/projects",      icon: Layers },
-      { number: 27, label: "Meta / SEO",    path: "/admin/meta",          icon: Search },
-      { number: 28, label: "Integrations",  path: "/admin/integrations",  icon: Link2 },
-      { number: 29, label: "Layout",        path: "/admin/layout-builder", icon: Layout },
+      { number: 25, label: "Navigation",    path: "/admin/nav",           icon: Navigation },
+      { number: 26, label: "Global",        path: "/admin/global",        icon: Globe },
+      { number: 27, label: "Projects",      path: "/admin/projects",      icon: Layers },
+      { number: 28, label: "Meta / SEO",    path: "/admin/meta",          icon: Search },
+      { number: 29, label: "Integrations",  path: "/admin/integrations",  icon: Link2 },
+      { number: 30, label: "Layout",        path: "/admin/layout-builder", icon: Layout },
     ],
   },
 ];

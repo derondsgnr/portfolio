@@ -97,6 +97,39 @@ function ScanLines() {
   );
 }
 
+const FIGMA_PLACEHOLDER_MARKER = "Missing%20Figma%20asset";
+
+function isFigmaPlaceholderAsset(src?: string): boolean {
+  return typeof src === "string" && src.includes(FIGMA_PLACEHOLDER_MARKER);
+}
+
+function CaseStudyImage({
+  src,
+  alt,
+  className,
+  wrapperClassName = "",
+}: {
+  src?: string;
+  alt: string;
+  className: string;
+  wrapperClassName?: string;
+}) {
+  const showBadge = isFigmaPlaceholderAsset(src);
+  return (
+    <div className={`relative ${wrapperClassName}`}>
+      <img src={src} alt={alt} className={className} />
+      {showBadge && (
+        <span
+          className="absolute left-2 top-2 z-20 border border-[#E2B93B]/40 bg-[#0A0A0A]/85 px-2 py-1 text-[9px] tracking-[0.14em] text-[#E2B93B]"
+          style={{ fontFamily: "monospace" }}
+        >
+          PLACEHOLDER ASSET
+        </span>
+      )}
+    </div>
+  );
+}
+
 /* ═══════════════════════════════════════════════════════════════
    SLIDE TYPE COMPONENTS
    ═══════════════════════════════════════════════════════════════ */
@@ -111,11 +144,7 @@ function CoverSlideComponent({ slide }: { slide: Extract<Slide, { type: "cover" 
       {/* Background hero image */}
       {slide.heroImage && (
         <div className="absolute inset-0 z-0">
-          <img
-            src={slide.heroImage}
-            alt=""
-            className="w-full h-full object-cover opacity-15"
-          />
+          <CaseStudyImage src={slide.heroImage} alt="" className="w-full h-full object-cover opacity-15" wrapperClassName="w-full h-full" />
           <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/80 to-transparent" />
           <ScanLines />
         </div>
@@ -265,11 +294,7 @@ function SingleMockupSlideComponent({ slide }: { slide: Extract<Slide, { type: "
             className="relative max-w-4xl"
           >
             <DeviceMockup device={slide.device}>
-              <img
-                src={slide.image}
-                alt={slide.headline || "Screen mockup"}
-                className="w-full h-auto"
-              />
+              <CaseStudyImage src={slide.image} alt={slide.headline || "Screen mockup"} className="w-full h-auto" wrapperClassName="w-full" />
             </DeviceMockup>
             <ScanLines />
 
@@ -340,7 +365,7 @@ function ComparisonSlideComponent({ slide }: { slide: Extract<Slide, { type: "co
           >
             {/* After (full) */}
             <div className="absolute inset-0">
-              <img src={slide.after.image} alt={slide.after.label} className="w-full h-full object-cover" />
+              <CaseStudyImage src={slide.after.image} alt={slide.after.label} className="w-full h-full object-cover" wrapperClassName="w-full h-full" />
             </div>
 
             {/* Before (clipped) */}
@@ -348,7 +373,7 @@ function ComparisonSlideComponent({ slide }: { slide: Extract<Slide, { type: "co
               className="absolute inset-0"
               style={{ clipPath: `inset(0 ${100 - sliderPos}% 0 0)` }}
             >
-              <img src={slide.before.image} alt={slide.before.label} className="w-full h-full object-cover" />
+              <CaseStudyImage src={slide.before.image} alt={slide.before.label} className="w-full h-full object-cover" wrapperClassName="w-full h-full" />
             </div>
 
             {/* Slider line */}
@@ -569,7 +594,7 @@ function FlowSlideComponent({ slide }: { slide: Extract<Slide, { type: "flow" }>
               }`}
             >
               <DeviceMockup device={screen.device || "phone"}>
-                <img src={screen.image} alt={screen.label || `Screen ${i + 1}`} className="w-full h-auto" />
+                <CaseStudyImage src={screen.image} alt={screen.label || `Screen ${i + 1}`} className="w-full h-auto" wrapperClassName="w-full" />
               </DeviceMockup>
               {screen.label && (
                 <p className="text-[10px] text-[#666] mt-3 text-center tracking-[0.1em]" style={{ fontFamily: "monospace" }}>
@@ -622,7 +647,7 @@ function EmbedSlideComponent({ slide }: { slide: Extract<Slide, { type: "embed" 
               /* Mobile: fallback image + link */
               <div className="relative">
                 <DeviceMockup device={slide.device || "browser"}>
-                  <img src={slide.fallbackImage} alt="Demo preview" className="w-full h-auto" />
+                  <CaseStudyImage src={slide.fallbackImage} alt="Demo preview" className="w-full h-auto" wrapperClassName="w-full" />
                 </DeviceMockup>
                 <a
                   href={slide.embedUrl}
@@ -708,7 +733,7 @@ function VideoSlideComponent({ slide }: { slide: Extract<Slide, { type: "video" 
                 />
               ) : (
                 <div className="relative">
-                  <img src={slide.posterImage} alt={slide.headline || "Video"} className="w-full h-auto" />
+                  <CaseStudyImage src={slide.posterImage} alt={slide.headline || "Video"} className="w-full h-auto" wrapperClassName="w-full" />
                   <div className="absolute inset-0 flex items-center justify-center bg-black/30">
                     <div className="w-16 h-16 rounded-full border-2 border-[#E2B93B] flex items-center justify-center">
                       <div className="w-0 h-0 border-l-[12px] border-l-[#E2B93B] border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent ml-1" />
@@ -768,7 +793,7 @@ function MockupGallerySlideComponent({ slide }: { slide: Extract<Slide, { type: 
               >
                 <div className="relative">
                   <DeviceMockup device={mockup.device}>
-                    <img src={mockup.image} alt={mockup.label || `Mockup ${i + 1}`} className="w-full h-auto" />
+                    <CaseStudyImage src={mockup.image} alt={mockup.label || `Mockup ${i + 1}`} className="w-full h-auto" wrapperClassName="w-full" />
                   </DeviceMockup>
                   {/* Expand affordance — always visible on mobile, hover on desktop */}
                   <div className="absolute inset-0 flex items-end justify-center pb-6 md:items-center md:pb-0 opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
@@ -851,11 +876,7 @@ function MockupGallerySlideComponent({ slide }: { slide: Extract<Slide, { type: 
               onClick={(e) => e.stopPropagation()}
             >
               <DeviceMockup device={slide.mockups[expandedIdx].device}>
-                <img
-                  src={slide.mockups[expandedIdx].image}
-                  alt={slide.mockups[expandedIdx].label || "Expanded mockup"}
-                  className="w-full h-auto"
-                />
+                <CaseStudyImage src={slide.mockups[expandedIdx].image} alt={slide.mockups[expandedIdx].label || "Expanded mockup"} className="w-full h-auto" wrapperClassName="w-full" />
               </DeviceMockup>
               {slide.mockups[expandedIdx].label && (
                 <p className="text-[11px] text-[#888] mt-4 tracking-[0.1em]" style={{ fontFamily: "monospace" }}>
@@ -939,11 +960,7 @@ function ProcessSlideComponent({ slide }: { slide: Extract<Slide, { type: "proce
                 className="group relative bg-[#111] border border-[#1a1a1a] overflow-hidden hover:border-[#E2B93B]/20 transition-colors"
               >
                 <div className="relative aspect-[16/10] overflow-hidden">
-                  <img
-                    src={artifact.image}
-                    alt={artifact.label}
-                    className="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity"
-                  />
+                  <CaseStudyImage src={artifact.image} alt={artifact.label} className="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity" wrapperClassName="w-full h-full" />
                   <ScanLines />
                 </div>
                 <div className="p-4">

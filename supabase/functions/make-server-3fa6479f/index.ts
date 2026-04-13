@@ -78,10 +78,24 @@ Deno.serve(async (req) => {
           lastRun: event.lastRun ?? "just now",
         };
       });
+      const hasMatch = automations.some((automation) => automation.id === event.automationId);
+      const upsertedAutomations = hasMatch
+        ? nextAutomations
+        : [
+            ...nextAutomations,
+            {
+              id: event.automationId,
+              name: event.automationId,
+              cadence: "external",
+              health: event.health ?? "warning",
+              lastRun: event.lastRun ?? "just now",
+              throughput: event.throughput ?? "heartbeat received",
+            },
+          ];
 
       const nextState = {
         ...(current as Record<string, unknown>),
-        automations: nextAutomations,
+        automations: upsertedAutomations,
         settings: {
           ...(((current as { settings?: Record<string, unknown> }).settings ?? {}) as Record<string, unknown>),
           lastUpdated: new Date().toISOString(),

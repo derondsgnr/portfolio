@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { adminCx } from "@/components/admin/admin-primitives";
-import { CheckCircle2, Download, ExternalLink, Pause, Play, RefreshCcw, Search, Upload } from "lucide-react";
+import { adminCx, FormField, PageHeader } from "@/components/admin/admin-primitives";
+import { CheckCircle2, Download, ExternalLink, Pause, Play, RefreshCcw, Search, Upload, Wifi, WifiOff } from "lucide-react";
 
 type Source = "x_post" | "x_article" | "instagram_post" | "manual";
 type Status = "queued" | "processed" | "reviewed";
@@ -83,6 +83,8 @@ export default function AdminKnowledgePage() {
   const pauseRef = useRef(false);
   const [progress, setProgress] = useState({ total: 0, done: 0, ok: 0, failed: 0, current: "" });
   const [queryEmbedding, setQueryEmbedding] = useState<number[] | null>(null);
+  const [connection, setConnection] = useState<"idle" | "ok" | "error">("idle");
+  const [connectionMessage, setConnectionMessage] = useState("");
   const importRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => { pauseRef.current = isPaused; }, [isPaused]);
@@ -111,6 +113,22 @@ export default function AdminKnowledgePage() {
     });
     if (!res.ok) throw new Error(`Embedding failed (${res.status})`);
     return ((await res.json()).embedding ?? []) as number[];
+  }
+
+  async function testConnection() {
+    setConnection("idle");
+    setConnectionMessage("Checking local Ollama...");
+    try {
+      const res = await fetch(`${settings.ollamaBaseUrl.replace(/\/+$/, "")}/api/tags`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const payload = await res.json();
+      const modelCount = Array.isArray(payload?.models) ? payload.models.length : 0;
+      setConnection("ok");
+      setConnectionMessage(`Connected: ${modelCount} model(s) available`);
+    } catch {
+      setConnection("error");
+      setConnectionMessage("Could not reach Ollama");
+    }
   }
 
   async function processIds(ids: string[]) {
@@ -165,37 +183,124 @@ export default function AdminKnowledgePage() {
     }
   }
 
+  const queuedCount = items.filter((item) => item.status === "queued").length;
+  const queuedReadyCount = items.filter((item) => item.status === "queued" && item.rawText.trim().length > 0).length;
+  const failedCount = items.filter((item) => item.processingError.trim().length > 0).length;
+  const reviewedCount = items.filter((item) => item.status === "reviewed").length;
+
   return (
     <div className="space-y-6">
-      <div className="pb-5 border-b border-white/[0.06] flex items-start justify-between gap-3">
-        <div><h1 className="font-['Anton'] text-3xl tracking-[0.06em] uppercase text-white">Knowledge Vault</h1><p className="text-sm text-white/35 font-['Instrument_Sans']">Private learning and retrieval dashboard.</p></div>
-        <div className="flex gap-2">
-          <input ref={importRef} type="file" accept="application/json" className="hidden" onChange={async (e) => { const f = e.target.files?.[0]; if (!f) return; const data = JSON.parse(await f.text()) as Item[]; setItems(data); e.target.value = ""; }} />
-          <button onClick={() => importRef.current?.click()} className="px-3 py-2 border border-white/[0.10] text-white/45 text-xs inline-flex items-center gap-2"><Upload size={12} /> Import</button>
-          <button onClick={() => { const blob = new Blob([JSON.stringify(items, null, 2)], { type: "application/json" }); const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "knowledge-vault.json"; a.click(); URL.revokeObjectURL(a.href); }} className="px-3 py-2 border border-white/[0.10] text-white/45 text-xs inline-flex items-center gap-2"><Download size={12} /> Export</button>
-        </div>
-      </div>
-
-      <div className="grid lg:grid-cols-2 gap-3">
-        <textarea className={adminCx.textarea} rows={4} value={bulkInput} onChange={(e) => setBulkInput(e.target.value)} placeholder={"Paste URLs, one per line"} />
-        <div className="space-y-2">
-          <input className={adminCx.input} placeholder="Search knowledge items" value={search} onChange={(e) => setSearch(e.target.value)} />
-          <div className="flex flex-wrap gap-2">
-            <button onClick={() => { const urls = bulkInput.split("\n").map((x) => x.trim()).filter(Boolean); setItems((p) => [...urls.map(makeItem), ...p]); setBulkInput(""); }} className="px-3 py-2 bg-[#E2B93B] text-[#0A0A0A] text-xs uppercase">Queue URLs</button>
-            <button onClick={() => setSelected(filtered.map((x) => x.id))} className="px-3 py-2 border border-white/[0.10] text-white/45 text-xs uppercase">Select filtered</button>
-            <button onClick={() => setSelected([])} className="px-3 py-2 border border-white/[0.10] text-white/45 text-xs uppercase">Clear</button>
+      <div className="pb-4 border-b border-white/[0.06]">
+        <div className="flex items-start justify-between gap-3">
+          <PageHeader
+            index={22}
+            title="Knowledge Vault"
+            description="Private learning and retrieval dashboard for your second-brain workflow."
+          />
+          <div className="flex gap-2">
+            <input
+              ref={importRef}
+              type="file"
+              accept="application/json"
+              className="hidden"
+              onChange={async (e) => {
+                const f = e.target.files?.[0];
+                if (!f) return;
+                const data = JSON.parse(await f.text()) as Item[];
+                setItems(data);
+                e.target.value = "";
+              }}
+            />
+            <button onClick={() => importRef.current?.click()} className="px-3 py-2 border border-white/[0.10] text-white/45 text-xs inline-flex items-center gap-2">
+              <Upload size={12} /> Import
+            </button>
+            <button
+              onClick={() => {
+                const blob = new Blob([JSON.stringify(items, null, 2)], { type: "application/json" });
+                const a = document.createElement("a");
+                a.href = URL.createObjectURL(blob);
+                a.download = "knowledge-vault.json";
+                a.click();
+                URL.revokeObjectURL(a.href);
+              }}
+              className="px-3 py-2 border border-white/[0.10] text-white/45 text-xs inline-flex items-center gap-2"
+            >
+              <Download size={12} /> Export
+            </button>
           </div>
         </div>
       </div>
 
-      <div className="border border-white/[0.08] p-3 bg-white/[0.01] space-y-3">
-        <p className="text-[11px] uppercase tracking-[0.14em] text-[#E2B93B]/70 font-['Instrument_Sans']">Local AI control center</p>
+      <div className="border border-white/[0.08] bg-white/[0.01] p-4 space-y-3">
+        <p className="text-[11px] uppercase tracking-[0.14em] text-[#E2B93B]/70 font-['Instrument_Sans']">Backfill Onboarding</p>
+        <div className="grid md:grid-cols-3 gap-2">
+          <div className="border border-white/[0.07] p-3 bg-[#0A0A0A]/60">
+            <p className="text-[10px] text-white/25 uppercase tracking-wider">1. Import / Queue</p>
+            <p className="text-sm text-white/75 mt-1">Load URLs via JSON import or paste list in Batch Backfill.</p>
+            <p className="text-xs text-white/40 mt-2">{items.length} total item(s)</p>
+          </div>
+          <div className="border border-white/[0.07] p-3 bg-[#0A0A0A]/60">
+            <p className="text-[10px] text-white/25 uppercase tracking-wider">2. Add Raw Text</p>
+            <p className="text-sm text-white/75 mt-1">Paste extracted source text so queued items become process-ready.</p>
+            <p className="text-xs text-white/40 mt-2">{queuedReadyCount}/{queuedCount} queued ready</p>
+          </div>
+          <div className="border border-white/[0.07] p-3 bg-[#0A0A0A]/60">
+            <p className="text-[10px] text-white/25 uppercase tracking-wider">3. Process + Review</p>
+            <p className="text-sm text-white/75 mt-1">Run queued processing, retry failures, then mark reviewed.</p>
+            <p className="text-xs text-white/40 mt-2">{failedCount} failed, {reviewedCount} reviewed</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid lg:grid-cols-2 gap-3">
+        <div className="border border-white/[0.08] bg-white/[0.01] p-4 space-y-3">
+          <p className="text-[11px] tracking-[0.14em] uppercase text-[#E2B93B]/70 font-['Instrument_Sans']">Batch Backfill</p>
+          <FormField label="Paste URLs (one per line)">
+            <textarea className={adminCx.textarea} rows={6} value={bulkInput} onChange={(e) => setBulkInput(e.target.value)} placeholder="https://x.com/...&#10;https://..." />
+          </FormField>
+          <button
+            onClick={() => {
+              const urls = bulkInput.split("\n").map((x) => x.trim()).filter(Boolean);
+              setItems((p) => [...urls.map(makeItem), ...p]);
+              setBulkInput("");
+            }}
+            className="px-3 py-2 bg-[#E2B93B] text-[#0A0A0A] text-xs uppercase tracking-wider"
+          >
+            Queue URLs
+          </button>
+        </div>
+
+        <div className="border border-white/[0.08] bg-white/[0.01] p-4 space-y-3">
+          <p className="text-[11px] tracking-[0.14em] uppercase text-[#E2B93B]/70 font-['Instrument_Sans']">Search & Selection</p>
+          <FormField label="Search">
+            <input className={adminCx.input} placeholder="Search URL, title, tags, text" value={search} onChange={(e) => setSearch(e.target.value)} />
+          </FormField>
+          <div className="flex flex-wrap gap-2">
+            <button onClick={() => setSelected(filtered.map((x) => x.id))} className="px-3 py-2 border border-white/[0.10] text-white/45 text-xs uppercase">Select filtered</button>
+            <button onClick={() => setSelected([])} className="px-3 py-2 border border-white/[0.10] text-white/45 text-xs uppercase">Clear</button>
+            <span className="text-xs text-white/35 font-['Instrument_Sans'] self-center">{selected.length} selected</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="border border-white/[0.08] p-4 bg-white/[0.01] space-y-3">
+        <p className="text-[11px] uppercase tracking-[0.14em] text-[#E2B93B]/70 font-['Instrument_Sans']">Local AI Control Center</p>
         <div className="grid lg:grid-cols-3 gap-2">
-          <input className={adminCx.input} value={settings.ollamaBaseUrl} onChange={(e) => setSettings((s) => ({ ...s, ollamaBaseUrl: e.target.value }))} placeholder="http://localhost:11434" />
-          <input className={adminCx.input} value={settings.synthesisModel} onChange={(e) => setSettings((s) => ({ ...s, synthesisModel: e.target.value }))} placeholder="gemma3:4b" />
-          <input className={adminCx.input} value={settings.embeddingModel} onChange={(e) => setSettings((s) => ({ ...s, embeddingModel: e.target.value }))} placeholder="nomic-embed-text" />
+          <FormField label="Ollama URL">
+            <input className={adminCx.input} value={settings.ollamaBaseUrl} onChange={(e) => setSettings((s) => ({ ...s, ollamaBaseUrl: e.target.value }))} placeholder="http://localhost:11434" />
+          </FormField>
+          <FormField label="Synthesis model">
+            <input className={adminCx.input} value={settings.synthesisModel} onChange={(e) => setSettings((s) => ({ ...s, synthesisModel: e.target.value }))} placeholder="gemma3:4b" />
+          </FormField>
+          <FormField label="Embedding model">
+            <input className={adminCx.input} value={settings.embeddingModel} onChange={(e) => setSettings((s) => ({ ...s, embeddingModel: e.target.value }))} placeholder="nomic-embed-text" />
+          </FormField>
         </div>
         <div className="flex flex-wrap items-center gap-2">
+          <button onClick={testConnection} className="px-3 py-2 border border-white/[0.10] text-white/45 text-xs uppercase inline-flex items-center gap-2">
+            {connection === "ok" ? <Wifi size={12} /> : <WifiOff size={12} />}
+            Test connection
+          </button>
           <button onClick={async () => { if (!search.trim()) return; setQueryEmbedding(await ollamaEmbed(search)); }} className="px-3 py-2 border border-white/[0.10] text-white/45 text-xs uppercase inline-flex items-center gap-2"><Search size={12} /> Embed query</button>
           <button onClick={() => processIds(selected)} disabled={isProcessing || !selected.length} className="px-3 py-2 bg-[#E2B93B] text-[#0A0A0A] text-xs uppercase disabled:opacity-40">Process selected</button>
           <button onClick={() => processIds(items.filter((x) => x.status === "queued" && (!onlyWithRawText || x.rawText.trim())).map((x) => x.id))} disabled={isProcessing} className="px-3 py-2 border border-white/[0.10] text-white/45 text-xs uppercase disabled:opacity-40">Process queued</button>
@@ -206,22 +311,87 @@ export default function AdminKnowledgePage() {
           <label className="text-xs text-white/40 inline-flex items-center gap-1"><input type="checkbox" checked={onlyWithRawText} onChange={(e) => setOnlyWithRawText(e.target.checked)} />queued needs raw text</label>
           <span className="text-xs text-white/35">Done {progress.done}/{progress.total} | OK {progress.ok} | Fail {progress.failed}</span>
         </div>
+        <p className={`text-xs font-['Instrument_Sans'] ${connection === "ok" ? "text-emerald-400/80" : connection === "error" ? "text-red-400/80" : "text-white/35"}`}>
+          {connectionMessage || "No connection test run yet."}
+        </p>
+        {(isProcessing || progress.total > 0) && (
+          <div className="space-y-1">
+            <div className="h-1.5 w-full bg-white/[0.06] overflow-hidden">
+              <div className="h-full bg-[#E2B93B] transition-all duration-150" style={{ width: `${progress.total ? Math.round((progress.done / progress.total) * 100) : 0}%` }} />
+            </div>
+            <p className="text-xs text-white/35 font-['Instrument_Sans'] truncate">{progress.current || "Idle"}</p>
+          </div>
+        )}
       </div>
 
       <div className="border border-white/[0.08] overflow-hidden">
-        {filtered.map((item) => (
-          <div key={item.id} className="p-3 border-b border-white/[0.06] space-y-2">
-            <div className="flex justify-between gap-2">
-              <label className="text-xs text-white/40 inline-flex items-center gap-2"><input type="checkbox" checked={selected.includes(item.id)} onChange={() => setSelected((prev) => prev.includes(item.id) ? prev.filter((x) => x !== item.id) : [...prev, item.id])} />{item.title || item.url}</label>
-              <a href={item.url} target="_blank" rel="noreferrer" className="text-xs text-white/35 inline-flex items-center gap-1">Open <ExternalLink size={11} /></a>
+        {filtered.length === 0 ? (
+          <div className="p-8 text-center text-white/35 text-sm font-['Instrument_Sans']">No knowledge items match your current filters.</div>
+        ) : (
+          filtered.map((item) => (
+            <div key={item.id} className="p-4 border-b border-white/[0.06] last:border-b-0 space-y-3 bg-white/[0.01]">
+              <div className="flex justify-between gap-3">
+                <label className="text-sm text-white/75 inline-flex items-start gap-2 leading-snug">
+                  <input
+                    type="checkbox"
+                    checked={selected.includes(item.id)}
+                    onChange={() => setSelected((prev) => (prev.includes(item.id) ? prev.filter((x) => x !== item.id) : [...prev, item.id]))}
+                    className="mt-1"
+                  />
+                  <span>
+                    <span className="block text-xs text-white/25 uppercase tracking-wider mb-0.5">{item.source}</span>
+                    {item.title || item.url}
+                  </span>
+                </label>
+                <a href={item.url} target="_blank" rel="noreferrer" className="text-xs text-white/35 inline-flex items-center gap-1 shrink-0">
+                  Open <ExternalLink size={11} />
+                </a>
+              </div>
+
+              <div className="grid lg:grid-cols-2 gap-2">
+                <textarea
+                  value={item.rawText}
+                  onChange={(e) => setItems((prev) => prev.map((x) => (x.id === item.id ? { ...x, rawText: e.target.value, updatedAt: Date.now() } : x)))}
+                  className={adminCx.textarea}
+                  rows={3}
+                  placeholder="Raw extracted text"
+                />
+                <input
+                  value={item.tags.join(", ")}
+                  onChange={(e) => setItems((prev) => prev.map((x) => (x.id === item.id ? { ...x, tags: e.target.value.split(",").map((t) => t.trim()).filter(Boolean), updatedAt: Date.now() } : x)))}
+                  className={adminCx.input}
+                  placeholder="tags, comma-separated"
+                />
+              </div>
+
+              <div className="grid lg:grid-cols-2 gap-2">
+                <textarea
+                  value={item.humanCard}
+                  onChange={(e) => setItems((prev) => prev.map((x) => (x.id === item.id ? { ...x, humanCard: e.target.value, updatedAt: Date.now() } : x)))}
+                  className={adminCx.textarea}
+                  rows={2}
+                  placeholder="Human learning card"
+                />
+                <textarea
+                  value={item.llmSnippet}
+                  onChange={(e) => setItems((prev) => prev.map((x) => (x.id === item.id ? { ...x, llmSnippet: e.target.value, updatedAt: Date.now() } : x)))}
+                  className={adminCx.textarea}
+                  rows={2}
+                  placeholder="LLM snippet"
+                />
+              </div>
+
+              {item.processingError ? (
+                <p className="text-xs text-red-400/80">{item.processingError}</p>
+              ) : (
+                <p className="text-xs text-emerald-400/70 inline-flex items-center gap-1">
+                  <CheckCircle2 size={12} />
+                  {item.status}
+                </p>
+              )}
             </div>
-            <textarea value={item.rawText} onChange={(e) => setItems((prev) => prev.map((x) => x.id === item.id ? { ...x, rawText: e.target.value, updatedAt: Date.now() } : x))} className={adminCx.textarea} rows={2} placeholder="Raw extracted text" />
-            <input value={item.tags.join(", ")} onChange={(e) => setItems((prev) => prev.map((x) => x.id === item.id ? { ...x, tags: e.target.value.split(",").map((t) => t.trim()).filter(Boolean), updatedAt: Date.now() } : x))} className={adminCx.input} placeholder="tags, comma-separated" />
-            <textarea value={item.humanCard} onChange={(e) => setItems((prev) => prev.map((x) => x.id === item.id ? { ...x, humanCard: e.target.value, updatedAt: Date.now() } : x))} className={adminCx.textarea} rows={2} placeholder="Human learning card" />
-            <textarea value={item.llmSnippet} onChange={(e) => setItems((prev) => prev.map((x) => x.id === item.id ? { ...x, llmSnippet: e.target.value, updatedAt: Date.now() } : x))} className={adminCx.textarea} rows={2} placeholder="LLM snippet" />
-            {item.processingError ? <p className="text-xs text-red-400/80">{item.processingError}</p> : <p className="text-xs text-emerald-400/70 inline-flex items-center gap-1"><CheckCircle2 size={12} />{item.status}</p>}
-          </div>
-        ))}
+          ))
+        )}
       </div>
     </div>
   );

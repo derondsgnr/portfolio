@@ -17,7 +17,7 @@ import {
   BookOpen, Zap, Palette, Image, Volume2, Search,
   Link2, Layout, ArrowUpRight, RotateCcw, Trash2,
   TrendingUp, FileText, Clock, MessageSquare, Bookmark, Mail,
-  Rocket, CalendarClock, Users, Send, Bot,
+  Rocket, CalendarClock, Users, Send, Bot, Brain,
 } from "lucide-react";
 
 // ─── Section definitions ───────────────────────────────────────────
@@ -44,6 +44,7 @@ const SECTIONS = [
   { key: "leads",          label: "Leads",          path: "/admin/leads",          index: 21, icon: Users,          group: "growth",   desc: "Pipeline and lead scoring" },
   { key: "outreach",       label: "Outreach",       path: "/admin/outreach",       index: 22, icon: Send,           group: "growth",   desc: "Cold message review queue" },
   { key: "automations",    label: "Automations",    path: "/admin/automations",    index: 23, icon: Bot,            group: "growth",   desc: "Workflow health and kill switch" },
+  { key: "knowledge",      label: "Knowledge",      path: "/admin/knowledge",      index: 24, icon: Brain,          group: "growth",   desc: "Personal research vault + retrieval" },
 ];
 
 const GROUP_LABELS: Record<string, string> = {
@@ -202,7 +203,7 @@ function ChangeLog() {
 function QuickStats() {
   const { history } = useAdmin();
   const stats = [
-    { label: "Sections",    value: "23",               icon: LayoutDashboard },
+    { label: "Sections",    value: "24",               icon: LayoutDashboard },
     { label: "Blog Posts",  value: "4",                icon: FileText },
     { label: "Changes",     value: String(history.length), icon: TrendingUp },
   ];
@@ -346,6 +347,13 @@ export default function AdminDashboardPage() {
               >
                 <Rocket size={11} />
                 Open Growth OS
+              </Link>
+              <Link
+                href="/admin/knowledge"
+                className="flex items-center gap-2 px-4 py-2.5 border border-white/[0.08] text-white/40 hover:text-white hover:border-white/20 transition-all text-[11px] font-['Instrument_Sans'] tracking-wider uppercase"
+              >
+                <Brain size={11} />
+                Knowledge Vault
               </Link>
             </div>
           </div>
