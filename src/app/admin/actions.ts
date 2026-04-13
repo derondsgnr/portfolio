@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { createAdminSession, getAdminCookieName, getAdminCookieValue, verifyAdminSession } from "@/lib/admin/auth";
 import { updateGitHubFile, getGitHubFile } from "@/lib/admin/github";
+import { DEFAULT_GROWTH_STATE, type GrowthState } from "@/components/admin/growth-os";
 
 async function requireAdmin() {
   const ok = await verifyAdminSession();
@@ -199,6 +200,18 @@ async function kvSet(key: string, value: unknown): Promise<boolean> {
   return res.ok;
 }
 
+async function kvGet(key: string): Promise<unknown | null> {
+  const sb = supabaseAdmin();
+  if (!sb) return null;
+  const res = await fetch(`${sb.url}/rest/v1/${KV_TABLE}?key=eq.${encodeURIComponent(key)}&select=key,value&limit=1`, {
+    headers: { apikey: sb.key, Authorization: `Bearer ${sb.key}` },
+  });
+  if (!res.ok) return null;
+  const rows = (await res.json()) as Array<{ key: string; value: unknown }>;
+  if (!rows.length) return null;
+  return rows[0].value;
+}
+
 async function kvDelete(key: string): Promise<boolean> {
   const sb = supabaseAdmin();
   if (!sb) return false;
@@ -286,4 +299,44 @@ export async function deleteBookmark(id: string): Promise<{ ok: boolean; error?:
 export async function saveCaseStudies(studies: unknown[], message?: string): Promise<{ ok: boolean; error?: string }> {
   const content = JSON.stringify(studies, null, 2);
   return saveContent("content/case-studies.json", content, message ?? "Update case studies");
+}
+
+/** Growth OS state — fetch from Supabase KV */
+export async function fetchGrowthState(): Promise<{ ok: boolean; state: GrowthState; error?: string }> {
+  try {
+    await requireAdmin();
+  } catch {
+    return { ok: false, state: DEFAULT_GROWTH_STATE, error: "Unauthorized" };
+  }
+  const value = await kvGet("content:growth:state");
+  if (!value || typeof value !== "object") {
+    return { ok: true, state: DEFAULT_GROWTH_STATE };
+  }
+  const merged = {
+    ...DEFAULT_GROWTH_STATE,
+    ...(value as Partial<GrowthState>),
+    settings: {
+      ...DEFAULT_GROWTH_STATE.settings,
+      ...((value as Partial<GrowthState>).settings ?? {}),
+    },
+  } satisfies GrowthState;
+  return { ok: true, state: merged };
+}
+
+/** Growth OS state — persist to Supabase KV */
+export async function saveGrowthState(state: GrowthState): Promise<{ ok: boolean; error?: string }> {
+  try {
+    await requireAdmin();
+  } catch {
+    return { ok: false, error: "Unauthorized" };
+  }
+  const next: GrowthState = {
+    ...state,
+    settings: {
+      ...state.settings,
+      lastUpdated: new Date().toISOString(),
+    },
+  };
+  const success = await kvSet("content:growth:state", next);
+  return success ? { ok: true } : { ok: false, error: "Failed to persist growth state" };
 }

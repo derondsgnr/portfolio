@@ -15,6 +15,10 @@ Deno.serve(async (req) => {
   const path = url.pathname;
   const matchComments = path.match(/\/comments\/([^/]+)$/);
   const isCommentsPost = path.endsWith("/comments") && path.includes("make-server");
+  const isGrowthGet = req.method === "GET" && path.endsWith("/admin/growth") && path.includes("make-server");
+  const isGrowthPost = req.method === "POST" && path.endsWith("/admin/growth") && path.includes("make-server");
+  const isGrowthHeartbeatPost =
+    req.method === "POST" && path.endsWith("/admin/growth/heartbeat") && path.includes("make-server");
 
   try {
     // GET /.../comments/:slug
@@ -42,6 +46,69 @@ Deno.serve(async (req) => {
       };
       await kv.set(`comment:${slug}:${comment.id}`, comment);
       return json({ success: true, comment });
+    }
+
+    // GET /.../admin/growth
+    if (isGrowthGet) {
+      const state = await kv.get("content:growth:state");
+      return json({ state: state ?? null });
+    }
+
+    // POST /.../admin/growth
+    if (isGrowthPost) {
+      const body = await req.json();
+      await kv.set("content:growth:state", body);
+      return json({ success: true });
+    }
+
+    // POST /.../admin/growth/heartbeat
+    if (isGrowthHeartbeatPost) {
+      const event = await req.json();
+      const current = (await kv.get("content:growth:state")) ?? {};
+      const automations = Array.isArray((current as { automations?: unknown[] }).automations)
+        ? ((current as { automations?: unknown[] }).automations as Array<Record<string, unknown>>)
+        : [];
+
+      const nextAutomations = automations.map((automation) => {
+        if (automation.id !== event.automationId) return automation;
+        return {
+          ...automation,
+          health: event.health ?? automation.health,
+          throughput: event.throughput ?? automation.throughput,
+          lastRun: event.lastRun ?? "just now",
+        };
+      });
+      const hasMatch = automations.some((automation) => automation.id === event.automationId);
+      const upsertedAutomations = hasMatch
+        ? nextAutomations
+        : [
+            ...nextAutomations,
+            {
+              id: event.automationId,
+              name: event.automationId,
+              cadence: "external",
+              health: event.health ?? "warning",
+              lastRun: event.lastRun ?? "just now",
+              throughput: event.throughput ?? "heartbeat received",
+            },
+          ];
+
+      const nextState = {
+        ...(current as Record<string, unknown>),
+        automations: upsertedAutomations,
+        settings: {
+          ...(((current as { settings?: Record<string, unknown> }).settings ?? {}) as Record<string, unknown>),
+          lastUpdated: new Date().toISOString(),
+        },
+      };
+
+      await kv.set("content:growth:state", nextState);
+      await kv.set(`growth:heartbeat:${Date.now()}`, {
+        ...event,
+        receivedAt: new Date().toISOString(),
+      });
+
+      return json({ success: true });
     }
 
     return json({ error: "Not found" }, 404);

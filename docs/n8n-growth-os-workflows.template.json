@@ -1,0 +1,226 @@
+[
+  {
+    "name": "Growth OS - Daily Text Post Builder Heartbeat",
+    "nodes": [
+      {
+        "parameters": { "rule": { "interval": [{ "field": "cronExpression", "expression": "0 8 * * *" }] } },
+        "id": "schedule-au01",
+        "name": "Schedule Trigger",
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.2,
+        "position": [220, 260]
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              { "name": "automationId", "value": "au-01", "type": "string" },
+              { "name": "health", "value": "healthy", "type": "string" },
+              { "name": "throughput", "value": "={{$json.postCount ? $json.postCount + \" posts generated\" : \"run completed\"}}", "type": "string" },
+              { "name": "lastRun", "value": "={{$now}}", "type": "string" }
+            ]
+          }
+        },
+        "id": "set-au01",
+        "name": "Set Heartbeat Payload",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [500, 260]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://REPLACE_WITH_SUPABASE_PROJECT_ID.supabase.co/functions/v1/make-server-3fa6479f/admin/growth/heartbeat",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              { "name": "Authorization", "value": "Bearer REPLACE_WITH_SUPABASE_ANON_KEY" },
+              { "name": "Content-Type", "value": "application/json" }
+            ]
+          },
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={{$json}}"
+        },
+        "id": "http-au01",
+        "name": "POST Heartbeat",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [780, 260]
+      }
+    ],
+    "connections": {
+      "Schedule Trigger": { "main": [[{ "node": "Set Heartbeat Payload", "type": "main", "index": 0 }]] },
+      "Set Heartbeat Payload": { "main": [[{ "node": "POST Heartbeat", "type": "main", "index": 0 }]] }
+    },
+    "active": false
+  },
+  {
+    "name": "Growth OS - Comment Reply Assistant Heartbeat",
+    "nodes": [
+      {
+        "parameters": { "rule": { "interval": [{ "field": "cronExpression", "expression": "0 * * * *" }] } },
+        "id": "schedule-au02",
+        "name": "Schedule Trigger",
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.2,
+        "position": [220, 260]
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              { "name": "automationId", "value": "au-02", "type": "string" },
+              { "name": "health", "value": "healthy", "type": "string" },
+              { "name": "throughput", "value": "={{$json.replyDrafts ? $json.replyDrafts + \" replies drafted\" : \"run completed\"}}", "type": "string" },
+              { "name": "lastRun", "value": "={{$now}}", "type": "string" }
+            ]
+          }
+        },
+        "id": "set-au02",
+        "name": "Set Heartbeat Payload",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [500, 260]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://REPLACE_WITH_SUPABASE_PROJECT_ID.supabase.co/functions/v1/make-server-3fa6479f/admin/growth/heartbeat",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              { "name": "Authorization", "value": "Bearer REPLACE_WITH_SUPABASE_ANON_KEY" },
+              { "name": "Content-Type", "value": "application/json" }
+            ]
+          },
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={{$json}}"
+        },
+        "id": "http-au02",
+        "name": "POST Heartbeat",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [780, 260]
+      }
+    ],
+    "connections": {
+      "Schedule Trigger": { "main": [[{ "node": "Set Heartbeat Payload", "type": "main", "index": 0 }]] },
+      "Set Heartbeat Payload": { "main": [[{ "node": "POST Heartbeat", "type": "main", "index": 0 }]] }
+    },
+    "active": false
+  },
+  {
+    "name": "Growth OS - Lead Harvest Heartbeat",
+    "nodes": [
+      {
+        "parameters": { "rule": { "interval": [{ "field": "cronExpression", "expression": "0 */6 * * *" }] } },
+        "id": "schedule-au03",
+        "name": "Schedule Trigger",
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.2,
+        "position": [220, 260]
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              { "name": "automationId", "value": "au-03", "type": "string" },
+              { "name": "health", "value": "={{$json.flaggedCount > 3 ? \"warning\" : \"healthy\"}}", "type": "string" },
+              { "name": "throughput", "value": "={{($json.newLeadCount || 0) + \" leads, \" + ($json.flaggedCount || 0) + \" flagged\"}}", "type": "string" },
+              { "name": "lastRun", "value": "={{$now}}", "type": "string" }
+            ]
+          }
+        },
+        "id": "set-au03",
+        "name": "Set Heartbeat Payload",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [500, 260]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://REPLACE_WITH_SUPABASE_PROJECT_ID.supabase.co/functions/v1/make-server-3fa6479f/admin/growth/heartbeat",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              { "name": "Authorization", "value": "Bearer REPLACE_WITH_SUPABASE_ANON_KEY" },
+              { "name": "Content-Type", "value": "application/json" }
+            ]
+          },
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={{$json}}"
+        },
+        "id": "http-au03",
+        "name": "POST Heartbeat",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [780, 260]
+      }
+    ],
+    "connections": {
+      "Schedule Trigger": { "main": [[{ "node": "Set Heartbeat Payload", "type": "main", "index": 0 }]] },
+      "Set Heartbeat Payload": { "main": [[{ "node": "POST Heartbeat", "type": "main", "index": 0 }]] }
+    },
+    "active": false
+  },
+  {
+    "name": "Growth OS - Cold Outreach Sequencer Heartbeat",
+    "nodes": [
+      {
+        "parameters": { "rule": { "interval": [{ "field": "cronExpression", "expression": "30 11 * * *" }] } },
+        "id": "schedule-au04",
+        "name": "Schedule Trigger",
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.2,
+        "position": [220, 260]
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              { "name": "automationId", "value": "au-04", "type": "string" },
+              { "name": "health", "value": "={{$json.blockedByPolicy ? \"paused\" : ($json.failedCount > 0 ? \"warning\" : \"healthy\")}}", "type": "string" },
+              { "name": "throughput", "value": "={{($json.sentCount || 0) + \" sent, \" + ($json.replyCount || 0) + \" replies, \" + ($json.failedCount || 0) + \" failed\"}}", "type": "string" },
+              { "name": "lastRun", "value": "={{$now}}", "type": "string" }
+            ]
+          }
+        },
+        "id": "set-au04",
+        "name": "Set Heartbeat Payload",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [500, 260]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://REPLACE_WITH_SUPABASE_PROJECT_ID.supabase.co/functions/v1/make-server-3fa6479f/admin/growth/heartbeat",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              { "name": "Authorization", "value": "Bearer REPLACE_WITH_SUPABASE_ANON_KEY" },
+              { "name": "Content-Type", "value": "application/json" }
+            ]
+          },
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={{$json}}"
+        },
+        "id": "http-au04",
+        "name": "POST Heartbeat",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [780, 260]
+      }
+    ],
+    "connections": {
+      "Schedule Trigger": { "main": [[{ "node": "Set Heartbeat Payload", "type": "main", "index": 0 }]] },
+      "Set Heartbeat Payload": { "main": [[{ "node": "POST Heartbeat", "type": "main", "index": 0 }]] }
+    },
+    "active": false
+  }
+]
