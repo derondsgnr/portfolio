@@ -17,7 +17,8 @@ import {
   LayoutDashboard, Type, Layers, Navigation, Globe,
   BookOpen, Zap, Palette, Image, Volume2, Search,
   Link2, Layout, X, Menu, LogOut, ExternalLink,
-  MessageSquare, Bookmark, FileText, Mail,
+  MessageSquare, Bookmark, FileText, Mail, Rocket,
+  CalendarClock, Users, Send, Bot,
 } from "lucide-react";
 import { logout } from "@/app/admin/actions";
 
@@ -36,6 +37,7 @@ const NAV_GROUPS = [
       { number: 7,  label: "Now",           path: "/admin/now",           icon: Zap },
       { number: 8,  label: "Comments",      path: "/admin/comments",      icon: MessageSquare },
       { number: 9,  label: "Bookmarks",     path: "/admin/bookmarks",     icon: Bookmark },
+      { number: 10, label: "Knowledge",     path: "/admin/knowledge",     icon: BookOpen },
     ],
   },
   {
@@ -48,15 +50,26 @@ const NAV_GROUPS = [
     ],
   },
   {
+    id: "growth",
+    label: "Growth OS",
+    items: [
+      { number: 19, label: "Growth OS",      path: "/admin/growth",        icon: Rocket },
+      { number: 20, label: "Content Queue",  path: "/admin/content-queue", icon: CalendarClock },
+      { number: 21, label: "Leads",          path: "/admin/leads",         icon: Users },
+      { number: 22, label: "Outreach",       path: "/admin/outreach",      icon: Send },
+      { number: 23, label: "Automations",    path: "/admin/automations",   icon: Bot },
+    ],
+  },
+  {
     id: "system",
     label: "System",
     items: [
-      { number: 13, label: "Navigation",    path: "/admin/nav",           icon: Navigation },
-      { number: 14, label: "Global",        path: "/admin/global",        icon: Globe },
-      { number: 15, label: "Projects",      path: "/admin/projects",      icon: Layers },
-      { number: 16, label: "Meta / SEO",    path: "/admin/meta",          icon: Search },
-      { number: 17, label: "Integrations",  path: "/admin/integrations",  icon: Link2 },
-      { number: 18, label: "Layout",        path: "/admin/layout-builder", icon: Layout },
+      { number: 24, label: "Navigation",    path: "/admin/nav",           icon: Navigation },
+      { number: 25, label: "Global",        path: "/admin/global",        icon: Globe },
+      { number: 26, label: "Projects",      path: "/admin/projects",      icon: Layers },
+      { number: 27, label: "Meta / SEO",    path: "/admin/meta",          icon: Search },
+      { number: 28, label: "Integrations",  path: "/admin/integrations",  icon: Link2 },
+      { number: 29, label: "Layout",        path: "/admin/layout-builder", icon: Layout },
     ],
   },
 ];

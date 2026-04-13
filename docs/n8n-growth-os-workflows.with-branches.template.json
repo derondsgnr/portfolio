@@ -1,0 +1,140 @@
+[
+  {
+    "name": "Growth OS - AU01 Post Builder (Success/Warning)",
+    "nodes": [
+      {
+        "parameters": { "rule": { "interval": [{ "field": "cronExpression", "expression": "0 8 * * *" }] } },
+        "id": "au01-schedule",
+        "name": "Schedule Trigger",
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.2,
+        "position": [220, 260]
+      },
+      {
+        "parameters": { "assignments": { "assignments": [{ "name": "postCount", "value": 1, "type": "number" }, { "name": "failedCount", "value": 0, "type": "number" }] } },
+        "id": "au01-metrics",
+        "name": "Set Metrics (Replace from real nodes)",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [470, 260]
+      },
+      {
+        "parameters": { "conditions": { "number": [{ "value1": "={{$json.failedCount || 0}}", "operation": "larger", "value2": 0 }] } },
+        "id": "au01-if",
+        "name": "If Failed Count > 0",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2,
+        "position": [720, 260]
+      },
+      {
+        "parameters": { "assignments": { "assignments": [{ "name": "automationId", "value": "au-01", "type": "string" }, { "name": "health", "value": "warning", "type": "string" }, { "name": "throughput", "value": "={{\"run failed: \" + ($json.failedCount || 1) + \" error(s)\"}}", "type": "string" }, { "name": "lastRun", "value": "={{$now}}", "type": "string" }] } },
+        "id": "au01-warning",
+        "name": "Set Warning Payload",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [980, 180]
+      },
+      {
+        "parameters": { "assignments": { "assignments": [{ "name": "automationId", "value": "au-01", "type": "string" }, { "name": "health", "value": "healthy", "type": "string" }, { "name": "throughput", "value": "={{($json.postCount || 0) + \" posts generated\"}}", "type": "string" }, { "name": "lastRun", "value": "={{$now}}", "type": "string" }] } },
+        "id": "au01-healthy",
+        "name": "Set Healthy Payload",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [980, 340]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://REPLACE_WITH_SUPABASE_PROJECT_ID.supabase.co/functions/v1/make-server-3fa6479f/admin/growth/heartbeat",
+          "sendHeaders": true,
+          "headerParameters": { "parameters": [{ "name": "Authorization", "value": "Bearer REPLACE_WITH_SUPABASE_ANON_KEY" }, { "name": "Content-Type", "value": "application/json" }] },
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={{$json}}"
+        },
+        "id": "au01-post",
+        "name": "POST Heartbeat",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [1240, 260]
+      }
+    ],
+    "connections": {
+      "Schedule Trigger": { "main": [[{ "node": "Set Metrics (Replace from real nodes)", "type": "main", "index": 0 }]] },
+      "Set Metrics (Replace from real nodes)": { "main": [[{ "node": "If Failed Count > 0", "type": "main", "index": 0 }]] },
+      "If Failed Count > 0": { "main": [[{ "node": "Set Warning Payload", "type": "main", "index": 0 }], [{ "node": "Set Healthy Payload", "type": "main", "index": 0 }]] },
+      "Set Warning Payload": { "main": [[{ "node": "POST Heartbeat", "type": "main", "index": 0 }]] },
+      "Set Healthy Payload": { "main": [[{ "node": "POST Heartbeat", "type": "main", "index": 0 }]] }
+    },
+    "active": false
+  },
+  {
+    "name": "Growth OS - AU03 Lead Harvest (Success/Warning)",
+    "nodes": [
+      {
+        "parameters": { "rule": { "interval": [{ "field": "cronExpression", "expression": "0 */6 * * *" }] } },
+        "id": "au03-schedule",
+        "name": "Schedule Trigger",
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.2,
+        "position": [220, 260]
+      },
+      {
+        "parameters": { "assignments": { "assignments": [{ "name": "newLeadCount", "value": 10, "type": "number" }, { "name": "flaggedCount", "value": 1, "type": "number" }] } },
+        "id": "au03-metrics",
+        "name": "Set Metrics (Replace from real nodes)",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [470, 260]
+      },
+      {
+        "parameters": { "conditions": { "number": [{ "value1": "={{$json.flaggedCount || 0}}", "operation": "larger", "value2": 3 }] } },
+        "id": "au03-if",
+        "name": "If Flagged Count > 3",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2,
+        "position": [720, 260]
+      },
+      {
+        "parameters": { "assignments": { "assignments": [{ "name": "automationId", "value": "au-03", "type": "string" }, { "name": "health", "value": "warning", "type": "string" }, { "name": "throughput", "value": "={{($json.newLeadCount || 0) + \" leads, \" + ($json.flaggedCount || 0) + \" flagged for review\"}}", "type": "string" }, { "name": "lastRun", "value": "={{$now}}", "type": "string" }] } },
+        "id": "au03-warning",
+        "name": "Set Warning Payload",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [980, 180]
+      },
+      {
+        "parameters": { "assignments": { "assignments": [{ "name": "automationId", "value": "au-03", "type": "string" }, { "name": "health", "value": "healthy", "type": "string" }, { "name": "throughput", "value": "={{($json.newLeadCount || 0) + \" leads, \" + ($json.flaggedCount || 0) + \" flagged\"}}", "type": "string" }, { "name": "lastRun", "value": "={{$now}}", "type": "string" }] } },
+        "id": "au03-healthy",
+        "name": "Set Healthy Payload",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [980, 340]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://REPLACE_WITH_SUPABASE_PROJECT_ID.supabase.co/functions/v1/make-server-3fa6479f/admin/growth/heartbeat",
+          "sendHeaders": true,
+          "headerParameters": { "parameters": [{ "name": "Authorization", "value": "Bearer REPLACE_WITH_SUPABASE_ANON_KEY" }, { "name": "Content-Type", "value": "application/json" }] },
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={{$json}}"
+        },
+        "id": "au03-post",
+        "name": "POST Heartbeat",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [1240, 260]
+      }
+    ],
+    "connections": {
+      "Schedule Trigger": { "main": [[{ "node": "Set Metrics (Replace from real nodes)", "type": "main", "index": 0 }]] },
+      "Set Metrics (Replace from real nodes)": { "main": [[{ "node": "If Flagged Count > 3", "type": "main", "index": 0 }]] },
+      "If Flagged Count > 3": { "main": [[{ "node": "Set Warning Payload", "type": "main", "index": 0 }], [{ "node": "Set Healthy Payload", "type": "main", "index": 0 }]] },
+      "Set Warning Payload": { "main": [[{ "node": "POST Heartbeat", "type": "main", "index": 0 }]] },
+      "Set Healthy Payload": { "main": [[{ "node": "POST Heartbeat", "type": "main", "index": 0 }]] }
+    },
+    "active": false
+  }
+]

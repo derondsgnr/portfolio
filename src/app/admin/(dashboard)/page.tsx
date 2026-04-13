@@ -17,6 +17,7 @@ import {
   BookOpen, Zap, Palette, Image, Volume2, Search,
   Link2, Layout, ArrowUpRight, RotateCcw, Trash2,
   TrendingUp, FileText, Clock, MessageSquare, Bookmark, Mail,
+  Rocket, CalendarClock, Users, Send, Bot,
 } from "lucide-react";
 
 // ─── Section definitions ───────────────────────────────────────────
@@ -38,10 +39,16 @@ const SECTIONS = [
   { key: "meta",           label: "Meta / SEO",     path: "/admin/meta",           index: 16, icon: Search,         group: "system",   desc: "Title, OG, favicon" },
   { key: "integrations",   label: "Integrations",   path: "/admin/integrations",   index: 17, icon: Link2,          group: "system",   desc: "Analytics + GTM" },
   { key: "layout-builder", label: "Layout Builder", path: "/admin/layout-builder", index: 18, icon: Layout,         group: "system",   desc: "Section order + swaps" },
+  { key: "growth",         label: "Growth OS",      path: "/admin/growth",         index: 19, icon: Rocket,         group: "growth",   desc: "Automation command center" },
+  { key: "content-queue",  label: "Content Queue",  path: "/admin/content-queue",  index: 20, icon: CalendarClock,  group: "growth",   desc: "Plan and schedule text posts" },
+  { key: "leads",          label: "Leads",          path: "/admin/leads",          index: 21, icon: Users,          group: "growth",   desc: "Pipeline and lead scoring" },
+  { key: "outreach",       label: "Outreach",       path: "/admin/outreach",       index: 22, icon: Send,           group: "growth",   desc: "Cold message review queue" },
+  { key: "automations",    label: "Automations",    path: "/admin/automations",    index: 23, icon: Bot,            group: "growth",   desc: "Workflow health and kill switch" },
 ];
 
 const GROUP_LABELS: Record<string, string> = {
   content: "Content",
+  growth: "Growth",
   style: "Style",
   system: "System",
 };
@@ -98,7 +105,7 @@ function SectionCard({
         <div
           className={`
             absolute top-3 right-8 text-[8px] tracking-[0.15em] uppercase font-['Instrument_Sans']
-            ${section.group === "content" ? "text-white/10" : section.group === "style" ? "text-purple-400/20" : "text-blue-400/20"}
+            ${section.group === "content" ? "text-white/10" : section.group === "growth" ? "text-[#E2B93B]/30" : section.group === "style" ? "text-purple-400/20" : "text-blue-400/20"}
           `}
         >
           {GROUP_LABELS[section.group]}
@@ -195,7 +202,7 @@ function ChangeLog() {
 function QuickStats() {
   const { history } = useAdmin();
   const stats = [
-    { label: "Sections",    value: "13",               icon: LayoutDashboard },
+    { label: "Sections",    value: "23",               icon: LayoutDashboard },
     { label: "Blog Posts",  value: "4",                icon: FileText },
     { label: "Changes",     value: String(history.length), icon: TrendingUp },
   ];
@@ -332,6 +339,13 @@ export default function AdminDashboardPage() {
               >
                 <Layers size={11} />
                 Add Project
+              </Link>
+              <Link
+                href="/admin/growth"
+                className="flex items-center gap-2 px-4 py-2.5 border border-[#E2B93B]/25 text-[#E2B93B]/65 hover:text-[#E2B93B] hover:border-[#E2B93B]/45 transition-all text-[11px] font-['Instrument_Sans'] tracking-wider uppercase"
+              >
+                <Rocket size={11} />
+                Open Growth OS
               </Link>
             </div>
           </div>
