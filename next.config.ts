@@ -1,6 +1,12 @@
+import path from "path";
+import { fileURLToPath } from "url";
 import type { NextConfig } from "next";
 
+/** Pin tracing root when a parent directory has another lockfile (avoids wrong workspace root). */
+const projectRoot = path.dirname(fileURLToPath(import.meta.url));
+
 const nextConfig: NextConfig = {
+  outputFileTracingRoot: projectRoot,
   async rewrites() {
     return [{ source: "/favicon.ico", destination: "/icon" }];
   },

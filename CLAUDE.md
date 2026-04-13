@@ -193,6 +193,7 @@ RESEND_FROM                         → Email "from" address (defaults to Resend
 - **Hardcoded KV table name** `kv_store_3fa6479f` in contact.ts.
 
 ### Not Yet Built
+- **Interactive prototypes on own subdomains** — clickable demos per case study, hosted under derondsgnr.com; spec in `docs/INTERACTIVE-PROTOTYPES.md`
 - Blog migration to Supabase KV (posts, series, categories)
 - Bookmarks import from external platforms
 - Layout builder visual UI (page exists, core functionality incomplete)
@@ -255,6 +256,7 @@ RESEND_FROM                         → Email "from" address (defaults to Resend
 | 2026-03 | Homepage variation system | Allows creative exploration without breaking main | 12 variations, switchable via admin |
 | 2026-03 | motion (not framer-motion) | v12+ is the successor, same API | Import from `motion/react` |
 | 2026-03 | Supabase for comments + contacts | Real-time capable, free tier sufficient | Edge Functions handle CRUD |
+| 2026-04 | `outputFileTracingRoot` in next.config | Parent dir had extra lockfile; Next inferred wrong root for tracing | Build traces and deploys use repo root |
 | 2026-03 | No Redux/Zustand | Minimal state needs, Context is sufficient | 4 context providers total |
 | 2026-03 | ScrambleText as signature | Core brand interaction, recognizable | Single source at shared/scramble-text.tsx |
 | 2026-03 | Admin auth via single secret | Solo user, no multi-user needed | SHA-256 hashed cookie, 7-day expiry |
