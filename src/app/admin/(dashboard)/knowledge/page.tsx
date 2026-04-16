@@ -2,7 +2,9 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { adminCx, FormField, PageHeader } from "@/components/admin/admin-primitives";
-import { CheckCircle2, Download, ExternalLink, Pause, Play, RefreshCcw, Search, Upload, Wifi, WifiOff } from "lucide-react";
+import { knowledgeToInspiration, enqueueInspirationRefs } from "@/lib/admin/presentation-inspiration";
+import Link from "next/link";
+import { CheckCircle2, Clapperboard, Download, ExternalLink, Pause, Play, RefreshCcw, Search, Upload, Wifi, WifiOff } from "lucide-react";
 
 type Source = "x_post" | "x_article" | "instagram_post" | "manual";
 type Status = "queued" | "processed" | "reviewed";
@@ -197,7 +199,13 @@ export default function AdminKnowledgePage() {
             title="Knowledge Vault"
             description="Private learning and retrieval dashboard for your second-brain workflow."
           />
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2 items-center">
+            <Link
+              href="/admin/presentation-studio"
+              className="px-3 py-2 border border-[#E2B93B]/30 text-[#E2B93B]/90 text-xs inline-flex items-center gap-2 hover:bg-[#E2B93B]/10"
+            >
+              <Clapperboard size={12} /> Presentation Studio
+            </Link>
             <input
               ref={importRef}
               type="file"
@@ -303,6 +311,27 @@ export default function AdminKnowledgePage() {
           </button>
           <button onClick={async () => { if (!search.trim()) return; setQueryEmbedding(await ollamaEmbed(search)); }} className="px-3 py-2 border border-white/[0.10] text-white/45 text-xs uppercase inline-flex items-center gap-2"><Search size={12} /> Embed query</button>
           <button onClick={() => processIds(selected)} disabled={isProcessing || !selected.length} className="px-3 py-2 bg-[#E2B93B] text-[#0A0A0A] text-xs uppercase disabled:opacity-40">Process selected</button>
+          <button
+            type="button"
+            onClick={() => {
+              const refs = items
+                .filter((x) => selected.includes(x.id))
+                .map((x) =>
+                  knowledgeToInspiration({
+                    id: x.id,
+                    url: x.url,
+                    title: x.title,
+                    tags: x.tags,
+                    humanCard: x.humanCard,
+                  }),
+                );
+              enqueueInspirationRefs(refs);
+            }}
+            disabled={!selected.length}
+            className="px-3 py-2 border border-[#E2B93B]/35 text-[#E2B93B]/90 text-xs uppercase inline-flex items-center gap-2 disabled:opacity-40"
+          >
+            <Clapperboard size={12} /> Send selected to Studio
+          </button>
           <button onClick={() => processIds(items.filter((x) => x.status === "queued" && (!onlyWithRawText || x.rawText.trim())).map((x) => x.id))} disabled={isProcessing} className="px-3 py-2 border border-white/[0.10] text-white/45 text-xs uppercase disabled:opacity-40">Process queued</button>
           <button onClick={() => processIds(items.filter((x) => x.processingError).map((x) => x.id))} disabled={isProcessing} className="px-3 py-2 border border-red-500/30 text-red-400/80 text-xs uppercase disabled:opacity-40 inline-flex items-center gap-2"><RefreshCcw size={12} /> Retry failed</button>
           <button onClick={() => setIsPaused((p) => !p)} disabled={!isProcessing} className="px-3 py-2 border border-white/[0.10] text-white/45 text-xs uppercase disabled:opacity-40 inline-flex items-center gap-2">{isPaused ? <Play size={12} /> : <Pause size={12} />}{isPaused ? "Resume" : "Pause"}</button>
@@ -343,9 +372,28 @@ export default function AdminKnowledgePage() {
                     {item.title || item.url}
                   </span>
                 </label>
-                <a href={item.url} target="_blank" rel="noreferrer" className="text-xs text-white/35 inline-flex items-center gap-1 shrink-0">
-                  Open <ExternalLink size={11} />
-                </a>
+                <div className="flex items-center gap-2 shrink-0">
+                  <button
+                    type="button"
+                    onClick={() =>
+                      enqueueInspirationRefs([
+                        knowledgeToInspiration({
+                          id: item.id,
+                          url: item.url,
+                          title: item.title,
+                          tags: item.tags,
+                          humanCard: item.humanCard,
+                        }),
+                      ])
+                    }
+                    className="text-xs text-[#E2B93B]/80 hover:text-[#E2B93B] inline-flex items-center gap-1"
+                  >
+                    <Clapperboard size={11} /> Studio
+                  </button>
+                  <a href={item.url} target="_blank" rel="noreferrer" className="text-xs text-white/35 inline-flex items-center gap-1">
+                    Open <ExternalLink size={11} />
+                  </a>
+                </div>
               </div>
 
               <div className="grid lg:grid-cols-2 gap-2">

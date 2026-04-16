@@ -1,0 +1,7 @@
+{
+  "githubPat": {
+    "lastRotatedIso": null,
+    "intervalDays": 7,
+    "label": "GitHub PAT (admin content writes)"
+  }
+}

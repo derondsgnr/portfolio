@@ -114,6 +114,11 @@ export async function saveSounds(data: Record<string, string>, message?: string)
   return saveContent("content/sounds.json", content, message ?? "Update sounds");
 }
 
+export async function saveAdminReminders(data: unknown, message?: string): Promise<{ ok: boolean; error?: string }> {
+  const content = JSON.stringify(data, null, 2);
+  return saveContent("content/admin-reminders.json", content, message ?? "Update admin reminders");
+}
+
 /** Blog post — read existing blog.json, upsert post by slug, persist via GitHub */
 export async function saveBlogPost(
   slug: string,

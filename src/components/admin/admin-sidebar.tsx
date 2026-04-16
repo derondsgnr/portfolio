@@ -18,7 +18,7 @@ import {
   BookOpen, Zap, Palette, Image, Volume2, Search,
   Link2, Layout, X, Menu, LogOut, ExternalLink,
   MessageSquare, Bookmark, FileText, Mail, Rocket,
-  CalendarClock, Users, Send, Bot, Brain,
+  CalendarClock, Users, Send, Bot, Brain, Clapperboard, KeyRound,
 } from "lucide-react";
 import { logout } from "@/app/admin/actions";
 
@@ -59,18 +59,20 @@ const NAV_GROUPS = [
       { number: 22, label: "Outreach",       path: "/admin/outreach",      icon: Send },
       { number: 23, label: "Automations",    path: "/admin/automations",   icon: Bot },
       { number: 24, label: "Knowledge",      path: "/admin/knowledge",     icon: Brain },
+      { number: 25, label: "Presentation Studio", path: "/admin/presentation-studio", icon: Clapperboard },
     ],
   },
   {
     id: "system",
     label: "System",
     items: [
-      { number: 25, label: "Navigation",    path: "/admin/nav",           icon: Navigation },
-      { number: 26, label: "Global",        path: "/admin/global",        icon: Globe },
-      { number: 27, label: "Projects",      path: "/admin/projects",      icon: Layers },
-      { number: 28, label: "Meta / SEO",    path: "/admin/meta",          icon: Search },
-      { number: 29, label: "Integrations",  path: "/admin/integrations",  icon: Link2 },
-      { number: 30, label: "Layout",        path: "/admin/layout-builder", icon: Layout },
+      { number: 26, label: "Navigation",    path: "/admin/nav",           icon: Navigation },
+      { number: 27, label: "Global",        path: "/admin/global",        icon: Globe },
+      { number: 28, label: "Projects",      path: "/admin/projects",      icon: Layers },
+      { number: 29, label: "Meta / SEO",    path: "/admin/meta",          icon: Search },
+      { number: 30, label: "Integrations",  path: "/admin/integrations",  icon: Link2 },
+      { number: 31, label: "Security",      path: "/admin/security",      icon: KeyRound },
+      { number: 32, label: "Layout",        path: "/admin/layout-builder", icon: Layout },
     ],
   },
 ];
