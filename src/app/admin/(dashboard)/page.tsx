@@ -1,4 +1,4 @@
-import { getAdminReminders } from "@/lib/content/admin-reminders";
+import { getAdminReminders } from "@/lib/content/admin-reminders.server";
 import { AdminDashboardClient } from "./admin-dashboard-client";
 
 export default async function AdminDashboardPage() {

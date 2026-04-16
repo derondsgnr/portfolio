@@ -1,12 +1,13 @@
 import type { CaseStudy } from "../../types/case-study";
-
-const cover =
-  "https://images.unsplash.com/photo-1563013544-824ae1b704d3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080";
+import { caseStudyPlaceholder as ph } from "@/lib/case-study-placeholders";
 
 /**
  * BRIDGEPAY — Escrow & International Payments
- * Source: https://derondsgns.framer.website/product-explorations/bridgepay-escrow-international-payments
+ * Migrated from Framer product exploration (copy + structure; images are placeholders).
+ * @see https://derondsgns.framer.website/product-explorations/bridgepay-escrow-international-payments
  */
+const cover = ph("Bridgepay · Escrow & FX", 1920, 1080);
+
 export const BRIDGEPAY_CASE_STUDY: CaseStudy = {
   slug: "bridgepay",
   meta: {
@@ -16,7 +17,8 @@ export const BRIDGEPAY_CASE_STUDY: CaseStudy = {
     role: "Product Designer",
     tags: ["Fintech", "Payments", "Escrow", "Mobile Design"],
     cover,
-    summary: "Shaping a new escrow sub-product from the ground up — making online buying and selling safer for Nigerians moving money globally.",
+    summary:
+      "An escrow and international payments sub-product designed from scratch — clear flows for buyers, sellers, and non-registered users, under compliance and budget constraints.",
     color: "#3B82F6",
   },
   template: "full-product",
@@ -57,6 +59,30 @@ export const BRIDGEPAY_CASE_STUDY: CaseStudy = {
           headline: "Designed flows",
           body: "Sign-up and onboarding flow · Escrow initiation for buyers and business owners · Escrow initiation for freelancers and sellers · Non-registered recipient flow · Status and confirmation screens for both parties · Ability to switch between \"Escrow\" and \"International Payments\" · Cross-border transfer flow with currency clarity.",
         },
+        {
+          type: "single-mockup",
+          id: "bridgepay-mock-onboarding",
+          headline: "Onboarding",
+          image: ph("Bridgepay · Sign up"),
+          device: "phone",
+          caption: "Placeholder — swap for shipped UI.",
+        },
+        {
+          type: "single-mockup",
+          id: "bridgepay-mock-escrow",
+          headline: "Escrow initiation",
+          image: ph("Bridgepay · Escrow"),
+          device: "phone",
+          caption: "Placeholder — buyer / seller paths.",
+        },
+        {
+          type: "single-mockup",
+          id: "bridgepay-mock-intl",
+          headline: "International payments",
+          image: ph("Bridgepay · FX transfer"),
+          device: "phone",
+          caption: "Placeholder — currency clarity & confirmation.",
+        },
       ],
     },
     {
@@ -78,7 +104,8 @@ export const BRIDGEPAY_CASE_STUDY: CaseStudy = {
         {
           type: "quote",
           id: "bridgepay-testimonial",
-          quote: "One key thing I would say about Deron, having worked with him for a very long time, is the full attention, detail, and commitment he puts into getting work done. He goes the extra mile to make sure the results surpass your expectations. It has always been a pleasure working with him, and I am super confident you would love working with him too.",
+          quote:
+            "One key thing I would say about Deron, having worked with him for a very long time, is the full attention, detail, and commitment he puts into getting work done. He goes the extra mile to make sure the results surpass your expectations. It has always been a pleasure working with him, and I am super confident you would love working with him too.",
           attribution: "Alabi Hafeez",
           role: "CEO, Bridgepay",
         },
@@ -90,7 +117,8 @@ export const BRIDGEPAY_CASE_STUDY: CaseStudy = {
       { label: "Project", value: "Escrow sub-product" },
       { label: "Recognition", value: "LBS Innovation Bootcamp Award" },
     ],
-    testimonial: "One key thing I would say about Deron is the full attention, detail, and commitment he puts into getting work done. He goes the extra mile to make sure the results surpass your expectations.",
+    testimonial:
+      "One key thing I would say about Deron is the full attention, detail, and commitment he puts into getting work done. He goes the extra mile to make sure the results surpass your expectations.",
     testimonialAuthor: "Alabi Hafeez, CEO, Bridgepay",
   },
 };

@@ -1,6 +1,3 @@
-import { readFile } from "fs/promises";
-import path from "path";
-
 export type GithubPatReminder = {
   /** ISO 8601 when you last rotated the token */
   lastRotatedIso: string | null;
@@ -12,30 +9,13 @@ export type AdminRemindersConfig = {
   githubPat: GithubPatReminder;
 };
 
-const DEFAULT: AdminRemindersConfig = {
+export const DEFAULT_ADMIN_REMINDERS: AdminRemindersConfig = {
   githubPat: {
     lastRotatedIso: null,
     intervalDays: 7,
     label: "GitHub PAT (admin content writes)",
   },
 };
-
-export async function getAdminReminders(): Promise<AdminRemindersConfig> {
-  try {
-    const filePath = path.join(process.cwd(), "content", "admin-reminders.json");
-    const raw = await readFile(filePath, "utf-8");
-    const parsed = JSON.parse(raw) as Partial<AdminRemindersConfig>;
-    return {
-      githubPat: {
-        ...DEFAULT.githubPat,
-        ...parsed.githubPat,
-        intervalDays: Math.min(90, Math.max(1, parsed.githubPat?.intervalDays ?? DEFAULT.githubPat.intervalDays)),
-      },
-    };
-  } catch {
-    return { ...DEFAULT };
-  }
-}
 
 /** Client-safe helpers */
 export function nextDueDate(lastRotatedIso: string | null, intervalDays: number): Date | null {
