@@ -1,5 +1,6 @@
 import { getContentWithGitHubOverlay } from "@/lib/admin/content-overlay";
-import { getAdminReminders, type AdminRemindersConfig } from "@/lib/content/admin-reminders";
+import { getAdminReminders } from "@/lib/content/admin-reminders.server";
+import type { AdminRemindersConfig } from "@/lib/content/admin-reminders";
 import { SecurityRemindersForm } from "./security-reminders-form";
 
 export const dynamic = "force-dynamic";

@@ -1,12 +1,13 @@
 import type { CaseStudy } from "../../types/case-study";
-
-const cover =
-  "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080";
+import { caseStudyPlaceholder as ph } from "@/lib/case-study-placeholders";
 
 /**
  * URBAN — Redesigning a Transportation Experience
- * Source: https://derondsgns.framer.website/product-explorations/urban-redesigning-a-transportation-experience-(end-user-driver)
+ * Migrated from Framer product exploration (copy + structure; images are placeholders).
+ * @see https://derondsgns.framer.website/product-explorations/urban-redesigning-a-transportation-experience-(end-user-driver)
  */
+const cover = ph("Urban · Rider & driver", 1920, 1080);
+
 export const URBAN_CASE_STUDY: CaseStudy = {
   slug: "urban",
   meta: {
@@ -16,7 +17,8 @@ export const URBAN_CASE_STUDY: CaseStudy = {
     role: "Product Designer",
     tags: ["Transportation", "Rideshare", "Mobile Design", "Web Design"],
     cover,
-    summary: "Redesigning both rider and driver apps for a Nigerian interstate transport platform — modern, simple, safe, without breaking the complex system already in use.",
+    summary:
+      "Redesigning both rider and driver apps for a Nigerian interstate transport platform — modern, simple, safe, without breaking the complex system already in use.",
     color: "#10B981",
   },
   template: "full-product",
@@ -64,10 +66,34 @@ export const URBAN_CASE_STUDY: CaseStudy = {
           body: "I redesigned the booking flow for trips and flights, updated the home screen, and simplified the way users view their history and upcoming schedules. I introduced bottom sheets to show clear travel requirements, payment status, and important information people need before travelling. Overall, I modernized the entire experience and made it feel familiar to anyone who has used apps like Bolt or Uber — but adapted to interstate travel needs.",
         },
         {
+          type: "single-mockup",
+          id: "urban-mock-rider-home",
+          headline: "Rider · home & booking",
+          image: ph("Urban · Rider home"),
+          device: "phone",
+          caption: "Placeholder screen — swap for production UI.",
+        },
+        {
+          type: "single-mockup",
+          id: "urban-mock-rider-sheet",
+          headline: "Rider · bottom sheet",
+          image: ph("Urban · Requirements sheet"),
+          device: "phone",
+          caption: "Placeholder — travel requirements & payment clarity.",
+        },
+        {
           type: "narrative",
           id: "urban-driver",
           headline: "Driver app",
           body: "This side was more constrained because of business rules, but it needed clarity even more. I consolidated three separate sections (Records, Requests, Trips) into two simple ones. I reorganized their dashboard, redesigned the profile, and made important actions easier to find. Because interstate travel in Nigeria carries real risks, I added: an SOS button, a place to view vehicle documents during police checks, and a hidden wallet toggle for safety during robbery situations. These were features the founder never thought about, but they were necessary for the real world.",
+        },
+        {
+          type: "single-mockup",
+          id: "urban-mock-driver",
+          headline: "Driver · consolidated hub",
+          image: ph("Urban · Driver dashboard"),
+          device: "phone",
+          caption: "Placeholder — driver trips & safety affordances.",
         },
       ],
     },
