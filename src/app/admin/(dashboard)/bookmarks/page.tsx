@@ -15,13 +15,15 @@ import { adminCx, FormField } from "@/components/admin/admin-primitives";
 import {
   Plus, X, Search, Trash2, ExternalLink, Edit3,
   Youtube, Twitter, Instagram, Github, Figma, Grid, List,
-  Bookmark, Tag, Copy,
+  Bookmark, Tag, Copy, Clapperboard,
 } from "lucide-react";
 import {
   fetchAllBookmarks,
   saveBookmark,
   deleteBookmark as deleteBookmarkAction,
 } from "@/app/admin/actions";
+import { bookmarkToInspiration, enqueueInspirationRefs } from "@/lib/admin/presentation-inspiration";
+import Link from "next/link";
 
 // ─── Types ─────────────────────────────────────────────────────────
 type Platform = "youtube" | "twitter" | "instagram" | "tiktok" | "figma" | "dribbble" | "github" | "pinterest" | "other";
@@ -364,11 +366,13 @@ function BookmarkCard({
   onEdit,
   onDelete,
   onCopyUrl,
+  onSendToStudio,
 }: {
   bookmark: BookmarkItem;
   onEdit: () => void;
   onDelete: () => void;
   onCopyUrl: () => void;
+  onSendToStudio: () => void;
 }) {
   const PlatformIcon = PLATFORMS[bookmark.platform].icon;
   const catCfg = CATEGORIES[bookmark.category];
@@ -397,11 +401,19 @@ function BookmarkCard({
         )}
 
         {/* Overlay on hover */}
-        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1.5 flex-wrap px-1">
           <a href={bookmark.url} target="_blank" rel="noopener noreferrer"
             className="flex items-center gap-1 px-3 py-1.5 bg-white text-[#0A0A0A] font-['Anton'] text-[10px] tracking-[0.1em] hover:bg-[#E2B93B] transition-colors">
             <ExternalLink size={11} /> OPEN
           </a>
+          <button
+            type="button"
+            onClick={onSendToStudio}
+            className="flex items-center gap-1 px-2.5 py-1.5 bg-[#E2B93B]/90 text-[#0A0A0A] font-['Anton'] text-[9px] tracking-[0.1em] hover:bg-white transition-colors"
+            title="Send to Presentation Studio queue"
+          >
+            <Clapperboard size={11} /> STUDIO
+          </button>
           <button onClick={onEdit} className="p-1.5 bg-white/10 border border-white/20 text-white hover:bg-white/20 transition-colors"><Edit3 size={12} /></button>
           <button onClick={onCopyUrl} className="p-1.5 bg-white/10 border border-white/20 text-white hover:bg-white/20 transition-colors"><Copy size={12} /></button>
           <button onClick={onDelete} className="p-1.5 bg-red-500/20 border border-red-500/30 text-red-400 hover:bg-red-500/30 transition-colors"><Trash2 size={12} /></button>
@@ -469,10 +481,12 @@ function BookmarkRow({
   bookmark,
   onEdit,
   onDelete,
+  onSendToStudio,
 }: {
   bookmark: BookmarkItem;
   onEdit: () => void;
   onDelete: () => void;
+  onSendToStudio: () => void;
 }) {
   const PlatformIcon = PLATFORMS[bookmark.platform].icon;
   const catCfg = CATEGORIES[bookmark.category];
@@ -517,6 +531,14 @@ function BookmarkRow({
 
       {/* Actions */}
       <div className="flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
+        <button
+          type="button"
+          onClick={onSendToStudio}
+          className="p-1.5 text-[#E2B93B]/50 hover:text-[#E2B93B] transition-colors"
+          title="Presentation Studio"
+        >
+          <Clapperboard size={12} />
+        </button>
         <a href={bookmark.url} target="_blank" rel="noopener noreferrer" className="p-1.5 text-white/20 hover:text-white/60 transition-colors"><ExternalLink size={12} /></a>
         <button onClick={onEdit} className="p-1.5 text-[#E2B93B]/40 hover:text-[#E2B93B] transition-colors"><Edit3 size={12} /></button>
         <button onClick={onDelete} className="p-1.5 text-white/15 hover:text-red-400/60 transition-colors"><Trash2 size={12} /></button>
@@ -577,6 +599,10 @@ function AdminBookmarksPage() {
     deleteBookmarkAction(id);
   }
 
+  const sendToStudio = useCallback((bm: BookmarkItem) => {
+    enqueueInspirationRefs([bookmarkToInspiration(bm)]);
+  }, []);
+
   function copyUrl(url: string) {
     navigator.clipboard.writeText(url).catch(() => {});
   }
@@ -617,6 +643,12 @@ function AdminBookmarksPage() {
             <p className="text-sm text-white/35 font-['Instrument_Sans'] mt-1 max-w-lg leading-relaxed">
               Personal media repository. Save, categorize, and find inspiration from across the web.
             </p>
+            <Link
+              href="/admin/presentation-studio"
+              className="inline-flex items-center gap-1.5 mt-3 text-[11px] font-['Instrument_Sans'] uppercase tracking-wider text-[#E2B93B]/80 hover:text-[#E2B93B] border border-[#E2B93B]/25 px-3 py-1.5 w-fit"
+            >
+              <Clapperboard size={12} /> Presentation Studio queue
+            </Link>
           </div>
           <button
             onClick={() => setShowAddModal(true)}
@@ -729,6 +761,7 @@ function AdminBookmarksPage() {
                 onEdit={() => setEditingId(bm.id)}
                 onDelete={() => remove(bm.id)}
                 onCopyUrl={() => copyUrl(bm.url)}
+                onSendToStudio={() => sendToStudio(bm)}
               />
             ))}
           </AnimatePresence>
@@ -742,6 +775,7 @@ function AdminBookmarksPage() {
                 bookmark={bm}
                 onEdit={() => setEditingId(bm.id)}
                 onDelete={() => remove(bm.id)}
+                onSendToStudio={() => sendToStudio(bm)}
               />
             ))}
           </AnimatePresence>
