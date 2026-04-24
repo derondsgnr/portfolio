@@ -6,6 +6,7 @@ This project now has:
 - `GET/POST /api/monitor/run` for scheduled monitoring sweeps
 - Supabase SQL tables for service status, alerts, and automation heartbeats
 - Slack/email/webhook notifications for incidents
+- GitHub Actions cron for 5-minute monitoring sweeps on Vercel Hobby
 
 ## What "step 2" means
 
@@ -81,35 +82,41 @@ Recommended:
 - `MONITORING_WEBHOOK_URL`
 - `MONITORING_ALERT_EMAIL`
 
-### Vercel CLI alternative
+## 4. Configure GitHub Actions
 
-```bash
-vercel env add MONITORING_SITE_URL production
-vercel env add CRON_SECRET production
-vercel env add MONITORING_WEBHOOK_URL production
-vercel env add MONITORING_ALERT_EMAIL production
+This repo uses `.github/workflows/monitoring-sweep.yml` instead of Vercel Cron so monitoring can run every 5 minutes on a Hobby account.
+
+In GitHub, open **Settings -> Secrets and variables -> Actions** and add:
+
+### Repository variable
+
+```text
+MONITORING_SITE_URL=https://your-domain.com
 ```
 
-Repeat for `preview` if you want monitoring there too.
+### Repository secret
 
-## 4. Cron behavior
-
-`vercel.json` schedules:
-
-```json
-{
-  "crons": [
-    {
-      "path": "/api/monitor/run",
-      "schedule": "*/5 * * * *"
-    }
-  ]
-}
+```text
+MONITORING_CRON_SECRET=replace-with-the-same-secret-you-set-in-Vercel
 ```
 
-Vercel will call that route automatically after deploy.
+The workflow sends:
 
-## 5. Slack webhook setup
+- `Authorization: Bearer MONITORING_CRON_SECRET`
+- request to `${MONITORING_SITE_URL}/api/monitor/run`
+
+So the secret value in GitHub Actions must match the secret value you set in Vercel.
+
+## 5. Workflow behavior
+
+The workflow runs on:
+
+- a 5-minute cron schedule
+- manual trigger via `workflow_dispatch`
+
+You can also run it manually from the GitHub Actions tab to test the setup immediately after deployment.
+
+## 6. Slack webhook setup
 
 Create a Slack Incoming Webhook and set:
 
@@ -123,7 +130,7 @@ The app auto-detects Slack webhook URLs and sends Block Kit payloads. If you use
 MONITORING_WEBHOOK_KIND=slack
 ```
 
-## 6. Example heartbeat payload
+## 7. Example heartbeat payload
 
 External automations should POST to:
 
@@ -143,13 +150,20 @@ With JSON like:
 }
 ```
 
-## 7. Quick manual test
+## 8. Quick manual test
 
 Run a sweep locally:
 
 ```bash
 curl -H "Authorization: Bearer $MONITORING_CRON_SECRET" http://localhost:3000/api/monitor/run
 ```
+
+Run the GitHub workflow manually:
+
+- open the repo on GitHub
+- go to **Actions**
+- open **Monitoring Sweep**
+- click **Run workflow**
 
 Trigger a warning heartbeat:
 

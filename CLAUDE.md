@@ -284,7 +284,7 @@ MONITORING_ALERT_EMAIL              → Override destination for monitoring emai
 - **Build:** `pnpm build` (Next.js)
 - **Preview:** Every PR gets a preview deployment
 - **Env vars:** Set in Vercel dashboard (Settings → Environment Variables)
-- **Cron:** `vercel.json` schedules `/api/monitor/run` every 5 minutes; set `CRON_SECRET` or `MONITORING_CRON_SECRET`
+- **Cron:** GitHub Actions triggers `/api/monitor/run` every 5 minutes; set `CRON_SECRET` or `MONITORING_CRON_SECRET` in Vercel and mirror the secret in GitHub Actions
 
 ---
 
