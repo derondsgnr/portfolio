@@ -24,6 +24,19 @@ export type ContactPayload = {
 
 const KV_TABLE = "kv_store_3fa6479f";
 
+function getContactStorageErrorMessage(error: unknown): string {
+  const message = error instanceof Error ? error.message : "";
+
+  if (
+    message.includes("NEXT_PUBLIC_SUPABASE_PROJECT_ID is required") ||
+    message.includes("SUPABASE_SERVICE_ROLE_KEY is required")
+  ) {
+    return "Contact form is temporarily unavailable because message delivery is not configured.";
+  }
+
+  return "Couldn't save your message right now. Please try again in a moment.";
+}
+
 function getSupabaseAdmin() {
   const projectId = process.env.NEXT_PUBLIC_SUPABASE_PROJECT_ID;
   if (!projectId) throw new Error("NEXT_PUBLIC_SUPABASE_PROJECT_ID is required for contact storage");
@@ -58,7 +71,7 @@ export async function submitContact(payload: ContactPayload): Promise<{ ok: bool
     if (error) throw error;
   } catch (err) {
     console.error("Contact storage error:", err);
-    return { ok: false, error: "Failed to save your message. Please try again." };
+    return { ok: false, error: getContactStorageErrorMessage(err) };
   }
 
   // 2. Send email
@@ -128,6 +141,6 @@ export async function deleteContact(id: string): Promise<{ ok: boolean; error?: 
     return { ok: true };
   } catch (err) {
     console.error("Contact delete error:", err);
-    return { ok: false, error: "Failed to delete" };
+    return { ok: false, error: "Couldn't delete this message right now." };
   }
 }

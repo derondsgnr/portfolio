@@ -2,6 +2,7 @@
 
 import { useState, useRef } from "react";
 import { saveTheme } from "../../actions";
+import { AdminSaveFeedback } from "@/components/admin/admin-save-feedback";
 import { formCx, FormField, SaveButton } from "@/design-system";
 import type { Theme, FontPairId } from "@/lib/content/theme";
 
@@ -96,7 +97,7 @@ export function ThemeForm({ initial }: Props) {
       setTimeout(() => setStatus("idle"), 2000);
     } else {
       setStatus("error");
-      setErrorMsg(result.error ?? "Save failed");
+      setErrorMsg(result.error ?? null);
     }
   }
 
@@ -161,14 +162,13 @@ export function ThemeForm({ initial }: Props) {
         </div>
       </div>
 
-      {errorMsg && <p className="font-mono text-sm text-red-400">{errorMsg}</p>}
-      <button
-        type="submit"
-        disabled={status === "saving"}
-        className="px-6 py-2 bg-[#E2B93B] text-[#0A0A0A] font-mono text-xs tracking-wider uppercase hover:bg-white transition-colors disabled:opacity-50"
-      >
-        {status === "saving" ? "Saving…" : status === "ok" ? "Saved" : "Save"}
-      </button>
+      <AdminSaveFeedback
+        status={status}
+        error={errorMsg}
+        savingMessage="Saving changes to content/theme.json..."
+        successMessage="Saved to content/theme.json."
+      />
+      <SaveButton status={status} />
     </form>
   );
 }

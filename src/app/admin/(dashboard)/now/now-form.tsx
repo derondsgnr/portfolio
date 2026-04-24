@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "motion/react";
 import { saveNow } from "@/app/admin/actions";
+import { AdminSaveFeedback } from "@/components/admin/admin-save-feedback";
 import { useAdmin } from "@/components/admin/admin-context";
 import { adminCx, PageHeader, FieldGroup, FormField, SaveButton } from "@/components/admin/admin-primitives";
 import {
@@ -20,6 +21,7 @@ export function AdminNowForm({ initial }: { initial: NowConfig }) {
   const { pushHistory, pendingRevert, clearPendingRevert } = useAdmin();
   const [config, setConfig] = useState<NowConfig>(initial);
   const [status, setStatus] = useState<"idle" | "saving" | "ok" | "error">("idle");
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [lastSaved, setLastSaved] = useState<string | null>(null);
   const [toolInput, setToolInput] = useState("");
 
@@ -41,6 +43,7 @@ export function AdminNowForm({ initial }: { initial: NowConfig }) {
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();
     setStatus("saving");
+    setErrorMsg(null);
     const result = await saveNow(config, "Update now page");
     if (result.ok) {
       pushHistory("now", "Now", `Status: ${config.status} — ${config.focus}`, config);
@@ -49,6 +52,7 @@ export function AdminNowForm({ initial }: { initial: NowConfig }) {
       setTimeout(() => setStatus("idle"), 2500);
     } else {
       setStatus("error");
+      setErrorMsg(result.error ?? null);
     }
   }
 
@@ -257,7 +261,15 @@ export function AdminNowForm({ initial }: { initial: NowConfig }) {
           </div>
         </FieldGroup>
 
-        <SaveButton status={status} />
+        <div className="space-y-4">
+          <SaveButton status={status} />
+          <AdminSaveFeedback
+            status={status}
+            error={errorMsg}
+            savingMessage="Saving changes to content/now.json..."
+            successMessage="Saved to content/now.json."
+          />
+        </div>
       </form>
     </div>
   );

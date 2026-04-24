@@ -4,7 +4,7 @@ import { ContactsList } from "./contacts-list";
 export const dynamic = "force-dynamic";
 
 export default async function AdminContactsPage() {
-  const contacts = await getContactsForAdmin();
+  const result = await getContactsForAdmin();
 
   return (
     <div>
@@ -12,7 +12,7 @@ export default async function AdminContactsPage() {
       <p className="text-white/50 font-mono text-sm mb-8">
         Messages from the &quot;Send a message&quot; form. Also sent to your email when configured.
       </p>
-      <ContactsList initial={contacts} />
+      <ContactsList initial={result.contacts} initialError={result.ok ? null : result.error ?? null} />
     </div>
   );
 }

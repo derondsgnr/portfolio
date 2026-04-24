@@ -18,6 +18,7 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { AdminSaveFeedback } from "@/components/admin/admin-save-feedback";
 import { savePagesConfig } from "../../actions";
 import { SECTION_OPTIONS } from "@/lib/section-options";
 import { getSectionSchema } from "@/lib/section-schemas";
@@ -359,7 +360,7 @@ export function LayoutBuilderForm({ initial }: Props) {
       setTimeout(() => setStatus("idle"), 2000);
     } else {
       setStatus("error");
-      setErrorMsg(result.error ?? "Save failed");
+      setErrorMsg(result.error ?? null);
     }
   }
 
@@ -418,7 +419,12 @@ export function LayoutBuilderForm({ initial }: Props) {
         </button>
       </div>
 
-      {errorMsg && <p className="font-mono text-sm text-red-400">{errorMsg}</p>}
+      <AdminSaveFeedback
+        status={status}
+        error={errorMsg}
+        savingMessage="Saving changes to content/pages.json..."
+        successMessage="Saved to content/pages.json."
+      />
 
       <div className="mt-8 p-4 border border-white/10 font-mono text-xs text-white/50">
         <p className="mb-2">Available sections:</p>

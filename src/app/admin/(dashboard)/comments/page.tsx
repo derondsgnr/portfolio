@@ -8,6 +8,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { PageHeader, adminCx } from "@/components/admin/admin-primitives";
+import { AdminNotice } from "@/components/admin/admin-notice";
 import { motion, AnimatePresence } from "motion/react";
 import {
   Check, Trash2, Flag, MessageSquare, Search, RefreshCw,
@@ -17,6 +18,7 @@ import {
   updateCommentStatus,
   deleteComment as deleteCommentAction,
 } from "@/app/admin/actions";
+import { getAdminErrorMessage } from "@/lib/admin/feedback";
 
 // ─── Types ─────────────────────────────────────────────────────────
 type CommentStatus = "pending" | "approved" | "spam";
@@ -62,11 +64,13 @@ function CommentCard({
   onApprove,
   onSpam,
   onDelete,
+  disabled,
 }: {
   comment: Comment;
   onApprove: () => void;
   onSpam: () => void;
   onDelete: () => void;
+  disabled?: boolean;
 }) {
   const status = comment.status ?? "pending";
   return (
@@ -120,16 +124,28 @@ function CommentCard({
       {/* Actions */}
       <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
         {status !== "approved" && (
-          <button onClick={onApprove} className="flex items-center gap-1.5 text-[10px] font-['Instrument_Sans'] tracking-wider uppercase text-green-400/60 hover:text-green-400 border border-green-500/20 hover:border-green-500/40 px-3 py-1.5 transition-all">
+          <button
+            onClick={onApprove}
+            disabled={disabled}
+            className="flex items-center gap-1.5 text-[10px] font-['Instrument_Sans'] tracking-wider uppercase text-green-400/60 hover:text-green-400 border border-green-500/20 hover:border-green-500/40 px-3 py-1.5 transition-all disabled:opacity-40"
+          >
             <Check size={11} /> Approve
           </button>
         )}
         {status !== "spam" && (
-          <button onClick={onSpam} className="flex items-center gap-1.5 text-[10px] font-['Instrument_Sans'] tracking-wider uppercase text-white/20 hover:text-red-400/60 border border-white/[0.08] hover:border-red-500/20 px-3 py-1.5 transition-all">
+          <button
+            onClick={onSpam}
+            disabled={disabled}
+            className="flex items-center gap-1.5 text-[10px] font-['Instrument_Sans'] tracking-wider uppercase text-white/20 hover:text-red-400/60 border border-white/[0.08] hover:border-red-500/20 px-3 py-1.5 transition-all disabled:opacity-40"
+          >
             <Flag size={11} /> Spam
           </button>
         )}
-        <button onClick={onDelete} className="flex items-center gap-1.5 text-[10px] font-['Instrument_Sans'] tracking-wider uppercase text-white/15 hover:text-red-400/70 border border-white/[0.06] hover:border-red-500/20 px-3 py-1.5 transition-all ml-auto">
+        <button
+          onClick={onDelete}
+          disabled={disabled}
+          className="flex items-center gap-1.5 text-[10px] font-['Instrument_Sans'] tracking-wider uppercase text-white/15 hover:text-red-400/70 border border-white/[0.06] hover:border-red-500/20 px-3 py-1.5 transition-all ml-auto disabled:opacity-40"
+        >
           <Trash2 size={11} /> Delete
         </button>
       </div>
@@ -144,15 +160,20 @@ function AdminCommentsPage() {
   const [search, setSearch] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
+  const [activeAction, setActiveAction] = useState<string | null>(null);
 
   const loadComments = useCallback(async () => {
     setIsLoading(true);
     setError(null);
+    setNotice("Refreshing comments...");
     const result = await fetchAllComments();
     if (result.ok) {
       setComments(result.comments as Comment[]);
+      setNotice("Comments refreshed.");
     } else {
-      setError(result.error ?? "Failed to load comments");
+      setError(getAdminErrorMessage(result.error ?? "Failed to load comments"));
+      setNotice(null);
     }
     setIsLoading(false);
   }, []);
@@ -160,20 +181,58 @@ function AdminCommentsPage() {
   useEffect(() => { loadComments(); }, [loadComments]);
 
   async function handleUpdateStatus(kvKey: string, status: CommentStatus) {
+    const previous = comments;
+    setActiveAction(kvKey);
+    setError(null);
+    setNotice(status === "approved" ? "Approving comment..." : "Marking comment as spam...");
     setComments((c) => c.map((cm) => cm._kvKey === kvKey ? { ...cm, status } : cm));
-    await updateCommentStatus(kvKey, status);
+    const result = await updateCommentStatus(kvKey, status);
+    if (!result.ok) {
+      setComments(previous);
+      setError(getAdminErrorMessage(result.error));
+      setNotice(null);
+    } else {
+      setNotice(status === "approved" ? "Comment approved." : "Comment marked as spam.");
+    }
+    setActiveAction(null);
   }
 
   async function handleDelete(kvKey: string) {
     if (!confirm("Delete this comment? This cannot be undone.")) return;
+    const previous = comments;
+    setActiveAction(kvKey);
+    setError(null);
+    setNotice("Deleting comment...");
     setComments((c) => c.filter((cm) => cm._kvKey !== kvKey));
-    await deleteCommentAction(kvKey);
+    const result = await deleteCommentAction(kvKey);
+    if (!result.ok) {
+      setComments(previous);
+      setError(getAdminErrorMessage(result.error));
+      setNotice(null);
+    } else {
+      setNotice("Comment deleted.");
+    }
+    setActiveAction(null);
   }
 
   async function approveAll() {
     const pending = comments.filter((c) => (c.status ?? "pending") === "pending");
+    if (!pending.length) return;
+    const previous = comments;
+    setActiveAction("approve-all");
+    setError(null);
+    setNotice(`Approving ${pending.length} pending comment(s)...`);
     setComments((c) => c.map((cm) => (cm.status ?? "pending") === "pending" ? { ...cm, status: "approved" as CommentStatus } : cm));
-    await Promise.all(pending.map((c) => updateCommentStatus(c._kvKey, "approved")));
+    const results = await Promise.all(pending.map((c) => updateCommentStatus(c._kvKey, "approved")));
+    const failed = results.find((result) => !result.ok);
+    if (failed) {
+      setComments(previous);
+      setError(getAdminErrorMessage(failed.error));
+      setNotice(null);
+    } else {
+      setNotice(`Approved ${pending.length} pending comment(s).`);
+    }
+    setActiveAction(null);
   }
 
   const filtered = comments.filter((c) => {
@@ -225,22 +284,31 @@ function AdminCommentsPage() {
         </div>
 
         {counts.pending > 0 && (
-          <button onClick={approveAll} className="ml-auto flex items-center gap-1.5 text-[10px] font-['Instrument_Sans'] tracking-wider uppercase text-green-400/50 hover:text-green-400 border border-green-500/15 hover:border-green-500/30 px-3 py-1.5 transition-all">
+          <button
+            onClick={approveAll}
+            disabled={Boolean(activeAction)}
+            className="ml-auto flex items-center gap-1.5 text-[10px] font-['Instrument_Sans'] tracking-wider uppercase text-green-400/50 hover:text-green-400 border border-green-500/15 hover:border-green-500/30 px-3 py-1.5 transition-all disabled:opacity-40"
+          >
             <Check size={11} /> Approve All Pending ({counts.pending})
           </button>
         )}
 
-        <button onClick={loadComments} className="p-2 text-white/20 hover:text-white/60 border border-white/[0.06] hover:border-white/[0.12] transition-all">
+        <button
+          onClick={loadComments}
+          disabled={Boolean(activeAction)}
+          className="p-2 text-white/20 hover:text-white/60 border border-white/[0.06] hover:border-white/[0.12] transition-all disabled:opacity-40"
+        >
           <RefreshCw size={13} className={isLoading ? "animate-spin" : ""} />
         </button>
       </div>
 
       {/* Error state */}
-      {error && (
-        <div className="mb-6 p-4 border border-red-500/20 bg-red-500/[0.03]">
-          <p className="text-[11px] text-red-400/70 font-['Instrument_Sans']">{error}</p>
+      {error || notice ? (
+        <div className="mb-6">
+          {error ? <AdminNotice kind="error">{error}</AdminNotice> : null}
+          {!error && notice ? <AdminNotice kind={activeAction ? "info" : "success"}>{notice}</AdminNotice> : null}
         </div>
-      )}
+      ) : null}
 
       {/* Comment list */}
       {isLoading && comments.length === 0 ? (
@@ -265,6 +333,7 @@ function AdminCommentsPage() {
                 onApprove={() => handleUpdateStatus(comment._kvKey, "approved")}
                 onSpam={() => handleUpdateStatus(comment._kvKey, "spam")}
                 onDelete={() => handleDelete(comment._kvKey)}
+                disabled={Boolean(activeAction)}
               />
             ))}
           </AnimatePresence>

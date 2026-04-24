@@ -34,13 +34,16 @@ export async function POST(req: Request) {
     const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
     if (isRateLimited(ip)) {
       return NextResponse.json(
-        { error: "Too many comments. Please try again later." },
+        { error: "Comment limit reached for now. Please try again in a little while." },
         { status: 429 }
       );
     }
 
     if (!projectId || !publicAnonKey) {
-      return NextResponse.json({ error: "Comments service not configured" }, { status: 503 });
+      return NextResponse.json(
+        { error: "Comments are temporarily unavailable because the comments service is not configured." },
+        { status: 503 }
+      );
     }
 
     const body = await req.json();
@@ -53,11 +56,11 @@ export async function POST(req: Request) {
 
     // Validate text
     if (!text || typeof text !== "string" || !text.trim()) {
-      return NextResponse.json({ error: "Comment text is required" }, { status: 400 });
+      return NextResponse.json({ error: "Write a comment before posting." }, { status: 400 });
     }
     if (text.length > MAX_TEXT_LENGTH) {
       return NextResponse.json(
-        { error: `Comment too long (max ${MAX_TEXT_LENGTH} characters)` },
+        { error: `Comment is too long. Keep it under ${MAX_TEXT_LENGTH} characters.` },
         { status: 400 }
       );
     }
@@ -81,12 +84,12 @@ export async function POST(req: Request) {
       return NextResponse.json(data);
     }
     return NextResponse.json(
-      { error: data.error ?? "Failed to post comment" },
+      { error: data.error ?? "Couldn't post your comment right now. Please try again." },
       { status: res.ok ? 500 : res.status }
     );
   } catch {
     return NextResponse.json(
-      { error: "Failed to post comment" },
+      { error: "Couldn't post your comment right now. Please try again." },
       { status: 500 }
     );
   }

@@ -97,12 +97,15 @@ Each is a standalone component. Selected via `landing.json` config. They share d
 - **Saves:** `saveContent()` server action → GitHub API → commits JSON to repo.
 - **History:** Change log tracked in AdminContext with localStorage persistence. One-click revert.
 - **13 admin sections:** Copy, Case Studies, Testimonials, Blog, Now, Contacts, Comments, Bookmarks, Theme, Media, Sounds, Nav, Global.
+- **Monitoring:** `/admin/automations` uses Supabase SQL tables for health checks, incidents, and automation heartbeats. `/api/monitor/run` performs scheduled sweeps; external jobs POST heartbeats to the Supabase edge function.
 
 ### API Routes
 ```
 POST /api/comments          → Submit comment (rate-limited: 5/hr/IP, in-memory)
 GET  /api/comments/[slug]   → Fetch comments for post
 POST /api/now-pin           → Update Now page status
+GET  /api/health            → Public health summary
+GET  /api/monitor/run       → Protected monitoring sweep endpoint (also accepts POST)
 ```
 
 ### State Management
@@ -158,6 +161,7 @@ GITHUB_TOKEN                        → GitHub PAT for admin content writes
 ```
 RESEND_API_KEY                      → Email notifications (contact form)
 CONTACT_EMAIL                       → Destination for contact messages
+CRON_SECRET / MONITORING_CRON_SECRET → Protects monitoring sweep endpoint
 ```
 
 ### Optional
@@ -169,6 +173,9 @@ NEXT_PUBLIC_BOOKING_URL             → Cal.com booking URL for CTA drawer
 NEXT_PUBLIC_GA_MEASUREMENT_ID       → Google Analytics
 NEXT_PUBLIC_GTM_ID                  → Google Tag Manager
 RESEND_FROM                         → Email "from" address (defaults to Resend onboarding)
+MONITORING_SITE_URL                 → Canonical deployed URL for public health probes
+MONITORING_WEBHOOK_URL              → Webhook target for alert notifications
+MONITORING_ALERT_EMAIL              → Override destination for monitoring emails
 ```
 
 ---
@@ -191,6 +198,7 @@ RESEND_FROM                         → Email "from" address (defaults to Resend
 - **No build-time env validation.** Missing vars cause silent runtime failures.
 - **Hardcoded Supabase function ID** `make-server-3fa6479f` in comments API routes.
 - **Hardcoded KV table name** `kv_store_3fa6479f` in contact.ts.
+- **Monitoring depends on SQL migrations.** Deploy `monitoring_services`, `monitoring_alerts`, and `automation_heartbeats` before using the admin monitoring panel.
 
 ### Not Yet Built
 - **Interactive prototypes on own subdomains** — clickable demos per case study, hosted under derondsgnr.com; spec in `docs/INTERACTIVE-PROTOTYPES.md`
@@ -257,6 +265,7 @@ RESEND_FROM                         → Email "from" address (defaults to Resend
 | 2026-03 | motion (not framer-motion) | v12+ is the successor, same API | Import from `motion/react` |
 | 2026-03 | Supabase for comments + contacts | Real-time capable, free tier sufficient | Edge Functions handle CRUD |
 | 2026-04 | `outputFileTracingRoot` in next.config | Parent dir had extra lockfile; Next inferred wrong root for tracing | Build traces and deploys use repo root |
+| 2026-04 | SQL-backed monitoring with cron sweeps | Need durable health history, stale heartbeat detection, and admin incidents | `/api/monitor/run`, `/api/health`, Supabase monitoring tables, admin alert panel |
 | 2026-03 | No Redux/Zustand | Minimal state needs, Context is sufficient | 4 context providers total |
 | 2026-03 | ScrambleText as signature | Core brand interaction, recognizable | Single source at shared/scramble-text.tsx |
 | 2026-03 | Admin auth via single secret | Solo user, no multi-user needed | SHA-256 hashed cookie, 7-day expiry |
@@ -275,6 +284,7 @@ RESEND_FROM                         → Email "from" address (defaults to Resend
 - **Build:** `pnpm build` (Next.js)
 - **Preview:** Every PR gets a preview deployment
 - **Env vars:** Set in Vercel dashboard (Settings → Environment Variables)
+- **Cron:** GitHub Actions triggers `/api/monitor/run` every 5 minutes; set `CRON_SECRET` or `MONITORING_CRON_SECRET` in Vercel and mirror the secret in GitHub Actions
 
 ---
 

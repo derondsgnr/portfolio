@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { saveMedia, saveCraftItems, saveExplorations } from "../../actions";
+import { AdminSaveFeedback } from "@/components/admin/admin-save-feedback";
 import type { MediaConfig } from "@/lib/content/media";
 import type { CraftItem } from "@/lib/content/craft";
 import type { Exploration } from "@/lib/content/explorations";
@@ -23,9 +24,11 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
   const [status, setStatus] = useState<"idle" | "saving" | "ok" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [savingSection, setSavingSection] = useState<string | null>(null);
+  const [feedbackTarget, setFeedbackTarget] = useState<"media" | "craft" | "explorations">("media");
 
   async function handleSaveMedia(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    setFeedbackTarget("media");
     setSavingSection("media");
     setStatus("saving");
     setErrorMsg(null);
@@ -36,12 +39,13 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
       setTimeout(() => setStatus("idle"), 2000);
     } else {
       setStatus("error");
-      setErrorMsg(result.error ?? "Save failed");
+      setErrorMsg(result.error ?? null);
     }
   }
 
   async function handleSaveCraft(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    setFeedbackTarget("craft");
     setSavingSection("craft");
     setStatus("saving");
     setErrorMsg(null);
@@ -52,12 +56,13 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
       setTimeout(() => setStatus("idle"), 2000);
     } else {
       setStatus("error");
-      setErrorMsg(result.error ?? "Save failed");
+      setErrorMsg(result.error ?? null);
     }
   }
 
   async function handleSaveExplorations(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    setFeedbackTarget("explorations");
     setSavingSection("explorations");
     setStatus("saving");
     setErrorMsg(null);
@@ -68,7 +73,7 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
       setTimeout(() => setStatus("idle"), 2000);
     } else {
       setStatus("error");
-      setErrorMsg(result.error ?? "Save failed");
+      setErrorMsg(result.error ?? null);
     }
   }
 
@@ -223,7 +228,24 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
         </form>
       </section>
 
-      {errorMsg && <p className="font-mono text-sm text-red-400">{errorMsg}</p>}
+      <AdminSaveFeedback
+        status={status}
+        error={errorMsg}
+        savingMessage={
+          feedbackTarget === "craft"
+            ? "Saving changes to content/craft.json..."
+            : feedbackTarget === "explorations"
+              ? "Saving changes to content/explorations.json..."
+              : "Saving changes to content/media.json..."
+        }
+        successMessage={
+          feedbackTarget === "craft"
+            ? "Saved to content/craft.json."
+            : feedbackTarget === "explorations"
+              ? "Saved to content/explorations.json."
+              : "Saved to content/media.json."
+        }
+      />
     </div>
   );
 }

@@ -5,28 +5,39 @@ import Link from "next/link";
 import { saveAdminReminders } from "@/app/admin/actions";
 import { adminCx, FormField, PageHeader } from "@/components/admin/admin-primitives";
 import type { AdminRemindersConfig } from "@/lib/content/admin-reminders";
-import { daysUntilDue, isOverdue, nextDueDate } from "@/lib/content/admin-reminders";
+import {
+  daysUntilDue,
+  formatReminderDate,
+  formatReminderDateValue,
+  fromDateInputValue,
+  isOverdue,
+  nextDueDate,
+  toDateInputValue,
+  todayReminderIso,
+} from "@/lib/content/admin-reminders";
+import { getAdminErrorMessage } from "@/lib/admin/feedback";
 
 export function SecurityRemindersForm({ initial }: { initial: AdminRemindersConfig }) {
   const [config, setConfig] = useState<AdminRemindersConfig>(initial);
   const [saving, setSaving] = useState(false);
-  const [msg, setMsg] = useState<string | null>(null);
+  const [notice, setNotice] = useState<{ kind: "success" | "error"; text: string } | null>(null);
 
   const { githubPat } = config;
   const next = nextDueDate(githubPat.lastRotatedIso, githubPat.intervalDays);
   const overdue = isOverdue(githubPat.lastRotatedIso, githubPat.intervalDays);
   const daysLeft = daysUntilDue(githubPat.lastRotatedIso, githubPat.intervalDays);
+  const lastRotatedDate = formatReminderDate(githubPat.lastRotatedIso);
 
   async function persist(nextConfig: AdminRemindersConfig) {
     setSaving(true);
-    setMsg(null);
+    setNotice(null);
     const res = await saveAdminReminders(nextConfig, "Update GitHub PAT rotation reminder");
     setSaving(false);
     if (res.ok) {
       setConfig(nextConfig);
-      setMsg("Saved to repo (content/admin-reminders.json).");
+      setNotice({ kind: "success", text: "Saved to repo (content/admin-reminders.json)." });
     } else {
-      setMsg(res.error ?? "Save failed");
+      setNotice({ kind: "error", text: getAdminErrorMessage(res.error) });
     }
   }
 
@@ -38,9 +49,15 @@ export function SecurityRemindersForm({ initial }: { initial: AdminRemindersConf
         description="Track when you last rotated credentials. No secrets are stored here — only dates and intervals."
       />
 
-      {msg ? (
-        <p className="text-sm font-['Instrument_Sans'] text-[#E2B93B]/90 border border-[#E2B93B]/25 px-4 py-2 bg-[#E2B93B]/5">
-          {msg}
+      {notice ? (
+        <p
+          className={`text-sm font-['Instrument_Sans'] px-4 py-2 ${
+            notice.kind === "error"
+              ? "text-red-300 border border-red-500/30 bg-red-500/10"
+              : "text-[#E2B93B]/90 border border-[#E2B93B]/25 bg-[#E2B93B]/5"
+          }`}
+        >
+          {notice.text}
         </p>
       ) : null}
 
@@ -55,13 +72,13 @@ export function SecurityRemindersForm({ initial }: { initial: AdminRemindersConf
 
         <div className="rounded border border-white/[0.06] p-3 bg-[#0A0A0A]/60 space-y-1">
           <p className="text-[11px] text-white/50 font-['Instrument_Sans']">
-            {githubPat.lastRotatedIso
-              ? `Last logged rotation: ${new Date(githubPat.lastRotatedIso).toLocaleString("en-GB")}`
+            {lastRotatedDate
+              ? `Last logged rotation date: ${lastRotatedDate}`
               : "No date logged yet."}
           </p>
           {next && !overdue && githubPat.lastRotatedIso ? (
             <p className="text-[11px] text-white/35 font-['Instrument_Sans']">
-              Next due: {next.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short", year: "numeric" })}
+              Next due: {formatReminderDateValue(next)}
               {daysLeft !== null ? ` (${daysLeft} day(s) left)` : ""}
             </p>
           ) : null}
@@ -89,22 +106,18 @@ export function SecurityRemindersForm({ initial }: { initial: AdminRemindersConf
           />
         </FormField>
 
-        <FormField label="Last rotated (optional — set manually if you already rotated)">
+        <FormField label="Last rotated date (optional — set manually if you already rotated)">
           <input
-            type="datetime-local"
+            type="date"
             className={adminCx.input}
-            value={
-              githubPat.lastRotatedIso
-                ? new Date(githubPat.lastRotatedIso).toISOString().slice(0, 16)
-                : ""
-            }
+            value={toDateInputValue(githubPat.lastRotatedIso)}
             onChange={(e) => {
               const v = e.target.value;
               setConfig((c) => ({
                 ...c,
                 githubPat: {
                   ...c.githubPat,
-                  lastRotatedIso: v ? new Date(v).toISOString() : null,
+                  lastRotatedIso: fromDateInputValue(v),
                 },
               }));
             }}
@@ -120,7 +133,7 @@ export function SecurityRemindersForm({ initial }: { initial: AdminRemindersConf
                 ...config,
                 githubPat: {
                   ...config.githubPat,
-                  lastRotatedIso: new Date().toISOString(),
+                  lastRotatedIso: todayReminderIso(),
                 },
               })
             }
