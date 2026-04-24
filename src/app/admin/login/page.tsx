@@ -1,14 +1,23 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { login } from "../actions";
+import { getLoginErrorMessage } from "@/lib/public-feedback";
 
 export default function AdminLoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const nextError = params.get("error");
+    if (nextError) {
+      setError(getLoginErrorMessage(nextError));
+    }
+  }, []);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -19,7 +28,7 @@ export default function AdminLoginPage() {
     const result = await login(formData);
 
     if (result?.error) {
-      setError(result.error);
+      setError(getLoginErrorMessage(result.error));
       setLoading(false);
       return;
     }
@@ -64,7 +73,7 @@ export default function AdminLoginPage() {
             disabled={loading}
             className="w-full py-3 bg-[#E2B93B] text-[#0A0A0A] font-mono text-xs tracking-wider uppercase hover:bg-white transition-colors disabled:opacity-50"
           >
-            {loading ? "..." : "Enter"}
+            {loading ? "CHECKING ACCESS..." : "ENTER"}
           </button>
         </form>
       </div>

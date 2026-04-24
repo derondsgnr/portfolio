@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence, useInView } from "motion/react";
+import { getCommentLoadErrorMessage, getCommentSubmitErrorMessage } from "@/lib/public-feedback";
 
 interface Comment {
   id: string;
@@ -23,6 +24,8 @@ export function CommentsSection({ slug }: CommentsSectionProps) {
   const [text, setText] = useState("");
   const [showForm, setShowForm] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
   const inView = useInView(sectionRef, { once: true, amount: 0.2 });
 
@@ -32,10 +35,14 @@ export function CommentsSection({ slug }: CommentsSectionProps) {
       try {
         const res = await fetch(`/api/comments/${slug}`);
         const data = await res.json();
-        if (data.comments) {
+        if (res.ok && data.comments) {
           setComments(data.comments);
+          setLoadError(null);
+        } else {
+          setLoadError(getCommentLoadErrorMessage(data.error));
         }
       } catch (err) {
+        setLoadError(getCommentLoadErrorMessage());
         console.error("Error fetching comments:", err);
       } finally {
         setLoading(false);
@@ -50,6 +57,7 @@ export function CommentsSection({ slug }: CommentsSectionProps) {
     if (!text.trim() || submitting) return;
 
     setSubmitting(true);
+    setSubmitError(null);
     try {
       const res = await fetch("/api/comments", {
         method: "POST",
@@ -57,7 +65,7 @@ export function CommentsSection({ slug }: CommentsSectionProps) {
         body: JSON.stringify({ slug, name: name.trim(), text: text.trim() }),
       });
       const data = await res.json();
-      if (data.comment) {
+      if (res.ok && data.comment) {
         setComments((prev) => [data.comment, ...prev]);
         setName("");
         setText("");
@@ -65,9 +73,11 @@ export function CommentsSection({ slug }: CommentsSectionProps) {
         setSubmitted(true);
         setTimeout(() => setSubmitted(false), 3000);
       } else {
+        setSubmitError(getCommentSubmitErrorMessage(data.error));
         console.error("Error submitting comment:", data.error);
       }
     } catch (err) {
+      setSubmitError(getCommentSubmitErrorMessage());
       console.error("Error submitting comment:", err);
     } finally {
       setSubmitting(false);
@@ -108,7 +118,7 @@ export function CommentsSection({ slug }: CommentsSectionProps) {
             </h3>
           </div>
 
-          {!showForm && (
+          {!showForm && !loadError && (
             <button
               onClick={() => setShowForm(true)}
               className="text-[10px] tracking-[0.15em] text-[#0A0A0A] bg-[#E2B93B] px-4 py-2 hover:bg-[#E2B93B]/90 transition-colors"
@@ -137,6 +147,17 @@ export function CommentsSection({ slug }: CommentsSectionProps) {
             </motion.div>
           )}
         </AnimatePresence>
+
+        {loadError && (
+          <div className="mb-6 border border-red-500/30 bg-red-500/5 px-4 py-3">
+            <span
+              className="text-[11px] text-red-400"
+              style={{ fontFamily: "monospace" }}
+            >
+              {loadError}
+            </span>
+          </div>
+        )}
 
         {/* Comment form */}
         <AnimatePresence>
@@ -188,6 +209,17 @@ export function CommentsSection({ slug }: CommentsSectionProps) {
                 </div>
 
                 {/* Actions */}
+                {submitError && (
+                  <div className="border border-red-500/30 bg-red-500/5 px-4 py-3">
+                    <span
+                      className="text-[11px] text-red-400"
+                      style={{ fontFamily: "monospace" }}
+                    >
+                      {submitError}
+                    </span>
+                  </div>
+                )}
+
                 <div className="flex items-center gap-3 pt-1">
                   <button
                     type="submit"
@@ -221,7 +253,7 @@ export function CommentsSection({ slug }: CommentsSectionProps) {
               LOADING...
             </span>
           </div>
-        ) : comments.length === 0 ? (
+        ) : loadError ? null : comments.length === 0 ? (
           <motion.div
             initial={{ opacity: 0 }}
             animate={inView ? { opacity: 1 } : {}}

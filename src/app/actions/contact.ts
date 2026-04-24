@@ -17,10 +17,13 @@ export async function submitContactForm(formData: FormData) {
   return submitContact({ name, email, message, budget });
 }
 
-export async function getContactsForAdmin(): Promise<ContactRecord[]> {
+export async function getContactsForAdmin(): Promise<{ ok: boolean; contacts: ContactRecord[]; error?: string }> {
   const ok = await verifyAdminSession();
-  if (!ok) return [];
-  return getContactsFromDb();
+  if (!ok) {
+    return { ok: false, contacts: [], error: "Unauthorized" };
+  }
+
+  return { ok: true, contacts: await getContactsFromDb() };
 }
 
 export async function deleteContactForAdmin(id: string) {

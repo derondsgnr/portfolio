@@ -5,6 +5,7 @@ import { KeyRound } from "lucide-react";
 import {
   type GithubPatReminder,
   daysUntilDue,
+  formatReminderDateValue,
   isOverdue,
   nextDueDate,
 } from "@/lib/content/admin-reminders";
@@ -41,7 +42,7 @@ export function GithubPatReminderBanner({ reminder }: { reminder: GithubPatRemin
           <p className="text-sm text-white/75 font-['Instrument_Sans'] mt-1">{status}</p>
           {next && !overdue && !unset ? (
             <p className="text-[11px] text-white/35 font-['Instrument_Sans'] mt-1">
-              Target date: {next.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short", year: "numeric" })} · every {intervalDays} days
+              Target date: {formatReminderDateValue(next)} · every {intervalDays} days
             </p>
           ) : (
             <p className="text-[11px] text-white/35 font-['Instrument_Sans'] mt-1">

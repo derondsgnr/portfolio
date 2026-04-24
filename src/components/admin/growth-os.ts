@@ -1,7 +1,7 @@
 export type QueueStatus = "draft" | "ready" | "scheduled" | "posted" | "needs-review" | "failed";
 export type LeadStage = "new" | "qualified" | "contacted" | "replying" | "won";
 export type OutreachStatus = "queued" | "sent" | "replied" | "paused";
-export type AutomationHealth = "healthy" | "warning" | "paused";
+export type AutomationHealth = "healthy" | "warning" | "paused" | "failed";
 
 export interface ContentQueueItem {
   id: string;

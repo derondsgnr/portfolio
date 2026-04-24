@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { saveProjects } from "../../actions";
+import { AdminSaveFeedback } from "@/components/admin/admin-save-feedback";
 import type { Project } from "@/lib/content/projects";
 import { ProjectForm } from "./project-form";
 
@@ -26,7 +27,7 @@ export function ProjectsList({ initial }: Props) {
       setTimeout(() => setStatus("idle"), 2000);
     } else {
       setStatus("error");
-      setErrorMsg(result.error ?? "Save failed");
+      setErrorMsg(result.error ?? null);
     }
   }
 
@@ -79,9 +80,12 @@ export function ProjectsList({ initial }: Props) {
         </button>
       </div>
 
-      {errorMsg && <p className="font-mono text-sm text-red-400">{errorMsg}</p>}
-      {status === "saving" && <p className="font-mono text-xs text-white/50">Saving…</p>}
-      {status === "ok" && <p className="font-mono text-xs text-[#E2B93B]">Saved</p>}
+      <AdminSaveFeedback
+        status={status}
+        error={errorMsg}
+        savingMessage="Saving changes to content/projects.json..."
+        successMessage="Saved to content/projects.json."
+      />
 
       {(editing || adding) && (
         <ProjectForm

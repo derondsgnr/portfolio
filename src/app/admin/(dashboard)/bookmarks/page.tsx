@@ -11,6 +11,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import { AdminNotice } from "@/components/admin/admin-notice";
 import { adminCx, FormField } from "@/components/admin/admin-primitives";
 import {
   Plus, X, Search, Trash2, ExternalLink, Edit3,
@@ -22,6 +23,7 @@ import {
   saveBookmark,
   deleteBookmark as deleteBookmarkAction,
 } from "@/app/admin/actions";
+import { getAdminErrorMessage } from "@/lib/admin/feedback";
 import { bookmarkToInspiration, enqueueInspirationRefs } from "@/lib/admin/presentation-inspiration";
 import Link from "next/link";
 
@@ -564,6 +566,7 @@ function AdminBookmarksPage() {
   const [mediaFilter, setMediaFilter] = useState<MediaType | "all">("all");
   const [view, setView] = useState<"grid" | "list">("grid");
   const [sortBy, setSortBy] = useState<"newest" | "oldest" | "title">("newest");
+  const [notice, setNotice] = useState<{ kind: "info" | "success" | "error"; text: string } | null>(null);
 
   // Load from Supabase KV on mount, fall back to localStorage cache
   const loadFromKV = useCallback(async () => {
@@ -572,6 +575,9 @@ function AdminBookmarksPage() {
       const loaded = result.bookmarks as BookmarkItem[];
       setBookmarks(loaded);
       try { localStorage.setItem(BM_STORAGE_KEY, JSON.stringify(loaded)); } catch {}
+      setNotice({ kind: "success", text: "Bookmarks synced from storage." });
+    } else if (!result.ok) {
+      setNotice({ kind: "error", text: getAdminErrorMessage(result.error) });
     }
   }, []);
 
@@ -583,20 +589,43 @@ function AdminBookmarksPage() {
     catch { /* ignore */ }
   }, [bookmarks]);
 
-  function add(bookmark: BookmarkItem) {
+  async function add(bookmark: BookmarkItem) {
     setBookmarks((b) => [bookmark, ...b]);
-    saveBookmark(bookmark);
+    setNotice({ kind: "info", text: "Saving bookmark..." });
+    const result = await saveBookmark(bookmark);
+    if (result.ok) {
+      setNotice({ kind: "success", text: "Bookmark saved." });
+    } else {
+      setBookmarks((b) => b.filter((bm) => bm.id !== bookmark.id));
+      setNotice({ kind: "error", text: getAdminErrorMessage(result.error) });
+    }
   }
 
-  function update(updated: BookmarkItem) {
+  async function update(updated: BookmarkItem) {
+    const previous = bookmarks;
     setBookmarks((b) => b.map((bm) => bm.id === updated.id ? updated : bm));
-    saveBookmark(updated);
+    setNotice({ kind: "info", text: "Updating bookmark..." });
+    const result = await saveBookmark(updated);
+    if (result.ok) {
+      setNotice({ kind: "success", text: "Bookmark updated." });
+    } else {
+      setBookmarks(previous);
+      setNotice({ kind: "error", text: getAdminErrorMessage(result.error) });
+    }
   }
 
-  function remove(id: string) {
+  async function remove(id: string) {
     if (!confirm("Delete this bookmark?")) return;
+    const previous = bookmarks;
     setBookmarks((b) => b.filter((bm) => bm.id !== id));
-    deleteBookmarkAction(id);
+    setNotice({ kind: "info", text: "Deleting bookmark..." });
+    const result = await deleteBookmarkAction(id);
+    if (result.ok) {
+      setNotice({ kind: "success", text: "Bookmark deleted." });
+    } else {
+      setBookmarks(previous);
+      setNotice({ kind: "error", text: getAdminErrorMessage(result.error) });
+    }
   }
 
   const sendToStudio = useCallback((bm: BookmarkItem) => {
@@ -737,6 +766,12 @@ function AdminBookmarksPage() {
           </div>
         </div>
       </div>
+
+      {notice ? (
+        <div className="mb-6">
+          <AdminNotice kind={notice.kind}>{notice.text}</AdminNotice>
+        </div>
+      ) : null}
 
       {/* Grid / List */}
       {filtered.length === 0 ? (

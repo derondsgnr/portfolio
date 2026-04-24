@@ -64,6 +64,18 @@ Deno.serve(async (req) => {
     // POST /.../admin/growth/heartbeat
     if (isGrowthHeartbeatPost) {
       const event = await req.json();
+      if (!event?.automationId || typeof event.automationId !== "string") {
+        return json({ error: "automationId is required" }, 400);
+      }
+
+      const normalizedHealth =
+        event.health === "failed" || event.health === "warning" || event.health === "paused"
+          ? event.health
+          : "healthy";
+      const checkedAt =
+        typeof event.checkedAt === "string" && !Number.isNaN(new Date(event.checkedAt).getTime())
+          ? event.checkedAt
+          : new Date().toISOString();
       const current = (await kv.get("content:growth:state")) ?? {};
       const automations = Array.isArray((current as { automations?: unknown[] }).automations)
         ? ((current as { automations?: unknown[] }).automations as Array<Record<string, unknown>>)
@@ -73,7 +85,7 @@ Deno.serve(async (req) => {
         if (automation.id !== event.automationId) return automation;
         return {
           ...automation,
-          health: event.health ?? automation.health,
+          health: normalizedHealth ?? automation.health,
           throughput: event.throughput ?? automation.throughput,
           lastRun: event.lastRun ?? "just now",
         };
@@ -87,7 +99,7 @@ Deno.serve(async (req) => {
               id: event.automationId,
               name: event.automationId,
               cadence: "external",
-              health: event.health ?? "warning",
+              health: normalizedHealth,
               lastRun: event.lastRun ?? "just now",
               throughput: event.throughput ?? "heartbeat received",
             },
@@ -105,8 +117,18 @@ Deno.serve(async (req) => {
       await kv.set("content:growth:state", nextState);
       await kv.set(`growth:heartbeat:${Date.now()}`, {
         ...event,
-        receivedAt: new Date().toISOString(),
+        health: normalizedHealth,
+        receivedAt: checkedAt,
       });
+      const { error: heartbeatError } = await kv.client().from("automation_heartbeats").insert({
+        automation_id: event.automationId,
+        source: typeof event.source === "string" ? event.source : "external",
+        health: normalizedHealth,
+        throughput: typeof event.throughput === "string" ? event.throughput : null,
+        payload: event,
+        received_at: checkedAt,
+      });
+      if (heartbeatError) throw new Error(heartbeatError.message);
 
       return json({ success: true });
     }

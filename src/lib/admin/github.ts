@@ -5,6 +5,32 @@ type GitHubFile = {
   sha?: string;
 };
 
+function humanizeGitHubError(status: number, message?: string): string {
+  const normalized = message?.toLowerCase() ?? "";
+
+  if (normalized.includes("bad credentials") || status === 401) {
+    return "Admin save failed because the configured GitHub token is invalid or expired. Update GITHUB_TOKEN in Vercel (and locally if you are testing there), then try again.";
+  }
+
+  if (normalized.includes("resource not accessible by personal access token")) {
+    return "Admin save failed because the configured GitHub token does not have permission to update this repo. Grant repo contents write access, then try again.";
+  }
+
+  if (normalized.includes("not found")) {
+    return "Admin save failed because the GitHub repo settings are incorrect or the token cannot access this repository.";
+  }
+
+  if (status === 403) {
+    return "Admin save failed because GitHub denied access. Check the token permissions and repo settings, then try again.";
+  }
+
+  if (status >= 500) {
+    return "GitHub is unavailable right now. Try again in a moment.";
+  }
+
+  return message || "GitHub save failed. Check the token and repo settings, then try again.";
+}
+
 export async function getGitHubFile(
   path: string
 ): Promise<{ content: string; sha: string } | null> {
@@ -45,7 +71,10 @@ export async function updateGitHubFile(
   const repo = process.env.GITHUB_REPO_NAME || "portfolio";
 
   if (!token) {
-    return { ok: false, error: "GITHUB_TOKEN not set" };
+    return {
+      ok: false,
+      error: "Admin saves are not configured because GITHUB_TOKEN is missing in this environment.",
+    };
   }
 
   const url = `${GITHUB_API}/repos/${owner}/${repo}/contents/${path}`;
@@ -67,7 +96,7 @@ export async function updateGitHubFile(
 
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
-    return { ok: false, error: (err as { message?: string }).message || res.statusText };
+    return { ok: false, error: humanizeGitHubError(res.status, (err as { message?: string }).message || res.statusText) };
   }
 
   return { ok: true };

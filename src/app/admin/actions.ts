@@ -13,13 +13,15 @@ async function requireAdmin() {
 
 export async function login(formData: FormData) {
   const password = formData.get("password") as string;
-  if (!password) return { error: "Password required" };
+  if (!password) return { error: "Enter your admin password to continue." };
 
   const valid = await createAdminSession(password);
-  if (!valid) return { error: "Invalid password" };
+  if (!valid) return { error: "That password is incorrect." };
 
   const token = await getAdminCookieValue();
-  if (!token) return { error: "Config error" };
+  if (!token) {
+    return { error: "Admin login is not configured because ADMIN_SECRET is missing in this environment." };
+  }
 
   const cookieStore = await cookies();
   cookieStore.set(getAdminCookieName(), token, {
@@ -251,7 +253,7 @@ export async function updateCommentStatus(kvKey: string, status: string): Promis
   if (!row) return { ok: false, error: "Comment not found" };
   const updated = { ...(row.value as Record<string, unknown>), status };
   const success = await kvSet(kvKey, updated);
-  return success ? { ok: true } : { ok: false, error: "Failed to update" };
+  return success ? { ok: true } : { ok: false, error: "Couldn't update that comment right now." };
 }
 
 /** Delete a comment from KV */
@@ -262,7 +264,7 @@ export async function deleteComment(kvKey: string): Promise<{ ok: boolean; error
     return { ok: false, error: "Unauthorized" };
   }
   const success = await kvDelete(kvKey);
-  return success ? { ok: true } : { ok: false, error: "Failed to delete" };
+  return success ? { ok: true } : { ok: false, error: "Couldn't delete that comment right now." };
 }
 
 /** Fetch all bookmarks from Supabase KV */
@@ -286,7 +288,7 @@ export async function saveBookmark(bookmark: any): Promise<{ ok: boolean; error?
     return { ok: false, error: "Unauthorized" };
   }
   const success = await kvSet(`bookmark:${bookmark.id}`, bookmark);
-  return success ? { ok: true } : { ok: false, error: "Failed to save" };
+  return success ? { ok: true } : { ok: false, error: "Couldn't save that bookmark right now." };
 }
 
 /** Delete a bookmark from Supabase KV */
@@ -297,7 +299,7 @@ export async function deleteBookmark(id: string): Promise<{ ok: boolean; error?:
     return { ok: false, error: "Unauthorized" };
   }
   const success = await kvDelete(`bookmark:${id}`);
-  return success ? { ok: true } : { ok: false, error: "Failed to delete" };
+  return success ? { ok: true } : { ok: false, error: "Couldn't delete that bookmark right now." };
 }
 
 /** Case studies — persist to content/case-studies.json via GitHub */
@@ -343,5 +345,5 @@ export async function saveGrowthState(state: GrowthState): Promise<{ ok: boolean
     },
   };
   const success = await kvSet("content:growth:state", next);
-  return success ? { ok: true } : { ok: false, error: "Failed to persist growth state" };
+  return success ? { ok: true } : { ok: false, error: "Couldn't sync Growth OS state to storage right now." };
 }

@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { useBooking } from "./booking-context";
 import { submitContactForm } from "@/app/actions/contact";
+import { getContactErrorMessage } from "@/lib/public-feedback";
 
 /* ═══════════════════════════════════════════════════════════════
    BOOKING DRAWER — Hybrid "Book a Call" + "Send a Message"
@@ -292,11 +293,11 @@ function ContactForm({ onSuccess }: { onSuccess: () => void }) {
           }, 400);
         }, 2000);
       } else {
-        setError(result.error ?? "Something went wrong. Try again.");
+        setError(getContactErrorMessage(result.error));
         console.error("Contact form error:", result.error);
       }
     } catch (err) {
-      setError("Network error. Please try again.");
+      setError("Couldn't send your message right now. Check your connection and try again.");
       console.error("Contact form network error:", err);
     } finally {
       setSubmitting(false);

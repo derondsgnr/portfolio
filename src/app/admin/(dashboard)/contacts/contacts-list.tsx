@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { getContactsForAdmin, deleteContactForAdmin } from "@/app/actions/contact";
 import { motion, AnimatePresence } from "motion/react";
 import { Mail, Trash2, RefreshCw } from "lucide-react";
+import { AdminNotice } from "@/components/admin/admin-notice";
+import { getAdminErrorMessage } from "@/lib/admin/feedback";
 
 import type { ContactRecord } from "@/lib/contact";
 
@@ -21,28 +23,41 @@ function formatDate(iso: string | undefined): string {
   });
 }
 
-type Props = { initial: Contact[] };
+type Props = { initial: Contact[]; initialError?: string | null };
 
-export function ContactsList({ initial }: Props) {
+export function ContactsList({ initial, initialError = null }: Props) {
   const [contacts, setContacts] = useState<Contact[]>(initial);
   const [expanded, setExpanded] = useState<string | null>(null);
   const [deleting, setDeleting] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
+  const [notice, setNotice] = useState<{ kind: "info" | "success" | "error"; text: string } | null>(
+    initialError ? { kind: "error", text: getAdminErrorMessage(initialError) } : null
+  );
 
   async function handleRefresh() {
     setRefreshing(true);
-    const next = await getContactsForAdmin();
-    setContacts(next as Contact[]);
+    setNotice({ kind: "info", text: "Refreshing contact messages..." });
+    const result = await getContactsForAdmin();
+    if (result.ok) {
+      setContacts(result.contacts as Contact[]);
+      setNotice({ kind: "success", text: "Contact messages refreshed." });
+    } else {
+      setNotice({ kind: "error", text: getAdminErrorMessage(result.error) });
+    }
     setRefreshing(false);
   }
 
   async function handleDelete(id: string) {
     if (!confirm("Delete this contact?")) return;
     setDeleting(id);
+    setNotice(null);
     const result = await deleteContactForAdmin(id);
     if (result.ok) {
       setContacts((prev) => prev.filter((c) => c.id !== id));
       setExpanded(null);
+      setNotice({ kind: "success", text: "Contact message deleted." });
+    } else {
+      setNotice({ kind: "error", text: getAdminErrorMessage(result.error) });
     }
     setDeleting(null);
   }
@@ -50,6 +65,11 @@ export function ContactsList({ initial }: Props) {
   if (contacts.length === 0) {
     return (
       <div className="py-16 text-center">
+        {notice ? (
+          <div className="mx-auto mb-6 max-w-xl text-left">
+            <AdminNotice kind={notice.kind}>{notice.text}</AdminNotice>
+          </div>
+        ) : null}
         <Mail className="mx-auto mb-4 text-white/20" size={48} />
         <p className="font-mono text-sm text-white/50">No contact messages yet.</p>
         <p className="font-mono text-xs text-white/30 mt-2">
@@ -68,6 +88,7 @@ export function ContactsList({ initial }: Props) {
 
   return (
     <div className="space-y-4">
+      {notice ? <AdminNotice kind={notice.kind}>{notice.text}</AdminNotice> : null}
       <div className="flex items-center justify-between">
         <span className="font-mono text-xs text-white/50">{contacts.length} messages</span>
         <button

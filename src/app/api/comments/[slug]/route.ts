@@ -10,7 +10,13 @@ export async function GET(
 ) {
   const { slug } = await params;
   if (!slug) {
-    return NextResponse.json({ comments: [] });
+    return NextResponse.json({ comments: [], error: "Comments are unavailable for this page." }, { status: 400 });
+  }
+  if (!projectId || !publicAnonKey) {
+    return NextResponse.json(
+      { comments: [], error: "Comments are temporarily unavailable because the comments service is not configured." },
+      { status: 503 }
+    );
   }
   try {
     const res = await fetch(`${API_BASE}/comments/${slug}`, {
@@ -18,8 +24,17 @@ export async function GET(
       next: { revalidate: 30 },
     });
     const data = await res.json();
+    if (!res.ok) {
+      return NextResponse.json(
+        { comments: [], error: data.error ?? "Comments are unavailable right now. Please try again later." },
+        { status: res.status }
+      );
+    }
     return NextResponse.json({ comments: data.comments ?? [] });
   } catch {
-    return NextResponse.json({ comments: [] });
+    return NextResponse.json(
+      { comments: [], error: "Comments are unavailable right now. Please try again later." },
+      { status: 500 }
+    );
   }
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { AdminNotice } from "@/components/admin/admin-notice";
 import { PageHeader } from "@/components/admin/admin-primitives";
 import { MetricCard, PanelLink, QueueCard, StatusPill } from "@/components/admin/growth-ui";
 import { useGrowthState } from "@/components/admin/use-growth-state";
@@ -14,7 +15,7 @@ function queueTone(status: string): "neutral" | "good" | "warn" | "muted" {
 }
 
 export default function AdminGrowthPage() {
-  const { state, loading, patchState } = useGrowthState();
+  const { state, loading, patchState, syncStatus, syncMessage } = useGrowthState();
   const todayScheduled = state.contentQueue.filter((item) => item.status === "scheduled").length;
   const warmLeads = state.leads.filter((lead) => lead.stage === "qualified" || lead.stage === "replying").length;
   const blockedFlows = state.automations.filter((flow) => flow.health !== "healthy").length;
@@ -32,6 +33,14 @@ export default function AdminGrowthPage() {
         <MetricCard label="Warm Leads" value={String(warmLeads)} hint="Qualified leads with active momentum" />
         <MetricCard label="Needs Attention" value={String(blockedFlows)} hint="Automations in warning or paused state" />
       </div>
+
+      {syncMessage ? (
+        <div className="mb-6">
+          <AdminNotice kind={syncStatus === "error" ? "error" : syncStatus === "ok" ? "success" : "info"}>
+            {syncMessage}
+          </AdminNotice>
+        </div>
+      ) : null}
 
       <div className="grid grid-cols-1 xl:grid-cols-[1fr_300px] gap-8">
         <div className="space-y-8">

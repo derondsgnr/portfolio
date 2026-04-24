@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { saveNav } from "../../actions";
+import { AdminSaveFeedback } from "@/components/admin/admin-save-feedback";
 import { formCx } from "@/design-system";
 import type { NavItem } from "@/lib/content/nav";
 
@@ -24,7 +25,7 @@ export function NavForm({ initial }: Props) {
       setTimeout(() => setStatus("idle"), 2000);
     } else {
       setStatus("error");
-      setErrorMsg(result.error ?? "Save failed");
+      setErrorMsg(result.error ?? null);
     }
   }
 
@@ -83,9 +84,12 @@ export function NavForm({ initial }: Props) {
         </button>
       </div>
 
-      {errorMsg && <p className="font-mono text-sm text-red-400">{errorMsg}</p>}
-      {status === "saving" && <p className="font-mono text-xs text-white/50">Saving…</p>}
-      {status === "ok" && <p className="font-mono text-xs text-[#E2B93B]">Saved</p>}
+      <AdminSaveFeedback
+        status={status}
+        error={errorMsg}
+        savingMessage="Saving changes to content/nav.json..."
+        successMessage="Saved to content/nav.json."
+      />
 
       <ul className="space-y-3">
         {items.map((item, i) => (

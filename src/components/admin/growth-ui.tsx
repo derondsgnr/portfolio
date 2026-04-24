@@ -19,12 +19,13 @@ export function MetricCard({ label, value, hint }: MetricCardProps) {
   );
 }
 
-type StatusTone = "neutral" | "good" | "warn" | "muted";
+type StatusTone = "neutral" | "good" | "warn" | "danger" | "muted";
 
 const STATUS_CX: Record<StatusTone, string> = {
   neutral: "bg-[#E2B93B]/10 text-[#E2B93B]/75 border-[#E2B93B]/20",
   good: "bg-green-500/10 text-green-400/75 border-green-500/20",
   warn: "bg-amber-500/10 text-amber-400/75 border-amber-500/20",
+  danger: "bg-red-500/10 text-red-300/80 border-red-500/20",
   muted: "bg-white/[0.04] text-white/40 border-white/[0.08]",
 };
 
