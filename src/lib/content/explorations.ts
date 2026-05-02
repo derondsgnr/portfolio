@@ -8,6 +8,7 @@ export type Exploration = {
   category: string;
   type: "image" | "video";
   image: string;
+  videoUrl?: string;
   tools: string[];
   date: string;
 };

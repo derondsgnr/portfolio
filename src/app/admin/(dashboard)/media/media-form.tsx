@@ -93,6 +93,14 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
     });
   }
 
+  function updateExplorationVideoUrl(index: number, videoUrl: string) {
+    setExplorations((prev) => {
+      const next = [...prev];
+      if (next[index]) next[index] = { ...next[index], videoUrl };
+      return next;
+    });
+  }
+
   const sectionBgKeys = Object.keys(media.sectionBackgrounds);
   const defaultSectionKeys = ["hero", "craft", "about"];
   const allSectionKeys = [...new Set([...defaultSectionKeys, ...sectionBgKeys])];
@@ -177,6 +185,15 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
                     className={`${inputClass} mt-1`}
                     placeholder="Image URL"
                   />
+                  {item.type === "video" && (
+                    <input
+                      type="url"
+                      value={item.videoUrl ?? ""}
+                      onChange={(e) => updateExplorationVideoUrl(i, e.target.value)}
+                      className={`${inputClass} mt-2`}
+                      placeholder="YouTube URL (optional)"
+                    />
+                  )}
                 </div>
               </div>
             ))}
