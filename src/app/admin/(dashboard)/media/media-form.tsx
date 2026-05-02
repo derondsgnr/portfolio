@@ -185,15 +185,6 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
                     className={`${inputClass} mt-1`}
                     placeholder="Image URL"
                   />
-                  {item.type === "video" && (
-                    <input
-                      type="url"
-                      value={item.videoUrl ?? ""}
-                      onChange={(e) => updateExplorationVideoUrl(i, e.target.value)}
-                      className={`${inputClass} mt-2`}
-                      placeholder="YouTube URL (optional)"
-                    />
-                  )}
                 </div>
               </div>
             ))}
@@ -231,6 +222,15 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
                     className={`${inputClass} mt-1`}
                     placeholder="Image URL"
                   />
+                  {item.type === "video" && (
+                    <input
+                      type="url"
+                      value={item.videoUrl ?? ""}
+                      onChange={(e) => updateExplorationVideoUrl(i, e.target.value)}
+                      className={`${inputClass} mt-2`}
+                      placeholder="YouTube URL (optional)"
+                    />
+                  )}
                 </div>
               </div>
             ))}
