@@ -1,11 +1,14 @@
 import { getPageCopy } from "@/lib/content/copy";
 import { getBlogCategories } from "@/lib/data/blog-categories";
+import { getBlogPosts, getBlogSeries } from "@/lib/content/blog";
 import BlogPageClient from "./blog-page-client";
 
 export default async function Page() {
-  const [copy, categories] = await Promise.all([
+  const [copy, categories, posts, series] = await Promise.all([
     getPageCopy("blog"),
     getBlogCategories(),
+    getBlogPosts(),
+    getBlogSeries(),
   ]);
 
   return (
@@ -18,6 +21,8 @@ export default async function Page() {
           "Notes from the intersection of design, code, and craft. Long-form thinking, not short-form takes.",
       }}
       categories={["All", ...categories]}
+      posts={posts}
+      series={series}
     />
   );
 }

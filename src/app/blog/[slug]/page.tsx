@@ -1,7 +1,13 @@
 import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { getBlogPost, BLOG_POSTS } from "@/lib/data/blog-data";
+import {
+  getAdjacentSeriesPosts,
+  getBlogPostBySlug,
+  getBlogPosts,
+  getRelatedBlogPosts,
+  getSeriesForPost,
+} from "@/lib/content/blog";
 
 const BlogReader = dynamic(
   () => import("@/components/v2/blog/blog-reader").then((m) => ({ default: m.BlogReader })),
@@ -13,12 +19,13 @@ interface Props {
 }
 
 export async function generateStaticParams() {
-  return BLOG_POSTS.map((p) => ({ slug: p.slug }));
+  const posts = await getBlogPosts();
+  return posts.map((post) => ({ slug: post.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const post = getBlogPost(slug);
+  const post = await getBlogPostBySlug(slug);
   if (!post) return {};
   return {
     title: `${post.meta.title} | derondsgnr`,
@@ -40,9 +47,23 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
-  const post = slug ? getBlogPost(slug) : undefined;
+  const post = slug ? await getBlogPostBySlug(slug) : undefined;
 
   if (!post) notFound();
 
-  return <BlogReader post={post} />;
+  const [relatedPosts, series, adjacent] = await Promise.all([
+    getRelatedBlogPosts(post.slug, 3),
+    getSeriesForPost(post.slug),
+    getAdjacentSeriesPosts(post.slug),
+  ]);
+
+  return (
+    <BlogReader
+      post={post}
+      relatedPosts={relatedPosts}
+      series={series}
+      seriesPrev={adjacent.prev}
+      seriesNext={adjacent.next}
+    />
+  );
 }

@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 export default async function AdminProjectsPage() {
   const initial = await getContentWithGitHubOverlay(
     "content/projects.json",
-    getProjects,
+    () => getProjects({ includeDrafts: true, includeArchived: true }),
     (local, parsed) => (Array.isArray(parsed) ? parsed : local)
   );
 

@@ -64,6 +64,9 @@ export function TestimonialsList({ initial }: Props) {
         company: data.company ?? "",
         avatar: data.avatar ?? null,
         companyLogo: data.companyLogo ?? null,
+        status: data.status ?? "draft",
+        featured: data.featured ?? false,
+        pinned: data.pinned ?? false,
       };
       handleSave([...testimonials, newT]);
     }
@@ -117,6 +120,11 @@ export function TestimonialsList({ initial }: Props) {
               <p className="font-mono text-sm text-white/90 truncate">&quot;{t.quote}&quot;</p>
               <p className="font-mono text-xs text-white/50 mt-1">
                 {t.name} — {t.role}, {t.company}
+              </p>
+              <p className="font-mono text-[10px] text-white/35 mt-1 uppercase">
+                {t.status ?? "published"}
+                {t.featured ? " · Featured" : ""}
+                {t.pinned ? " · Pinned" : ""}
               </p>
               <div className="flex gap-3 mt-2">
                 {t.avatar && (

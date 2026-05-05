@@ -40,6 +40,10 @@ function StudyListItem({ study, isActive, onClick }: { study: CaseStudy; isActiv
         <p className="text-[12px] font-['Instrument_Sans'] text-white/75 truncate">{study.meta.title}</p>
         <p className="text-[9px] text-white/25 font-['Instrument_Sans']">
           {study.meta.year} · {study.acts.length} acts · {slideCount} slides
+          {study.pinned && <span className="ml-1.5 text-[#E2B93B]/60">PINNED</span>}
+          {study.featured && <span className="ml-1.5 text-[#E2B93B]/45">FEATURED</span>}
+          {study.status === "draft" && <span className="ml-1.5 text-white/30">DRAFT</span>}
+          {study.status === "archived" && <span className="ml-1.5 text-white/20">ARCHIVED</span>}
         </p>
       </div>
       <ChevronRight size={12} className={`shrink-0 transition-colors ${isActive ? "text-[#E2B93B]/60" : "text-white/15"}`} />
@@ -156,6 +160,17 @@ function StudyEditor({
           </h2>
         </div>
         <div className="flex items-center gap-2">
+          <select
+            value={form.status ?? "published"}
+            onChange={(e) =>
+              setForm((f) => ({ ...f, status: e.target.value as CaseStudy["status"] }))
+            }
+            className="text-[10px] font-['Instrument_Sans'] tracking-wider bg-white/[0.03] border border-white/[0.08] text-white/40 px-2 py-1.5 focus:outline-none cursor-pointer"
+          >
+            <option value="published" style={{ background: "#0A0A0A" }}>Published</option>
+            <option value="draft" style={{ background: "#0A0A0A" }}>Draft</option>
+            <option value="archived" style={{ background: "#0A0A0A" }}>Archived</option>
+          </select>
           <a href={`/work/${study.slug}`} target="_blank" rel="noopener noreferrer"
             className="flex items-center gap-1.5 px-3 py-1.5 border border-white/[0.08] text-[10px] font-['Instrument_Sans'] tracking-wider uppercase text-white/25 hover:text-white/60 hover:border-white/20 transition-all">
             <Eye size={11} /> Preview
@@ -229,6 +244,30 @@ function StudyEditor({
                       ))}
                     </div>
                   </FormField>
+                  <div className="lg:col-span-2 flex flex-wrap items-center gap-4">
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={Boolean(form.featured)}
+                        onChange={(e) =>
+                          setForm((f) => ({ ...f, featured: e.target.checked }))
+                        }
+                        className="h-4 w-4 accent-[#E2B93B]"
+                      />
+                      <span className="text-[11px] text-white/40 font-['Instrument_Sans'] tracking-wider uppercase">Featured study</span>
+                    </label>
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={Boolean(form.pinned)}
+                        onChange={(e) =>
+                          setForm((f) => ({ ...f, pinned: e.target.checked }))
+                        }
+                        className="h-4 w-4 accent-[#E2B93B]"
+                      />
+                      <span className="text-[11px] text-white/40 font-['Instrument_Sans'] tracking-wider uppercase">Pinned in priority order</span>
+                    </label>
+                  </div>
                   <FormField label="Tags" className="lg:col-span-2">
                     <div className="flex flex-wrap gap-1.5 mb-2">
                       {form.meta.tags.map((tag) => (
@@ -327,6 +366,9 @@ export function CaseStudiesClient({ initialStudies }: { initialStudies: CaseStud
   function newStudy() {
     const blank: CaseStudy = {
       slug: `new-study-${Date.now()}`,
+      status: "draft",
+      featured: false,
+      pinned: false,
       meta: { title: "New Case Study", client: "", year: new Date().getFullYear().toString(), tags: [], cover: "", summary: "" },
       template: "full-product",
       acts: [],

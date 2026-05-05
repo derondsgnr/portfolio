@@ -50,6 +50,9 @@ export type TestimonialItem = {
   company: string;
   avatar?: string | null;
   companyLogo?: string | null;
+  status?: "published" | "draft" | "archived";
+  featured?: boolean;
+  pinned?: boolean;
 };
 
 export const DEFAULT_TESTIMONIALS: TestimonialItem[] = [

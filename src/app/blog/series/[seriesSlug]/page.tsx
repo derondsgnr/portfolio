@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { getSeriesBySlug, getSeriesPosts, BLOG_SERIES } from "@/lib/data/blog-series-data";
+import { getBlogSeries, getBlogSeriesBySlug, getSeriesPosts } from "@/lib/content/blog";
 import SeriesPageClient from "./series-page-client";
 
 interface Props {
@@ -7,14 +7,15 @@ interface Props {
 }
 
 export async function generateStaticParams() {
-  return BLOG_SERIES.map((s) => ({ seriesSlug: s.slug }));
+  const series = await getBlogSeries();
+  return series.map((item) => ({ seriesSlug: item.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { seriesSlug } = await params;
-  const series = getSeriesBySlug(seriesSlug);
+  const series = await getBlogSeriesBySlug(seriesSlug);
   if (!series) return {};
-  const posts = getSeriesPosts(seriesSlug);
+  const posts = await getSeriesPosts(seriesSlug);
   const totalTime = posts.reduce((sum, p) => sum + p.meta.readingTime, 0);
   return {
     title: `${series.title} — Series | derondsgnr`,
@@ -30,5 +31,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function Page({ params }: Props) {
   const { seriesSlug } = await params;
-  return <SeriesPageClient params={Promise.resolve({ seriesSlug })} />;
+  const [series, posts] = await Promise.all([
+    getBlogSeriesBySlug(seriesSlug),
+    getSeriesPosts(seriesSlug),
+  ]);
+  return (
+    <SeriesPageClient
+      series={series ?? null}
+      posts={posts}
+    />
+  );
 }

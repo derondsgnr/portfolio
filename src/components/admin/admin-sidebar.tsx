@@ -8,7 +8,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
@@ -94,14 +94,28 @@ function LogoutButton() {
   );
 }
 
+type AttentionCounts = {
+  contacts: number;
+  commentsPending: number;
+};
+
+const EMPTY_COUNTS: AttentionCounts = { contacts: 0, commentsPending: 0 };
+
+function formatCount(value: number): string {
+  if (value > 99) return "99+";
+  return String(value);
+}
+
 // ─── NavItem ────────────────────────────────────────────────────────
 function NavItem({
   item,
   isActive,
+  attentionCount,
   onClick,
 }: {
   item: (typeof NAV_GROUPS)[0]["items"][0];
   isActive: boolean;
+  attentionCount?: number;
   onClick?: () => void;
 }) {
   const Icon = item.icon;
@@ -156,6 +170,12 @@ function NavItem({
       >
         {item.label}
       </span>
+
+      {attentionCount && attentionCount > 0 ? (
+        <span className="relative ml-auto inline-flex min-w-[20px] items-center justify-center border border-[#E2B93B]/35 bg-[#E2B93B]/12 px-1.5 py-0.5 text-[9px] font-['Instrument_Sans'] tracking-[0.08em] text-[#E2B93B]">
+          {formatCount(attentionCount)}
+        </span>
+      ) : null}
     </Link>
   );
 }
@@ -164,8 +184,42 @@ function NavItem({
 function SidebarContent({ onClose }: { onClose?: () => void }) {
   const pathname = usePathname();
   const { history } = useAdmin();
+  const [counts, setCounts] = useState<AttentionCounts>(EMPTY_COUNTS);
 
   const currentPath = pathname ?? "";
+
+  useEffect(() => {
+    let mounted = true;
+
+    async function loadCounts() {
+      try {
+        const res = await fetch("/api/admin/attention", { method: "GET", cache: "no-store" });
+        if (!res.ok) return;
+        const data = (await res.json()) as { ok?: boolean; counts?: Partial<AttentionCounts> };
+        if (!mounted || !data?.ok || !data.counts) return;
+        setCounts({
+          contacts: typeof data.counts.contacts === "number" ? data.counts.contacts : 0,
+          commentsPending:
+            typeof data.counts.commentsPending === "number" ? data.counts.commentsPending : 0,
+        });
+      } catch {
+        // Silent fail: badge counters are helpful but non-blocking.
+      }
+    }
+
+    loadCounts();
+    const timer = window.setInterval(loadCounts, 60000);
+    return () => {
+      mounted = false;
+      window.clearInterval(timer);
+    };
+  }, []);
+
+  function getAttentionCount(path: string): number | undefined {
+    if (path === "/admin/contacts") return counts.contacts;
+    if (path === "/admin/comments") return counts.commentsPending;
+    return undefined;
+  }
 
   return (
     <div className="flex flex-col h-full">
@@ -210,6 +264,7 @@ function SidebarContent({ onClose }: { onClose?: () => void }) {
                 <NavItem
                   key={item.path}
                   item={item}
+                  attentionCount={getAttentionCount(item.path)}
                   isActive={
                     item.path === "/admin"
                       ? currentPath === "/admin"

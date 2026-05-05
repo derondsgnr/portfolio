@@ -5,6 +5,7 @@ import { verifyAdminSession } from "@/lib/admin/auth";
 import {
   getContacts as getContactsFromDb,
   deleteContact as deleteContactFromDb,
+  markContactRead as markContactReadInDb,
   type ContactRecord,
 } from "@/lib/contact";
 
@@ -30,4 +31,10 @@ export async function deleteContactForAdmin(id: string) {
   const ok = await verifyAdminSession();
   if (!ok) return { ok: false, error: "Unauthorized" };
   return deleteContactFromDb(id);
+}
+
+export async function markContactReadForAdmin(id: string, read = true) {
+  const ok = await verifyAdminSession();
+  if (!ok) return { ok: false, error: "Unauthorized" };
+  return markContactReadInDb(id, read);
 }

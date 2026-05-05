@@ -15,6 +15,7 @@ import type { Slide } from "./case-study";
 
 export interface BlogPost {
   slug: string;
+  status?: "published" | "draft" | "archived";
   meta: {
     title: string;
     date: string;        // ISO: "2026-03-18"
@@ -24,6 +25,7 @@ export interface BlogPost {
     summary: string;
     readingTime: number; // minutes
     featured?: boolean;
+    pinned?: boolean;
     series?: {
       slug: string;      // reference to BlogSeries.slug
       position: number;  // 1-based index in the series
@@ -41,11 +43,4 @@ export interface BlogSeries {
   archived?: boolean;     // hidden from public pages when true
 }
 
-export type BlogCategory =
-  | "Craft"
-  | "Process"
-  | "Thinking"
-  | "Tools"
-  | "Case Notes"
-  | "Industry"
-  | "Life";
+export type BlogCategory = string;

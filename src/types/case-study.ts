@@ -190,6 +190,9 @@ export type CaseStudyTemplate = "full-product" | "feature-dive" | "visual-brand"
 /* ─── Full Case Study ────────────────────────────────────────── */
 export interface CaseStudy {
   slug: string;
+  status?: "published" | "draft" | "archived";
+  featured?: boolean;
+  pinned?: boolean;
   meta: {
     title: string;
     client: string;

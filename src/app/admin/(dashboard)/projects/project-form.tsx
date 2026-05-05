@@ -16,6 +16,9 @@ const empty: Partial<Project> = {
   description: "",
   image: "",
   slug: "",
+  status: "published",
+  featured: false,
+  pinned: false,
 };
 
 export function ProjectForm({ project, onSave, onCancel }: Props) {
@@ -69,6 +72,45 @@ export function ProjectForm({ project, onSave, onCancel }: Props) {
             className={inputClass}
             placeholder="e.g. 2025"
           />
+        </div>
+      </div>
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <label className={labelClass}>Lifecycle</label>
+          <select
+            value={form.status ?? "published"}
+            onChange={(e) =>
+              setForm((f) => ({
+                ...f,
+                status: e.target.value as Project["status"],
+              }))
+            }
+            className={inputClass}
+          >
+            <option value="published">Published</option>
+            <option value="draft">Draft</option>
+            <option value="archived">Archived</option>
+          </select>
+        </div>
+        <div className="flex items-end gap-4 pb-2">
+          <label className="flex items-center gap-2 font-mono text-xs text-white/70">
+            <input
+              type="checkbox"
+              checked={Boolean(form.featured)}
+              onChange={(e) => setForm((f) => ({ ...f, featured: e.target.checked }))}
+              className="h-4 w-4 accent-[#E2B93B]"
+            />
+            Featured
+          </label>
+          <label className="flex items-center gap-2 font-mono text-xs text-white/70">
+            <input
+              type="checkbox"
+              checked={Boolean(form.pinned)}
+              onChange={(e) => setForm((f) => ({ ...f, pinned: e.target.checked }))}
+              className="h-4 w-4 accent-[#E2B93B]"
+            />
+            Pinned
+          </label>
         </div>
       </div>
       <div>

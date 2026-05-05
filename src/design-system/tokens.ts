@@ -13,7 +13,7 @@ export const tokens = {
     accent: "#e2b93b",
     "accent-foreground": "#0a0a0a",
     muted: "#1a1a1a",
-    "muted-foreground": "#6b6b6b",
+    "muted-foreground": "#9a9a9a",
     border: "rgba(255, 255, 255, 0.08)",
     "border-focus": "rgba(226, 185, 59, 0.5)",
     ring: "rgba(255, 255, 255, 0.2)",

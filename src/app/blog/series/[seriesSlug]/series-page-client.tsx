@@ -4,8 +4,7 @@ import { useRef } from "react";
 import { motion, useInView } from "motion/react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { use } from "react";
-import { getSeriesBySlug, getSeriesPosts } from "@/lib/data/blog-series-data";
+import type { BlogPost, BlogSeries } from "@/types/blog";
 
 function formatDate(iso: string): string {
   const d = new Date(iso + "T00:00:00");
@@ -19,16 +18,13 @@ function formatDate(iso: string): string {
 }
 
 export default function SeriesPage({
-  params,
+  series,
+  posts,
 }: {
-  params: Promise<{ seriesSlug: string }>;
+  series: BlogSeries | null;
+  posts: BlogPost[];
 }) {
-  const { seriesSlug } = use(params);
-  const series = getSeriesBySlug(seriesSlug);
-
   if (!series) return notFound();
-
-  const posts = getSeriesPosts(seriesSlug);
   const totalReadingTime = posts.reduce(
     (sum, p) => sum + p.meta.readingTime,
     0
@@ -161,7 +157,7 @@ function TimelineItem({
   index,
   total,
 }: {
-  post: ReturnType<typeof getSeriesPosts>[number];
+  post: BlogPost;
   index: number;
   total: number;
 }) {

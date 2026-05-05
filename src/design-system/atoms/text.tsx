@@ -7,7 +7,7 @@ const textVariants = cva("", {
   variants: {
     variant: {
       heading: "font-heading uppercase tracking-tight text-foreground",
-      body: "font-body text-muted-foreground",
+      body: "font-body text-foreground/90",
       label: "font-mono text-[10px] tracking-[0.2em] text-accent uppercase",
       caption: "font-mono text-[9px] tracking-[0.15em] text-muted-foreground/70 uppercase",
     },
