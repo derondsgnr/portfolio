@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { saveAdminReminders } from "@/app/admin/actions";
+import { useAdmin } from "@/components/admin/admin-context";
 import { adminCx, FormField, PageHeader } from "@/components/admin/admin-primitives";
 import type { AdminRemindersConfig } from "@/lib/content/admin-reminders";
 import {
@@ -18,6 +19,7 @@ import {
 import { getAdminErrorMessage } from "@/lib/admin/feedback";
 
 export function SecurityRemindersForm({ initial }: { initial: AdminRemindersConfig }) {
+  const { pushHistory } = useAdmin();
   const [config, setConfig] = useState<AdminRemindersConfig>(initial);
   const [saving, setSaving] = useState(false);
   const [notice, setNotice] = useState<{ kind: "success" | "error"; text: string } | null>(null);
@@ -35,6 +37,12 @@ export function SecurityRemindersForm({ initial }: { initial: AdminRemindersConf
     setSaving(false);
     if (res.ok) {
       setConfig(nextConfig);
+      pushHistory(
+        "security",
+        "Security",
+        "Logged GitHub PAT reminder update",
+        nextConfig,
+      );
       setNotice({ kind: "success", text: "Saved to repo (content/admin-reminders.json)." });
     } else {
       setNotice({ kind: "error", text: getAdminErrorMessage(res.error) });

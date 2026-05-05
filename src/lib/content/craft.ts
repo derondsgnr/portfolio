@@ -1,6 +1,5 @@
-import { readFile } from "fs/promises";
-import path from "path";
 import { DEFAULT_CRAFT_ITEMS } from "./defaults";
+import { readContentJson } from "./live-source";
 
 export type CraftItem = {
   id: string;
@@ -40,9 +39,7 @@ export async function getCraftItems(options?: {
   const includeArchived = options?.includeArchived ?? false;
 
   try {
-    const filePath = path.join(process.cwd(), "content", "craft.json");
-    const raw = await readFile(filePath, "utf-8");
-    const parsed = JSON.parse(raw);
+    const parsed = await readContentJson<unknown>("craft.json");
     const base = Array.isArray(parsed) ? (parsed as CraftItem[]) : DEFAULT_CRAFT_ITEMS;
     const normalized = base.map(normalizeCraftItem);
     const filtered = normalized.filter((item) => {

@@ -1,7 +1,4 @@
-import { readFile } from "fs/promises";
-import path from "path";
-
-const copyPath = () => path.join(process.cwd(), "content", "copy.json");
+import { readContentJson } from "./live-source";
 
 export type HeroCopy = {
   name?: string;
@@ -94,8 +91,8 @@ function deepMerge<T extends Record<string, unknown>>(target: T, source: Partial
 
 export async function getCopy(): Promise<CopyConfig> {
   try {
-    const raw = await readFile(copyPath(), "utf-8");
-    const parsed = JSON.parse(raw) as CopyConfig;
+    const parsed = await readContentJson<CopyConfig>("copy.json");
+    if (!parsed) return DEFAULTS;
     const shared = parsed._shared as PageCopy | undefined;
     const result: CopyConfig = {};
     for (const [page, data] of Object.entries(parsed)) {
@@ -118,8 +115,9 @@ export async function getPageCopy(page: string): Promise<PageCopy> {
 /** Returns raw copy.json for admin editing. Preserves _shared. */
 export async function getCopyForAdmin(): Promise<CopyConfig> {
   try {
-    const raw = await readFile(copyPath(), "utf-8");
-    return JSON.parse(raw) as CopyConfig;
+    const parsed = await readContentJson<CopyConfig>("copy.json");
+    if (parsed) return parsed;
+    throw new Error("missing copy");
   } catch {
     const def = { ...DEFAULTS };
     (def as Record<string, unknown>)._shared = { cta: { ctaPrimary: "BOOK A CALL", ctaSecondary: "SEND A MESSAGE", subtext: "FREE 30-MINUTE DISCOVERY CALL" } };

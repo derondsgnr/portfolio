@@ -63,8 +63,10 @@ export function useGrowthState() {
   }, []);
 
   const patchState = useCallback(async (updater: (current: GrowthState) => GrowthState) => {
+    let previousState: GrowthState | null = null;
     let nextState: GrowthState | null = null;
     setState((current) => {
+      previousState = current;
       const next = updater(current);
       nextState = next;
       persistLocalState(next);
@@ -87,9 +89,13 @@ export function useGrowthState() {
       return true;
     }
 
+    if (previousState) {
+      setState(previousState);
+      persistLocalState(previousState);
+    }
     setSyncStatus("error");
     setSyncMessage(
-      `Saved locally, but couldn't sync Growth OS state to the server. ${getAdminErrorMessage(result.error)}`
+      `Couldn't sync Growth OS state to the server. Local changes were reverted. ${getAdminErrorMessage(result.error)}`
     );
     return false;
   }, []);

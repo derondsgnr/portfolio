@@ -1,5 +1,4 @@
-import { readFile } from "fs/promises";
-import path from "path";
+import { readContentJson } from "./live-source";
 
 export type SoundsConfig = {
   loaderComplete: string;
@@ -21,9 +20,8 @@ const DEFAULT: SoundsConfig = {
 
 export async function getSounds(): Promise<SoundsConfig> {
   try {
-    const filePath = path.join(process.cwd(), "content", "sounds.json");
-    const raw = await readFile(filePath, "utf-8");
-    const parsed = JSON.parse(raw) as Partial<SoundsConfig>;
+    const parsed = await readContentJson<Partial<SoundsConfig>>("sounds.json");
+    if (!parsed) return DEFAULT;
     return { ...DEFAULT, ...parsed };
   } catch {
     return DEFAULT;

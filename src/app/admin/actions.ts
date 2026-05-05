@@ -16,6 +16,8 @@ import {
   registerLoginFailure,
 } from "@/lib/admin/security";
 
+let blogSaveQueue: Promise<void> = Promise.resolve();
+
 async function requireAdmin(options?: { mutation?: boolean; capability?: AdminCapability }) {
   const hdrs = await headers();
   const ip = getClientIp(hdrs);
@@ -192,25 +194,38 @@ export async function saveBlogPost(
   data: unknown,
   message?: string
 ): Promise<{ ok: boolean; error?: string }> {
-  try {
-    await requireAdmin({ mutation: true });
-  } catch (error) {
-    return { ok: false, error: error instanceof Error ? error.message : "Unauthorized" };
-  }
-  // Read existing posts, upsert, and save
-  let posts: Record<string, unknown>[] = [];
-  try {
-    const existing = await getGitHubFile("content/blog.json");
-    if (existing) {
-      const parsed = JSON.parse(existing.content);
-      if (Array.isArray(parsed)) posts = parsed;
+  let outcome: { ok: boolean; error?: string } = { ok: false, error: "Save queue unavailable." };
+
+  const run = async () => {
+    try {
+      await requireAdmin({ mutation: true });
+    } catch (error) {
+      outcome = { ok: false, error: error instanceof Error ? error.message : "Unauthorized" };
+      return;
     }
-  } catch { /* first save — start fresh */ }
-  const idx = posts.findIndex((p) => (p as { slug?: string }).slug === slug);
-  if (idx >= 0) posts[idx] = data as Record<string, unknown>;
-  else posts.push(data as Record<string, unknown>);
-  const content = JSON.stringify(posts, null, 2);
-  return saveContent("content/blog.json", content, message ?? "Update blog post");
+
+    // Read existing posts, upsert, and save in a serialized queue to avoid lost updates.
+    let posts: Record<string, unknown>[] = [];
+    try {
+      const existing = await getGitHubFile("content/blog.json");
+      if (existing) {
+        const parsed = JSON.parse(existing.content);
+        if (Array.isArray(parsed)) posts = parsed;
+      }
+    } catch {
+      // First save — start fresh.
+    }
+
+    const idx = posts.findIndex((p) => (p as { slug?: string }).slug === slug);
+    if (idx >= 0) posts[idx] = data as Record<string, unknown>;
+    else posts.push(data as Record<string, unknown>);
+    const content = JSON.stringify(posts, null, 2);
+    outcome = await saveContent("content/blog.json", content, message ?? "Update blog post");
+  };
+
+  blogSaveQueue = blogSaveQueue.then(run, run);
+  await blogSaveQueue;
+  return outcome;
 }
 
 /** Blog categories — persist to content/blog-categories.json via GitHub */

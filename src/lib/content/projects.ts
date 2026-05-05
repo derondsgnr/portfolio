@@ -1,6 +1,5 @@
-import { readFile } from "fs/promises";
-import path from "path";
 import { DEFAULT_PROJECTS } from "./defaults";
+import { readContentJson } from "./live-source";
 
 export type Project = {
   id: string;
@@ -42,9 +41,7 @@ export async function getProjects(options?: {
   const includeArchived = options?.includeArchived ?? false;
 
   try {
-    const filePath = path.join(process.cwd(), "content", "projects.json");
-    const raw = await readFile(filePath, "utf-8");
-    const parsed = JSON.parse(raw) as Project[];
+    const parsed = await readContentJson<Project[]>("projects.json");
     const base = Array.isArray(parsed) ? parsed : DEFAULT_PROJECTS;
     const normalized = base.map(normalizeProject);
     const filtered = normalized.filter((project) => {

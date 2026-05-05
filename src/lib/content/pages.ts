@@ -1,5 +1,4 @@
-import { readFile } from "fs/promises";
-import path from "path";
+import { readContentJson } from "./live-source";
 
 export type PageSectionConfig = {
   id: string;
@@ -33,9 +32,8 @@ const DEFAULT_HOMEPAGE: PageConfig = {
 
 export async function getPageConfig(page: keyof PagesConfig): Promise<PageConfig> {
   try {
-    const filePath = path.join(process.cwd(), "content", "pages.json");
-    const raw = await readFile(filePath, "utf-8");
-    const parsed = JSON.parse(raw) as PagesConfig;
+    const parsed = await readContentJson<PagesConfig>("pages.json");
+    if (!parsed) throw new Error("missing pages config");
     const config = parsed[page];
     if (config?.sections?.length) return config;
     if (config) return { sections: config.sections ?? [] };
@@ -49,9 +47,8 @@ export async function getPageConfig(page: keyof PagesConfig): Promise<PageConfig
 /** Returns full pages config for admin layout builder. */
 export async function getPagesConfig(): Promise<PagesConfig> {
   try {
-    const filePath = path.join(process.cwd(), "content", "pages.json");
-    const raw = await readFile(filePath, "utf-8");
-    const parsed = JSON.parse(raw) as PagesConfig;
+    const parsed = await readContentJson<PagesConfig>("pages.json");
+    if (!parsed) throw new Error("missing pages config");
     return {
       homepage: parsed.homepage ?? DEFAULT_HOMEPAGE,
       work: parsed.work ?? { sections: [] },
