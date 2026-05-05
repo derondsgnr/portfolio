@@ -1,0 +1,1237 @@
+[
+  {
+    "slug": "bridgepay",
+    "meta": {
+      "title": "Bridgepay",
+      "client": "Bridgepay",
+      "year": "2025",
+      "role": "Product Designer",
+      "tags": [
+        "Fintech",
+        "Payments",
+        "Escrow",
+        "Mobile Design"
+      ],
+      "cover": "https://placehold.co/1920x1080/0A0A0A/E2B93B/png?text=Bridgepay%20%C2%B7%20Escrow%20%26%20FX",
+      "summary": "An escrow and international payments sub-product designed from scratch — clear flows for buyers, sellers, and non-registered users, under compliance and budget constraints.",
+      "color": "#3B82F6"
+    },
+    "template": "full-product",
+    "acts": [
+      {
+        "title": "Context",
+        "slides": [
+          {
+            "type": "cover",
+            "id": "bridgepay-cover",
+            "headline": "Bridgepay — Escrow & International Payments",
+            "subtitle": "Making online buying and selling safer for everyone.",
+            "tags": [
+              "Fintech",
+              "Escrow",
+              "Mobile Design"
+            ],
+            "heroImage": "https://placehold.co/1920x1080/0A0A0A/E2B93B/png?text=Bridgepay%20%C2%B7%20Escrow%20%26%20FX",
+            "device": "phone"
+          },
+          {
+            "type": "narrative",
+            "id": "bridgepay-context",
+            "headline": "The brief",
+            "body": "Bridgepay was building a payments platform to help Nigerians move money globally when the founder approached me with an emerging idea: \"Can we make online buying and selling safer for everyone?\" He and I had worked together before, so he trusted my ability to think holistically — product → UX → compliance → UI → strategy. Together, we shaped a new escrow sub-product from the ground up, starting with an empty screen."
+          }
+        ]
+      },
+      {
+        "title": "What I Designed",
+        "slides": [
+          {
+            "type": "section-break",
+            "id": "bridgepay-act2",
+            "actTitle": "What I Designed",
+            "actNumber": 2,
+            "subtitle": "End-to-end flows from sign-up to cross-border transfer"
+          },
+          {
+            "type": "narrative",
+            "id": "bridgepay-flows",
+            "headline": "Designed flows",
+            "body": "Sign-up and onboarding flow · Escrow initiation for buyers and business owners · Escrow initiation for freelancers and sellers · Non-registered recipient flow · Status and confirmation screens for both parties · Ability to switch between \"Escrow\" and \"International Payments\" · Cross-border transfer flow with currency clarity."
+          },
+          {
+            "type": "single-mockup",
+            "id": "bridgepay-mock-onboarding",
+            "headline": "Onboarding",
+            "image": "https://placehold.co/1600x1000/0A0A0A/E2B93B/png?text=Bridgepay%20%C2%B7%20Sign%20up",
+            "device": "phone",
+            "caption": "Placeholder — swap for shipped UI."
+          },
+          {
+            "type": "single-mockup",
+            "id": "bridgepay-mock-escrow",
+            "headline": "Escrow initiation",
+            "image": "https://placehold.co/1600x1000/0A0A0A/E2B93B/png?text=Bridgepay%20%C2%B7%20Escrow",
+            "device": "phone",
+            "caption": "Placeholder — buyer / seller paths."
+          },
+          {
+            "type": "single-mockup",
+            "id": "bridgepay-mock-intl",
+            "headline": "International payments",
+            "image": "https://placehold.co/1600x1000/0A0A0A/E2B93B/png?text=Bridgepay%20%C2%B7%20FX%20transfer",
+            "device": "phone",
+            "caption": "Placeholder — currency clarity & confirmation."
+          }
+        ]
+      },
+      {
+        "title": "Outcome",
+        "slides": [
+          {
+            "type": "section-break",
+            "id": "bridgepay-act3",
+            "actTitle": "Outcome",
+            "actNumber": 3,
+            "subtitle": "Results and reflection"
+          },
+          {
+            "type": "narrative",
+            "id": "bridgepay-outcome",
+            "headline": "What happened",
+            "body": "The escrow product wasn't shipped, but the work strengthened our collaboration. The founder continued bringing me in for product input, and later invited me as his design partner for a Lagos Business School innovation bootcamp, where our team earned an award. This project represents early but meaningful fintech thinking: building trust, reducing ambiguity, and designing flows that help people feel safe when money is involved."
+          },
+          {
+            "type": "quote",
+            "id": "bridgepay-testimonial",
+            "quote": "One key thing I would say about Deron, having worked with him for a very long time, is the full attention, detail, and commitment he puts into getting work done. He goes the extra mile to make sure the results surpass your expectations. It has always been a pleasure working with him, and I am super confident you would love working with him too.",
+            "attribution": "Alabi Hafeez",
+            "role": "CEO, Bridgepay"
+          }
+        ]
+      }
+    ],
+    "outcome": {
+      "metrics": [
+        {
+          "label": "Project",
+          "value": "Escrow sub-product"
+        },
+        {
+          "label": "Recognition",
+          "value": "LBS Innovation Bootcamp Award"
+        }
+      ],
+      "testimonial": "One key thing I would say about Deron is the full attention, detail, and commitment he puts into getting work done. He goes the extra mile to make sure the results surpass your expectations.",
+      "testimonialAuthor": "Alabi Hafeez, CEO, Bridgepay"
+    },
+    "status": "published",
+    "featured": false,
+    "pinned": false
+  },
+  {
+    "slug": "urban",
+    "meta": {
+      "title": "Urban",
+      "client": "Urban",
+      "year": "2025",
+      "role": "Product Designer",
+      "tags": [
+        "Transportation",
+        "Rideshare",
+        "Mobile Design",
+        "Web Design"
+      ],
+      "cover": "https://placehold.co/1920x1080/0A0A0A/E2B93B/png?text=Urban%20%C2%B7%20Rider%20%26%20driver",
+      "summary": "Redesigning both rider and driver apps for a Nigerian interstate transport platform — modern, simple, safe, without breaking the complex system already in use.",
+      "color": "#10B981"
+    },
+    "template": "full-product",
+    "acts": [
+      {
+        "title": "Overview & Problem",
+        "slides": [
+          {
+            "type": "cover",
+            "id": "urban-cover",
+            "headline": "Urban — Redesigning a Transportation Experience",
+            "subtitle": "End user & driver — one ecosystem, two distinct needs.",
+            "tags": [
+              "Transportation",
+              "Mobile Design",
+              "Web Design"
+            ],
+            "heroImage": "https://placehold.co/1920x1080/0A0A0A/E2B93B/png?text=Urban%20%C2%B7%20Rider%20%26%20driver",
+            "device": "phone"
+          },
+          {
+            "type": "narrative",
+            "id": "urban-overview",
+            "headline": "Overview",
+            "body": "Urban is a transportation platform built to improve how Nigerians travel across states. The founder had a big, long-term vision — something that would outlive him and genuinely make travel safer, kinder, and more organized for ordinary Nigerians. The product team before me was mostly engineers, and the apps reflected that. The design was outdated, the flows were confusing, and the experience didn't match the heart and ambition behind the idea."
+          },
+          {
+            "type": "narrative",
+            "id": "urban-problem",
+            "headline": "The problem (before redesign)",
+            "body": "The UI looked old and disconnected. The UX was confusing, with too many unnecessary screens. Trip booking didn't follow patterns Nigerians are familiar with. The copy felt robotic and unhelpful. Drivers had three separate pages just to understand their trips. Important actions were hidden. There were no real safety features. The navigation made simple tasks feel stressful. The founder knew something was wrong, but he couldn't fully name it. He just knew the product wasn't doing justice to his vision — and he needed help."
+          }
+        ]
+      },
+      {
+        "title": "What I Did",
+        "slides": [
+          {
+            "type": "section-break",
+            "id": "urban-act2",
+            "actTitle": "What I Did",
+            "actNumber": 2,
+            "subtitle": "Rider app and driver app"
+          },
+          {
+            "type": "narrative",
+            "id": "urban-rider",
+            "headline": "Rider app",
+            "body": "I redesigned the booking flow for trips and flights, updated the home screen, and simplified the way users view their history and upcoming schedules. I introduced bottom sheets to show clear travel requirements, payment status, and important information people need before travelling. Overall, I modernized the entire experience and made it feel familiar to anyone who has used apps like Bolt or Uber — but adapted to interstate travel needs."
+          },
+          {
+            "type": "single-mockup",
+            "id": "urban-mock-rider-home",
+            "headline": "Rider · home & booking",
+            "image": "https://placehold.co/1600x1000/0A0A0A/E2B93B/png?text=Urban%20%C2%B7%20Rider%20home",
+            "device": "phone",
+            "caption": "Placeholder screen — swap for production UI."
+          },
+          {
+            "type": "single-mockup",
+            "id": "urban-mock-rider-sheet",
+            "headline": "Rider · bottom sheet",
+            "image": "https://placehold.co/1600x1000/0A0A0A/E2B93B/png?text=Urban%20%C2%B7%20Requirements%20sheet",
+            "device": "phone",
+            "caption": "Placeholder — travel requirements & payment clarity."
+          },
+          {
+            "type": "narrative",
+            "id": "urban-driver",
+            "headline": "Driver app",
+            "body": "This side was more constrained because of business rules, but it needed clarity even more. I consolidated three separate sections (Records, Requests, Trips) into two simple ones. I reorganized their dashboard, redesigned the profile, and made important actions easier to find. Because interstate travel in Nigeria carries real risks, I added: an SOS button, a place to view vehicle documents during police checks, and a hidden wallet toggle for safety during robbery situations. These were features the founder never thought about, but they were necessary for the real world."
+          },
+          {
+            "type": "single-mockup",
+            "id": "urban-mock-driver",
+            "headline": "Driver · consolidated hub",
+            "image": "https://placehold.co/1600x1000/0A0A0A/E2B93B/png?text=Urban%20%C2%B7%20Driver%20dashboard",
+            "device": "phone",
+            "caption": "Placeholder — driver trips & safety affordances."
+          }
+        ]
+      },
+      {
+        "title": "Result & Reflection",
+        "slides": [
+          {
+            "type": "section-break",
+            "id": "urban-act3",
+            "actTitle": "The Result",
+            "actNumber": 3,
+            "subtitle": "After the redesign"
+          },
+          {
+            "type": "narrative",
+            "id": "urban-result",
+            "headline": "Impact",
+            "body": "The apps became much easier to navigate. The booking and trip flow became clearer. Drivers could manage work without confusion. The product looked modern and trustworthy. Safety was taken seriously. Redundant screens were removed. Development became faster because of the components I created. Most importantly, the product finally started to look and feel like the vision the founder had in his mind."
+          },
+          {
+            "type": "narrative",
+            "id": "urban-reflection",
+            "headline": "Reflection",
+            "body": "This project taught me a lot about designing within tight constraints and improving a system without breaking what already worked. It also reminded me how much I enjoy helping founders translate their ideas into experiences that feel human and thoughtful."
+          }
+        ]
+      }
+    ],
+    "outcome": {
+      "metrics": [
+        {
+          "label": "Scope",
+          "value": "Rider + driver apps"
+        },
+        {
+          "label": "Focus",
+          "value": "Interstate travel in Nigeria"
+        }
+      ]
+    },
+    "status": "published",
+    "featured": false,
+    "pinned": false
+  },
+  {
+    "slug": "customer-support-platform",
+    "meta": {
+      "title": "Customer Support Platform",
+      "client": "PowerCS",
+      "year": "2025",
+      "role": "Product Designer",
+      "tags": [
+        "Product Design",
+        "B2B",
+        "Web Design"
+      ],
+      "cover": "https://placehold.co/1920x1080/0A0A0A/E2B93B/png?text=PowerCS%20%C2%B7%20Customer%20support",
+      "summary": "A product design project focused on simplifying onboarding and shaping a cleaner MVP for PowerCS — flows, a clearer PRD, reduced onboarding friction, and psychological UX strategies including the IKEA Effect.",
+      "color": "#8B5CF6"
+    },
+    "template": "feature-dive",
+    "acts": [
+      {
+        "title": "Context",
+        "slides": [
+          {
+            "type": "cover",
+            "id": "csp-cover",
+            "headline": "Customer Support Platform",
+            "subtitle": "PowerCS — turning a big vision into a manageable MVP.",
+            "tags": [
+              "Product Design",
+              "B2B",
+              "Web Design"
+            ],
+            "heroImage": "https://placehold.co/1920x1080/0A0A0A/E2B93B/png?text=PowerCS%20%C2%B7%20Customer%20support",
+            "device": "browser"
+          },
+          {
+            "type": "narrative",
+            "id": "csp-context",
+            "headline": "Where we started",
+            "body": "When I joined, there was no design, no flows, no screens — just a very long PRD the founder had been updating for months. He had a clear vision, but the details were still rough around the edges. This started with a simple but strong idea: create a platform that connects businesses with trained, certified customer service reps."
+          }
+        ]
+      },
+      {
+        "title": "What I did",
+        "slides": [
+          {
+            "type": "section-break",
+            "id": "csp-act-what",
+            "actTitle": "What I did",
+            "actNumber": 2,
+            "subtitle": "Flows, PRD clarity, psychology"
+          },
+          {
+            "type": "narrative",
+            "id": "csp-what",
+            "headline": "From PRD to interface",
+            "body": "I designed flows, clarified the PRD with the founder, and reduced onboarding friction so the MVP scope matched what we could actually ship. I also proposed psychological UX strategies — including the IKEA Effect — so users felt invested in setup steps rather than blocked by them."
+          },
+          {
+            "type": "single-mockup",
+            "id": "csp-mock-onboarding",
+            "headline": "Onboarding direction",
+            "image": "https://placehold.co/1600x1000/0A0A0A/E2B93B/png?text=Onboarding%20%C2%B7%20wire%20%2B%20UI",
+            "device": "browser",
+            "caption": "Placeholder — replace with final screens from Figma."
+          },
+          {
+            "type": "single-mockup",
+            "id": "csp-mock-dashboard",
+            "headline": "Dashboard exploration",
+            "image": "https://placehold.co/1600x1000/0A0A0A/E2B93B/png?text=Dashboard%20%C2%B7%20MVP%20shell",
+            "device": "browser",
+            "caption": "Placeholder — founder-facing dashboard concepts."
+          }
+        ]
+      },
+      {
+        "title": "The Result",
+        "slides": [
+          {
+            "type": "section-break",
+            "id": "csp-act-result",
+            "actTitle": "The Result",
+            "actNumber": 3,
+            "subtitle": "Even without full development"
+          },
+          {
+            "type": "narrative",
+            "id": "csp-result",
+            "headline": "What we achieved",
+            "body": "The onboarding flow became significantly easier. The MVP became clearer and more realistic. The dashboard took shape in a way that matched his brand values. We removed friction from the user journey. The product began to feel intentional and premium. The foundation for V1 was finally solid — and the founder gained clarity he didn't have before. The project didn't complete because of circumstances — but the groundwork and design direction remain strong and usable."
+          }
+        ]
+      },
+      {
+        "title": "Reflection",
+        "slides": [
+          {
+            "type": "section-break",
+            "id": "csp-act-reflect",
+            "actTitle": "Reflection",
+            "actNumber": 4,
+            "subtitle": "PowerCS"
+          },
+          {
+            "type": "narrative",
+            "id": "csp-reflection",
+            "headline": "What I learned",
+            "body": "PowerCS reminded me of how much I enjoy working directly with founders — especially when their vision is big but the structure needs refining. Collaborating closely, simplifying the PRD, shaping the MVP, and using UX psychology to make onboarding feel lighter were all parts of the work that reinforced my strength in founder-facing product design. Even though the project paused, the work we did together made a difference and gave the founder the clarity and direction he needed at a critical point."
+          }
+        ]
+      }
+    ],
+    "outcome": {
+      "metrics": [
+        {
+          "label": "Client",
+          "value": "PowerCS"
+        },
+        {
+          "label": "Focus",
+          "value": "Founder-facing product design"
+        }
+      ]
+    },
+    "status": "published",
+    "featured": false,
+    "pinned": false
+  },
+  {
+    "slug": "dara",
+    "meta": {
+      "title": "Dara",
+      "client": "Personal Project",
+      "year": "2025",
+      "role": "Product Designer & Developer",
+      "duration": "3 weeks",
+      "tags": [
+        "Fintech",
+        "Product Design",
+        "Full-Stack",
+        "AI-Assisted"
+      ],
+      "cover": "https://images.unsplash.com/photo-1623593476737-0fc80f6be51d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+      "summary": "A personal finance & tax management platform for Nigerian freelancers and SMEs — designed and built entirely with AI-assisted tools.",
+      "color": "#E2B93B"
+    },
+    "template": "full-product",
+    "liveDemoUrl": "#",
+    "acts": [
+      {
+        "title": "Discovery",
+        "slides": [
+          {
+            "type": "cover",
+            "id": "dara-cover",
+            "headline": "Tax shouldn't feel like punishment",
+            "subtitle": "Designing a finance platform that makes Nigerian tax compliance feel effortless — not terrifying.",
+            "tags": [
+              "Fintech",
+              "Product Design",
+              "AI-Assisted Build"
+            ],
+            "heroImage": "https://images.unsplash.com/photo-1623593476737-0fc80f6be51d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+            "device": "browser"
+          },
+          {
+            "type": "narrative",
+            "id": "dara-context",
+            "headline": "The problem nobody was solving properly",
+            "body": "Nigerian freelancers and small business owners face a uniquely frustrating tax landscape. The tools that exist are built for accountants, not for people who just want to know: how much do I owe, and when is it due?",
+            "annotation": "This insight came from personal frustration — I was one of these people.",
+            "narrator": {
+              "text": "I started this project because I was tired of the spreadsheet gymnastics every quarter. If I — a tech-literate designer — was struggling, what about everyone else?",
+              "label": "DESIGNER'S NOTE",
+              "mood": "thinking"
+            }
+          },
+          {
+            "type": "insight",
+            "id": "dara-insight-1",
+            "headline": "The trust deficit in Nigerian fintech",
+            "insightLabel": "RESEARCH FINDING",
+            "insightText": "7 out of 10 Nigerian freelancers surveyed said they don't trust any existing tool with their financial data. The barrier isn't technology — it's confidence.",
+            "body": "I spoke with 12 freelancers and small business owners across Lagos and Abuja. The pattern was consistent: they wanted to comply with tax regulations, but every tool made them feel like they needed an accounting degree first."
+          },
+          {
+            "type": "single-mockup",
+            "id": "dara-competitor",
+            "headline": "What existing tools looked like",
+            "annotation": "Dense tables, accounting jargon, zero context. Every tool assumed you already knew what you were doing.",
+            "image": "https://images.unsplash.com/photo-1629963918958-1b62cfe3fe92?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+            "device": "browser",
+            "caption": "A typical Nigerian tax compliance dashboard — built for accountants, not humans."
+          }
+        ]
+      },
+      {
+        "title": "Design",
+        "slides": [
+          {
+            "type": "section-break",
+            "id": "dara-act2",
+            "actTitle": "Design",
+            "actNumber": 2,
+            "subtitle": "From chaos to clarity"
+          },
+          {
+            "type": "process",
+            "id": "dara-process",
+            "headline": "How the solution took shape",
+            "artifacts": [
+              {
+                "image": "https://images.unsplash.com/photo-1576153192396-180ecef2a715?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+                "label": "Information Architecture",
+                "description": "Mapping the mental model of how freelancers think about money — not how accountants categorize it."
+              },
+              {
+                "image": "https://images.unsplash.com/photo-1562601555-513820e5d0eb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+                "label": "Component System",
+                "description": "A design system built for dark mode from day one — every component optimized for financial data density."
+              }
+            ],
+            "narrator": {
+              "text": "I didn't follow a linear process here. I was designing in Figma Make, building in Cursor, and using Claude to generate the business logic simultaneously. The tools shaped the process as much as the thinking did.",
+              "label": "PROCESS NOTE",
+              "mood": "pointing"
+            }
+          },
+          {
+            "type": "narrative",
+            "id": "dara-decisions",
+            "headline": "Three design decisions that defined everything",
+            "body": "1. Dark mode as default — because finances feel private, and dark interfaces feel more secure.\n\n2. The dashboard speaks in natural language — 'Good afternoon, Sharon. Here's your financial overview for Q1 2026' instead of raw data dumps.\n\n3. Tax deadlines as a countdown, not a date — '16 DAYS' hits different than 'April 1, 2026'.",
+            "annotation": "Every decision traced back to one principle: reduce cognitive load around money."
+          },
+          {
+            "type": "single-mockup",
+            "id": "dara-dashboard",
+            "headline": "The dashboard that tells you what you need to know",
+            "image": "https://images.unsplash.com/photo-1623593476737-0fc80f6be51d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+            "device": "browser",
+            "caption": "Dara's main dashboard — financial overview, tax deadlines, and quick actions in one view.",
+            "annotation": "Take-home income, tax owed, income sources, upcoming deadlines — all visible without scrolling.",
+            "narrator": {
+              "text": "The 'Good afternoon, Sharon' greeting wasn't just polish — it was a deliberate choice to make a financial tool feel like it knows you, not like it's auditing you.",
+              "label": "DESIGNER'S NOTE",
+              "mood": "celebrating"
+            }
+          },
+          {
+            "type": "mockup-gallery",
+            "id": "dara-screens",
+            "headline": "Key screens across the platform",
+            "mockups": [
+              {
+                "image": "https://images.unsplash.com/photo-1623593476737-0fc80f6be51d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+                "device": "browser",
+                "label": "Dashboard"
+              },
+              {
+                "image": "https://images.unsplash.com/photo-1642055509518-adafcad1d22e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+                "device": "phone",
+                "label": "Mobile View"
+              }
+            ]
+          },
+          {
+            "type": "comparison",
+            "id": "dara-before-after",
+            "headline": "Before vs. After: Tax overview",
+            "before": {
+              "image": "https://images.unsplash.com/photo-1629963918958-1b62cfe3fe92?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+              "label": "Traditional tax tools"
+            },
+            "after": {
+              "image": "https://images.unsplash.com/photo-1623593476737-0fc80f6be51d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+              "label": "Dara's approach"
+            },
+            "device": "browser"
+          }
+        ]
+      },
+      {
+        "title": "Outcome",
+        "slides": [
+          {
+            "type": "section-break",
+            "id": "dara-act3",
+            "actTitle": "Outcome",
+            "actNumber": 3,
+            "subtitle": "What happened when it shipped"
+          },
+          {
+            "type": "metric",
+            "id": "dara-metrics",
+            "headline": "The numbers that mattered",
+            "metrics": [
+              {
+                "label": "Build time",
+                "value": "3 weeks",
+                "delta": "vs. typical 3 months"
+              },
+              {
+                "label": "Design to code",
+                "value": "0 handoff",
+                "delta": "I built what I designed"
+              },
+              {
+                "label": "AI assistance",
+                "value": "80%",
+                "delta": "of code generated"
+              },
+              {
+                "label": "Components",
+                "value": "45+",
+                "delta": "in the design system"
+              }
+            ]
+          },
+          {
+            "type": "embed",
+            "id": "dara-live",
+            "headline": "Try it yourself",
+            "embedUrl": "#",
+            "fallbackImage": "https://images.unsplash.com/photo-1623593476737-0fc80f6be51d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+            "device": "browser",
+            "caption": "Live interactive prototype — click through the actual interface.",
+            "narrator": {
+              "text": "This is the actual deployed application, not a Figma prototype. Built with Figma Make and Cursor, running on real infrastructure.",
+              "label": "TECH NOTE",
+              "mood": "celebrating"
+            }
+          },
+          {
+            "type": "quote",
+            "id": "dara-reflection",
+            "quote": "The future of design isn't choosing between designing and building. It's doing both — simultaneously, with AI as your collaborator.",
+            "attribution": "Deron",
+            "role": "Reflection on the process"
+          }
+        ]
+      }
+    ],
+    "outcome": {
+      "metrics": [
+        {
+          "label": "Build time",
+          "value": "3 weeks"
+        },
+        {
+          "label": "Components",
+          "value": "45+"
+        },
+        {
+          "label": "AI-generated code",
+          "value": "80%"
+        }
+      ],
+      "testimonial": "Dara proved that a single designer-developer, armed with the right AI tools, can ship a production-quality fintech platform in weeks, not months.",
+      "testimonialAuthor": "Personal reflection"
+    },
+    "status": "published",
+    "featured": false,
+    "pinned": false
+  },
+  {
+    "slug": "pulse",
+    "meta": {
+      "title": "Pulse",
+      "client": "Stealth Health Startup",
+      "year": "2025",
+      "role": "Lead Product Designer",
+      "duration": "4 weeks",
+      "tags": [
+        "Mobile",
+        "Wellness",
+        "UX Research",
+        "iOS"
+      ],
+      "cover": "https://images.unsplash.com/photo-1633435444831-a343459372a5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+      "summary": "A mindfulness and micro-recovery app for high-stress professionals — designed entirely for one-handed use during the workday.",
+      "color": "#7B68EE"
+    },
+    "template": "feature-dive",
+    "acts": [
+      {
+        "title": "Understanding",
+        "slides": [
+          {
+            "type": "cover",
+            "id": "pulse-cover",
+            "headline": "Calm in 90 seconds",
+            "subtitle": "Most wellness apps demand 20 minutes of your day. Nobody has that. I designed one that works in the cracks between meetings.",
+            "tags": [
+              "Mobile",
+              "Wellness",
+              "One-Handed UX"
+            ],
+            "heroImage": "https://images.unsplash.com/photo-1594561177665-052b6b4b781a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+            "device": "phone"
+          },
+          {
+            "type": "narrative",
+            "id": "pulse-problem",
+            "headline": "The 20-minute myth",
+            "body": "Every wellness app on the market assumes you have a meditation room, a yoga mat, and a clear calendar. That's not reality for a product manager in Lagos at 2pm between back-to-back Zooms.\n\nThe founder came to me with user research showing 94% of their signups churned within 3 days. Not because the content was bad — because the time commitment was impossible.",
+            "narrator": {
+              "text": "I almost turned this project down. I thought — another meditation app? Then I saw the churn data and realized nobody had solved the actual problem: time, not motivation.",
+              "label": "DESIGNER'S NOTE",
+              "mood": "thinking"
+            }
+          },
+          {
+            "type": "insight",
+            "id": "pulse-insight-1",
+            "headline": "When do people need calm most?",
+            "insightLabel": "DIARY STUDY FINDING",
+            "insightText": "Users don't seek calm when they're already calm. They need it most in the 2-3 minutes between stressful events — the walk from a meeting room, the elevator ride, the bathroom break.",
+            "body": "I ran a 7-day diary study with 8 participants. Each logged their stress spikes and what they did in the 5 minutes after. The pattern was clear: micro-moments, not sessions.",
+            "narrator": {
+              "text": "I had participants send me voice memos instead of filling out forms. Way more honest data. One guy literally whispered 'I'm hiding in the stairwell' — that became our design target.",
+              "label": "RESEARCH METHOD",
+              "mood": "pointing"
+            }
+          },
+          {
+            "type": "quote",
+            "id": "pulse-user-quote",
+            "quote": "I don't need an app to tell me to breathe for 20 minutes. I need something that catches me in the stairwell and gives me 90 seconds of actual relief.",
+            "attribution": "Diary Study Participant",
+            "role": "Senior PM, Tech Company"
+          }
+        ]
+      },
+      {
+        "title": "Design & Outcome",
+        "slides": [
+          {
+            "type": "section-break",
+            "id": "pulse-act2",
+            "actTitle": "Design & Outcome",
+            "actNumber": 2,
+            "subtitle": "Designing for one hand, one minute, one breath"
+          },
+          {
+            "type": "process",
+            "id": "pulse-process",
+            "headline": "An unconventional process",
+            "artifacts": [
+              {
+                "image": "https://images.unsplash.com/photo-1523726491678-bf852e717f6a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+                "label": "Voice Memo → Sketch",
+                "description": "Started with voice memos from participants, sketched scenarios directly from their words. No personas, no journey maps."
+              },
+              {
+                "image": "https://images.unsplash.com/photo-1663153203126-08bbadc178ad?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+                "label": "Prototype in the Stairwell",
+                "description": "Tested paper prototypes in actual stairwells, elevators, and bathroom breaks. If you couldn't use it one-handed while walking, it failed."
+              },
+              {
+                "image": "https://images.unsplash.com/photo-1635724287614-018e383ee98c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+                "label": "Haptic-First Design",
+                "description": "Designed the breathing guide as vibration patterns first, screen second. The app works with your phone in your pocket."
+              }
+            ],
+            "narrator": {
+              "text": "No Figma file for the first two weeks. Just voice memos, paper, and a lot of awkward stairwell testing. The founder thought I was procrastinating. I was prototyping in context.",
+              "label": "PROCESS NOTE",
+              "mood": "frustrated"
+            }
+          },
+          {
+            "type": "flow",
+            "id": "pulse-flow",
+            "headline": "The 90-second flow",
+            "screens": [
+              {
+                "image": "https://images.unsplash.com/photo-1633435444831-a343459372a5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+                "label": "Lock Screen Widget",
+                "device": "phone"
+              },
+              {
+                "image": "https://images.unsplash.com/photo-1663153203126-08bbadc178ad?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+                "label": "Breathing Circle",
+                "device": "phone"
+              },
+              {
+                "image": "https://images.unsplash.com/photo-1594561177665-052b6b4b781a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+                "label": "Calm Confirmed",
+                "device": "phone"
+              }
+            ]
+          },
+          {
+            "type": "single-mockup",
+            "id": "pulse-breathing",
+            "headline": "The breathing circle",
+            "image": "https://images.unsplash.com/photo-1633435444831-a343459372a5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+            "device": "phone",
+            "caption": "One expanding circle. No text. No choices. Just breathe with it.",
+            "annotation": "The entire interaction is one gesture: hold your thumb on the circle. It expands as you breathe in, contracts as you exhale. Zero cognitive load.",
+            "narrator": {
+              "text": "We tested 14 different breathing visualizations. The simple expanding circle won because users could unfocus their eyes and still follow it. Every other version required attention they didn't have.",
+              "label": "DESIGN DECISION",
+              "mood": "celebrating"
+            }
+          },
+          {
+            "type": "mockup-gallery",
+            "id": "pulse-screens",
+            "headline": "Key screens — all phone, all one-handed",
+            "mockups": [
+              {
+                "image": "https://images.unsplash.com/photo-1633435444831-a343459372a5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+                "device": "phone",
+                "label": "Home"
+              },
+              {
+                "image": "https://images.unsplash.com/photo-1663153203126-08bbadc178ad?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+                "device": "phone",
+                "label": "Session Complete"
+              },
+              {
+                "image": "https://images.unsplash.com/photo-1594561177665-052b6b4b781a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+                "device": "phone",
+                "label": "Weekly Reflection"
+              }
+            ]
+          },
+          {
+            "type": "narrative",
+            "id": "pulse-outcome",
+            "headline": "What happened",
+            "body": "No hard metrics yet — the app is in closed beta with 200 users. But the diary studies tell the story:\n\nAverage session length: 87 seconds. Exactly what we designed for.\n\n6 out of 8 diary study participants kept using the app daily for 3 weeks after the study ended — without being asked to.\n\nThe founder's favorite quote from a beta user: 'It's the only app I've ever used in an elevator and felt better walking out.'",
+            "annotation": "Sometimes the best metric is a story, not a number.",
+            "narrator": {
+              "text": "I deliberately chose not to put a metrics slide here. This project's value isn't in conversion funnels — it's in the guy who uses it in the stairwell every day at 2pm. That matters more than a dashboard.",
+              "label": "DESIGNER'S NOTE",
+              "mood": "thinking"
+            }
+          },
+          {
+            "type": "quote",
+            "id": "pulse-closing",
+            "quote": "You designed something my team of 12 couldn't figure out in 6 months. And you did it with paper and voice memos.",
+            "attribution": "Founder",
+            "role": "Stealth Health Startup"
+          }
+        ]
+      }
+    ],
+    "outcome": {
+      "metrics": [
+        {
+          "label": "Session length",
+          "value": "87s"
+        },
+        {
+          "label": "Beta retention",
+          "value": "75%"
+        },
+        {
+          "label": "Designed for",
+          "value": "1 hand"
+        }
+      ],
+      "testimonial": "You designed something my team of 12 couldn't figure out in 6 months. And you did it with paper and voice memos.",
+      "testimonialAuthor": "Founder, Stealth Health Startup"
+    },
+    "status": "published",
+    "featured": false,
+    "pinned": false
+  },
+  {
+    "slug": "kora",
+    "meta": {
+      "title": "Kora",
+      "client": "Kora Collective",
+      "year": "2024",
+      "role": "Brand & Product Designer",
+      "duration": "2 weeks",
+      "tags": [
+        "Brand Identity",
+        "Visual Design",
+        "Art Direction"
+      ],
+      "cover": "https://images.unsplash.com/photo-1761778304143-4c89e7dd2457?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+      "summary": "Complete brand identity and web presence for a West African design collective — built on constraint, craft, and cultural tension.",
+      "color": "#D4583A"
+    },
+    "template": "visual-brand",
+    "acts": [
+      {
+        "title": "Brief",
+        "slides": [
+          {
+            "type": "cover",
+            "id": "kora-cover",
+            "headline": "Identity is not a logo",
+            "subtitle": "A design collective needed to look like they belonged globally — without losing what made them distinctly West African.",
+            "tags": [
+              "Brand Identity",
+              "Art Direction",
+              "Cultural Design"
+            ],
+            "heroImage": "https://images.unsplash.com/photo-1761778304143-4c89e7dd2457?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080"
+          },
+          {
+            "type": "narrative",
+            "id": "kora-brief",
+            "headline": "The tension in the brief",
+            "body": "Kora Collective is a group of designers and makers across Lagos, Accra, and Nairobi. They wanted a brand that could sit next to Pentagram on a conference slide — but feel unmistakably African when you looked closer.\n\nThe trap would be to reach for obvious motifs: kente patterns, earth tones, tribal geometry. That's what every 'African brand' does. Kora needed something more nuanced.",
+            "narrator": {
+              "text": "The name 'Kora' is a 21-string West African harp. The instrument is incredibly sophisticated — but most Westerners have never heard of it. That paradox became the brand strategy.",
+              "label": "NAMING NOTE",
+              "mood": "pointing"
+            }
+          },
+          {
+            "type": "insight",
+            "id": "kora-insight",
+            "headline": "The design principle",
+            "insightLabel": "BRAND STRATEGY",
+            "insightText": "Sophisticated at distance, culturally specific up close. Like a kora that sounds like a harp until you listen carefully."
+          }
+        ]
+      },
+      {
+        "title": "Craft",
+        "slides": [
+          {
+            "type": "section-break",
+            "id": "kora-act2",
+            "actTitle": "Craft",
+            "actNumber": 2,
+            "subtitle": "From principle to presence"
+          },
+          {
+            "type": "process",
+            "id": "kora-process",
+            "headline": "Visual exploration",
+            "artifacts": [
+              {
+                "image": "https://images.unsplash.com/photo-1770581939371-326fc1537f10?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+                "label": "Type Specimen",
+                "description": "Tested 40+ typefaces. Landed on a grotesque sans for headings (European precision) paired with a custom display face inspired by Nsibidi symbols."
+              },
+              {
+                "image": "https://images.unsplash.com/photo-1635724287614-018e383ee98c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+                "label": "Color Language",
+                "description": "Rejected earth tones. Built a palette from Lagos nightlife: electric terracotta, deep indigo, and a signal white that cuts through noise."
+              },
+              {
+                "image": "https://images.unsplash.com/photo-1772191399367-91ed8d95664b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+                "label": "Texture System",
+                "description": "Every brand asset includes a subtle noise texture derived from high-res scans of hand-woven aso-oke fabric. You feel it before you see it."
+              },
+              {
+                "image": "https://images.unsplash.com/photo-1746171114403-f4c4877b1f04?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+                "label": "Photography Direction",
+                "description": "Shot by Akin Temitope in Lagos. Tight crops, desaturated shadows, subjects caught mid-gesture. No poses. No smiles on demand."
+              }
+            ],
+            "narrator": {
+              "text": "The texture system was the breakthrough. I spent an entire day at a textile market in Lekki scanning fabrics. Those scans became the invisible DNA of every brand touchpoint.",
+              "label": "PROCESS NOTE",
+              "mood": "celebrating"
+            }
+          },
+          {
+            "type": "comparison",
+            "id": "kora-before-after",
+            "headline": "Before vs. After",
+            "before": {
+              "image": "https://images.unsplash.com/photo-1773089237195-bc9449198ed8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+              "label": "Previous identity"
+            },
+            "after": {
+              "image": "https://images.unsplash.com/photo-1761778304143-4c89e7dd2457?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+              "label": "Kora rebrand"
+            }
+          },
+          {
+            "type": "single-mockup",
+            "id": "kora-web",
+            "headline": "The website",
+            "image": "https://images.unsplash.com/photo-1761778304143-4c89e7dd2457?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+            "device": "browser",
+            "caption": "koracollective.com — Built in Figma Make, deployed in 3 days.",
+            "narrator": {
+              "text": "The website is deliberately slow to scroll. Not broken — intentional. Each section reveals itself with the same pace as unwrapping hand-dyed fabric. The medium IS the message.",
+              "label": "INTERACTION DESIGN",
+              "mood": "pointing"
+            }
+          },
+          {
+            "type": "quote",
+            "id": "kora-testimonial",
+            "quote": "For the first time, our brand feels like us — not like a Western studio trying to 'do Africa.' You captured something we couldn't articulate.",
+            "attribution": "Amara Osei",
+            "role": "Co-Founder, Kora Collective"
+          }
+        ]
+      }
+    ],
+    "outcome": {
+      "metrics": [
+        {
+          "label": "Brand assets",
+          "value": "120+"
+        },
+        {
+          "label": "Time to launch",
+          "value": "2 weeks"
+        },
+        {
+          "label": "Countries",
+          "value": "3"
+        }
+      ],
+      "testimonial": "For the first time, our brand feels like us — not like a Western studio trying to 'do Africa.' You captured something we couldn't articulate.",
+      "testimonialAuthor": "Amara Osei, Co-Founder, Kora Collective"
+    },
+    "status": "published",
+    "featured": false,
+    "pinned": false
+  },
+  {
+    "slug": "soro",
+    "meta": {
+      "title": "Soro",
+      "client": "Soro Markets",
+      "year": "2024",
+      "role": "Product Designer (Contract)",
+      "duration": "6 weeks",
+      "tags": [
+        "Marketplace",
+        "Redesign",
+        "Mobile + Web",
+        "UX Teardown"
+      ],
+      "cover": "https://images.unsplash.com/photo-1746171114403-f4c4877b1f04?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+      "summary": "UX teardown and complete redesign of a Nigerian community marketplace — taking it from 'Craigslist clone' to trusted local commerce.",
+      "color": "#22C55E"
+    },
+    "template": "teardown",
+    "acts": [
+      {
+        "title": "Teardown",
+        "slides": [
+          {
+            "type": "cover",
+            "id": "soro-cover",
+            "headline": "Trust is a design problem",
+            "subtitle": "A marketplace where nobody trusted anyone. The fix wasn't features — it was removing reasons to doubt.",
+            "tags": [
+              "UX Teardown",
+              "Marketplace",
+              "Trust Design"
+            ],
+            "heroImage": "https://images.unsplash.com/photo-1746171114403-f4c4877b1f04?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+            "device": "browser"
+          },
+          {
+            "type": "narrative",
+            "id": "soro-context",
+            "headline": "The state of local commerce",
+            "body": "Soro Markets was a 2-year-old marketplace for local goods in Lagos. Vendors could list products, buyers could browse. Simple.\n\nThe problem: 68% of users who added items to their cart never completed a purchase. Exit surveys pointed to one word over and over: trust.\n\n'How do I know this person is real?'\n'What if the product looks different?'\n'What if they take my money and disappear?'",
+            "narrator": {
+              "text": "I asked the founder: 'What's your return policy?' He said: 'We don't have one.' That's when I knew this wasn't a UI problem — it was a system design problem.",
+              "label": "FIRST IMPRESSION",
+              "mood": "frustrated"
+            }
+          },
+          {
+            "type": "process",
+            "id": "soro-audit",
+            "headline": "The teardown",
+            "artifacts": [
+              {
+                "image": "https://images.unsplash.com/photo-1575388902449-6bca946ad549?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+                "label": "Heuristic Audit",
+                "description": "Found 23 usability violations in the first 5 screens. Missing feedback states, no loading indicators, error messages that said 'Error.'"
+              },
+              {
+                "image": "https://images.unsplash.com/photo-1773089237195-bc9449198ed8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+                "label": "Competitor Mapping",
+                "description": "Analyzed Jiji, Jumia, Instagram shops, and WhatsApp vendor accounts. Found that trust signals were the differentiator, not features."
+              },
+              {
+                "image": "https://images.unsplash.com/photo-1523726491678-bf852e717f6a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+                "label": "User Interview Synthesis",
+                "description": "12 interviews revealed that buyers judged vendor legitimacy by response speed, photo quality, and whether the listing had a price (many didn't)."
+              }
+            ],
+            "narrator": {
+              "text": "The biggest insight came from watching a user browse. She said: 'This feels like a scam website.' The product images were fine — but the typography, spacing, and color choices screamed 'amateur.' Trust is aesthetic before it's functional.",
+              "label": "OBSERVATION",
+              "mood": "thinking"
+            }
+          },
+          {
+            "type": "insight",
+            "id": "soro-insight",
+            "headline": "The trust equation",
+            "insightLabel": "CORE FRAMEWORK",
+            "insightText": "Trust = (Responsiveness + Specificity + Social Proof) - Uncertainty. Every design decision was scored against this equation.",
+            "body": "We mapped every screen against this framework. Any element that increased Uncertainty was removed or redesigned. Any element that increased the numerator was amplified."
+          }
+        ]
+      },
+      {
+        "title": "Redesign",
+        "slides": [
+          {
+            "type": "section-break",
+            "id": "soro-act2",
+            "actTitle": "Redesign",
+            "actNumber": 2,
+            "subtitle": "Rebuilding trust from the ground up"
+          },
+          {
+            "type": "narrative",
+            "id": "soro-approach",
+            "headline": "Five trust-building patterns",
+            "body": "1. Verified vendor badges — not self-reported, earned through 3 completed transactions.\n\n2. Photo quality gates — listings without clear photos were deprioritized in search.\n\n3. Response time indicators — 'Usually responds in 5 minutes' shown prominently.\n\n4. Price transparency — mandatory pricing with 'negotiable' tag if flexible.\n\n5. Buyer protection banner — visible on every listing page, not buried in FAQ.",
+            "annotation": "Each pattern directly addressed a specific trust barrier from user interviews."
+          },
+          {
+            "type": "comparison",
+            "id": "soro-listing-comparison",
+            "headline": "Product listing: Before vs. After",
+            "before": {
+              "image": "https://images.unsplash.com/photo-1575388902449-6bca946ad549?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+              "label": "Before: sparse, uncertain"
+            },
+            "after": {
+              "image": "https://images.unsplash.com/photo-1746171114403-f4c4877b1f04?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+              "label": "After: verified, specific"
+            },
+            "device": "phone",
+            "narrator": {
+              "text": "The before listing had 4 trust signals. The after has 11. Same information density — just intentionally arranged to answer doubt before it forms.",
+              "label": "DESIGN DETAIL",
+              "mood": "pointing"
+            }
+          },
+          {
+            "type": "single-mockup",
+            "id": "soro-homepage",
+            "headline": "The new homepage",
+            "image": "https://images.unsplash.com/photo-1746171114403-f4c4877b1f04?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+            "device": "browser",
+            "caption": "Redesigned homepage with trust-first hierarchy: verified vendors featured, buyer protection visible above the fold.",
+            "annotation": "The hero doesn't show products — it shows people. Real vendor photos. Because you trust faces, not SKUs."
+          },
+          {
+            "type": "flow",
+            "id": "soro-mobile-flow",
+            "headline": "Mobile purchase flow — 4 taps to checkout",
+            "screens": [
+              {
+                "image": "https://images.unsplash.com/photo-1746171114403-f4c4877b1f04?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+                "label": "Browse",
+                "device": "phone"
+              },
+              {
+                "image": "https://images.unsplash.com/photo-1773089237195-bc9449198ed8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+                "label": "Listing Detail",
+                "device": "phone"
+              },
+              {
+                "image": "https://images.unsplash.com/photo-1758598304354-0a86fd5d62c2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+                "label": "Cart + Protection",
+                "device": "phone"
+              },
+              {
+                "image": "https://images.unsplash.com/photo-1663153203126-08bbadc178ad?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+                "label": "Confirmation",
+                "device": "phone"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Impact",
+        "slides": [
+          {
+            "type": "section-break",
+            "id": "soro-act3",
+            "actTitle": "Impact",
+            "actNumber": 3,
+            "subtitle": "The numbers and the stories"
+          },
+          {
+            "type": "metric",
+            "id": "soro-metrics",
+            "headline": "6 weeks after launch",
+            "metrics": [
+              {
+                "label": "Cart completion",
+                "value": "+156%",
+                "delta": "from 32% to 82%"
+              },
+              {
+                "label": "Avg. vendor response",
+                "value": "4 min",
+                "delta": "down from 3 hours"
+              },
+              {
+                "label": "New vendor signups",
+                "value": "3x",
+                "delta": "month over month"
+              },
+              {
+                "label": "Support tickets",
+                "value": "-72%",
+                "delta": "'Is this legit?' queries"
+              }
+            ],
+            "narrator": {
+              "text": "The metric I'm proudest of is the support ticket drop. When nobody asks 'is this legit?', that means trust is built into the interface — not explained in an FAQ.",
+              "label": "REFLECTION",
+              "mood": "celebrating"
+            }
+          },
+          {
+            "type": "video",
+            "id": "soro-walkthrough",
+            "headline": "Product walkthrough",
+            "posterImage": "https://images.unsplash.com/photo-1746171114403-f4c4877b1f04?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+            "device": "browser",
+            "caption": "2-minute walkthrough of the redesigned marketplace experience."
+          },
+          {
+            "type": "quote",
+            "id": "soro-final",
+            "quote": "We went from 'is this a scam?' to 'can you expand to Abuja?' in six weeks. That's not a redesign — that's a reputation rebuild.",
+            "attribution": "Tunde Adeyemi",
+            "role": "CEO, Soro Markets"
+          }
+        ]
+      }
+    ],
+    "outcome": {
+      "metrics": [
+        {
+          "label": "Completion rate",
+          "value": "+156%"
+        },
+        {
+          "label": "Response time",
+          "value": "4 min"
+        },
+        {
+          "label": "Vendor growth",
+          "value": "3x"
+        }
+      ],
+      "testimonial": "We went from 'is this a scam?' to 'can you expand to Abuja?' in six weeks. That's not a redesign — that's a reputation rebuild.",
+      "testimonialAuthor": "Tunde Adeyemi, CEO, Soro Markets"
+    },
+    "status": "archived",
+    "featured": false,
+    "pinned": false
+  }
+]
