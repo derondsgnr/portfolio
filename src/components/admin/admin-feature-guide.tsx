@@ -39,8 +39,10 @@ const GUIDE_MAP: Record<string, FeatureGuide> = {
   "/admin/contacts": {
     title: "Contacts",
     canDo: "View contact submissions and monitor inbound interest.",
-    youNeedToDo: "Respond manually or connect an outbound workflow.",
-    limits: "No auto-follow-up sequence by default.",
+    youNeedToDo:
+      "Set NEXT_PUBLIC_BOOKING_URL, CONTACT_EMAIL, and RESEND_API_KEY in env vars, then respond manually or connect outbound workflows.",
+    limits:
+      "Without booking/email env setup, only the message storage flow works; no auto-follow-up sequence is included by default.",
   },
   "/admin/blog": {
     title: "Blog",
