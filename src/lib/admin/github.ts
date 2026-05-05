@@ -45,6 +45,7 @@ export async function getGitHubFile(
 
   const url = `${GITHUB_API}/repos/${owner}/${repo}/contents/${path}`;
   const res = await fetch(url, {
+    cache: "no-store",
     headers: {
       Authorization: `Bearer ${token}`,
       Accept: "application/vnd.github.v3+json",

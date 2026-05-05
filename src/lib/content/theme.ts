@@ -1,5 +1,4 @@
-import { readFile } from "fs/promises";
-import path from "path";
+import { readContentJson } from "./live-source";
 
 export type FontPairId = "anton-instrument" | "inter-playfair" | "space-dm";
 
@@ -49,9 +48,8 @@ const DEFAULT: Theme = {
 
 export async function getTheme(): Promise<Theme> {
   try {
-    const filePath = path.join(process.cwd(), "content", "theme.json");
-    const raw = await readFile(filePath, "utf-8");
-    const parsed = JSON.parse(raw) as Partial<Theme>;
+    const parsed = await readContentJson<Partial<Theme>>("theme.json");
+    if (!parsed) return DEFAULT;
     return {
       fonts: { ...DEFAULT.fonts, ...parsed.fonts },
       colors: { ...DEFAULT.colors, ...parsed.colors },

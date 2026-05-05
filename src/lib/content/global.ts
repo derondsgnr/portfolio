@@ -1,5 +1,4 @@
-import { readFile } from "fs/promises";
-import path from "path";
+import { readContentJson } from "./live-source";
 
 export type SocialLink = {
   label: string;
@@ -26,9 +25,8 @@ const DEFAULT: GlobalConfig = {
 
 export async function getGlobal(): Promise<GlobalConfig> {
   try {
-    const filePath = path.join(process.cwd(), "content", "global.json");
-    const raw = await readFile(filePath, "utf-8");
-    const parsed = JSON.parse(raw) as Partial<GlobalConfig>;
+    const parsed = await readContentJson<Partial<GlobalConfig>>("global.json");
+    if (!parsed) return DEFAULT;
     return {
       socialLinks: Array.isArray(parsed.socialLinks)
         ? parsed.socialLinks.filter((s) => s?.label && s?.url)

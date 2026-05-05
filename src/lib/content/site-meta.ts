@@ -1,5 +1,4 @@
-import { readFile } from "fs/promises";
-import path from "path";
+import { readContentJson } from "./live-source";
 
 export type SiteMeta = {
   title: string;
@@ -27,9 +26,8 @@ const DEFAULT: SiteMeta = {
 
 export async function getSiteMeta(): Promise<SiteMeta> {
   try {
-    const filePath = path.join(process.cwd(), "content", "site-meta.json");
-    const raw = await readFile(filePath, "utf-8");
-    const parsed = JSON.parse(raw) as Partial<SiteMeta>;
+    const parsed = await readContentJson<Partial<SiteMeta>>("site-meta.json");
+    if (!parsed) return DEFAULT;
     return { ...DEFAULT, ...parsed };
   } catch {
     return DEFAULT;

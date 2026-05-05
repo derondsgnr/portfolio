@@ -1,7 +1,6 @@
-import { readFile } from "fs/promises";
-import path from "path";
 import type { CaseStudy } from "@/types/case-study";
 import { ALL_CASE_STUDIES as STATIC_CASE_STUDIES } from "@/data/case-studies";
+import { readContentJson } from "./live-source";
 
 function normalizeCaseStudy(study: CaseStudy): CaseStudy {
   return {
@@ -31,10 +30,8 @@ export async function getCaseStudies(options?: {
 
   let base: CaseStudy[] = STATIC_CASE_STUDIES.map(normalizeCaseStudy);
   try {
-    const filePath = path.join(process.cwd(), "content", "case-studies.json");
-    const raw = await readFile(filePath, "utf-8");
-    const parsed = JSON.parse(raw) as CaseStudy[];
-    if (Array.isArray(parsed) && parsed.length > 0) {
+    const parsed = await readContentJson<CaseStudy[]>("case-studies.json");
+    if (Array.isArray(parsed)) {
       base = parsed.map(normalizeCaseStudy);
     }
   } catch {

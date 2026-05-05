@@ -1,7 +1,6 @@
-import { readFile } from "fs/promises";
-import path from "path";
 import type { TestimonialItem } from "./defaults";
 import { DEFAULT_TESTIMONIALS } from "./defaults";
+import { readContentJson } from "./live-source";
 
 export type { TestimonialItem };
 
@@ -38,9 +37,7 @@ export async function getTestimonials(options?: {
   const includeArchived = options?.includeArchived ?? false;
 
   try {
-    const filePath = path.join(process.cwd(), "content", "testimonials.json");
-    const raw = await readFile(filePath, "utf-8");
-    const parsed = JSON.parse(raw) as unknown;
+    const parsed = await readContentJson<unknown>("testimonials.json");
     const base = Array.isArray(parsed) ? parsed : DEFAULT_TESTIMONIALS;
     const normalized = base.map((p, i) => normalizeTestimonial(p as TestimonialItem, i + 1));
     const filtered = normalized.filter((item) => {

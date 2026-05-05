@@ -1,8 +1,7 @@
-import { readFile } from "fs/promises";
-import path from "path";
 import type { BlogPost, BlogSeries } from "@/types/blog";
 import { BLOG_POSTS } from "@/lib/data/blog-data";
 import { BLOG_SERIES } from "@/lib/data/blog-series-data";
+import { readContentJson } from "./live-source";
 
 export type BlogPostStatus = "published" | "draft" | "archived";
 
@@ -45,10 +44,8 @@ export async function getBlogPosts(options?: {
 
   let basePosts: BlogPost[] = BLOG_POSTS.map(normalizePost);
   try {
-    const filePath = path.join(process.cwd(), "content", "blog.json");
-    const raw = await readFile(filePath, "utf-8");
-    const parsed = JSON.parse(raw) as BlogPost[];
-    if (Array.isArray(parsed) && parsed.length > 0) {
+    const parsed = await readContentJson<BlogPost[]>("blog.json");
+    if (Array.isArray(parsed)) {
       basePosts = parsed.map(normalizePost);
     }
   } catch {
@@ -96,10 +93,8 @@ export async function getRelatedBlogPosts(slug: string, count = 3): Promise<Blog
 export async function getBlogSeries(includeArchived = false): Promise<BlogSeries[]> {
   let seriesList: BlogSeries[] = BLOG_SERIES.map(normalizeSeries);
   try {
-    const filePath = path.join(process.cwd(), "content", "blog-series.json");
-    const raw = await readFile(filePath, "utf-8");
-    const parsed = JSON.parse(raw) as BlogSeries[];
-    if (Array.isArray(parsed) && parsed.length > 0) {
+    const parsed = await readContentJson<BlogSeries[]>("blog-series.json");
+    if (Array.isArray(parsed)) {
       seriesList = parsed.map(normalizeSeries);
     }
   } catch {

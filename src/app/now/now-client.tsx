@@ -403,14 +403,27 @@ export default function NowClient({ initial, hasAdminPin = false }: { initial: N
   const [showPin, setShowPin] = useState(false);
   const [adminOpen, setAdminOpen] = useState(false);
   const [config, setConfig] = useState<NowConfig>(initial);
+  const [savingNow, setSavingNow] = useState(false);
+  const [saveNowError, setSaveNowError] = useState<string | null>(null);
   const statusCfg = STATUS_CONFIG[config.status];
   const heroRef = useRef<HTMLDivElement>(null);
   const heroInView = useInView(heroRef, { once: true, amount: 0.3 });
 
-  const persist = useCallback((updated: NowConfig) => {
-    setConfig(updated);
-    saveNow(updated);
-  }, []);
+  const persist = useCallback(
+    async (updated: NowConfig) => {
+      const previous = config;
+      setConfig(updated);
+      setSavingNow(true);
+      setSaveNowError(null);
+      const result = await saveNow(updated);
+      setSavingNow(false);
+      if (!result.ok) {
+        setConfig(previous);
+        setSaveNowError(result.error ?? "Couldn't sync updates right now.");
+      }
+    },
+    [config],
+  );
 
   const handlePinSuccess = () => {
     setShowPin(false);
@@ -487,6 +500,16 @@ export default function NowClient({ initial, hasAdminPin = false }: { initial: N
             </span>
           ))}
         </motion.div>
+        {savingNow ? (
+          <p className="mt-3 text-[10px] tracking-[0.12em] text-[#E2B93B]/70" style={{ fontFamily: "monospace" }}>
+            Saving updates...
+          </p>
+        ) : null}
+        {saveNowError ? (
+          <p className="mt-3 text-[10px] tracking-[0.12em] text-red-400/80" style={{ fontFamily: "monospace" }}>
+            {saveNowError}
+          </p>
+        ) : null}
       </div>
 
       <div className="h-px bg-gradient-to-r from-transparent via-[#1a1a1a] to-transparent mx-6 md:mx-14 lg:mx-20" />

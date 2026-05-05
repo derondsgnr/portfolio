@@ -1,5 +1,4 @@
-import { readFile } from "fs/promises";
-import path from "path";
+import { readContentJson } from "./live-source";
 
 /** Custom analytics/tracking integration (Plausible, Fathom, Hotjar, etc.) */
 export type ExtraIntegration = {
@@ -24,9 +23,8 @@ const DEFAULT: IntegrationsConfig = {
 
 export async function getIntegrations(): Promise<IntegrationsConfig> {
   try {
-    const filePath = path.join(process.cwd(), "content", "integrations.json");
-    const raw = await readFile(filePath, "utf-8");
-    const parsed = JSON.parse(raw) as Partial<IntegrationsConfig>;
+    const parsed = await readContentJson<Partial<IntegrationsConfig>>("integrations.json");
+    if (!parsed) throw new Error("missing integrations");
     const merged: IntegrationsConfig = {
       googleAnalytics: { ...DEFAULT.googleAnalytics, ...parsed.googleAnalytics },
       googleTagManager: { ...DEFAULT.googleTagManager, ...parsed.googleTagManager },

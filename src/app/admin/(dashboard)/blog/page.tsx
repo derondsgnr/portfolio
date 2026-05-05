@@ -9,9 +9,9 @@
  *   Currently uses static BLOG_POSTS as initial data.
  */
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { saveBlogPost, saveBlogSeries, saveBlogCategories, loadContent } from "@/app/admin/actions";
+import { saveBlogSeries, saveBlogCategories, loadContent, saveContent } from "@/app/admin/actions";
 import { useAdmin } from "@/components/admin/admin-context";
 import { adminCx, PageHeader, FormField } from "@/components/admin/admin-primitives";
 import { SlideEditor } from "@/components/admin/slide-editor";
@@ -122,37 +122,58 @@ function PostListItem({
   post,
   isActive,
   onClick,
+  onToggleArchive,
+  onDelete,
 }: {
   post: ManagedPost;
   isActive: boolean;
   onClick: () => void;
+  onToggleArchive: () => void;
+  onDelete: () => void;
 }) {
   return (
-    <button
-      onClick={onClick}
-      className={`w-full text-left flex items-center gap-3 px-4 py-3 border-b border-white/[0.05] transition-all ${
+    <div
+      className={`w-full flex items-center gap-3 px-4 py-3 border-b border-white/[0.05] transition-all ${
         isActive ? "bg-[#E2B93B]/[0.06] border-l-2 border-l-[#E2B93B]" : "hover:bg-white/[0.02]"
       }`}
     >
-      {/* Cover */}
-      {post.meta.cover ? (
-        <div className="w-10 h-8 shrink-0 bg-cover bg-center border border-white/[0.06]" style={{ backgroundImage: `url(${post.meta.cover})` }} />
-      ) : (
-        <div className="w-10 h-8 shrink-0 bg-white/[0.03] border border-white/[0.05] flex items-center justify-center">
-          <span className="text-[7px] text-white/15 font-['Instrument_Sans']">NO IMG</span>
+      <button onClick={onClick} className="flex items-center gap-3 min-w-0 flex-1 text-left">
+        {/* Cover */}
+        {post.meta.cover ? (
+          <div className="w-10 h-8 shrink-0 bg-cover bg-center border border-white/[0.06]" style={{ backgroundImage: `url(${post.meta.cover})` }} />
+        ) : (
+          <div className="w-10 h-8 shrink-0 bg-white/[0.03] border border-white/[0.05] flex items-center justify-center">
+            <span className="text-[7px] text-white/15 font-['Instrument_Sans']">NO IMG</span>
+          </div>
+        )}
+        <div className="flex-1 min-w-0">
+          <p className="text-[12px] font-['Instrument_Sans'] text-white/75 truncate">{post.meta.title}</p>
+          <p className="text-[9px] text-white/25 font-['Instrument_Sans']">
+            {post.meta.category} · {post.slides.length} slides
+            {post.meta.pinned && <span className="ml-1.5 text-[#E2B93B]/60">PINNED</span>}
+            {post.status === "draft" && <span className="ml-1.5 text-[#E2B93B]/40">DRAFT</span>}
+            {post.status === "archived" && <span className="ml-1.5 text-white/20">ARCHIVED</span>}
+          </p>
         </div>
-      )}
-      <div className="flex-1 min-w-0">
-        <p className="text-[12px] font-['Instrument_Sans'] text-white/75 truncate">{post.meta.title}</p>
-        <p className="text-[9px] text-white/25 font-['Instrument_Sans']">
-          {post.meta.category} · {post.slides.length} slides
-          {post.meta.pinned && <span className="ml-1.5 text-[#E2B93B]/60">PINNED</span>}
-          {post.status === "draft" && <span className="ml-1.5 text-[#E2B93B]/40">DRAFT</span>}
-          {post.status === "archived" && <span className="ml-1.5 text-white/20">ARCHIVED</span>}
-        </p>
+        <ChevronRight size={12} className={`shrink-0 transition-colors ${isActive ? "text-[#E2B93B]/60" : "text-white/15"}`} />
+      </button>
+      <div className="flex items-center gap-1.5 shrink-0">
+        <button
+          type="button"
+          onClick={onToggleArchive}
+          className="px-2 py-1 border border-white/[0.08] text-[9px] font-['Instrument_Sans'] tracking-[0.12em] uppercase text-white/35 hover:text-white/70 hover:border-white/20 transition-colors"
+        >
+          {post.status === "archived" ? "Unarchive" : "Archive"}
+        </button>
+        <button
+          type="button"
+          onClick={onDelete}
+          className="px-2 py-1 border border-red-400/20 text-[9px] font-['Instrument_Sans'] tracking-[0.12em] uppercase text-red-300/45 hover:text-red-300/80 hover:border-red-300/45 transition-colors"
+        >
+          Delete
+        </button>
       </div>
-      <ChevronRight size={12} className={`shrink-0 transition-colors ${isActive ? "text-[#E2B93B]/60" : "text-white/15"}`} />
-    </button>
+    </div>
   );
 }
 
@@ -736,11 +757,18 @@ function AdminBlogPage() {
   const [lastSaved, setLastSaved] = useState<string | null>(null);
   const [seriesError, setSeriesError] = useState<string | null>(null);
   const [categoryError, setCategoryError] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState<"all" | ManagedPost["status"]>("all");
+  const [categoryFilter, setCategoryFilter] = useState<string>("all");
+  const [postsPage, setPostsPage] = useState(1);
   const latestCategorySave = useRef(0);
   const latestSeriesSave = useRef(0);
+  const skipHydrateOnceRef = useRef(false);
+  const POSTS_PAGE_SIZE = 20;
 
   useEffect(() => {
     if (pendingRevert?.section === "blog") {
+      skipHydrateOnceRef.current = true;
       if (pendingRevert.target === "series" && isManagedSeriesArray(pendingRevert.snapshot)) {
         setSeriesList(pendingRevert.snapshot);
         clearPendingRevert();
@@ -761,6 +789,10 @@ function AdminBlogPage() {
   useEffect(() => {
     let mounted = true;
     async function hydrateFromSavedContent() {
+      if (skipHydrateOnceRef.current) {
+        skipHydrateOnceRef.current = false;
+        return;
+      }
       const [postsRaw, seriesRaw, categoriesRaw] = await Promise.all([
         loadContent("content/blog.json"),
         loadContent("content/blog-series.json"),
@@ -789,20 +821,74 @@ function AdminBlogPage() {
   }, []);
 
   const activePost = posts.find((p) => p.slug === activeSlug) ?? null;
+  const filteredPosts = useMemo(
+    () =>
+      posts.filter((post) => {
+        if (statusFilter !== "all" && post.status !== statusFilter) return false;
+        if (categoryFilter !== "all" && post.meta.category !== categoryFilter) return false;
+        if (!searchQuery.trim()) return true;
+        const query = searchQuery.toLowerCase();
+        return (
+          post.meta.title.toLowerCase().includes(query) ||
+          post.meta.summary.toLowerCase().includes(query) ||
+          post.meta.tags.some((tag) => tag.toLowerCase().includes(query))
+        );
+      }),
+    [posts, statusFilter, categoryFilter, searchQuery],
+  );
+  const postsPageCount = Math.max(1, Math.ceil(filteredPosts.length / POSTS_PAGE_SIZE));
+  const paginatedPosts = filteredPosts.slice(
+    (postsPage - 1) * POSTS_PAGE_SIZE,
+    postsPage * POSTS_PAGE_SIZE,
+  );
+
+  useEffect(() => {
+    setPostsPage(1);
+  }, [searchQuery, statusFilter, categoryFilter]);
+
+  useEffect(() => {
+    if (postsPage > postsPageCount) {
+      setPostsPage(postsPageCount);
+    }
+  }, [postsPage, postsPageCount]);
 
   async function savePost(post: ManagedPost) {
     setSavingSlug(post.slug);
-    const result = await saveBlogPost(post.slug, post, `Updated ${post.meta.title}`);
-    if (result.ok) {
-      const updated = posts.map((p) => (p.slug === post.slug ? post : p));
-      const exists = posts.some((p) => p.slug === post.slug);
-      const final = exists ? updated : [...posts, post];
-      setPosts(final);
-      pushHistory("blog", "Blog", `Saved: ${post.meta.title}`, final, "posts");
-      setLastSaved(new Date().toLocaleTimeString());
-      setActiveSlug(post.slug);
-    }
+    const updated = posts.map((p) => (p.slug === post.slug ? post : p));
+    const exists = posts.some((p) => p.slug === post.slug);
+    const final = exists ? updated : [...posts, post];
+    const ok = await persistPosts(final, `Saved: ${post.meta.title}`);
+    if (ok) setActiveSlug(post.slug);
     setSavingSlug(null);
+  }
+
+  async function persistPosts(nextPosts: ManagedPost[], message: string) {
+    const result = await saveContent("content/blog.json", JSON.stringify(nextPosts, null, 2), message);
+    if (!result.ok) return false;
+    setPosts(nextPosts);
+    pushHistory("blog", "Blog", message, nextPosts, "posts");
+    setLastSaved(new Date().toLocaleTimeString());
+    return true;
+  }
+
+  async function toggleArchiveFromList(post: ManagedPost) {
+    const nextStatus: ManagedPost["status"] = post.status === "archived" ? "published" : "archived";
+    const nextPosts = posts.map((item) =>
+      item.slug === post.slug ? { ...item, status: nextStatus } : item
+    );
+    await persistPosts(
+      nextPosts,
+      `${nextStatus === "archived" ? "Archived" : "Unarchived"}: ${post.meta.title}`
+    );
+  }
+
+  async function deletePostFromList(post: ManagedPost) {
+    if (!confirm(`Delete "${post.meta.title}" permanently?`)) return;
+    const nextPosts = posts.filter((item) => item.slug !== post.slug);
+    const ok = await persistPosts(nextPosts, `Deleted: ${post.meta.title}`);
+    if (ok && activeSlug === post.slug) {
+      setActiveSlug(null);
+    }
   }
 
   async function handleSeriesUpdate(updated: ManagedSeries[]) {
@@ -879,7 +965,7 @@ function AdminBlogPage() {
             <>
               <div className="flex items-center justify-between mb-5">
                 <span className="text-[10px] tracking-[0.15em] text-white/25 font-['Instrument_Sans'] uppercase">
-                  {posts.length} post{posts.length !== 1 ? "s" : ""}
+                  {filteredPosts.length} of {posts.length} post{posts.length !== 1 ? "s" : ""}
                 </span>
                 <button
                   onClick={newPost}
@@ -888,16 +974,73 @@ function AdminBlogPage() {
                   <Plus size={13} /> NEW POST
                 </button>
               </div>
+              <div className="mb-4 grid grid-cols-1 md:grid-cols-3 gap-2 max-w-2xl">
+                <input
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className={adminCx.input}
+                  placeholder="Search title, summary, or tag..."
+                />
+                <select
+                  className={adminCx.select}
+                  value={statusFilter}
+                  onChange={(e) => setStatusFilter(e.target.value as "all" | ManagedPost["status"])}
+                >
+                  <option value="all" style={{ background: "#0A0A0A" }}>All statuses</option>
+                  <option value="published" style={{ background: "#0A0A0A" }}>Published</option>
+                  <option value="draft" style={{ background: "#0A0A0A" }}>Draft</option>
+                  <option value="archived" style={{ background: "#0A0A0A" }}>Archived</option>
+                </select>
+                <select
+                  className={adminCx.select}
+                  value={categoryFilter}
+                  onChange={(e) => setCategoryFilter(e.target.value)}
+                >
+                  <option value="all" style={{ background: "#0A0A0A" }}>All categories</option>
+                  {categoryList.map((category) => (
+                    <option key={category} value={category} style={{ background: "#0A0A0A" }}>
+                      {category}
+                    </option>
+                  ))}
+                </select>
+              </div>
               <div className="max-w-2xl border border-white/[0.07] overflow-hidden">
-                {posts.map((post) => (
+                {paginatedPosts.map((post) => (
                   <PostListItem
                     key={post.slug}
                     post={post}
                     isActive={false}
                     onClick={() => setActiveSlug(post.slug)}
+                    onToggleArchive={() => toggleArchiveFromList(post)}
+                    onDelete={() => deletePostFromList(post)}
                   />
                 ))}
               </div>
+              {filteredPosts.length > POSTS_PAGE_SIZE ? (
+                <div className="max-w-2xl mt-3 flex items-center justify-between">
+                  <p className="text-[10px] text-white/30 font-['Instrument_Sans']">
+                    Page {postsPage} of {postsPageCount}
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      disabled={postsPage === 1}
+                      onClick={() => setPostsPage((page) => Math.max(1, page - 1))}
+                      className="px-3 py-1.5 border border-white/[0.08] text-[10px] font-['Instrument_Sans'] uppercase tracking-[0.12em] text-white/40 hover:text-white/70 hover:border-white/20 disabled:opacity-30"
+                    >
+                      Prev
+                    </button>
+                    <button
+                      type="button"
+                      disabled={postsPage === postsPageCount}
+                      onClick={() => setPostsPage((page) => Math.min(postsPageCount, page + 1))}
+                      className="px-3 py-1.5 border border-white/[0.08] text-[10px] font-['Instrument_Sans'] uppercase tracking-[0.12em] text-white/40 hover:text-white/70 hover:border-white/20 disabled:opacity-30"
+                    >
+                      Next
+                    </button>
+                  </div>
+                </div>
+              ) : null}
             </>
           )}
 

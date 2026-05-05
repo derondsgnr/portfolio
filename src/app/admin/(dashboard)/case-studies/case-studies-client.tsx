@@ -20,34 +20,63 @@ const TEMPLATE_DESCS: Record<string, string> = {
   "teardown":      "Analysis + redesign proposal, 10–25 slides",
 };
 
-function StudyListItem({ study, isActive, onClick }: { study: CaseStudy; isActive: boolean; onClick: () => void }) {
+function StudyListItem({
+  study,
+  isActive,
+  onClick,
+  onToggleArchive,
+  onDelete,
+}: {
+  study: CaseStudy;
+  isActive: boolean;
+  onClick: () => void;
+  onToggleArchive: () => void;
+  onDelete: () => void;
+}) {
   const slideCount = study.acts.reduce((s, a) => s + a.slides.length, 0);
   return (
-    <button
-      onClick={onClick}
-      className={`w-full text-left flex items-center gap-3 px-4 py-3 border-b border-white/[0.05] transition-all ${
+    <div
+      className={`w-full flex items-center gap-3 px-4 py-3 border-b border-white/[0.05] transition-all ${
         isActive ? "bg-[#E2B93B]/[0.06] border-l-2 border-l-[#E2B93B]" : "hover:bg-white/[0.02]"
       }`}
     >
-      {study.meta.cover ? (
-        <div className="w-10 h-8 shrink-0 bg-cover bg-center border border-white/[0.06]" style={{ backgroundImage: `url(${study.meta.cover})` }} />
-      ) : (
-        <div className="w-10 h-8 shrink-0 bg-white/[0.03] border border-white/[0.05] flex items-center justify-center">
-          <Layers size={12} className="text-white/15" />
+      <button onClick={onClick} className="flex items-center gap-3 min-w-0 flex-1 text-left">
+        {study.meta.cover ? (
+          <div className="w-10 h-8 shrink-0 bg-cover bg-center border border-white/[0.06]" style={{ backgroundImage: `url(${study.meta.cover})` }} />
+        ) : (
+          <div className="w-10 h-8 shrink-0 bg-white/[0.03] border border-white/[0.05] flex items-center justify-center">
+            <Layers size={12} className="text-white/15" />
+          </div>
+        )}
+        <div className="flex-1 min-w-0">
+          <p className="text-[12px] font-['Instrument_Sans'] text-white/75 truncate">{study.meta.title}</p>
+          <p className="text-[9px] text-white/25 font-['Instrument_Sans']">
+            {study.meta.year} · {study.acts.length} acts · {slideCount} slides
+            {study.pinned && <span className="ml-1.5 text-[#E2B93B]/60">PINNED</span>}
+            {study.featured && <span className="ml-1.5 text-[#E2B93B]/45">FEATURED</span>}
+            {study.status === "draft" && <span className="ml-1.5 text-white/30">DRAFT</span>}
+            {study.status === "archived" && <span className="ml-1.5 text-white/20">ARCHIVED</span>}
+          </p>
         </div>
-      )}
-      <div className="flex-1 min-w-0">
-        <p className="text-[12px] font-['Instrument_Sans'] text-white/75 truncate">{study.meta.title}</p>
-        <p className="text-[9px] text-white/25 font-['Instrument_Sans']">
-          {study.meta.year} · {study.acts.length} acts · {slideCount} slides
-          {study.pinned && <span className="ml-1.5 text-[#E2B93B]/60">PINNED</span>}
-          {study.featured && <span className="ml-1.5 text-[#E2B93B]/45">FEATURED</span>}
-          {study.status === "draft" && <span className="ml-1.5 text-white/30">DRAFT</span>}
-          {study.status === "archived" && <span className="ml-1.5 text-white/20">ARCHIVED</span>}
-        </p>
+        <ChevronRight size={12} className={`shrink-0 transition-colors ${isActive ? "text-[#E2B93B]/60" : "text-white/15"}`} />
+      </button>
+      <div className="flex items-center gap-1.5 shrink-0">
+        <button
+          type="button"
+          onClick={onToggleArchive}
+          className="px-2 py-1 border border-white/[0.08] text-[9px] font-['Instrument_Sans'] tracking-[0.12em] uppercase text-white/35 hover:text-white/70 hover:border-white/20 transition-colors"
+        >
+          {study.status === "archived" ? "Unarchive" : "Archive"}
+        </button>
+        <button
+          type="button"
+          onClick={onDelete}
+          className="px-2 py-1 border border-red-400/20 text-[9px] font-['Instrument_Sans'] tracking-[0.12em] uppercase text-red-300/45 hover:text-red-300/80 hover:border-red-300/45 transition-colors"
+        >
+          Delete
+        </button>
       </div>
-      <ChevronRight size={12} className={`shrink-0 transition-colors ${isActive ? "text-[#E2B93B]/60" : "text-white/15"}`} />
-    </button>
+    </div>
   );
 }
 
@@ -337,6 +366,8 @@ export function CaseStudiesClient({ initialStudies }: { initialStudies: CaseStud
   const [activeSlug, setActiveSlug] = useState<string | null>(null);
   const [savingSlug, setSavingSlug] = useState<string | null>(null);
   const [lastSaved, setLastSaved] = useState<string | null>(null);
+  const [listPage, setListPage] = useState(1);
+  const LIST_PAGE_SIZE = 20;
 
   useEffect(() => {
     setStudies(initialStudies);
@@ -350,6 +381,14 @@ export function CaseStudiesClient({ initialStudies }: { initialStudies: CaseStud
   }, [pendingRevert, clearPendingRevert]);
 
   const activeStudy = studies.find((s) => s.slug === activeSlug) ?? null;
+  const pageCount = Math.max(1, Math.ceil(studies.length / LIST_PAGE_SIZE));
+  const paginatedStudies = studies.slice((listPage - 1) * LIST_PAGE_SIZE, listPage * LIST_PAGE_SIZE);
+
+  useEffect(() => {
+    if (listPage > pageCount) {
+      setListPage(pageCount);
+    }
+  }, [listPage, pageCount]);
 
   async function save(study: CaseStudy) {
     setSavingSlug(study.slug);
@@ -361,6 +400,29 @@ export function CaseStudiesClient({ initialStudies }: { initialStudies: CaseStud
       setLastSaved(new Date().toLocaleTimeString());
     }
     setSavingSlug(null);
+  }
+
+  async function updateAndPersist(nextStudies: CaseStudy[], label: string) {
+    const result = await saveCaseStudies(nextStudies, label);
+    if (!result.ok) return;
+    setStudies(nextStudies);
+    pushHistory("case-studies", "Case Studies", label, nextStudies);
+    setLastSaved(new Date().toLocaleTimeString());
+  }
+
+  async function toggleArchive(study: CaseStudy) {
+    const nextStatus: CaseStudy["status"] =
+      (study.status ?? "published") === "archived" ? "published" : "archived";
+    const nextStudies = studies.map((item) =>
+      item.slug === study.slug ? { ...item, status: nextStatus } : item
+    );
+    await updateAndPersist(nextStudies, `${nextStatus === "archived" ? "Archived" : "Unarchived"}: ${study.meta.title}`);
+  }
+
+  async function removeStudy(study: CaseStudy) {
+    if (!confirm(`Delete "${study.meta.title}" permanently?`)) return;
+    const nextStudies = studies.filter((item) => item.slug !== study.slug);
+    await updateAndPersist(nextStudies, `Deleted: ${study.meta.title}`);
   }
 
   function newStudy() {
@@ -396,10 +458,42 @@ export function CaseStudiesClient({ initialStudies }: { initialStudies: CaseStud
             </button>
           </div>
           <div className="max-w-2xl border border-white/[0.07] overflow-hidden">
-            {studies.map((study) => (
-              <StudyListItem key={study.slug} study={study} isActive={false} onClick={() => setActiveSlug(study.slug)} />
+            {paginatedStudies.map((study) => (
+              <StudyListItem
+                key={study.slug}
+                study={study}
+                isActive={false}
+                onClick={() => setActiveSlug(study.slug)}
+                onToggleArchive={() => toggleArchive(study)}
+                onDelete={() => removeStudy(study)}
+              />
             ))}
           </div>
+          {studies.length > LIST_PAGE_SIZE ? (
+            <div className="max-w-2xl mt-3 flex items-center justify-between">
+              <p className="text-[10px] text-white/30 font-['Instrument_Sans']">
+                Page {listPage} of {pageCount}
+              </p>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  disabled={listPage === 1}
+                  onClick={() => setListPage((page) => Math.max(1, page - 1))}
+                  className="px-3 py-1.5 border border-white/[0.08] text-[10px] font-['Instrument_Sans'] uppercase tracking-[0.12em] text-white/40 hover:text-white/70 hover:border-white/20 disabled:opacity-30"
+                >
+                  Prev
+                </button>
+                <button
+                  type="button"
+                  disabled={listPage === pageCount}
+                  onClick={() => setListPage((page) => Math.min(pageCount, page + 1))}
+                  className="px-3 py-1.5 border border-white/[0.08] text-[10px] font-['Instrument_Sans'] uppercase tracking-[0.12em] text-white/40 hover:text-white/70 hover:border-white/20 disabled:opacity-30"
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          ) : null}
         </div>
       ) : (
         <div className="-mx-6 lg:-mx-8 -mt-6 lg:-mt-8 -mb-6 lg:-mb-8 h-[calc(100dvh-3.5rem)] lg:h-[100dvh] flex flex-col">

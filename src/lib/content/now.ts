@@ -1,5 +1,4 @@
-import { readFile } from "fs/promises";
-import path from "path";
+import { readContentJson } from "./live-source";
 import {
   NOW_STATUS,
   NOW_STREAK,
@@ -34,9 +33,8 @@ const DEFAULT: NowConfig = {
 
 export async function getNow(): Promise<NowConfig> {
   try {
-    const filePath = path.join(process.cwd(), "content", "now.json");
-    const raw = await readFile(filePath, "utf-8");
-    const parsed = JSON.parse(raw) as Partial<NowConfig>;
+    const parsed = await readContentJson<Partial<NowConfig>>("now.json");
+    if (!parsed) return DEFAULT;
     return { ...DEFAULT, ...parsed };
   } catch {
     return DEFAULT;
