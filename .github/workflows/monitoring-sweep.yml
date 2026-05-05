@@ -10,26 +10,38 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Validate required configuration
+      - name: Check monitoring configuration
+        id: config
         env:
           MONITORING_SITE_URL: ${{ vars.MONITORING_SITE_URL }}
-          MONITORING_CRON_SECRET: ${{ secrets.MONITORING_CRON_SECRET }}
+          MONITORING_CRON_SECRET: ${{ secrets.MONITORING_CRON_SECRET || secrets.CRON_SECRET }}
         run: |
+          configured=true
+
           if [ -z "$MONITORING_SITE_URL" ]; then
-            echo "Missing repository variable MONITORING_SITE_URL"
-            exit 1
+            echo "::warning::Missing repository variable MONITORING_SITE_URL"
+            configured=false
           fi
 
           if [ -z "$MONITORING_CRON_SECRET" ]; then
-            echo "Missing repository secret MONITORING_CRON_SECRET"
-            exit 1
+            echo "::warning::Missing repository secret. Add MONITORING_CRON_SECRET (preferred) or CRON_SECRET."
+            configured=false
           fi
 
+          echo "configured=$configured" >> "$GITHUB_OUTPUT"
+
+      - name: Skip sweep when configuration is missing
+        if: steps.config.outputs.configured != 'true'
+        run: |
+          echo "Monitoring sweep skipped because required GitHub Actions configuration is missing."
+
       - name: Trigger monitoring sweep
+        if: steps.config.outputs.configured == 'true'
         env:
           MONITORING_SITE_URL: ${{ vars.MONITORING_SITE_URL }}
-          MONITORING_CRON_SECRET: ${{ secrets.MONITORING_CRON_SECRET }}
+          MONITORING_CRON_SECRET: ${{ secrets.MONITORING_CRON_SECRET || secrets.CRON_SECRET }}
         run: |
           curl --fail --show-error --silent \
+            --retry 2 --retry-delay 5 --retry-all-errors \
             -H "Authorization: Bearer $MONITORING_CRON_SECRET" \
             "${MONITORING_SITE_URL%/}/api/monitor/run"

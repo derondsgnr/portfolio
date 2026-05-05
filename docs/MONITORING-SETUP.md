@@ -100,12 +100,19 @@ MONITORING_SITE_URL=https://your-domain.com
 MONITORING_CRON_SECRET=replace-with-the-same-secret-you-set-in-Vercel
 ```
 
+Fallback option (if you already use Vercel's default naming):
+
+```text
+CRON_SECRET=replace-with-the-same-secret-you-set-in-Vercel
+```
+
 The workflow sends:
 
 - `Authorization: Bearer MONITORING_CRON_SECRET`
 - request to `${MONITORING_SITE_URL}/api/monitor/run`
 
 So the secret value in GitHub Actions must match the secret value you set in Vercel.
+The workflow accepts `MONITORING_CRON_SECRET` first, then falls back to `CRON_SECRET`.
 
 ## 5. Workflow behavior
 
