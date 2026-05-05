@@ -102,6 +102,13 @@ const GUIDE_MAP: Record<string, FeatureGuide> = {
     youNeedToDo: "Connect your actual workflow engine/webhooks.",
     limits: "UI alone does not run automations without backend flows.",
   },
+  "/admin/media": {
+    title: "Media + Cloudinary Workflow",
+    canDo: "Update image/video URLs for hero assets, craft items, and explorations.",
+    youNeedToDo:
+      "Upload files to Cloudinary, copy each Secure URL, paste into matching fields in Media, then save each edited section.",
+    limits: "This panel stores URLs only; it does not upload files to Cloudinary for you.",
+  },
   "/admin/presentation-studio": {
     title: "Presentation Studio",
     canDo: "Curate selected references into presentation-ready inspiration sets.",
