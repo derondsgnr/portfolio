@@ -13,6 +13,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
 import { useAdmin } from "./admin-context";
+import { canAccessAdminPath } from "@/lib/admin/permissions";
 import {
   LayoutDashboard, Type, Layers, Navigation, Globe,
   BookOpen, Zap, Palette, Image, Volume2, Search,
@@ -100,6 +101,7 @@ type AttentionCounts = {
 };
 
 const EMPTY_COUNTS: AttentionCounts = { contacts: 0, commentsPending: 0 };
+type AdminRole = "owner" | "content_manager";
 
 function formatCount(value: number): string {
   if (value > 99) return "99+";
@@ -185,6 +187,7 @@ function SidebarContent({ onClose }: { onClose?: () => void }) {
   const pathname = usePathname();
   const { history } = useAdmin();
   const [counts, setCounts] = useState<AttentionCounts>(EMPTY_COUNTS);
+  const [role, setRole] = useState<AdminRole>("owner");
 
   const currentPath = pathname ?? "";
 
@@ -215,11 +218,37 @@ function SidebarContent({ onClose }: { onClose?: () => void }) {
     };
   }, []);
 
+  useEffect(() => {
+    let mounted = true;
+    async function loadRole() {
+      try {
+        const res = await fetch("/api/admin/session", { method: "GET", cache: "no-store" });
+        if (!res.ok) return;
+        const data = (await res.json()) as { ok?: boolean; role?: AdminRole };
+        if (!mounted || !data?.ok || !data.role) return;
+        setRole(data.role);
+      } catch {
+        // Keep owner fallback if role lookup fails.
+      }
+    }
+    loadRole();
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
   function getAttentionCount(path: string): number | undefined {
     if (path === "/admin/contacts") return counts.contacts;
     if (path === "/admin/comments") return counts.commentsPending;
     return undefined;
   }
+
+  const visibleGroups = NAV_GROUPS
+    .map((group) => ({
+      ...group,
+      items: group.items.filter((item) => canAccessAdminPath(role, item.path)),
+    }))
+    .filter((group) => group.items.length > 0);
 
   return (
     <div className="flex flex-col h-full">
@@ -251,7 +280,7 @@ function SidebarContent({ onClose }: { onClose?: () => void }) {
 
       {/* Navigation */}
       <nav className="flex-1 overflow-y-auto py-4 px-3">
-        {NAV_GROUPS.map((group) => (
+        {visibleGroups.map((group) => (
           <div key={group.id} className="mb-5">
             {/* Group label */}
             <p className="px-3 mb-1.5 text-[8px] tracking-[0.35em] text-[#E2B93B]/40 uppercase font-['Instrument_Sans']">

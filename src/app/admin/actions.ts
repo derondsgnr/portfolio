@@ -1,27 +1,77 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { cookies } from "next/headers";
-import { createAdminSession, getAdminCookieName, getAdminCookieValue, verifyAdminSession } from "@/lib/admin/auth";
+import { cookies, headers } from "next/headers";
+import { createAdminSession, getAdminCookieName, getAdminCookieValue, getAdminSession } from "@/lib/admin/auth";
 import { updateGitHubFile, getGitHubFile } from "@/lib/admin/github";
 import { DEFAULT_GROWTH_STATE, type GrowthState } from "@/components/admin/growth-os";
+import { canWriteContentPath, hasAdminCapability, type AdminCapability } from "@/lib/admin/permissions";
+import {
+  clearLoginFailures,
+  consumeRateLimit,
+  getClientIp,
+  getLoginLock,
+  isIpAllowed,
+  isSameOriginMutation,
+  registerLoginFailure,
+} from "@/lib/admin/security";
 
-async function requireAdmin() {
-  const ok = await verifyAdminSession();
-  if (!ok) throw new Error("Unauthorized");
+async function requireAdmin(options?: { mutation?: boolean; capability?: AdminCapability }) {
+  const hdrs = await headers();
+  const ip = getClientIp(hdrs);
+
+  if (!isIpAllowed(ip)) throw new Error("Forbidden");
+
+  const session = await getAdminSession();
+  if (!session.authenticated || !session.role) throw new Error("Unauthorized");
+
+  if (options?.capability && !hasAdminCapability(session.role, options.capability)) {
+    throw new Error("Forbidden");
+  }
+
+  if (options?.mutation) {
+    if (!isSameOriginMutation(hdrs)) throw new Error("Invalid origin");
+    const writeLimiter = consumeRateLimit("admin-mutation", ip, 120, 60_000);
+    if (!writeLimiter.ok) throw new Error("Too many requests");
+  }
 }
 
 export async function login(formData: FormData) {
+  const hdrs = await headers();
+  const ip = getClientIp(hdrs);
+
+  if (!isIpAllowed(ip)) {
+    return { error: "Access denied from this network." };
+  }
+
+  const lock = getLoginLock(ip);
+  if (lock.locked) {
+    return { error: "Too many failed attempts. Try again in a few minutes." };
+  }
+
+  const loginRate = consumeRateLimit("admin-login", ip, 20, 10 * 60_000);
+  if (!loginRate.ok) {
+    return { error: "Too many login attempts. Please try again shortly." };
+  }
+
   const password = formData.get("password") as string;
   if (!password) return { error: "Enter your admin password to continue." };
 
-  const valid = await createAdminSession(password);
-  if (!valid) return { error: "That password is incorrect." };
-
-  const token = await getAdminCookieValue();
-  if (!token) {
-    return { error: "Admin login is not configured because ADMIN_SECRET is missing in this environment." };
+  const role = await createAdminSession(password);
+  if (!role) {
+    const failure = registerLoginFailure(ip);
+    if (failure.locked) {
+      return { error: "Too many failed attempts. Try again in a few minutes." };
+    }
+    return { error: "That password is incorrect." };
   }
+
+  const token = await getAdminCookieValue(role);
+  if (!token) {
+    return { error: "Admin login is not configured because a required secret is missing in this environment." };
+  }
+
+  clearLoginFailures(ip);
 
   const cookieStore = await cookies();
   cookieStore.set(getAdminCookieName(), token, {
@@ -36,6 +86,10 @@ export async function login(formData: FormData) {
 }
 
 export async function logout() {
+  const hdrs = await headers();
+  if (!isSameOriginMutation(hdrs)) {
+    redirect("/admin/login?error=unauthorized");
+  }
   const cookieStore = await cookies();
   cookieStore.delete(getAdminCookieName());
   redirect("/admin/login");
@@ -47,9 +101,12 @@ export async function saveContent(
   message?: string
 ): Promise<{ ok: boolean; error?: string }> {
   try {
-    await requireAdmin();
-  } catch {
-    return { ok: false, error: "Unauthorized" };
+    await requireAdmin({ mutation: true });
+    const session = await getAdminSession();
+    if (!session.authenticated || !session.role) return { ok: false, error: "Unauthorized" };
+    if (!canWriteContentPath(session.role, path)) return { ok: false, error: "Forbidden" };
+  } catch (error) {
+    return { ok: false, error: error instanceof Error ? error.message : "Unauthorized" };
   }
   const existing = await getGitHubFile(path);
   const sha = existing?.sha;
@@ -57,6 +114,14 @@ export async function saveContent(
 }
 
 export async function loadContent(path: string): Promise<string | null> {
+  try {
+    await requireAdmin();
+    const session = await getAdminSession();
+    if (!session.authenticated || !session.role) return null;
+    if (!canWriteContentPath(session.role, path)) return null;
+  } catch {
+    return null;
+  }
   const result = await getGitHubFile(path);
   return result?.content ?? null;
 }
@@ -128,9 +193,9 @@ export async function saveBlogPost(
   message?: string
 ): Promise<{ ok: boolean; error?: string }> {
   try {
-    await requireAdmin();
-  } catch {
-    return { ok: false, error: "Unauthorized" };
+    await requireAdmin({ mutation: true });
+  } catch (error) {
+    return { ok: false, error: error instanceof Error ? error.message : "Unauthorized" };
   }
   // Read existing posts, upsert, and save
   let posts: Record<string, unknown>[] = [];
@@ -232,9 +297,9 @@ async function kvDelete(key: string): Promise<boolean> {
 /** Fetch all comments from Supabase KV */
 export async function fetchAllComments(): Promise<{ ok: boolean; comments: unknown[]; error?: string }> {
   try {
-    await requireAdmin();
-  } catch {
-    return { ok: false, comments: [], error: "Unauthorized" };
+    await requireAdmin({ capability: "comments" });
+  } catch (error) {
+    return { ok: false, comments: [], error: error instanceof Error ? error.message : "Unauthorized" };
   }
   const rows = await kvGetByPrefix("comment:");
   const comments = rows.map((r) => ({ ...(r.value as Record<string, unknown>), _kvKey: r.key }));
@@ -244,9 +309,9 @@ export async function fetchAllComments(): Promise<{ ok: boolean; comments: unkno
 /** Update a comment's status in KV */
 export async function updateCommentStatus(kvKey: string, status: string): Promise<{ ok: boolean; error?: string }> {
   try {
-    await requireAdmin();
-  } catch {
-    return { ok: false, error: "Unauthorized" };
+    await requireAdmin({ mutation: true, capability: "comments" });
+  } catch (error) {
+    return { ok: false, error: error instanceof Error ? error.message : "Unauthorized" };
   }
   const rows = await kvGetByPrefix(kvKey.slice(0, kvKey.length));
   const row = rows.find((r) => r.key === kvKey);
@@ -259,9 +324,9 @@ export async function updateCommentStatus(kvKey: string, status: string): Promis
 /** Delete a comment from KV */
 export async function deleteComment(kvKey: string): Promise<{ ok: boolean; error?: string }> {
   try {
-    await requireAdmin();
-  } catch {
-    return { ok: false, error: "Unauthorized" };
+    await requireAdmin({ mutation: true, capability: "comments" });
+  } catch (error) {
+    return { ok: false, error: error instanceof Error ? error.message : "Unauthorized" };
   }
   const success = await kvDelete(kvKey);
   return success ? { ok: true } : { ok: false, error: "Couldn't delete that comment right now." };
@@ -270,9 +335,9 @@ export async function deleteComment(kvKey: string): Promise<{ ok: boolean; error
 /** Fetch all bookmarks from Supabase KV */
 export async function fetchAllBookmarks(): Promise<{ ok: boolean; bookmarks: unknown[]; error?: string }> {
   try {
-    await requireAdmin();
-  } catch {
-    return { ok: false, bookmarks: [], error: "Unauthorized" };
+    await requireAdmin({ capability: "bookmarks" });
+  } catch (error) {
+    return { ok: false, bookmarks: [], error: error instanceof Error ? error.message : "Unauthorized" };
   }
   const rows = await kvGetByPrefix("bookmark:");
   const bookmarks = rows.map((r) => r.value);
@@ -283,9 +348,9 @@ export async function fetchAllBookmarks(): Promise<{ ok: boolean; bookmarks: unk
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function saveBookmark(bookmark: any): Promise<{ ok: boolean; error?: string }> {
   try {
-    await requireAdmin();
-  } catch {
-    return { ok: false, error: "Unauthorized" };
+    await requireAdmin({ mutation: true, capability: "bookmarks" });
+  } catch (error) {
+    return { ok: false, error: error instanceof Error ? error.message : "Unauthorized" };
   }
   const success = await kvSet(`bookmark:${bookmark.id}`, bookmark);
   return success ? { ok: true } : { ok: false, error: "Couldn't save that bookmark right now." };
@@ -294,9 +359,9 @@ export async function saveBookmark(bookmark: any): Promise<{ ok: boolean; error?
 /** Delete a bookmark from Supabase KV */
 export async function deleteBookmark(id: string): Promise<{ ok: boolean; error?: string }> {
   try {
-    await requireAdmin();
-  } catch {
-    return { ok: false, error: "Unauthorized" };
+    await requireAdmin({ mutation: true, capability: "bookmarks" });
+  } catch (error) {
+    return { ok: false, error: error instanceof Error ? error.message : "Unauthorized" };
   }
   const success = await kvDelete(`bookmark:${id}`);
   return success ? { ok: true } : { ok: false, error: "Couldn't delete that bookmark right now." };
@@ -311,9 +376,9 @@ export async function saveCaseStudies(studies: unknown[], message?: string): Pro
 /** Growth OS state — fetch from Supabase KV */
 export async function fetchGrowthState(): Promise<{ ok: boolean; state: GrowthState; error?: string }> {
   try {
-    await requireAdmin();
-  } catch {
-    return { ok: false, state: DEFAULT_GROWTH_STATE, error: "Unauthorized" };
+    await requireAdmin({ capability: "growth_os" });
+  } catch (error) {
+    return { ok: false, state: DEFAULT_GROWTH_STATE, error: error instanceof Error ? error.message : "Unauthorized" };
   }
   const value = await kvGet("content:growth:state");
   if (!value || typeof value !== "object") {
@@ -333,9 +398,9 @@ export async function fetchGrowthState(): Promise<{ ok: boolean; state: GrowthSt
 /** Growth OS state — persist to Supabase KV */
 export async function saveGrowthState(state: GrowthState): Promise<{ ok: boolean; error?: string }> {
   try {
-    await requireAdmin();
-  } catch {
-    return { ok: false, error: "Unauthorized" };
+    await requireAdmin({ mutation: true, capability: "growth_os" });
+  } catch (error) {
+    return { ok: false, error: error instanceof Error ? error.message : "Unauthorized" };
   }
   const next: GrowthState = {
     ...state,

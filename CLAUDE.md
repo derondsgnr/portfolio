@@ -176,6 +176,8 @@ RESEND_FROM                         → Email "from" address (defaults to Resend
 MONITORING_SITE_URL                 → Canonical deployed URL for public health probes
 MONITORING_WEBHOOK_URL              → Webhook target for alert notifications
 MONITORING_ALERT_EMAIL              → Override destination for monitoring emails
+ADMIN_ALLOWED_IPS                  → Optional admin IP allowlist (comma-separated, supports `203.0.113.*`)
+ADMIN_CONTENT_SECRET               → Optional limited admin password (content manager role)
 ```
 
 ---
@@ -273,6 +275,8 @@ MONITORING_ALERT_EMAIL              → Override destination for monitoring emai
 | 2026-03 | Share button on blog posts | Native Web Share API with clipboard fallback | Built into BlogReader |
 | 2026-03 | Dynamic categories from file | Admin can add/remove without code changes | Reads from blog-categories content |
 | 2026-03 | Editable blog page copy | "WRITING" title, description editable from admin | Stored in content/copy.json |
+| 2026-05 | Phase 1 admin hardening in app layer | Needed immediate protection before full RBAC and edge WAF rollout | Added admin IP allowlist option, login throttling/lockout, same-origin mutation checks, and mutation rate limits |
+| 2026-05 | Phase 2 role split with content manager | Needed safe delegation for blog/case-study/content updates without exposing system controls | Added `ADMIN_CONTENT_SECRET`, path-level admin access gating, and write/capability permission checks |
 
 ---
 

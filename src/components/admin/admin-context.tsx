@@ -20,6 +20,7 @@ const MAX_HISTORY = 50;
 export interface HistoryEntry {
   id: string;
   section: string;      // route key, e.g. "copy"
+  target?: string;      // optional subsection key, e.g. "categories"
   sectionLabel: string; // display label, e.g. "Copy"
   timestamp: number;    // Date.now()
   label: string;        // human readable, e.g. "Saved homepage hero"
@@ -28,6 +29,7 @@ export interface HistoryEntry {
 
 export interface PendingRevert {
   section: string;
+  target?: string;
   snapshot: unknown;
 }
 
@@ -37,7 +39,8 @@ export interface AdminContextType {
     section: string,
     sectionLabel: string,
     label: string,
-    snapshot: unknown
+    snapshot: unknown,
+    target?: string
   ) => void;
   revertTo: (entry: HistoryEntry, navigateFn: (path: string) => void) => void;
   clearHistory: () => void;
@@ -77,10 +80,11 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
   }, [history]);
 
   const pushHistory = useCallback(
-    (section: string, sectionLabel: string, label: string, snapshot: unknown) => {
+    (section: string, sectionLabel: string, label: string, snapshot: unknown, target?: string) => {
       const entry: HistoryEntry = {
         id: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
         section,
+        target,
         sectionLabel,
         timestamp: Date.now(),
         label,
@@ -93,7 +97,7 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
 
   const revertTo = useCallback(
     (entry: HistoryEntry, navigateFn: (path: string) => void) => {
-      setPendingRevert({ section: entry.section, snapshot: entry.snapshot });
+      setPendingRevert({ section: entry.section, target: entry.target, snapshot: entry.snapshot });
       navigateFn(`/admin/${entry.section}`);
     },
     []

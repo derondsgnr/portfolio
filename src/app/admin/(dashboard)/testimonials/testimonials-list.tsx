@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { saveTestimonials } from "../../actions";
 import { AdminSaveFeedback } from "@/components/admin/admin-save-feedback";
 import type { TestimonialItem } from "@/lib/content/testimonials";
@@ -15,6 +15,10 @@ export function TestimonialsList({ initial }: Props) {
   const [adding, setAdding] = useState(false);
   const [status, setStatus] = useState<"idle" | "saving" | "ok" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
+  useEffect(() => {
+    setTestimonials(initial);
+  }, [initial]);
 
   async function handleSave(updated: TestimonialItem[]) {
     setStatus("saving");
