@@ -111,6 +111,60 @@ const GUIDE_MAP: Record<string, FeatureGuide> = {
       "Upload files to Cloudinary, copy each Secure URL, paste into matching fields in Media, then save each edited section.",
     limits: "This panel stores URLs only; it does not upload files to Cloudinary for you.",
   },
+  "/admin/nav": {
+    title: "Navigation",
+    canDo: "Manage menu labels and destination paths used across the site.",
+    youNeedToDo: "Save updates, then spot-check navbar and footer links on the live pages.",
+    limits: "This does not validate broken external URLs automatically.",
+  },
+  "/admin/theme": {
+    title: "Theme",
+    canDo: "Adjust core brand tokens like fonts, spacing, and accent behavior.",
+    youNeedToDo: "Review readability/contrast after updates on both desktop and mobile.",
+    limits: "Theme edits do not auto-fix per-component hardcoded colors.",
+  },
+  "/admin/global": {
+    title: "Global",
+    canDo: "Update global CTA labels, footer copy, and social links.",
+    youNeedToDo: "Confirm updated CTA text still matches booking/message behavior.",
+    limits: "It does not verify destination pages or social account validity.",
+  },
+  "/admin/meta": {
+    title: "Meta / SEO",
+    canDo: "Edit page metadata used for search snippets and social sharing cards.",
+    youNeedToDo: "Validate title/description tone and OG image URLs after save.",
+    limits: "No automatic SEO scoring or keyword analysis is built in.",
+  },
+  "/admin/integrations": {
+    title: "Integrations",
+    canDo: "Enable analytics scripts and custom tracking integrations.",
+    youNeedToDo: "Provide valid IDs/script URLs and verify events in each provider dashboard.",
+    limits: "Script load errors can come from ad blockers and browser privacy settings.",
+  },
+  "/admin/sounds": {
+    title: "Sounds",
+    canDo: "Configure interaction sound URLs for hover, click, and reveal moments.",
+    youNeedToDo: "Use reachable audio URLs and test with reduced-motion preferences enabled.",
+    limits: "It won’t host audio assets; only links are stored here.",
+  },
+  "/admin/projects": {
+    title: "Projects",
+    canDo: "Manage work cards and set lifecycle controls like draft, archive, feature, and pin.",
+    youNeedToDo: "Set status and pin/feature intentionally so the public work page ordering stays clean.",
+    limits: "Pinned and featured cards still depend on good content quality and image assets.",
+  },
+  "/admin/layout-builder": {
+    title: "Layout Builder",
+    canDo: "Configure section composition for supported pages.",
+    youNeedToDo: "Preview each route after changes and verify section data dependencies.",
+    limits: "Visual drag-and-drop editing is still limited compared to full CMS builders.",
+  },
+  "/admin/security": {
+    title: "Security",
+    canDo: "Review admin security reminders and environment-level guardrails.",
+    youNeedToDo: "Keep secrets rotated and production env vars aligned across services.",
+    limits: "This panel does not perform automatic penetration testing.",
+  },
   "/admin/presentation-studio": {
     title: "Presentation Studio",
     canDo: "Curate selected references into presentation-ready inspiration sets.",
@@ -133,7 +187,9 @@ export function AdminFeatureGuide() {
   const guide = useMemo(() => {
     const exact = GUIDE_MAP[pathname ?? ""];
     if (exact) return exact;
-    const match = Object.entries(GUIDE_MAP).find(([prefix]) => pathname?.startsWith(prefix));
+    const match = Object.entries(GUIDE_MAP)
+      .sort(([a], [b]) => b.length - a.length)
+      .find(([prefix]) => pathname?.startsWith(prefix));
     return match ? match[1] : DEFAULT_GUIDE;
   }, [pathname]);
 

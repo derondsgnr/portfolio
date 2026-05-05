@@ -11,7 +11,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { saveBlogPost, saveBlogSeries, saveBlogCategories } from "@/app/admin/actions";
+import { saveBlogPost, saveBlogSeries, saveBlogCategories, loadContent } from "@/app/admin/actions";
 import { useAdmin } from "@/components/admin/admin-context";
 import { adminCx, PageHeader, FormField } from "@/components/admin/admin-primitives";
 import { SlideEditor } from "@/components/admin/slide-editor";
@@ -31,6 +31,7 @@ interface PostMeta {
   summary: string;
   readingTime: number;
   featured?: boolean;
+  pinned?: boolean;
   series?: { slug: string; position: number };
 }
 
@@ -61,6 +62,61 @@ const INITIAL_POSTS: ManagedPost[] = BLOG_POSTS.map((p) => ({
   status: "published" as const,
 }));
 
+const INITIAL_SERIES: ManagedSeries[] = BLOG_SERIES.map((s) => ({ ...s }));
+
+function normalizeManagedPost(post: ManagedPost): ManagedPost {
+  return {
+    ...post,
+    status: post.status ?? "published",
+    meta: {
+      ...post.meta,
+      tags: Array.isArray(post.meta.tags) ? post.meta.tags : [],
+      readingTime: Number(post.meta.readingTime) || 5,
+      featured: post.meta.featured ?? false,
+      pinned: post.meta.pinned ?? false,
+    },
+    slides: Array.isArray(post.slides) ? post.slides : [],
+  };
+}
+
+function parseManagedPosts(raw: string | null): ManagedPost[] {
+  if (!raw) return INITIAL_POSTS;
+  try {
+    const parsed = JSON.parse(raw) as ManagedPost[];
+    if (!Array.isArray(parsed) || parsed.length === 0) return INITIAL_POSTS;
+    return parsed.map(normalizeManagedPost);
+  } catch {
+    return INITIAL_POSTS;
+  }
+}
+
+function parseManagedSeries(raw: string | null): ManagedSeries[] {
+  if (!raw) return INITIAL_SERIES;
+  try {
+    const parsed = JSON.parse(raw) as ManagedSeries[];
+    if (!Array.isArray(parsed) || parsed.length === 0) return INITIAL_SERIES;
+    return parsed.map((series) => ({
+      ...series,
+      posts: Array.isArray(series.posts) ? series.posts : [],
+      archived: series.archived ?? false,
+    }));
+  } catch {
+    return INITIAL_SERIES;
+  }
+}
+
+function parseCategories(raw: string | null, fallback: string[]): string[] {
+  if (!raw) return fallback;
+  try {
+    const parsed = JSON.parse(raw) as unknown[];
+    if (!Array.isArray(parsed)) return fallback;
+    const list = parsed.map((item) => String(item).trim()).filter(Boolean);
+    return list.length > 0 ? [...new Set(list)] : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
 // ─── Post List Item ────────────────────────────────────────────────
 function PostListItem({
   post,
@@ -90,6 +146,7 @@ function PostListItem({
         <p className="text-[12px] font-['Instrument_Sans'] text-white/75 truncate">{post.meta.title}</p>
         <p className="text-[9px] text-white/25 font-['Instrument_Sans']">
           {post.meta.category} · {post.slides.length} slides
+          {post.meta.pinned && <span className="ml-1.5 text-[#E2B93B]/60">PINNED</span>}
           {post.status === "draft" && <span className="ml-1.5 text-[#E2B93B]/40">DRAFT</span>}
           {post.status === "archived" && <span className="ml-1.5 text-white/20">ARCHIVED</span>}
         </p>
@@ -221,6 +278,7 @@ function PostEditor({
                       <select className={adminCx.select} value={form.status} onChange={(e) => setForm((f) => ({ ...f, status: e.target.value as ManagedPost["status"] }))}>
                         <option value="published" style={{ background: "#0A0A0A" }}>Published</option>
                         <option value="draft" style={{ background: "#0A0A0A" }}>Draft</option>
+                        <option value="archived" style={{ background: "#0A0A0A" }}>Archived</option>
                       </select>
                     </FormField>
                   </div>
@@ -245,6 +303,10 @@ function PostEditor({
                   <label className="flex items-center gap-3 cursor-pointer lg:col-span-2">
                     <input type="checkbox" checked={form.meta.featured ?? false} onChange={(e) => setMeta("featured", e.target.checked)} className="h-4 w-4 accent-[#E2B93B]" />
                     <span className="text-[11px] text-white/40 font-['Instrument_Sans'] tracking-wider uppercase">Featured post</span>
+                  </label>
+                  <label className="flex items-center gap-3 cursor-pointer lg:col-span-2">
+                    <input type="checkbox" checked={form.meta.pinned ?? false} onChange={(e) => setMeta("pinned", e.target.checked)} className="h-4 w-4 accent-[#E2B93B]" />
+                    <span className="text-[11px] text-white/40 font-['Instrument_Sans'] tracking-wider uppercase">Pin this post to top of blog list</span>
                   </label>
 
                   {/* Series assignment */}
@@ -557,6 +619,10 @@ function CategoriesManager({
   const [newCat, setNewCat] = useState("");
   const dirty = JSON.stringify(items) !== JSON.stringify(categories);
 
+  useEffect(() => {
+    setItems(categories);
+  }, [categories]);
+
   function addCategory() {
     const cat = newCat.trim();
     if (!cat || items.includes(cat)) return;
@@ -638,9 +704,7 @@ function AdminBlogPage() {
   const { pushHistory, pendingRevert, clearPendingRevert } = useAdmin();
   const [tab, setTab] = useState<"posts" | "series" | "categories">("posts");
   const [posts, setPosts] = useState<ManagedPost[]>(INITIAL_POSTS);
-  const [seriesList, setSeriesList] = useState<ManagedSeries[]>(
-    BLOG_SERIES.map((s) => ({ ...s }))
-  );
+  const [seriesList, setSeriesList] = useState<ManagedSeries[]>(INITIAL_SERIES);
   const [categoryList, setCategoryList] = useState<string[]>(DEFAULT_CATEGORIES);
   const [activeSlug, setActiveSlug] = useState<string | null>(null);
   const [savingSlug, setSavingSlug] = useState<string | null>(null);
@@ -653,6 +717,36 @@ function AdminBlogPage() {
       clearPendingRevert();
     }
   }, [pendingRevert, clearPendingRevert]);
+
+  useEffect(() => {
+    let mounted = true;
+    async function hydrateFromSavedContent() {
+      const [postsRaw, seriesRaw, categoriesRaw] = await Promise.all([
+        loadContent("content/blog.json"),
+        loadContent("content/blog-series.json"),
+        loadContent("content/blog-categories.json"),
+      ]);
+      if (!mounted) return;
+
+      const nextPosts = parseManagedPosts(postsRaw);
+      const nextSeries = parseManagedSeries(seriesRaw);
+      const fallbackCategories = [
+        ...new Set(nextPosts.map((post) => post.meta.category).filter(Boolean)),
+      ];
+      const nextCategories = parseCategories(
+        categoriesRaw,
+        fallbackCategories.length > 0 ? fallbackCategories : DEFAULT_CATEGORIES
+      );
+
+      setPosts(nextPosts);
+      setSeriesList(nextSeries);
+      setCategoryList(nextCategories);
+    }
+    hydrateFromSavedContent();
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   const activePost = posts.find((p) => p.slug === activeSlug) ?? null;
 
@@ -691,7 +785,7 @@ function AdminBlogPage() {
       meta: {
         title: "Untitled Post",
         date: new Date().toISOString().slice(0, 10),
-        category: "Thinking",
+        category: categoryList[0] ?? "Thinking",
         tags: [],
         cover: "",
         summary: "",

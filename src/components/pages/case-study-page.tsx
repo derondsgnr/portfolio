@@ -1,22 +1,29 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { getCaseStudyBySlug, ALL_CASE_STUDIES } from "@/data/case-studies";
 import { CaseStudyEngine } from "../v2/case-study/case-study-engine";
 import { notFound } from "next/navigation";
+import type { CaseStudy } from "@/types/case-study";
 
-export function CaseStudyPage({ slug }: { slug: string }) {
+export function CaseStudyPage({
+  slug,
+  caseStudy,
+  allCaseStudies,
+}: {
+  slug: string;
+  caseStudy?: CaseStudy;
+  allCaseStudies: CaseStudy[];
+}) {
   const router = useRouter();
-  const caseStudy = getCaseStudyBySlug(slug);
 
-  if (!caseStudy) {
+  if (!caseStudy || (caseStudy.status ?? "published") !== "published") {
     notFound();
   }
 
   return (
     <CaseStudyEngine
       caseStudy={caseStudy}
-      allCaseStudies={ALL_CASE_STUDIES}
+      allCaseStudies={allCaseStudies}
       onSwitchCaseStudy={(newSlug) => router.push(`/work/${newSlug}`)}
     />
   );

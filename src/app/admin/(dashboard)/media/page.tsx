@@ -24,7 +24,7 @@ export default async function AdminMediaPage() {
     ),
     getContentWithGitHubOverlay(
       "content/craft.json",
-      getCraftItems,
+      () => getCraftItems({ includeDrafts: true, includeArchived: true }),
       (local, parsed) => (Array.isArray(parsed) ? parsed : local)
     ),
     getContentWithGitHubOverlay(

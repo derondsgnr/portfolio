@@ -5,13 +5,9 @@ import { motion, useScroll, useSpring, useInView } from "motion/react";
 import Link from "next/link";
 import Image from "next/image";
 import type { BlogPost } from "@/types/blog";
+import type { BlogSeries } from "@/types/blog";
 import type { Slide } from "@/types/case-study";
 import { SlideRenderer } from "../case-study/slide-renderer";
-import { getRelatedPosts } from "@/lib/data/blog-data";
-import {
-  getSeriesForPost,
-  getAdjacentSeriesPosts,
-} from "@/lib/data/blog-series-data";
 import { SeriesBanner } from "./series-banner";
 import { SeriesNavFooter } from "./series-nav-footer";
 
@@ -149,8 +145,7 @@ function TOCSidebar({
   );
 }
 
-function RelatedPosts({ slug }: { slug: string }) {
-  const posts = getRelatedPosts(slug, 3);
+function RelatedPosts({ posts }: { posts: BlogPost[] }) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.2 });
 
@@ -301,7 +296,19 @@ function AuthorBio() {
   );
 }
 
-export function BlogReader({ post }: { post: BlogPost }) {
+export function BlogReader({
+  post,
+  relatedPosts,
+  series,
+  seriesPrev,
+  seriesNext,
+}: {
+  post: BlogPost;
+  relatedPosts: BlogPost[];
+  series?: BlogSeries;
+  seriesPrev?: BlogPost;
+  seriesNext?: BlogPost;
+}) {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
@@ -351,9 +358,6 @@ export function BlogReader({ post }: { post: BlogPost }) {
     return <SlideRenderer key={slide.id} slide={slide} />;
   };
 
-  // Series navigation
-  const series = getSeriesForPost(post.slug);
-  const { prev: seriesPrev, next: seriesNext } = getAdjacentSeriesPosts(post.slug);
   const seriesPosition = post.meta.series?.position ?? 0;
 
   const heroRef = useRef<HTMLDivElement>(null);
@@ -531,7 +535,7 @@ export function BlogReader({ post }: { post: BlogPost }) {
             next={seriesNext}
           />
         )}
-        <RelatedPosts slug={post.slug} />
+        <RelatedPosts posts={relatedPosts} />
       </div>
     </div>
   );

@@ -85,6 +85,17 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
     });
   }
 
+  function updateCraftMeta(
+    index: number,
+    updates: Partial<Pick<CraftItem, "status" | "featured" | "pinned">>
+  ) {
+    setCraft((prev) => {
+      const next = [...prev];
+      if (next[index]) next[index] = { ...next[index], ...updates };
+      return next;
+    });
+  }
+
   function updateExplorationImage(index: number, image: string) {
     setExplorations((prev) => {
       const next = [...prev];
@@ -213,6 +224,37 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
                     className={`${inputClass} mt-1`}
                     placeholder="Image URL"
                   />
+                  <div className="mt-2 flex flex-wrap items-center gap-3">
+                    <select
+                      value={item.status ?? "published"}
+                      onChange={(e) =>
+                        updateCraftMeta(i, { status: e.target.value as CraftItem["status"] })
+                      }
+                      className="bg-[#111] border border-white/10 text-white/70 font-mono text-[11px] px-2 py-1"
+                    >
+                      <option value="published">Published</option>
+                      <option value="draft">Draft</option>
+                      <option value="archived">Archived</option>
+                    </select>
+                    <label className="font-mono text-[11px] text-white/55 inline-flex items-center gap-1.5">
+                      <input
+                        type="checkbox"
+                        checked={Boolean(item.featured)}
+                        onChange={(e) => updateCraftMeta(i, { featured: e.target.checked })}
+                        className="h-3.5 w-3.5 accent-[#E2B93B]"
+                      />
+                      Featured
+                    </label>
+                    <label className="font-mono text-[11px] text-white/55 inline-flex items-center gap-1.5">
+                      <input
+                        type="checkbox"
+                        checked={Boolean(item.pinned)}
+                        onChange={(e) => updateCraftMeta(i, { pinned: e.target.checked })}
+                        className="h-3.5 w-3.5 accent-[#E2B93B]"
+                      />
+                      Pinned
+                    </label>
+                  </div>
                 </div>
               </div>
             ))}

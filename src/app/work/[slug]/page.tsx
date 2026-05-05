@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { CaseStudyPage } from "@/components/pages/case-study-page";
-import { getCaseStudyBySlug } from "@/data/case-studies";
+import { getCaseStudyBySlug, getCaseStudies } from "@/lib/content/case-studies";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -8,7 +8,7 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const cs = getCaseStudyBySlug(slug);
+  const cs = await getCaseStudyBySlug(slug);
   if (!cs) return {};
   return {
     title: `${cs.meta.title} | derondsgnr`,
@@ -30,5 +30,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function Page({ params }: Props) {
   const { slug } = await params;
-  return <CaseStudyPage slug={slug} />;
+  const [caseStudy, allCaseStudies] = await Promise.all([
+    getCaseStudyBySlug(slug),
+    getCaseStudies(),
+  ]);
+  return (
+    <CaseStudyPage
+      slug={slug}
+      caseStudy={caseStudy}
+      allCaseStudies={allCaseStudies}
+    />
+  );
 }

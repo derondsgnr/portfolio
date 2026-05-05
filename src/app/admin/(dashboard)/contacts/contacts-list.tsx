@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { getContactsForAdmin, deleteContactForAdmin } from "@/app/actions/contact";
+import { getContactsForAdmin, deleteContactForAdmin, markContactReadForAdmin } from "@/app/actions/contact";
 import { motion, AnimatePresence } from "motion/react";
 import { Mail, Trash2, RefreshCw } from "lucide-react";
 import { AdminNotice } from "@/components/admin/admin-notice";
@@ -62,6 +62,18 @@ export function ContactsList({ initial, initialError = null }: Props) {
     setDeleting(null);
   }
 
+  async function toggleExpanded(contact: Contact) {
+    const nextExpanded = expanded === contact.id ? null : contact.id;
+    setExpanded(nextExpanded);
+
+    if (nextExpanded && !contact.read) {
+      setContacts((prev) =>
+        prev.map((item) => (item.id === contact.id ? { ...item, read: true } : item))
+      );
+      await markContactReadForAdmin(contact.id, true);
+    }
+  }
+
   if (contacts.length === 0) {
     return (
       <div className="py-16 text-center">
@@ -114,12 +126,13 @@ export function ContactsList({ initial, initialError = null }: Props) {
             >
               <button
                 type="button"
-                onClick={() => setExpanded(expanded === c.id ? null : c.id)}
+                onClick={() => toggleExpanded(c)}
                 className="w-full flex items-start justify-between gap-4 text-left p-4"
               >
                 <div className="min-w-0 flex-1">
                   <p className="font-mono text-sm text-white/90 truncate">
                     {c.name || "Anonymous"} — {c.email}
+                    {!c.read ? <span className="ml-2 text-[#E2B93B]">●</span> : null}
                   </p>
                   <p className="font-mono text-xs text-white/40 mt-0.5">
                     {formatDate(c.createdAt as string)}

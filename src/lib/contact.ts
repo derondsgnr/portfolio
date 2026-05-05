@@ -77,7 +77,9 @@ export async function submitContact(payload: ContactPayload): Promise<{ ok: bool
   // 2. Send email
   const resendKey = process.env.RESEND_API_KEY;
   const toEmail = process.env.CONTACT_EMAIL;
-  if (resendKey && toEmail) {
+  if (!resendKey || !toEmail) {
+    console.warn("Contact email notification skipped: missing RESEND_API_KEY or CONTACT_EMAIL.");
+  } else {
     try {
       const resend = new Resend(resendKey);
       const from = process.env.RESEND_FROM ?? "onboarding@resend.dev";
@@ -125,12 +127,53 @@ export async function getContacts(): Promise<ContactRecord[]> {
   }
 
   const contacts = (data ?? [])
-    .map((r: { key: string; value: unknown }) => r.value as ContactRecord)
+    .map((r: { key: string; value: unknown }) => {
+      const value = r.value as ContactRecord;
+      return {
+        ...value,
+        read: value.read ?? false,
+      };
+    })
     .sort(
       (a, b) =>
         new Date((b.createdAt as string) ?? 0).getTime() - new Date((a.createdAt as string) ?? 0).getTime()
     );
   return contacts;
+}
+
+export async function markContactRead(
+  id: string,
+  read = true
+): Promise<{ ok: boolean; error?: string }> {
+  try {
+    const supabase = getSupabaseAdmin();
+    const key = `contact:${id}`;
+
+    const { data, error: fetchError } = await supabase
+      .from(KV_TABLE)
+      .select("value")
+      .eq("key", key)
+      .maybeSingle();
+
+    if (fetchError) throw fetchError;
+    if (!data?.value || typeof data.value !== "object") {
+      return { ok: false, error: "Contact not found." };
+    }
+
+    const updated = {
+      ...(data.value as Record<string, unknown>),
+      read,
+    };
+
+    const { error: upsertError } = await supabase
+      .from(KV_TABLE)
+      .upsert({ key, value: updated });
+    if (upsertError) throw upsertError;
+    return { ok: true };
+  } catch (err) {
+    console.error("Contact read status update error:", err);
+    return { ok: false, error: "Couldn't update read status right now." };
+  }
 }
 
 export async function deleteContact(id: string): Promise<{ ok: boolean; error?: string }> {

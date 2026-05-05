@@ -4,8 +4,6 @@ import { useState, useRef } from "react";
 import { motion, useInView } from "motion/react";
 import Link from "next/link";
 import Image from "next/image";
-import { BLOG_POSTS, getFeaturedPost } from "@/lib/data/blog-data";
-import { getAllSeries, getSeriesBySlug, getSeriesPosts } from "@/lib/data/blog-series-data";
 import type { BlogPost, BlogCategory, BlogSeries } from "@/types/blog";
 import { SeriesBadge } from "@/components/v2/blog/series-badge";
 
@@ -20,6 +18,8 @@ export interface BlogPageCopy {
 export interface BlogPageProps {
   copy: BlogPageCopy;
   categories: (BlogCategory | "All")[];
+  posts: BlogPost[];
+  series: BlogSeries[];
 }
 
 /* ─── Helpers ─────────────────────────────────────────────────── */
@@ -123,7 +123,15 @@ function FeaturedCard({ post }: { post: BlogPost }) {
 
 /* ─── Post Card (grid) ────────────────────────────────────────── */
 
-function PostCard({ post, index }: { post: BlogPost; index: number }) {
+function PostCard({
+  post,
+  index,
+  seriesLookup,
+}: {
+  post: BlogPost;
+  index: number;
+  seriesLookup: Map<string, BlogSeries>;
+}) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.2 });
 
@@ -156,7 +164,7 @@ function PostCard({ post, index }: { post: BlogPost; index: number }) {
         </div>
 
         {post.meta.series && (() => {
-          const s = getSeriesBySlug(post.meta.series.slug);
+          const s = seriesLookup.get(post.meta.series.slug);
           return s ? (
             <SeriesBadge seriesTitle={s.title} position={post.meta.series.position} total={s.posts.length} />
           ) : null;
@@ -191,21 +199,24 @@ function PostCard({ post, index }: { post: BlogPost; index: number }) {
 
 /* ─── Blog Index ──────────────────────────────────────────────── */
 
-export default function BlogPageClient({ copy, categories }: BlogPageProps) {
+export default function BlogPageClient({ copy, categories, posts, series }: BlogPageProps) {
   const [activeCategory, setActiveCategory] = useState<BlogCategory | "All">("All");
   const [filterMode, setFilterMode] = useState<"category" | "series">("category");
   const [activeSeries, setActiveSeries] = useState<string | null>(null);
-  const featured = getFeaturedPost();
+  const featured = posts.find((post) => post.meta.featured) ?? posts[0];
   const heroRef = useRef<HTMLDivElement>(null);
   const heroInView = useInView(heroRef, { once: true, amount: 0.3 });
-  const allSeries = getAllSeries();
+  const allSeries = series;
+  const seriesBySlug = new Map(allSeries.map((item) => [item.slug, item]));
 
   const filtered =
     filterMode === "series"
       ? activeSeries
-        ? getSeriesPosts(activeSeries)
+        ? (seriesBySlug.get(activeSeries)?.posts ?? [])
+            .map((slug) => posts.find((post) => post.slug === slug))
+            .filter((post): post is BlogPost => Boolean(post))
         : []
-      : BLOG_POSTS.filter((p) =>
+      : posts.filter((p) =>
           activeCategory === "All" ? true : p.meta.category === activeCategory
         );
   const nonFeatured =
@@ -237,7 +248,7 @@ export default function BlogPageClient({ copy, categories }: BlogPageProps) {
               className="text-[10px] tracking-[0.3em] text-[#E2B93B] block mb-4"
               style={{ fontFamily: "monospace" }}
             >
-              {copy.label} / {BLOG_POSTS.length} PIECES
+              {copy.label} / {posts.length} PIECES
             </motion.span>
 
             <motion.h1
@@ -279,7 +290,7 @@ export default function BlogPageClient({ copy, categories }: BlogPageProps) {
       <div className="relative z-10 px-6 md:px-14 lg:px-20 pb-6">
         <div className="flex items-center gap-2 flex-wrap">
           {categories.map((cat) => {
-            const hasPost = cat === "All" || BLOG_POSTS.some((p) => p.meta.category === cat);
+            const hasPost = cat === "All" || posts.some((p) => p.meta.category === cat);
             if (!hasPost) return null;
             const active = filterMode === "category" && activeCategory === cat;
             return (
@@ -390,7 +401,7 @@ export default function BlogPageClient({ copy, categories }: BlogPageProps) {
           <div className="flex items-center gap-4 mb-10">
             <span className="text-[9px] tracking-[0.3em] text-[#333]" style={{ fontFamily: "monospace" }}>
               {filterMode === "series" && activeSeries
-                ? getSeriesBySlug(activeSeries)?.title.toUpperCase() ?? "SERIES"
+                ? seriesBySlug.get(activeSeries)?.title.toUpperCase() ?? "SERIES"
                 : "ALL PIECES"}
             </span>
             <div className="h-px flex-1 bg-[#111]" />
@@ -399,7 +410,7 @@ export default function BlogPageClient({ copy, categories }: BlogPageProps) {
           <div className="grid md:grid-cols-3 gap-8 md:gap-10">
             {nonFeatured.map((post, i) => (
               <div key={post.slug} className={i === 0 ? "md:col-span-2" : ""}>
-                <PostCard post={post} index={i} />
+                <PostCard post={post} index={i} seriesLookup={seriesBySlug} />
               </div>
             ))}
           </div>

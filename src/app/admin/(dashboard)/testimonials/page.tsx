@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 export default async function AdminTestimonialsPage() {
   const initial = await getContentWithGitHubOverlay(
     "content/testimonials.json",
-    getTestimonials,
+    () => getTestimonials({ includeDrafts: true, includeArchived: true }),
     (local, parsed) => {
       if (!Array.isArray(parsed)) return local;
       return parsed.map((p: unknown, i: number) => {
@@ -20,6 +20,9 @@ export default async function AdminTestimonialsPage() {
           company: String(t?.company ?? ""),
           avatar: (t?.avatar as string) ?? null,
           companyLogo: (t?.companyLogo as string) ?? null,
+          status: (t?.status as "published" | "draft" | "archived" | undefined) ?? "published",
+          featured: Boolean(t?.featured),
+          pinned: Boolean(t?.pinned),
         };
       }) as Awaited<ReturnType<typeof getTestimonials>>;
     }
@@ -30,6 +33,9 @@ export default async function AdminTestimonialsPage() {
       <h1 className="text-2xl font-mono text-white mb-2">Testimonials</h1>
       <p className="text-white/50 font-mono text-sm mb-8">
         Manage homepage testimonials. Add quote, name, role, company, avatar, and company logo. Also used in case study outcomes.
+      </p>
+      <p className="text-white/35 font-mono text-xs mb-4">
+        Tip: click Add testimonial or Edit to reveal Avatar URL and Company logo URL fields.
       </p>
       <TestimonialsList initial={initial} />
     </div>

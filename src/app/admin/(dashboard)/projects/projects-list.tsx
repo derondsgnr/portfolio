@@ -63,6 +63,9 @@ export function ProjectsList({ initial }: Props) {
         description: data.description ?? "",
         image: data.image ?? "",
         slug: data.slug ?? (data.title ?? "").toLowerCase().replace(/\s+/g, "-"),
+        status: data.status ?? "draft",
+        featured: data.featured ?? false,
+        pinned: data.pinned ?? false,
       };
       handleSave([...projects, newProject]);
     }
@@ -110,6 +113,11 @@ export function ProjectsList({ initial }: Props) {
               <span className="font-mono text-xs text-white/50 ml-2">
                 {p.category} · {p.year}
               </span>
+              <span className="font-mono text-[10px] text-white/35 ml-2 uppercase">
+                {p.status ?? "published"}
+              </span>
+              {p.featured ? <span className="font-mono text-[10px] text-[#E2B93B]/70 ml-2">Featured</span> : null}
+              {p.pinned ? <span className="font-mono text-[10px] text-[#E2B93B] ml-2">Pinned</span> : null}
             </div>
             <div className="flex items-center gap-2 shrink-0">
               <button
