@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { adminCx, FormField, PageHeader } from "@/components/admin/admin-primitives";
 import { knowledgeToInspiration, enqueueInspirationRefs } from "@/lib/admin/presentation-inspiration";
 import Link from "next/link";
-import { CheckCircle2, Clapperboard, Download, ExternalLink, Pause, Play, RefreshCcw, Search, Upload, Wifi, WifiOff } from "lucide-react";
+import { CheckCircle2, ChevronDown, ChevronUp, Clapperboard, Download, ExternalLink, Pause, Play, RefreshCcw, Search, Upload, Wifi, WifiOff } from "lucide-react";
 
 type Source = "x_post" | "x_article" | "instagram_post" | "manual";
 type Status = "queued" | "processed" | "reviewed";
@@ -82,6 +82,7 @@ export default function AdminKnowledgePage() {
   const [onlyWithRawText, setOnlyWithRawText] = useState(true);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
+  const [showGuide, setShowGuide] = useState(false);
   const pauseRef = useRef(false);
   const [progress, setProgress] = useState({ total: 0, done: 0, ok: 0, failed: 0, current: "" });
   const [queryEmbedding, setQueryEmbedding] = useState<number[] | null>(null);
@@ -258,6 +259,46 @@ export default function AdminKnowledgePage() {
             <p className="text-xs text-white/40 mt-2">{failedCount} failed, {reviewedCount} reviewed</p>
           </div>
         </div>
+      </div>
+
+      <div className="border border-white/[0.08] bg-white/[0.01] p-4 space-y-3">
+        <button
+          type="button"
+          onClick={() => setShowGuide((prev) => !prev)}
+          className="w-full flex items-center justify-between text-left"
+        >
+          <span className="text-[11px] uppercase tracking-[0.14em] text-[#E2B93B]/70 font-['Instrument_Sans']">Feature Guide</span>
+          <span className="text-white/45">{showGuide ? <ChevronUp size={14} /> : <ChevronDown size={14} />}</span>
+        </button>
+
+        {showGuide && (
+          <div className="grid lg:grid-cols-2 gap-2">
+            <div className="border border-white/[0.07] p-3 bg-[#0A0A0A]/60">
+              <p className="text-[10px] text-white/25 uppercase tracking-wider mb-2">What This Does</p>
+              <p className="text-sm text-white/75 leading-relaxed">
+                This vault queues links, stores source notes, runs local AI extraction/synthesis, and lets you search by keywords or semantic embeddings.
+              </p>
+            </div>
+            <div className="border border-white/[0.07] p-3 bg-[#0A0A0A]/60">
+              <p className="text-[10px] text-white/25 uppercase tracking-wider mb-2">What Is Still Manual</p>
+              <p className="text-sm text-white/75 leading-relaxed">
+                You still manually capture/download media files. Add media links/paths yourself. Auto video/image ingestion is not wired yet.
+              </p>
+            </div>
+            <div className="border border-white/[0.07] p-3 bg-[#0A0A0A]/60">
+              <p className="text-[10px] text-white/25 uppercase tracking-wider mb-2">Daily Workflow</p>
+              <p className="text-sm text-white/75 leading-relaxed">
+                1) Queue links. 2) Paste raw text. 3) Test connection. 4) Process queued. 5) Retry failed. 6) Send good references to Studio.
+              </p>
+            </div>
+            <div className="border border-white/[0.07] p-3 bg-[#0A0A0A]/60">
+              <p className="text-[10px] text-white/25 uppercase tracking-wider mb-2">Local vs Online</p>
+              <p className="text-sm text-white/75 leading-relaxed">
+                Processing uses the configured Ollama URL. If it points to localhost, AI processing works on your machine where Ollama runs.
+              </p>
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="grid lg:grid-cols-2 gap-3">

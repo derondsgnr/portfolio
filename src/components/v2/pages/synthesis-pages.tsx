@@ -10,6 +10,7 @@ import type { MediaConfig } from "@/lib/content/media";
 import type { PageCopy } from "@/lib/content/copy";
 import { useBooking } from "../booking-context";
 import { ToolBadge, ToolBadges } from "@/components/tool-badge";
+import { YouTubeVideoFrame, toYouTubeEmbedUrl } from "../shared/youtube-video-frame";
 
 /* ═══════════════════════════════════════════════════════════════
    SYNTHESIS PAGES — Best-of mashup inner pages
@@ -680,6 +681,7 @@ function ExplorationsGallery({ explorations, onOpen }: { explorations: Explorati
 function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: { explorations: Exploration[]; activeIndex: number; onClose: () => void; onNavigate: (index: number) => void }) {
   const item = explorations[activeIndex];
   if (!item) return null;
+  const youtubeEmbedUrl = item.type === "video" ? toYouTubeEmbedUrl(item.videoUrl) : null;
   const listRef = useRef<HTMLDivElement>(null);
   const mobileThumbRef = useRef<HTMLDivElement>(null);
   const viewerRef = useRef<HTMLDivElement>(null);
@@ -918,19 +920,31 @@ function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: {
             className="relative flex items-center justify-center"
             style={{ maxWidth: "100%", maxHeight: "100%" }}
           >
-            <img
-              src={item.image}
-              alt={`${item.title} — ${item.category} exploration`}
-              className="max-w-full max-h-[60vh] md:max-h-[75vh] object-contain"
-              style={{ filter: item.type === "video" ? "none" : "grayscale(0.15)" }}
-            />
-            <div className="absolute inset-0 pointer-events-none" style={{ background: "repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(10,10,10,0.08) 3px, rgba(10,10,10,0.08) 4px)" }} />
-            {item.type === "video" && (
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <div className="w-12 h-12 md:w-16 md:h-16 flex items-center justify-center rounded-full" style={{ background: "rgba(0,0,0,0.6)", border: "1px solid rgba(226,185,59,0.4)" }}>
-                  <div className="w-0 h-0 ml-1" style={{ borderLeft: "10px solid #E2B93B", borderTop: "6px solid transparent", borderBottom: "6px solid transparent" }} />
-                </div>
+            {youtubeEmbedUrl ? (
+              <div className="w-[min(92vw,1100px)] max-w-full aspect-video">
+                <YouTubeVideoFrame
+                  url={item.videoUrl}
+                  title={item.title}
+                  className="w-full h-full border-0"
+                />
               </div>
+            ) : (
+              <>
+                <img
+                  src={item.image}
+                  alt={`${item.title} — ${item.category} exploration`}
+                  className="max-w-full max-h-[60vh] md:max-h-[75vh] object-contain"
+                  style={{ filter: item.type === "video" ? "none" : "grayscale(0.15)" }}
+                />
+                <div className="absolute inset-0 pointer-events-none" style={{ background: "repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(10,10,10,0.08) 3px, rgba(10,10,10,0.08) 4px)" }} />
+                {item.type === "video" && (
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <div className="w-12 h-12 md:w-16 md:h-16 flex items-center justify-center rounded-full" style={{ background: "rgba(0,0,0,0.6)", border: "1px solid rgba(226,185,59,0.4)" }}>
+                      <div className="w-0 h-0 ml-1" style={{ borderLeft: "10px solid #E2B93B", borderTop: "6px solid transparent", borderBottom: "6px solid transparent" }} />
+                    </div>
+                  </div>
+                )}
+              </>
             )}
           </motion.div>
         </AnimatePresence>

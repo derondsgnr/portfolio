@@ -93,12 +93,48 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
     });
   }
 
+  function updateExplorationVideoUrl(index: number, videoUrl: string) {
+    setExplorations((prev) => {
+      const next = [...prev];
+      if (next[index]) next[index] = { ...next[index], videoUrl };
+      return next;
+    });
+  }
+
   const sectionBgKeys = Object.keys(media.sectionBackgrounds);
   const defaultSectionKeys = ["hero", "craft", "about"];
   const allSectionKeys = [...new Set([...defaultSectionKeys, ...sectionBgKeys])];
 
   return (
     <div className="space-y-12 max-w-3xl">
+      <section className="space-y-4 border border-white/10 bg-white/[0.02] p-4">
+        <h2 className="font-mono text-sm text-white/80 uppercase tracking-wider">
+          Cloudinary setup guide (save this flow)
+        </h2>
+        <p className="font-mono text-xs text-white/60 leading-relaxed">
+          You only need to do this once. After setup, just upload, copy URL, paste here, and save.
+        </p>
+        <ol className="space-y-2 list-decimal pl-5 font-mono text-xs text-white/75 leading-relaxed">
+          <li>Create a free Cloudinary account and open your Media Library.</li>
+          <li>
+            Create a folder for your portfolio (example: <span className="text-white">portfolio</span>).
+          </li>
+          <li>Upload your image files into that folder.</li>
+          <li>Open an uploaded image and copy the Secure URL.</li>
+          <li>Paste the URL into the matching field in this page (Global assets, Craft, or Explorations).</li>
+          <li>Click the Save button for the section you edited.</li>
+        </ol>
+        <div className="space-y-2">
+          <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-white/40">
+            Optional quality tip
+          </p>
+          <p className="font-mono text-xs text-white/60 leading-relaxed">
+            For faster pages, use Cloudinary optimization in your URL: add{" "}
+            <span className="text-white">f_auto,q_auto</span> in the transformation part of the link.
+          </p>
+        </div>
+      </section>
+
       {/* Section 1: Global assets */}
       <section className="space-y-4">
         <h2 className="font-mono text-sm text-white/80 uppercase tracking-wider">
@@ -214,6 +250,15 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
                     className={`${inputClass} mt-1`}
                     placeholder="Image URL"
                   />
+                  {item.type === "video" && (
+                    <input
+                      type="url"
+                      value={item.videoUrl ?? ""}
+                      onChange={(e) => updateExplorationVideoUrl(i, e.target.value)}
+                      className={`${inputClass} mt-2`}
+                      placeholder="YouTube URL (optional)"
+                    />
+                  )}
                 </div>
               </div>
             ))}
