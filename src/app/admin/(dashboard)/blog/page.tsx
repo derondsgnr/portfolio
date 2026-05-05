@@ -9,7 +9,7 @@
  *   Currently uses static BLOG_POSTS as initial data.
  */
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { saveBlogPost, saveBlogSeries, saveBlogCategories, loadContent } from "@/app/admin/actions";
 import { useAdmin } from "@/components/admin/admin-context";
@@ -175,6 +175,10 @@ function PostEditor({
   const [form, setForm] = useState<ManagedPost>(post);
   const [tagInput, setTagInput] = useState("");
   const [metaOpen, setMetaOpen] = useState(true);
+  const categoryOptions =
+    form.meta.category && !categoryList.includes(form.meta.category)
+      ? [form.meta.category, ...categoryList]
+      : categoryList;
 
   // Sync when post changes (switching posts)
   useEffect(() => { setForm(post); }, [post]);
@@ -271,7 +275,7 @@ function PostEditor({
                   <div className="grid grid-cols-2 gap-3">
                     <FormField label="Category">
                       <select className={adminCx.select} value={form.meta.category} onChange={(e) => setMeta("category", e.target.value)}>
-                        {categoryList.map((c) => <option key={c} value={c} style={{ background: "#0A0A0A" }}>{c}</option>)}
+                        {categoryOptions.map((c) => <option key={c} value={c} style={{ background: "#0A0A0A" }}>{c}</option>)}
                       </select>
                     </FormField>
                     <FormField label="Status">
@@ -388,6 +392,26 @@ interface ManagedSeries {
   cover?: string;
   posts: string[];
   archived?: boolean;
+}
+
+function isManagedPostArray(value: unknown): value is ManagedPost[] {
+  return Array.isArray(value) && value.every((item) => {
+    if (!item || typeof item !== "object") return false;
+    const candidate = item as Partial<ManagedPost>;
+    return typeof candidate.slug === "string" && Array.isArray(candidate.slides) && Boolean(candidate.meta);
+  });
+}
+
+function isManagedSeriesArray(value: unknown): value is ManagedSeries[] {
+  return Array.isArray(value) && value.every((item) => {
+    if (!item || typeof item !== "object") return false;
+    const candidate = item as Partial<ManagedSeries>;
+    return typeof candidate.slug === "string" && Array.isArray(candidate.posts);
+  });
+}
+
+function isStringArray(value: unknown): value is string[] {
+  return Array.isArray(value) && value.every((item) => typeof item === "string");
 }
 
 function SeriesManager({
@@ -617,7 +641,6 @@ function CategoriesManager({
 }) {
   const [items, setItems] = useState(categories);
   const [newCat, setNewCat] = useState("");
-  const dirty = JSON.stringify(items) !== JSON.stringify(categories);
 
   useEffect(() => {
     setItems(categories);
@@ -626,12 +649,16 @@ function CategoriesManager({
   function addCategory() {
     const cat = newCat.trim();
     if (!cat || items.includes(cat)) return;
-    setItems([...items, cat]);
+    const next = [...items, cat];
+    setItems(next);
+    onUpdate(next);
     setNewCat("");
   }
 
   function removeCategory(idx: number) {
-    setItems(items.filter((_, i) => i !== idx));
+    const next = items.filter((_, i) => i !== idx);
+    setItems(next);
+    onUpdate(next);
   }
 
   function moveUp(idx: number) {
@@ -639,6 +666,7 @@ function CategoriesManager({
     const arr = [...items];
     [arr[idx - 1], arr[idx]] = [arr[idx], arr[idx - 1]];
     setItems(arr);
+    onUpdate(arr);
   }
 
   function moveDown(idx: number) {
@@ -646,6 +674,7 @@ function CategoriesManager({
     const arr = [...items];
     [arr[idx], arr[idx + 1]] = [arr[idx + 1], arr[idx]];
     setItems(arr);
+    onUpdate(arr);
   }
 
   return (
@@ -654,14 +683,9 @@ function CategoriesManager({
         <span className="text-[10px] tracking-[0.15em] text-white/25 font-['Instrument_Sans'] uppercase">
           {items.length} categories
         </span>
-        {dirty && (
-          <button
-            onClick={() => onUpdate(items)}
-            className="px-5 py-1.5 bg-[#E2B93B] text-[#0A0A0A] font-['Anton'] text-[11px] tracking-[0.12em] hover:bg-white transition-colors"
-          >
-            SAVE
-          </button>
-        )}
+        <span className="text-[9px] tracking-[0.14em] text-white/35 font-['Instrument_Sans'] uppercase">
+          Auto-saves on edit
+        </span>
       </div>
 
       <div className="border border-white/[0.07] overflow-hidden mb-4">
@@ -710,10 +734,26 @@ function AdminBlogPage() {
   const [savingSlug, setSavingSlug] = useState<string | null>(null);
   const [savingSeries, setSavingSeries] = useState(false);
   const [lastSaved, setLastSaved] = useState<string | null>(null);
+  const [seriesError, setSeriesError] = useState<string | null>(null);
+  const [categoryError, setCategoryError] = useState<string | null>(null);
+  const latestCategorySave = useRef(0);
+  const latestSeriesSave = useRef(0);
 
   useEffect(() => {
     if (pendingRevert?.section === "blog") {
-      setPosts(pendingRevert.snapshot as ManagedPost[]);
+      if (pendingRevert.target === "series" && isManagedSeriesArray(pendingRevert.snapshot)) {
+        setSeriesList(pendingRevert.snapshot);
+        clearPendingRevert();
+        return;
+      }
+      if (pendingRevert.target === "categories" && isStringArray(pendingRevert.snapshot)) {
+        setCategoryList(pendingRevert.snapshot);
+        clearPendingRevert();
+        return;
+      }
+      if (isManagedPostArray(pendingRevert.snapshot)) {
+        setPosts(pendingRevert.snapshot);
+      }
       clearPendingRevert();
     }
   }, [pendingRevert, clearPendingRevert]);
@@ -758,7 +798,7 @@ function AdminBlogPage() {
       const exists = posts.some((p) => p.slug === post.slug);
       const final = exists ? updated : [...posts, post];
       setPosts(final);
-      pushHistory("blog", "Blog", `Saved: ${post.meta.title}`, final);
+      pushHistory("blog", "Blog", `Saved: ${post.meta.title}`, final, "posts");
       setLastSaved(new Date().toLocaleTimeString());
       setActiveSlug(post.slug);
     }
@@ -766,13 +806,22 @@ function AdminBlogPage() {
   }
 
   async function handleSeriesUpdate(updated: ManagedSeries[]) {
+    const previous = seriesList;
+    const requestId = latestSeriesSave.current + 1;
+    latestSeriesSave.current = requestId;
     setSavingSeries(true);
+    setSeriesError(null);
+    setSeriesList(updated);
     const result = await saveBlogSeries(updated, "Update blog series");
+    if (requestId !== latestSeriesSave.current) return;
     if (result.ok) {
-      setSeriesList(updated);
-      pushHistory("blog", "Blog", "Updated series", updated);
+      pushHistory("blog", "Blog", "Updated series", updated, "series");
       setLastSaved(new Date().toLocaleTimeString());
+      setSavingSeries(false);
+      return;
     }
+    setSeriesList(previous);
+    setSeriesError(result.error ?? "Couldn't save series right now.");
     setSavingSeries(false);
   }
 
@@ -853,32 +902,54 @@ function AdminBlogPage() {
           )}
 
           {tab === "series" && (
-            <SeriesManager
-              series={seriesList}
-              onUpdate={handleSeriesUpdate}
-              isSaving={savingSeries}
-              postSlugs={posts.map((p) => p.slug)}
-            />
+            <div>
+              <SeriesManager
+                series={seriesList}
+                onUpdate={handleSeriesUpdate}
+                isSaving={savingSeries}
+                postSlugs={posts.map((p) => p.slug)}
+              />
+              {seriesError ? (
+                <p className="mt-3 text-[11px] font-['Instrument_Sans'] text-red-400/80">
+                  {seriesError}
+                </p>
+              ) : null}
+            </div>
           )}
 
           {tab === "categories" && (
-            <CategoriesManager
-              categories={categoryList}
-              onUpdate={async (updated) => {
-                const result = await saveBlogCategories(updated, "Update blog categories");
-                if (result.ok) {
+            <div>
+              <CategoriesManager
+                categories={categoryList}
+                onUpdate={async (updated) => {
+                  const previous = categoryList;
+                  const requestId = latestCategorySave.current + 1;
+                  latestCategorySave.current = requestId;
                   setCategoryList(updated);
-                  pushHistory("blog", "Blog", "Updated categories", updated);
-                  setLastSaved(new Date().toLocaleTimeString());
-                }
-              }}
-            />
+                  setCategoryError(null);
+                  const result = await saveBlogCategories(updated, "Update blog categories");
+                  if (requestId !== latestCategorySave.current) return;
+                  if (result.ok) {
+                    pushHistory("blog", "Blog", "Updated categories", updated, "categories");
+                    setLastSaved(new Date().toLocaleTimeString());
+                    return;
+                  }
+                  setCategoryList(previous);
+                  setCategoryError(result.error ?? "Couldn't save categories right now.");
+                }}
+              />
+              {categoryError ? (
+                <p className="mt-3 text-[11px] font-['Instrument_Sans'] text-red-400/80">
+                  {categoryError}
+                </p>
+              ) : null}
+            </div>
           )}
         </div>
       ) : (
         /* Full editor view */
-        <div className="-mx-10 -my-12 h-screen flex flex-col" style={{ height: "calc(100vh - 0px)" }}>
-          <div className="px-6 py-2.5 border-b border-white/[0.05] flex items-center gap-3 bg-[#0A0A0A] shrink-0">
+        <div className="-mx-6 lg:-mx-8 -mt-6 lg:-mt-8 -mb-6 lg:-mb-8 h-[calc(100dvh-3.5rem)] lg:h-[100dvh] flex flex-col">
+          <div className="px-6 py-2.5 border-b border-white/[0.05] flex items-center gap-3 bg-[#0A0A0A] shrink-0 sticky top-0 z-20">
             <button
               onClick={() => setActiveSlug(null)}
               className="text-[10px] font-['Instrument_Sans'] tracking-[0.15em] uppercase text-white/25 hover:text-white/60 transition-colors flex items-center gap-1.5"
@@ -895,7 +966,7 @@ function AdminBlogPage() {
               </span>
             )}
           </div>
-          <div className="flex-1 overflow-hidden">
+          <div className="flex-1 min-h-0 overflow-hidden">
             <PostEditor
               post={activePost}
               onSave={savePost}

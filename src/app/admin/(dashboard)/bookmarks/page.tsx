@@ -9,7 +9,7 @@
  * localStorage used as fast cache; KV is source of truth.
  */
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { AdminNotice } from "@/components/admin/admin-notice";
 import { adminCx, FormField } from "@/components/admin/admin-primitives";
@@ -164,7 +164,7 @@ function QuickAddModal({
         exit={{ opacity: 0, scale: 0.96, y: 12 }}
         transition={{ duration: 0.2 }}
         onClick={(e) => e.stopPropagation()}
-        className="relative bg-[#0f0f0f] border border-white/[0.10] w-full max-w-lg shadow-2xl"
+        className="relative bg-[#0f0f0f] border border-white/[0.10] w-full max-w-lg max-h-[85dvh] overflow-y-auto shadow-2xl"
       >
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.07]">
@@ -308,7 +308,7 @@ function EditModal({
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.96 }}
         onClick={(e) => e.stopPropagation()}
-        className="relative bg-[#0f0f0f] border border-white/[0.10] w-full max-w-lg shadow-2xl"
+        className="relative bg-[#0f0f0f] border border-white/[0.10] w-full max-w-lg max-h-[85dvh] overflow-y-auto shadow-2xl"
       >
         <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.07]">
           <p className="font-['Anton'] text-sm tracking-[0.12em] text-white uppercase">Edit Bookmark</p>
@@ -567,15 +567,23 @@ function AdminBookmarksPage() {
   const [view, setView] = useState<"grid" | "list">("grid");
   const [sortBy, setSortBy] = useState<"newest" | "oldest" | "title">("newest");
   const [notice, setNotice] = useState<{ kind: "info" | "success" | "error"; text: string } | null>(null);
+  const hasLocalEditsSinceMount = useRef(false);
 
   // Load from Supabase KV on mount, fall back to localStorage cache
   const loadFromKV = useCallback(async () => {
     const result = await fetchAllBookmarks();
-    if (result.ok && result.bookmarks.length > 0) {
-      const loaded = result.bookmarks as BookmarkItem[];
-      setBookmarks(loaded);
-      try { localStorage.setItem(BM_STORAGE_KEY, JSON.stringify(loaded)); } catch {}
-      setNotice({ kind: "success", text: "Bookmarks synced from storage." });
+    if (result.ok) {
+      if (!hasLocalEditsSinceMount.current) {
+        const loaded = result.bookmarks as BookmarkItem[];
+        setBookmarks(loaded);
+        try { localStorage.setItem(BM_STORAGE_KEY, JSON.stringify(loaded)); } catch {}
+      }
+      setNotice({
+        kind: "success",
+        text: hasLocalEditsSinceMount.current
+          ? "Storage sync completed. Local edits are kept."
+          : "Bookmarks synced from storage.",
+      });
     } else if (!result.ok) {
       setNotice({ kind: "error", text: getAdminErrorMessage(result.error) });
     }
@@ -590,6 +598,7 @@ function AdminBookmarksPage() {
   }, [bookmarks]);
 
   async function add(bookmark: BookmarkItem) {
+    hasLocalEditsSinceMount.current = true;
     setBookmarks((b) => [bookmark, ...b]);
     setNotice({ kind: "info", text: "Saving bookmark..." });
     const result = await saveBookmark(bookmark);
@@ -602,6 +611,7 @@ function AdminBookmarksPage() {
   }
 
   async function update(updated: BookmarkItem) {
+    hasLocalEditsSinceMount.current = true;
     const previous = bookmarks;
     setBookmarks((b) => b.map((bm) => bm.id === updated.id ? updated : bm));
     setNotice({ kind: "info", text: "Updating bookmark..." });
@@ -616,6 +626,7 @@ function AdminBookmarksPage() {
 
   async function remove(id: string) {
     if (!confirm("Delete this bookmark?")) return;
+    hasLocalEditsSinceMount.current = true;
     const previous = bookmarks;
     setBookmarks((b) => b.filter((bm) => bm.id !== id));
     setNotice({ kind: "info", text: "Deleting bookmark..." });

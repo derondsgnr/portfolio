@@ -1,6 +1,7 @@
 "use server";
 
-import { verifyAdminSession } from "@/lib/admin/auth";
+import { getAdminSession } from "@/lib/admin/auth";
+import { hasAdminCapability } from "@/lib/admin/permissions";
 import {
   acknowledgeMonitoringAlert,
   loadMonitoringOverview,
@@ -9,8 +10,9 @@ import {
 } from "@/lib/monitoring/health";
 
 async function requireAdmin() {
-  const ok = await verifyAdminSession();
-  if (!ok) throw new Error("Unauthorized");
+  const session = await getAdminSession();
+  if (!session.authenticated || !session.role) throw new Error("Unauthorized");
+  if (!hasAdminCapability(session.role, "monitoring")) throw new Error("Forbidden");
 }
 
 export async function fetchMonitoringOverview() {

@@ -402,8 +402,8 @@ export function CaseStudiesClient({ initialStudies }: { initialStudies: CaseStud
           </div>
         </div>
       ) : (
-        <div className="-mx-10 -my-12 h-screen flex flex-col">
-          <div className="px-6 py-2.5 border-b border-white/[0.05] flex items-center gap-3 bg-[#0A0A0A] shrink-0">
+        <div className="-mx-6 lg:-mx-8 -mt-6 lg:-mt-8 -mb-6 lg:-mb-8 h-[calc(100dvh-3.5rem)] lg:h-[100dvh] flex flex-col">
+          <div className="px-6 py-2.5 border-b border-white/[0.05] flex items-center gap-3 bg-[#0A0A0A] shrink-0 sticky top-0 z-20">
             <button onClick={() => setActiveSlug(null)} className="text-[10px] font-['Instrument_Sans'] tracking-[0.15em] uppercase text-white/25 hover:text-white/60 transition-colors flex items-center gap-1.5">
               ← All Case Studies
             </button>
@@ -411,7 +411,7 @@ export function CaseStudiesClient({ initialStudies }: { initialStudies: CaseStud
             <span className="text-[10px] font-['Instrument_Sans'] text-white/30 truncate">{activeStudy.meta.title}</span>
             {lastSaved && <span className="text-[9px] text-white/15 font-['Instrument_Sans'] ml-auto">Saved {lastSaved}</span>}
           </div>
-          <div className="flex-1 overflow-hidden">
+          <div className="flex-1 min-h-0 overflow-hidden">
             <StudyEditor study={activeStudy} onSave={save} isSaving={savingSlug === activeStudy.slug} />
           </div>
         </div>

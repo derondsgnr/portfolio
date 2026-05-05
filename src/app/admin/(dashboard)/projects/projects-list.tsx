@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { saveProjects } from "../../actions";
 import { AdminSaveFeedback } from "@/components/admin/admin-save-feedback";
 import type { Project } from "@/lib/content/projects";
@@ -14,6 +14,10 @@ export function ProjectsList({ initial }: Props) {
   const [adding, setAdding] = useState(false);
   const [status, setStatus] = useState<"idle" | "saving" | "ok" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
+  useEffect(() => {
+    setProjects(initial);
+  }, [initial]);
 
   async function handleSave(updated: Project[]) {
     setStatus("saving");
