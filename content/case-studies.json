@@ -836,7 +836,7 @@
       "testimonial": "You designed something my team of 12 couldn't figure out in 6 months. And you did it with paper and voice memos.",
       "testimonialAuthor": "Founder, Stealth Health Startup"
     },
-    "status": "published",
+    "status": "archived",
     "featured": false,
     "pinned": false
   },
@@ -990,7 +990,7 @@
       "testimonial": "For the first time, our brand feels like us — not like a Western studio trying to 'do Africa.' You captured something we couldn't articulate.",
       "testimonialAuthor": "Amara Osei, Co-Founder, Kora Collective"
     },
-    "status": "published",
+    "status": "archived",
     "featured": false,
     "pinned": false
   },
@@ -1230,7 +1230,7 @@
       "testimonial": "We went from 'is this a scam?' to 'can you expand to Abuja?' in six weeks. That's not a redesign — that's a reputation rebuild.",
       "testimonialAuthor": "Tunde Adeyemi, CEO, Soro Markets"
     },
-    "status": "archived",
+    "status": "published",
     "featured": false,
     "pinned": false
   }
