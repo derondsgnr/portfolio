@@ -25,6 +25,47 @@ function fitForSpec(spec: ImageRoleSpec): ImageFit {
   return "cover";
 }
 
+export function ImageRatioHint({
+  role,
+  aspectIds,
+  className,
+}: {
+  role: ImageRoleId;
+  aspectIds?: string[];
+  className?: string;
+}) {
+  const spec = getImageRoleSpec(role);
+  const aspects = aspectIds
+    ? spec.aspects.filter((aspect) => aspectIds.includes(aspect.id))
+    : spec.aspects;
+
+  return (
+    <div className={cx("space-y-2", className)}>
+      <p className="text-[9px] uppercase tracking-[0.16em] text-white/30 font-['Instrument_Sans']">
+        Proportions this field can use
+      </p>
+      <div className="flex flex-wrap gap-1.5">
+        {aspects.map((aspect) => (
+          <span
+            key={aspect.id}
+            title={`${aspect.label}: ${aspect.size}. ${aspect.usage}`}
+            className={cx(
+              "inline-flex items-center gap-1 border px-2 py-1 text-[9px] uppercase tracking-[0.11em] font-['Instrument_Sans']",
+              aspect.required
+                ? "border-[#E2B93B]/35 bg-[#E2B93B]/10 text-[#E2B93B]/85"
+                : "border-white/[0.08] bg-white/[0.025] text-white/45"
+            )}
+          >
+            <span>{aspect.label}</span>
+            <span className="text-white/25">{aspect.ratio}</span>
+            <span className="hidden text-white/20 sm:inline">{aspect.size}</span>
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function RatioPreview({
   aspect,
   imageUrl,
@@ -119,6 +160,7 @@ export function ImageFieldGuide({
               Safe zone: {spec.safeZone}
             </p>
           ) : null}
+          {compact ? <ImageRatioHint role={role} className="mt-3" /> : null}
         </div>
         <div className="flex flex-wrap gap-2">
           <span className="border border-white/[0.08] px-2 py-1 text-[9px] uppercase tracking-[0.12em] text-white/35">

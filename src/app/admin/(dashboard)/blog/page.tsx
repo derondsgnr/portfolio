@@ -14,7 +14,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { saveBlogSeries, saveBlogCategories, loadContent, saveContent } from "@/app/admin/actions";
 import { useAdmin } from "@/components/admin/admin-context";
 import { adminCx, PageHeader, FormField } from "@/components/admin/admin-primitives";
-import { ImageFieldGuide } from "@/components/admin/image-system-guide";
+import { ImageFieldGuide, ImageRatioHint } from "@/components/admin/image-system-guide";
 import { SlideEditor } from "@/components/admin/slide-editor";
 import { useUnsavedChangesGuard } from "@/hooks/useUnsavedChangesGuard";
 import { BLOG_POSTS } from "@/lib/data/blog-data";
@@ -318,6 +318,7 @@ function PostEditor({
                     </FormField>
                   </div>
                   <FormField label="Cover Image URL" className="lg:col-span-2">
+                    <ImageRatioHint role="blog-cover" className="mb-2" />
                     <input className={adminCx.input} value={form.meta.cover} onChange={(e) => setMeta("cover", e.target.value)} placeholder="https://..." />
                     <ImageFieldGuide role="blog-cover" imageUrl={form.meta.cover} compact className="mt-3" />
                   </FormField>
@@ -549,6 +550,7 @@ function SeriesManager({
             <textarea className={adminCx.textarea} rows={2} value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} placeholder="1-2 sentence summary of the series" />
           </FormField>
           <FormField label="Cover Image URL">
+            <ImageRatioHint role="blog-cover" className="mb-2" />
             <input className={adminCx.input} value={form.cover ?? ""} onChange={(e) => setForm({ ...form, cover: e.target.value || undefined })} placeholder="https://..." />
             <ImageFieldGuide role="blog-cover" imageUrl={form.cover} compact className="mt-3" />
           </FormField>

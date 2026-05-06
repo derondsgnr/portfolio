@@ -4,6 +4,7 @@ export type ImageRoleId =
   | "case-study-screenshot"
   | "craft-gallery"
   | "blog-cover"
+  | "social-preview"
   | "avatar-logo"
   | "global-background";
 
@@ -189,6 +190,31 @@ export const IMAGE_ROLE_SPECS: ImageRoleSpec[] = [
     uploadNotes: [
       "Do not upload full presentation mockups as logos.",
       "For avatars, square crops are mandatory because the UI often rounds them.",
+    ],
+  },
+  {
+    id: "social-preview",
+    label: "Social Preview",
+    shortLabel: "Social",
+    summary:
+      "Open Graph/social sharing image. This should work as a clear external preview card when links are shared.",
+    master: "Upload/export a 1200 x 630 image. Keep the main identity and headline inside the center safe area.",
+    behavior: "Art-directed crop",
+    defaultFit: "cover",
+    safeZone: "Keep logos, title text, and key visuals inside the center 80%. Social platforms may crop a few pixels at the edges.",
+    usedIn: ["Open Graph previews", "Twitter/X large summary cards", "Link unfurls"],
+    aspects: [
+      { id: "og", label: "OG / social card", ratio: "1200 / 630", size: "1200 x 630", required: true, usage: "Link preview card" },
+      { id: "fallback", label: "Wide fallback", ratio: "16 / 9", size: "2400 x 1350", usage: "Can be adapted into an OG crop" },
+    ],
+    designerChecklist: [
+      "Design this as a standalone card; it may appear outside the portfolio.",
+      "Use large readable text if text is included.",
+      "Avoid fine UI details and thin lines.",
+    ],
+    uploadNotes: [
+      "Use 1200 x 630 for best Open Graph compatibility.",
+      "If using a portfolio image, make a deliberate social crop rather than reusing a random cover.",
     ],
   },
   {

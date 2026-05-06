@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { ImageRatioHint } from "@/components/admin/image-system-guide";
 import type { TestimonialItem } from "@/lib/content/testimonials";
 
 type Props = {
@@ -150,6 +151,7 @@ export function TestimonialForm({ testimonial, onSave, onCancel }: Props) {
           <label htmlFor="avatar" className={labelClass}>
             Avatar URL (user photo)
           </label>
+          <ImageRatioHint role="avatar-logo" aspectIds={["avatar"]} className="mb-2" />
           <input
             id="avatar"
             type="url"
@@ -170,6 +172,7 @@ export function TestimonialForm({ testimonial, onSave, onCancel }: Props) {
           <label htmlFor="companyLogo" className={labelClass}>
             Company logo URL
           </label>
+          <ImageRatioHint role="avatar-logo" aspectIds={["logo"]} className="mb-2" />
           <input
             id="companyLogo"
             type="url"

@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import { saveMedia, saveCraftItems, saveExplorations } from "../../actions";
 import { AdminSaveFeedback } from "@/components/admin/admin-save-feedback";
-import { ImageFieldGuide } from "@/components/admin/image-system-guide";
+import { ImageFieldGuide, ImageRatioHint } from "@/components/admin/image-system-guide";
 import { useUnsavedChangesGuard } from "@/hooks/useUnsavedChangesGuard";
 import type { MediaConfig } from "@/lib/content/media";
 import type { CraftItem } from "@/lib/content/craft";
@@ -174,6 +174,7 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
             <label htmlFor="heroBackground" className={labelClass}>
               Hero background URL
             </label>
+            <ImageRatioHint role="global-background" className="mb-2" />
             <input
               id="heroBackground"
               type="url"
@@ -191,6 +192,7 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
                 <label htmlFor={`sectionBg-${key}`} className="font-mono text-xs text-white/40">
                   {key}
                 </label>
+                <ImageRatioHint role="global-background" className="mb-2 mt-1" />
                 <input
                   id={`sectionBg-${key}`}
                   type="url"
@@ -237,6 +239,7 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
                   <span className="font-mono text-xs text-white/50 block truncate">
                     [{item.id}] {item.title}
                   </span>
+                  <ImageRatioHint role="craft-gallery" className="mt-2" />
                   <input
                     type="url"
                     value={item.image}
@@ -306,6 +309,7 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
                   <span className="font-mono text-xs text-white/50 block truncate">
                     [{item.id}] {item.title}
                   </span>
+                  <ImageRatioHint role="craft-gallery" className="mt-2" />
                   <input
                     type="url"
                     value={item.image}

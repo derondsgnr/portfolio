@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ImageFieldGuide } from "@/components/admin/image-system-guide";
+import { ImageFieldGuide, ImageRatioHint } from "@/components/admin/image-system-guide";
 import { useUnsavedChangesGuard } from "@/hooks/useUnsavedChangesGuard";
 import type { Project } from "@/lib/content/projects";
 
@@ -132,6 +132,7 @@ export function ProjectForm({ project, onSave, onCancel }: Props) {
       </div>
       <div>
         <label className={labelClass}>Image URL</label>
+        <ImageRatioHint role="project-cover" className="mb-2" />
         <input
           type="text"
           value={form.image ?? ""}
