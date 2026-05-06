@@ -10,8 +10,8 @@ export type Project = {
   image: string;
   slug: string;
   status?: "published" | "draft" | "archived";
-  featured?: boolean;
-  pinned?: boolean;
+  featured: boolean;
+  pinned: boolean;
 };
 
 function normalizeProject(project: Project): Project {

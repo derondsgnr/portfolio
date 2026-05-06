@@ -14,7 +14,7 @@ export type SiteMeta = {
 
 const DEFAULT: SiteMeta = {
   title: "derondsgnr | Product Designer & Builder",
-  description: "Product designer and builder based in Lagos, Nigeria.",
+  description: "Designer and builder in Nigeria (remote). Prototype-first product work — systems, interfaces, and shipped software.",
   siteName: "derondsgnr",
   url: "https://derondsgnr.com",
   ogImage: "",

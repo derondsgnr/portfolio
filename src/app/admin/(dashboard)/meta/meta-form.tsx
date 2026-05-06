@@ -54,7 +54,7 @@ export function MetaForm({ initial }: Props) {
       </div>
       <div>
         <label htmlFor="description" className={labelClass}>Description</label>
-        <textarea id="description" name="description" rows={2} defaultValue={initial.description} className={inputClass} placeholder="Product designer and builder based in Lagos, Nigeria." />
+        <textarea id="description" name="description" rows={2} defaultValue={initial.description} className={inputClass} placeholder="Product designer and builder — prototype to ship. Short meta for search and sharing." />
       </div>
       <div>
         <label htmlFor="siteName" className={labelClass}>Site name</label>

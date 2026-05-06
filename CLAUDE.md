@@ -7,7 +7,7 @@
 
 ## IDENTITY
 
-**Owner:** Deron — product designer and builder based in Lagos, Nigeria
+**Owner:** Deron — product designer and builder (remote, Nigeria)
 **Site:** derondsgnr.com
 **Repo:** github.com/derondsgnr/portfolio
 **Stack:** Next.js 15 (App Router) · React 18 · TypeScript · Tailwind CSS 3 · Supabase · Vercel

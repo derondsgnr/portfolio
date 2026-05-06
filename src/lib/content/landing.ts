@@ -26,15 +26,15 @@ export async function getLandingContent(): Promise<LandingContent> {
     hero: {
       name: p.hero?.name ?? "DERON",
       tagline: p.hero?.tagline ?? "PRODUCT_DESIGNER // BUILDER",
-      philosophy: p.hero?.philosophy ?? "Your product will be judged on how it looks before anyone uses it.",
+      philosophy: p.hero?.philosophy ?? "Prototype to learn what's possible, then refine until it ships—clear enough to use, memorable enough to feel.",
     },
     about: {
       label: p.about?.label ?? "> ABOUT.DECODE()",
       headline: p.about?.headline ?? "Designer who",
       headlineAccent: p.about?.headlineAccent ?? "ships",
       bioParagraphs: p.about?.bioParagraphs?.length ? p.about.bioParagraphs : [
-        "I'm Deron — a product designer and builder based in Lagos, Nigeria. I work at the intersection of design and engineering, which means I don't just hand off Figma files. I build what I design.",
-        "Over 5 years, I've helped startups and scale-ups ship products that users actually love — not just tolerate. I think in systems, obsess over details, and believe that how something feels is as important as what it does.",
+        "I'm Deron — a designer who ships and builds. I start by prototyping to explore what's possible, test the problem, and pressure the solution until it's real. Then I go back and refine the finer details until they fit—interaction, motion, typography, and the moments people remember.",
+        "I care that products are intuitive, and also delightful: users should leave with a feeling, not just a completed task. I've spent years with startups and teams at the intersection of design and product—thinking in systems, validating what we ship, and staying hungry to learn and push what's next.",
       ],
       stats: p.about?.stats?.length ? p.about.stats : [
         { label: "YEARS", value: "5+" },

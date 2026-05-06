@@ -1,5 +1,16 @@
 [
   {
+    "id": "08",
+    "title": "CareerEdge",
+    "category": "Career / EdTech",
+    "year": "2026",
+    "description": "Multi-role career platform — I positioned the AI guide as the product spine so a massive surface area stays learnable: progressive disclosure, honest navigation, and context that carries across journeys.",
+    "image": "https://placehold.co/1080x608/0A0A0A/E2B93B/png?text=CareerEdge%20%C2%B7%20Career%20OS",
+    "slug": "careeredge",
+    "featured": true,
+    "pinned": true
+  },
+  {
     "id": "01",
     "title": "Bridgepay",
     "category": "Fintech",

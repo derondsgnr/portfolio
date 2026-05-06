@@ -134,8 +134,7 @@ export function SynthesisProcess() {
               color: "rgba(255,255,255,0.3)",
             }}
           >
-            Every project follows this rhythm. Four phases, each building on the last, 
-            each with clear deliverables and checkpoints.
+            Every engagement follows a rhythm—explore with prototypes, decide with intent, craft the feel, then ship with validation. Four beats, each with something you can point at in the work.
           </p>
         </motion.div>
 

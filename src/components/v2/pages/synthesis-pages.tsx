@@ -1312,7 +1312,12 @@ export function SynthesisAboutPage({ copy }: { copy?: PageCopy } = {}) {
           className="mt-8 flex justify-between"
           style={{ fontFamily: "monospace", fontSize: "9px", color: "rgba(255,255,255,0.15)", letterSpacing: "0.1em" }}
         >
-          <span>LOCATION: {V2_ABOUT.location.toUpperCase()} // LAT: {V2_ABOUT.coordinates.lat} // LNG: {V2_ABOUT.coordinates.lng}</span>
+          <span>
+            LOCATION: {V2_ABOUT.location.toUpperCase()}
+            {V2_ABOUT.coordinates.lat
+              ? ` // LAT: ${V2_ABOUT.coordinates.lat} // LNG: ${V2_ABOUT.coordinates.lng}`
+              : ""}
+          </span>
           <span>STATUS: {V2_ABOUT.currently.toUpperCase()}</span>
         </motion.div>
 
@@ -1412,8 +1417,12 @@ export function SynthesisAboutPage({ copy }: { copy?: PageCopy } = {}) {
               <div style={{ fontFamily: "monospace", fontSize: "10px", color: "rgba(255,255,255,0.2)", lineHeight: 2 }}>
                 <p>HANDLE: @{V2_ABOUT.handle}</p>
                 <p>LOCATION: {V2_ABOUT.location.toUpperCase()}</p>
-                <p>LAT: {V2_ABOUT.coordinates.lat}</p>
-                <p>LNG: {V2_ABOUT.coordinates.lng}</p>
+                {V2_ABOUT.coordinates.lat ? (
+                  <>
+                    <p>LAT: {V2_ABOUT.coordinates.lat}</p>
+                    <p>LNG: {V2_ABOUT.coordinates.lng}</p>
+                  </>
+                ) : null}
                 <p>STATUS: <span style={{ color: "#E2B93B" }}>{V2_ABOUT.currently.toUpperCase()}</span></p>
               </div>
             </div>

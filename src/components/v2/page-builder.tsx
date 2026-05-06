@@ -9,6 +9,7 @@ const SectionRenderer = dynamic(
   () => import("@/lib/section-registry").then((m) => ({ default: m.SectionRenderer })),
   { ssr: true }
 );
+import type { BlogPost } from "@/types/blog";
 import type { PageConfig } from "@/lib/content/pages";
 import type { Project } from "@/lib/content/projects";
 import type { LandingContent } from "@/lib/content/landing";
@@ -62,9 +63,10 @@ type Props = {
   projects: Project[];
   landing: LandingContent;
   pageCopy?: PageCopy;
+  latestPosts?: BlogPost[];
 };
 
-export function PageBuilder({ pageConfig, projects, landing, pageCopy }: Props) {
+export function PageBuilder({ pageConfig, projects, landing, pageCopy, latestPosts }: Props) {
   const [loaded, setLoaded] = useState(false);
 
   return (
@@ -93,6 +95,7 @@ export function PageBuilder({ pageConfig, projects, landing, pageCopy }: Props) 
               landing={landing}
               pageCopy={pageCopy}
               sectionOverrides={overrides}
+              latestPosts={latestPosts}
             />
           ))}
         </motion.div>

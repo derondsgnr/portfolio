@@ -40,6 +40,8 @@ import {
   GravityCTA,
 } from "@/components/v2/v2-gravity";
 import { SynthesisProcess, SynthesisCapabilities, SynthesisWork, SynthesisPhilosophy, SynthesisTestimonials } from "@/components/v2/v2-synthesis";
+import { SynthesisJournalStrip } from "@/components/v2/sections/synthesis-journal-strip";
+import type { BlogPost } from "@/types/blog";
 import type { Project } from "@/lib/content/projects";
 import type { LandingContent } from "@/lib/content/landing";
 import type { PageCopy } from "@/lib/content/copy";
@@ -49,6 +51,7 @@ export type SectionProps = {
   landing?: LandingContent;
   pageCopy?: PageCopy;
   sectionOverrides?: Record<string, unknown>;
+  latestPosts?: BlogPost[];
 };
 
 const REGISTRY: Record<string, React.ComponentType<SectionProps>> = {
@@ -84,6 +87,16 @@ const REGISTRY: Record<string, React.ComponentType<SectionProps>> = {
   },
 
   capabilities_synthesis: () => <SynthesisCapabilities />,
+
+  writing_synthesis: (p) => (
+    <SynthesisJournalStrip
+      posts={p.latestPosts}
+      label={p.pageCopy?.writing?.label}
+      title={p.pageCopy?.writing?.title}
+      archiveLabel={p.pageCopy?.writing?.archiveLabel}
+      emptyHint={p.pageCopy?.writing?.emptyHint}
+    />
+  ),
 
   process_synthesis: () => <SynthesisProcess />,
   process_void: () => <VoidProcess />,
@@ -153,6 +166,7 @@ export function SectionRenderer({
   landing,
   pageCopy,
   sectionOverrides,
+  latestPosts,
 }: { id: string; variation: string } & SectionProps) {
   const key = getSectionKey(id, variation);
   const Component = REGISTRY[key];
@@ -163,6 +177,7 @@ export function SectionRenderer({
       landing={landing}
       pageCopy={pageCopy}
       sectionOverrides={sectionOverrides}
+      latestPosts={latestPosts}
     />
   );
 }
