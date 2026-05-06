@@ -1,0 +1,18 @@
+[
+  {
+    "slug": "craft-and-code",
+    "title": "Craft & Code",
+    "description": "A series on what happens when designers build — the decisions, the tradeoffs, and the things you only learn on both sides of the handoff.",
+    "cover": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1400",
+    "posts": [
+      "why-i-build-what-i-design",
+      "on-design-systems-and-taste"
+    ]
+  },
+  {
+    "slug": "building-careeredge-ai-design-code",
+    "title": "Building Careeredge(AI, Design & Code)",
+    "description": "This is an ongoing series on the architectural, experience and system design work I did for Careeredged.\nI will walk you through my thinking and how i arrived at several decisions that made this a usable, delightful and scalable AI integrated system.",
+    "posts": []
+  }
+]
