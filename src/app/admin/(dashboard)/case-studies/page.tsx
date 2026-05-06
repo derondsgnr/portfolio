@@ -1,5 +1,5 @@
 import { getContentWithGitHubOverlay } from "@/lib/admin/content-overlay";
-import { getCaseStudies } from "@/lib/content/case-studies";
+import { getCaseStudies, mergeCaseStudiesOverlay } from "@/lib/content/case-studies";
 import { CaseStudiesClient } from "./case-studies-client";
 
 /**
@@ -11,7 +11,7 @@ export default async function AdminCaseStudiesPage() {
   const initialStudies = await getContentWithGitHubOverlay(
     "content/case-studies.json",
     () => getCaseStudies({ includeDrafts: true, includeArchived: true }),
-    (local, parsed) => (Array.isArray(parsed) ? parsed : local)
+    (local, parsed) => mergeCaseStudiesOverlay(local, parsed)
   );
 
   return <CaseStudiesClient initialStudies={initialStudies} />;

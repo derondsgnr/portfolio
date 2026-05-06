@@ -21,6 +21,25 @@ function sortCaseStudies(items: CaseStudy[]): CaseStudy[] {
   });
 }
 
+/**
+ * Merge persisted JSON (GitHub or content/case-studies.json) with the static registry by slug.
+ * Persisted entry wins per slug; slugs that exist only in code remain listed.
+ */
+export function mergeCaseStudiesOverlay(local: CaseStudy[], overlay: unknown): CaseStudy[] {
+  if (!Array.isArray(overlay)) return local;
+  const map = new Map<string, CaseStudy>();
+  for (const s of local) {
+    map.set(s.slug, normalizeCaseStudy(s));
+  }
+  for (const item of overlay) {
+    if (item && typeof item === "object" && "slug" in item && typeof (item as CaseStudy).slug === "string") {
+      const cs = item as CaseStudy;
+      map.set(cs.slug, normalizeCaseStudy(cs));
+    }
+  }
+  return sortCaseStudies(Array.from(map.values()));
+}
+
 export async function getCaseStudies(options?: {
   includeDrafts?: boolean;
   includeArchived?: boolean;
@@ -32,7 +51,7 @@ export async function getCaseStudies(options?: {
   try {
     const parsed = await readContentJson<CaseStudy[]>("case-studies.json");
     if (Array.isArray(parsed)) {
-      base = parsed.map(normalizeCaseStudy);
+      base = mergeCaseStudiesOverlay(base, parsed);
     }
   } catch {
     // Fallback to static case studies when content file is unavailable.
