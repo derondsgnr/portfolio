@@ -3,10 +3,15 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { saveCaseStudies } from "@/app/admin/actions";
+import { AdminConfirmAction } from "@/components/admin/admin-confirm-dialog";
 import { useAdmin } from "@/components/admin/admin-context";
 import { adminCx, PageHeader, FormField } from "@/components/admin/admin-primitives";
-import { ImageFieldGuide } from "@/components/admin/image-system-guide";
+import { ImageFieldGuide, ImageRatioHint } from "@/components/admin/image-system-guide";
 import { SlideEditor } from "@/components/admin/slide-editor";
+import { useAdminEditorShortcuts } from "@/hooks/useAdminEditorShortcuts";
+import { useUnsavedChangesGuard } from "@/hooks/useUnsavedChangesGuard";
+import { openOnKeyboard } from "@/lib/admin/interaction";
+import { rememberAdminEditor } from "@/lib/admin/recent-editor";
 import type { CaseStudy, Act, Slide } from "@/types/case-study";
 import {
   Plus, ChevronRight, ChevronDown, Trash2, Eye,
@@ -37,9 +42,14 @@ function StudyListItem({
   const slideCount = study.acts.reduce((s, a) => s + a.slides.length, 0);
   return (
     <div
-      className={`w-full flex items-center gap-3 px-4 py-3 border-b border-white/[0.05] transition-all ${
+      role="button"
+      tabIndex={0}
+      onDoubleClick={onClick}
+      onKeyDown={(event) => openOnKeyboard(event, onClick)}
+      className={`group w-full flex items-center gap-3 px-4 py-3 border-b border-white/[0.05] transition-all cursor-pointer focus:outline-none focus:bg-white/[0.03] ${
         isActive ? "bg-[#E2B93B]/[0.06] border-l-2 border-l-[#E2B93B]" : "hover:bg-white/[0.02]"
       }`}
+      title="Double-click or press Enter to edit"
     >
       <button onClick={onClick} className="flex items-center gap-3 min-w-0 flex-1 text-left">
         {study.meta.cover ? (
@@ -57,6 +67,7 @@ function StudyListItem({
             {study.featured && <span className="ml-1.5 text-[#E2B93B]/45">FEATURED</span>}
             {study.status === "draft" && <span className="ml-1.5 text-white/30">DRAFT</span>}
             {study.status === "archived" && <span className="ml-1.5 text-white/20">ARCHIVED</span>}
+            <span className="ml-1.5 text-white/15 opacity-0 transition-opacity group-hover:opacity-100">OPEN</span>
           </p>
         </div>
         <ChevronRight size={12} className={`shrink-0 transition-colors ${isActive ? "text-[#E2B93B]/60" : "text-white/15"}`} />
@@ -69,13 +80,20 @@ function StudyListItem({
         >
           {study.status === "archived" ? "Unarchive" : "Archive"}
         </button>
-        <button
-          type="button"
-          onClick={onDelete}
-          className="px-2 py-1 border border-red-400/20 text-[9px] font-['Instrument_Sans'] tracking-[0.12em] uppercase text-red-300/45 hover:text-red-300/80 hover:border-red-300/45 transition-colors"
+        <AdminConfirmAction
+          title="Delete case study?"
+          description={`Delete "${study.meta.title}" permanently from the case study JSON.`}
+          confirmLabel="Delete"
+          destructive
+          onConfirm={onDelete}
         >
-          Delete
-        </button>
+          <button
+            type="button"
+            className="px-2 py-1 border border-red-400/20 text-[9px] font-['Instrument_Sans'] tracking-[0.12em] uppercase text-red-300/45 hover:text-red-300/80 hover:border-red-300/45 transition-colors"
+          >
+            Delete
+          </button>
+        </AdminConfirmAction>
       </div>
     </div>
   );
@@ -115,7 +133,15 @@ function ActPanel({
         <div className="flex items-center gap-1 shrink-0">
           <button onClick={() => onMove("up")} disabled={index === 0} className="p-1 text-white/15 hover:text-white/50 disabled:opacity-20 transition-colors"><ChevronDown size={12} className="rotate-180" /></button>
           <button onClick={() => onMove("down")} disabled={index === total - 1} className="p-1 text-white/15 hover:text-white/50 disabled:opacity-20 transition-colors"><ChevronDown size={12} /></button>
-          <button onClick={onDelete} className="p-1 text-white/10 hover:text-red-400/60 transition-colors ml-1"><Trash2 size={12} /></button>
+          <AdminConfirmAction
+            title="Delete act?"
+            description="Delete this act and every slide inside it."
+            confirmLabel="Delete"
+            destructive
+            onConfirm={onDelete}
+          >
+            <button className="p-1 text-white/10 hover:text-red-400/60 transition-colors ml-1"><Trash2 size={12} /></button>
+          </AdminConfirmAction>
         </div>
       </div>
       {open && (
@@ -134,15 +160,29 @@ function ActPanel({
 function StudyEditor({
   study,
   onSave,
+  onClose,
   isSaving,
 }: {
   study: CaseStudy;
   onSave: (updated: CaseStudy) => void;
+  onClose: () => void;
   isSaving: boolean;
 }) {
   const [form, setForm] = useState<CaseStudy>(study);
   const [tagInput, setTagInput] = useState("");
   const [metaOpen, setMetaOpen] = useState(false);
+  const hasUnsavedChanges = JSON.stringify(form) !== JSON.stringify(study);
+  const confirmIfUnsaved = useUnsavedChangesGuard(
+    hasUnsavedChanges,
+    "You have unsaved changes in this case study. Leave without saving?"
+  );
+  useAdminEditorShortcuts({
+    onSave: () => onSave(form),
+    onCancel: () => {
+      if (confirmIfUnsaved()) onClose();
+    },
+    saveEnabled: !isSaving,
+  });
 
   useEffect(() => { setForm(study); }, [study]);
 
@@ -164,7 +204,6 @@ function StudyEditor({
   }
 
   function deleteAct(index: number) {
-    if (!confirm("Delete this act and all its slides?")) return;
     setForm((f) => ({ ...f, acts: f.acts.filter((_, i) => i !== index) }));
   }
 
@@ -188,6 +227,11 @@ function StudyEditor({
           <h2 className="font-['Anton'] text-lg tracking-[0.06em] text-white uppercase mt-0.5 truncate max-w-xs">
             {form.meta.title}
           </h2>
+          {hasUnsavedChanges ? (
+            <p className="mt-1 text-[9px] uppercase tracking-[0.16em] text-[#E2B93B]/70 font-['Instrument_Sans']">
+              Unsaved changes · Cmd/Ctrl+S saves
+            </p>
+          ) : null}
         </div>
         <div className="flex items-center gap-2">
           <select
@@ -260,6 +304,7 @@ function StudyEditor({
                     </FormField>
                   </div>
                   <FormField label="Cover Image URL" className="lg:col-span-2">
+                    <ImageRatioHint role="case-study-hero" className="mb-2" />
                     <input className={adminCx.input} value={form.meta.cover} onChange={(e) => setMeta("cover", e.target.value)} placeholder="https://..." />
                     <ImageFieldGuide role="case-study-hero" imageUrl={form.meta.cover} compact className="mt-3" />
                   </FormField>
@@ -391,6 +436,28 @@ export function CaseStudiesClient({ initialStudies }: { initialStudies: CaseStud
     }
   }, [listPage, pageCount]);
 
+  useEffect(() => {
+    const slug = new URLSearchParams(window.location.search).get("study");
+    if (slug && studies.some((study) => study.slug === slug)) {
+      setActiveSlug(slug);
+    }
+  }, [studies]);
+
+  function openStudy(study: CaseStudy) {
+    rememberAdminEditor({
+      section: "case-studies",
+      label: study.meta.title,
+      href: `/admin/case-studies?study=${study.slug}`,
+    });
+    window.history.replaceState(null, "", `/admin/case-studies?study=${study.slug}`);
+    setActiveSlug(study.slug);
+  }
+
+  function closeStudyEditor() {
+    window.history.replaceState(null, "", "/admin/case-studies");
+    setActiveSlug(null);
+  }
+
   async function save(study: CaseStudy) {
     setSavingSlug(study.slug);
     const updated = studies.map((s) => s.slug === study.slug ? study : s);
@@ -398,6 +465,7 @@ export function CaseStudiesClient({ initialStudies }: { initialStudies: CaseStud
     if (result.ok) {
       setStudies(updated);
       pushHistory("case-studies", "Case Studies", `Saved: ${study.meta.title}`, updated);
+      openStudy(study);
       setLastSaved(new Date().toLocaleTimeString());
     }
     setSavingSlug(null);
@@ -421,7 +489,6 @@ export function CaseStudiesClient({ initialStudies }: { initialStudies: CaseStud
   }
 
   async function removeStudy(study: CaseStudy) {
-    if (!confirm(`Delete "${study.meta.title}" permanently?`)) return;
     const nextStudies = studies.filter((item) => item.slug !== study.slug);
     await updateAndPersist(nextStudies, `Deleted: ${study.meta.title}`);
   }
@@ -437,7 +504,7 @@ export function CaseStudiesClient({ initialStudies }: { initialStudies: CaseStud
       acts: [],
     };
     setStudies((s) => [blank, ...s]);
-    setActiveSlug(blank.slug);
+    openStudy(blank);
   }
 
   return (
@@ -459,16 +526,34 @@ export function CaseStudiesClient({ initialStudies }: { initialStudies: CaseStud
             </button>
           </div>
           <div className="max-w-2xl border border-white/[0.07] overflow-hidden">
-            {paginatedStudies.map((study) => (
-              <StudyListItem
-                key={study.slug}
-                study={study}
-                isActive={false}
-                onClick={() => setActiveSlug(study.slug)}
-                onToggleArchive={() => toggleArchive(study)}
-                onDelete={() => removeStudy(study)}
-              />
-            ))}
+            {paginatedStudies.length > 0 ? (
+              paginatedStudies.map((study) => (
+                <StudyListItem
+                  key={study.slug}
+                  study={study}
+                  isActive={false}
+                onClick={() => openStudy(study)}
+                  onToggleArchive={() => toggleArchive(study)}
+                  onDelete={() => removeStudy(study)}
+                />
+              ))
+            ) : (
+              <div className="p-8 text-center">
+                <p className="text-[11px] uppercase tracking-[0.16em] text-white/45 font-['Instrument_Sans']">
+                  No case studies yet
+                </p>
+                <p className="mt-2 text-xs leading-relaxed text-white/30 font-['Instrument_Sans']">
+                  Start a draft, add acts, then build the narrative with slides.
+                </p>
+                <button
+                  type="button"
+                  onClick={newStudy}
+                  className="mt-4 bg-[#E2B93B] px-4 py-2 text-[10px] uppercase tracking-[0.14em] text-[#0A0A0A] transition-colors hover:bg-white font-['Anton']"
+                >
+                  Create first study
+                </button>
+              </div>
+            )}
           </div>
           {studies.length > LIST_PAGE_SIZE ? (
             <div className="max-w-2xl mt-3 flex items-center justify-between">
@@ -499,7 +584,7 @@ export function CaseStudiesClient({ initialStudies }: { initialStudies: CaseStud
       ) : (
         <div className="-mx-6 lg:-mx-8 -mt-6 lg:-mt-8 -mb-6 lg:-mb-8 h-[calc(100dvh-3.5rem)] lg:h-[100dvh] flex flex-col">
           <div className="px-6 py-2.5 border-b border-white/[0.05] flex items-center gap-3 bg-[#0A0A0A] shrink-0 sticky top-0 z-20">
-            <button onClick={() => setActiveSlug(null)} className="text-[10px] font-['Instrument_Sans'] tracking-[0.15em] uppercase text-white/25 hover:text-white/60 transition-colors flex items-center gap-1.5">
+            <button data-unsaved-guard-trigger onClick={closeStudyEditor} className="text-[10px] font-['Instrument_Sans'] tracking-[0.15em] uppercase text-white/25 hover:text-white/60 transition-colors flex items-center gap-1.5">
               ← All Case Studies
             </button>
             <span className="text-white/10">/</span>
@@ -507,7 +592,7 @@ export function CaseStudiesClient({ initialStudies }: { initialStudies: CaseStud
             {lastSaved && <span className="text-[9px] text-white/15 font-['Instrument_Sans'] ml-auto">Saved {lastSaved}</span>}
           </div>
           <div className="flex-1 min-h-0 overflow-hidden">
-            <StudyEditor study={activeStudy} onSave={save} isSaving={savingSlug === activeStudy.slug} />
+            <StudyEditor study={activeStudy} onSave={save} onClose={closeStudyEditor} isSaving={savingSlug === activeStudy.slug} />
           </div>
         </div>
       )}

@@ -20,6 +20,7 @@ import {
   Link2, Layout, X, Menu, LogOut, ExternalLink,
   MessageSquare, Bookmark, FileText, Mail, Rocket,
   CalendarClock, Users, Send, Bot, Brain, Clapperboard, KeyRound, Crop,
+  Keyboard,
 } from "lucide-react";
 import { logout } from "@/app/admin/actions";
 
@@ -319,6 +320,24 @@ function SidebarContent({ onClose }: { onClose?: () => void }) {
 
       {/* Footer */}
       <div className="px-3 py-4 border-t border-white/[0.06] space-y-1 shrink-0">
+        <div className="mb-2 border border-white/[0.05] bg-white/[0.015] px-3 py-2.5">
+          <div className="mb-2 flex items-center gap-2 text-white/25">
+            <Keyboard size={12} />
+            <span className="text-[9px] font-['Instrument_Sans'] uppercase tracking-[0.14em]">
+              Shortcuts
+            </span>
+          </div>
+          <div className="grid grid-cols-2 gap-x-3 gap-y-1 text-[9px] font-['Instrument_Sans'] uppercase tracking-[0.1em] text-white/22">
+            <span>Cmd/Ctrl+S</span>
+            <span className="text-right text-white/35">Save</span>
+            <span>Esc</span>
+            <span className="text-right text-white/35">Close</span>
+            <span>Enter</span>
+            <span className="text-right text-white/35">Open</span>
+            <span>Double-click</span>
+            <span className="text-right text-white/35">Edit</span>
+          </div>
+        </div>
         <Link
           href="/"
           target="_blank"

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { getContactsForAdmin, deleteContactForAdmin, markContactReadForAdmin } from "@/app/actions/contact";
 import { motion, AnimatePresence } from "motion/react";
 import { Mail, Trash2, RefreshCw } from "lucide-react";
+import { AdminConfirmAction } from "@/components/admin/admin-confirm-dialog";
 import { AdminNotice } from "@/components/admin/admin-notice";
 import { getAdminErrorMessage } from "@/lib/admin/feedback";
 
@@ -48,7 +49,6 @@ export function ContactsList({ initial, initialError = null }: Props) {
   }
 
   async function handleDelete(id: string) {
-    if (!confirm("Delete this contact?")) return;
     setDeleting(id);
     setNotice(null);
     const result = await deleteContactForAdmin(id);
@@ -124,9 +124,16 @@ export function ContactsList({ initial, initialError = null }: Props) {
               exit={{ opacity: 0, x: -20 }}
               className="border border-white/10 bg-white/[0.02]"
             >
-              <button
-                type="button"
+              <div
+                role="button"
+                tabIndex={0}
                 onClick={() => toggleExpanded(c)}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") {
+                    event.preventDefault();
+                    toggleExpanded(c);
+                  }
+                }}
                 className="w-full flex items-start justify-between gap-4 text-left p-4"
               >
                 <div className="min-w-0 flex-1">
@@ -146,20 +153,25 @@ export function ContactsList({ initial, initialError = null }: Props) {
                   )}
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleDelete(c.id);
-                    }}
-                    disabled={deleting === c.id}
-                    className="p-2 text-white/30 hover:text-red-400 disabled:opacity-50"
-                    aria-label="Delete"
+                  <AdminConfirmAction
+                    title="Delete contact?"
+                    description={`Delete the message from ${c.name || c.email}.`}
+                    confirmLabel="Delete"
+                    destructive
+                    onConfirm={() => handleDelete(c.id)}
                   >
-                    <Trash2 size={14} />
-                  </button>
+                    <button
+                      type="button"
+                      onClick={(e) => e.stopPropagation()}
+                      disabled={deleting === c.id}
+                      className="p-2 text-white/30 hover:text-red-400 disabled:opacity-50"
+                      aria-label="Delete"
+                    >
+                      <Trash2 size={14} />
+                    </button>
+                  </AdminConfirmAction>
                 </div>
-              </button>
+              </div>
 
               <AnimatePresence>
                 {expanded === c.id && (

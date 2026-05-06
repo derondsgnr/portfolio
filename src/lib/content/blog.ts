@@ -3,7 +3,12 @@ import { BLOG_POSTS } from "@/lib/data/blog-data";
 import { BLOG_SERIES } from "@/lib/data/blog-series-data";
 import { readContentJson } from "./live-source";
 
-export type BlogPostStatus = "published" | "draft" | "archived";
+export type BlogPostStatus = "published" | "draft" | "scheduled" | "archived";
+
+function isScheduledPostVisible(post: BlogPost, now = new Date()): boolean {
+  const publishTime = new Date(`${post.meta.date}T00:00:00`).getTime();
+  return Number.isFinite(publishTime) && publishTime <= now.getTime();
+}
 
 function normalizePost(input: BlogPost): BlogPost {
   return {
@@ -56,6 +61,7 @@ export async function getBlogPosts(options?: {
     const status = post.status ?? "published";
     if (!includeArchived && status === "archived") return false;
     if (!includeDrafts && status === "draft") return false;
+    if (!includeDrafts && status === "scheduled" && !isScheduledPostVisible(post)) return false;
     return true;
   });
 

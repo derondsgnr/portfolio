@@ -12,15 +12,20 @@
 import { useState, useEffect, useMemo, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { saveBlogSeries, saveBlogCategories, loadContent, saveContent } from "@/app/admin/actions";
+import { AdminConfirmAction } from "@/components/admin/admin-confirm-dialog";
 import { useAdmin } from "@/components/admin/admin-context";
 import { adminCx, PageHeader, FormField } from "@/components/admin/admin-primitives";
-import { ImageFieldGuide } from "@/components/admin/image-system-guide";
+import { ImageFieldGuide, ImageRatioHint } from "@/components/admin/image-system-guide";
 import { SlideEditor } from "@/components/admin/slide-editor";
+import { useAdminEditorShortcuts } from "@/hooks/useAdminEditorShortcuts";
+import { useUnsavedChangesGuard } from "@/hooks/useUnsavedChangesGuard";
 import { BLOG_POSTS } from "@/lib/data/blog-data";
 import { BLOG_SERIES } from "@/lib/data/blog-series-data";
+import { openOnKeyboard } from "@/lib/admin/interaction";
+import { rememberAdminEditor } from "@/lib/admin/recent-editor";
 import type { BlogSeries } from "@/types/blog";
 import type { Slide } from "@/types/case-study";
-import { Plus, Eye, Tag, X, ChevronDown, ChevronRight, Pencil, Trash2 } from "lucide-react";
+import { Plus, Eye, Tag, X, ChevronDown, ChevronRight, Pencil, Trash2, Copy } from "lucide-react";
 
 // ─── Types ─────────────────────────────────────────────────────────
 interface PostMeta {
@@ -40,10 +45,138 @@ interface ManagedPost {
   slug: string;
   meta: PostMeta;
   slides: Slide[];
-  status: "published" | "draft" | "archived";
+  status: "published" | "draft" | "scheduled" | "archived";
 }
 
 const DEFAULT_CATEGORIES = ["Thinking", "Craft", "Case Notes", "Process", "Life", "Industry", "Tools"];
+const BLOG_FILTER_STORAGE_KEY = "admin:blog:filters";
+
+type BlogFilterState = {
+  searchQuery: string;
+  statusFilter: "all" | ManagedPost["status"];
+  categoryFilter: string;
+};
+
+function getPublicPostUrl(slug: string): string {
+  if (typeof window !== "undefined") {
+    return `${window.location.origin}/blog/${slug}`;
+  }
+  return `https://derondsgnr.com/blog/${slug}`;
+}
+
+function markdownImage(url?: string, alt = ""): string {
+  if (!url?.trim()) return "";
+  return `![${alt}](${url.trim()})`;
+}
+
+function slideToSubstackMarkdown(slide: Slide): string {
+  switch (slide.type) {
+    case "cover":
+      return [
+        slide.headline ? `# ${slide.headline}` : "",
+        slide.subtitle ?? "",
+        markdownImage(slide.heroImage, slide.headline),
+      ].filter(Boolean).join("\n\n");
+    case "section-break":
+      return [
+        `## ${slide.actTitle}`,
+        slide.subtitle ?? "",
+      ].filter(Boolean).join("\n\n");
+    case "narrative":
+      return [
+        slide.headline ? `## ${slide.headline}` : "",
+        slide.body,
+        slide.annotation ? `> ${slide.annotation}` : "",
+      ].filter(Boolean).join("\n\n");
+    case "quote":
+      return [
+        `> ${slide.quote}`,
+        slide.attribution ? `- ${slide.attribution}${slide.role ? `, ${slide.role}` : ""}` : "",
+      ].filter(Boolean).join("\n\n");
+    case "insight":
+      return [
+        slide.headline ? `## ${slide.headline}` : "",
+        slide.body ?? "",
+        slide.insightLabel ? `**${slide.insightLabel}**` : "",
+        slide.insightText,
+        markdownImage(slide.image, slide.headline),
+      ].filter(Boolean).join("\n\n");
+    case "metric":
+      return [
+        slide.headline ? `## ${slide.headline}` : "",
+        slide.metrics.map((metric) => `- **${metric.value}** ${metric.label}${metric.delta ? ` (${metric.delta})` : ""}`).join("\n"),
+        markdownImage(slide.image, slide.headline),
+      ].filter(Boolean).join("\n\n");
+    case "single-mockup":
+      return [
+        slide.headline ? `## ${slide.headline}` : "",
+        markdownImage(slide.image, slide.caption ?? slide.headline),
+        slide.caption ?? "",
+        slide.annotation ? `> ${slide.annotation}` : "",
+      ].filter(Boolean).join("\n\n");
+    case "comparison":
+      return [
+        slide.headline ? `## ${slide.headline}` : "",
+        markdownImage(slide.before.image, slide.before.label),
+        slide.before.label,
+        markdownImage(slide.after.image, slide.after.label),
+        slide.after.label,
+      ].filter(Boolean).join("\n\n");
+    case "flow":
+      return [
+        slide.headline ? `## ${slide.headline}` : "",
+        slide.screens
+          .map((screen) => [markdownImage(screen.image, screen.label), screen.label ?? ""].filter(Boolean).join("\n\n"))
+          .join("\n\n"),
+      ].filter(Boolean).join("\n\n");
+    case "embed":
+      return [
+        slide.headline ? `## ${slide.headline}` : "",
+        slide.embedUrl,
+        markdownImage(slide.fallbackImage, slide.caption ?? slide.headline),
+        slide.caption ?? "",
+      ].filter(Boolean).join("\n\n");
+    case "video":
+      return [
+        slide.headline ? `## ${slide.headline}` : "",
+        slide.videoUrl ?? "",
+        markdownImage(slide.posterImage, slide.caption ?? slide.headline),
+        slide.caption ?? "",
+      ].filter(Boolean).join("\n\n");
+    case "mockup-gallery":
+      return [
+        slide.headline ? `## ${slide.headline}` : "",
+        slide.mockups
+          .map((mockup) => [markdownImage(mockup.image, mockup.label), mockup.label ?? ""].filter(Boolean).join("\n\n"))
+          .join("\n\n"),
+      ].filter(Boolean).join("\n\n");
+    case "process":
+      return [
+        slide.headline ? `## ${slide.headline}` : "",
+        slide.artifacts
+          .map((artifact) => [
+            markdownImage(artifact.image, artifact.label),
+            `**${artifact.label}**`,
+            artifact.description ?? "",
+          ].filter(Boolean).join("\n\n"))
+          .join("\n\n"),
+      ].filter(Boolean).join("\n\n");
+    default:
+      return "";
+  }
+}
+
+function buildSubstackMarkdown(post: ManagedPost): string {
+  const url = getPublicPostUrl(post.slug);
+  const body = post.slides.map(slideToSubstackMarkdown).filter(Boolean).join("\n\n---\n\n");
+  return [
+    `# ${post.meta.title}`,
+    post.meta.summary,
+    markdownImage(post.meta.cover, post.meta.title),
+    body,
+    `Originally published at ${url}`,
+  ].filter(Boolean).join("\n\n");
+}
 
 // ─── Map static posts ──────────────────────────────────────────────
 const INITIAL_POSTS: ManagedPost[] = BLOG_POSTS.map((p) => ({
@@ -134,9 +267,14 @@ function PostListItem({
 }) {
   return (
     <div
-      className={`w-full flex items-center gap-3 px-4 py-3 border-b border-white/[0.05] transition-all ${
+      role="button"
+      tabIndex={0}
+      onDoubleClick={onClick}
+      onKeyDown={(event) => openOnKeyboard(event, onClick)}
+      className={`group w-full flex items-center gap-3 px-4 py-3 border-b border-white/[0.05] transition-all cursor-pointer focus:outline-none focus:bg-white/[0.03] ${
         isActive ? "bg-[#E2B93B]/[0.06] border-l-2 border-l-[#E2B93B]" : "hover:bg-white/[0.02]"
       }`}
+      title="Double-click or press Enter to edit"
     >
       <button onClick={onClick} className="flex items-center gap-3 min-w-0 flex-1 text-left">
         {/* Cover */}
@@ -153,7 +291,9 @@ function PostListItem({
             {post.meta.category} · {post.slides.length} slides
             {post.meta.pinned && <span className="ml-1.5 text-[#E2B93B]/60">PINNED</span>}
             {post.status === "draft" && <span className="ml-1.5 text-[#E2B93B]/40">DRAFT</span>}
+            {post.status === "scheduled" && <span className="ml-1.5 text-[#E2B93B]/55">SCHEDULED {post.meta.date}</span>}
             {post.status === "archived" && <span className="ml-1.5 text-white/20">ARCHIVED</span>}
+            <span className="ml-1.5 text-white/15 opacity-0 transition-opacity group-hover:opacity-100">OPEN</span>
           </p>
         </div>
         <ChevronRight size={12} className={`shrink-0 transition-colors ${isActive ? "text-[#E2B93B]/60" : "text-white/15"}`} />
@@ -166,13 +306,20 @@ function PostListItem({
         >
           {post.status === "archived" ? "Unarchive" : "Archive"}
         </button>
-        <button
-          type="button"
-          onClick={onDelete}
-          className="px-2 py-1 border border-red-400/20 text-[9px] font-['Instrument_Sans'] tracking-[0.12em] uppercase text-red-300/45 hover:text-red-300/80 hover:border-red-300/45 transition-colors"
+        <AdminConfirmAction
+          title="Delete post?"
+          description={`Delete "${post.meta.title}" permanently from the blog JSON.`}
+          confirmLabel="Delete"
+          destructive
+          onConfirm={onDelete}
         >
-          Delete
-        </button>
+          <button
+            type="button"
+            className="px-2 py-1 border border-red-400/20 text-[9px] font-['Instrument_Sans'] tracking-[0.12em] uppercase text-red-300/45 hover:text-red-300/80 hover:border-red-300/45 transition-colors"
+          >
+            Delete
+          </button>
+        </AdminConfirmAction>
       </div>
     </div>
   );
@@ -197,16 +344,48 @@ function PostEditor({
   const [form, setForm] = useState<ManagedPost>(post);
   const [tagInput, setTagInput] = useState("");
   const [metaOpen, setMetaOpen] = useState(true);
+  const [substackCopyState, setSubstackCopyState] = useState<"idle" | "markdown" | "source" | "error">("idle");
   const categoryOptions =
     form.meta.category && !categoryList.includes(form.meta.category)
       ? [form.meta.category, ...categoryList]
       : categoryList;
+  const hasUnsavedChanges = useMemo(
+    () => JSON.stringify(form) !== JSON.stringify(post),
+    [form, post]
+  );
+  const confirmIfUnsaved = useUnsavedChangesGuard(
+    hasUnsavedChanges,
+    "You have unsaved changes in this blog post. Leave without saving?"
+  );
+  useAdminEditorShortcuts({
+    onSave: () => onSave(form),
+    onCancel: () => {
+      if (confirmIfUnsaved()) onClose();
+    },
+    saveEnabled: !isSaving,
+  });
 
   // Sync when post changes (switching posts)
   useEffect(() => { setForm(post); }, [post]);
 
   function setMeta(key: keyof PostMeta, value: unknown) {
     setForm((f) => ({ ...f, meta: { ...f.meta, [key]: value } }));
+  }
+
+  async function copySubstackText(type: "markdown" | "source") {
+    const url = getPublicPostUrl(form.slug);
+    const text =
+      type === "markdown"
+        ? buildSubstackMarkdown(form)
+        : `Originally published on derondsgnr.com: ${url}`;
+
+    try {
+      await navigator.clipboard.writeText(text);
+      setSubstackCopyState(type);
+      window.setTimeout(() => setSubstackCopyState("idle"), 2200);
+    } catch {
+      setSubstackCopyState("error");
+    }
   }
 
   function addTag() {
@@ -229,6 +408,11 @@ function PostEditor({
           <h2 className="font-['Anton'] text-lg tracking-[0.06em] text-white uppercase mt-0.5 truncate max-w-xs">
             {form.meta.title || "Untitled"}
           </h2>
+          {hasUnsavedChanges ? (
+            <p className="mt-1 text-[9px] uppercase tracking-[0.16em] text-[#E2B93B]/70 font-['Instrument_Sans']">
+              Unsaved changes · Cmd/Ctrl+S saves
+            </p>
+          ) : null}
         </div>
         <div className="flex items-center gap-2">
           <select
@@ -238,6 +422,7 @@ function PostEditor({
           >
             <option value="published" style={{ background: "#0A0A0A" }}>Published</option>
             <option value="draft" style={{ background: "#0A0A0A" }}>Draft</option>
+            <option value="scheduled" style={{ background: "#0A0A0A" }}>Scheduled</option>
             <option value="archived" style={{ background: "#0A0A0A" }}>Archived</option>
           </select>
           <a
@@ -304,11 +489,18 @@ function PostEditor({
                       <select className={adminCx.select} value={form.status} onChange={(e) => setForm((f) => ({ ...f, status: e.target.value as ManagedPost["status"] }))}>
                         <option value="published" style={{ background: "#0A0A0A" }}>Published</option>
                         <option value="draft" style={{ background: "#0A0A0A" }}>Draft</option>
+                        <option value="scheduled" style={{ background: "#0A0A0A" }}>Scheduled</option>
                         <option value="archived" style={{ background: "#0A0A0A" }}>Archived</option>
                       </select>
+                      {form.status === "scheduled" ? (
+                        <p className="mt-1 text-[10px] leading-relaxed text-[#E2B93B]/65 font-['Instrument_Sans']">
+                          Uses the Date field as the publish date. The post stays hidden publicly until that date.
+                        </p>
+                      ) : null}
                     </FormField>
                   </div>
                   <FormField label="Cover Image URL" className="lg:col-span-2">
+                    <ImageRatioHint role="blog-cover" className="mb-2" />
                     <input className={adminCx.input} value={form.meta.cover} onChange={(e) => setMeta("cover", e.target.value)} placeholder="https://..." />
                     <ImageFieldGuide role="blog-cover" imageUrl={form.meta.cover} compact className="mt-3" />
                   </FormField>
@@ -388,6 +580,62 @@ function PostEditor({
         </div>
 
         {/* Slide editor */}
+        <div className="border-b border-white/[0.06] px-6 py-5">
+          <div className="border border-white/[0.07] bg-white/[0.02] p-4">
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+              <div className="max-w-2xl">
+                <p className="text-[10px] tracking-[0.2em] text-[#E2B93B]/70 font-['Instrument_Sans'] uppercase">
+                  Substack Distribution
+                </p>
+                <p className="mt-2 text-xs leading-relaxed text-white/55 font-['Instrument_Sans']">
+                  Publish here first, then use this helper to move a clean version into Substack.
+                  Final formatting and email send still happen inside Substack.
+                </p>
+                <div className="mt-3 grid gap-1 text-[10px] leading-relaxed text-white/35 font-['Instrument_Sans']">
+                  <span>1. Save or publish the portfolio version.</span>
+                  <span>2. Copy the Substack-ready Markdown.</span>
+                  <span>3. Paste into Substack, review images/embeds, then send or schedule there.</span>
+                  <span>4. Keep the source note so readers can find the canonical portfolio post.</span>
+                </div>
+                <p className="mt-3 break-all text-[10px] text-white/25 font-['Instrument_Sans']">
+                  Source URL: {getPublicPostUrl(form.slug)}
+                </p>
+              </div>
+              <div className="flex flex-wrap gap-2 lg:justify-end">
+                <button
+                  type="button"
+                  onClick={() => copySubstackText("markdown")}
+                  className="flex items-center gap-1.5 border border-[#E2B93B]/30 bg-[#E2B93B]/10 px-3 py-2 text-[10px] font-['Instrument_Sans'] uppercase tracking-[0.12em] text-[#E2B93B]/80 transition-colors hover:bg-[#E2B93B]/15"
+                >
+                  <Copy size={12} />
+                  {substackCopyState === "markdown" ? "Copied" : "Copy Markdown"}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => copySubstackText("source")}
+                  className="flex items-center gap-1.5 border border-white/[0.08] px-3 py-2 text-[10px] font-['Instrument_Sans'] uppercase tracking-[0.12em] text-white/35 transition-colors hover:border-white/20 hover:text-white/65"
+                >
+                  <Copy size={12} />
+                  {substackCopyState === "source" ? "Copied" : "Copy Source Note"}
+                </button>
+                <a
+                  href="https://substack.com/home"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1.5 border border-white/[0.08] px-3 py-2 text-[10px] font-['Instrument_Sans'] uppercase tracking-[0.12em] text-white/35 transition-colors hover:border-white/20 hover:text-white/65"
+                >
+                  Open Substack
+                </a>
+                {substackCopyState === "error" ? (
+                  <p className="basis-full text-[10px] uppercase tracking-[0.12em] text-red-300/60 font-['Instrument_Sans']">
+                    Clipboard blocked. Select and copy manually from the generated post preview later.
+                  </p>
+                ) : null}
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div className="px-6 py-5">
           <div className="flex items-baseline gap-3 mb-4">
             <p className="text-[10px] tracking-[0.2em] text-white/35 font-['Instrument_Sans'] uppercase">Content Slides</p>
@@ -449,13 +697,30 @@ function SeriesManager({
 }) {
   const [editingSlug, setEditingSlug] = useState<string | null>(null);
   const [form, setForm] = useState<ManagedSeries | null>(null);
+  const originalSeries = editingSlug && editingSlug !== "__new__"
+    ? series.find((item) => item.slug === editingSlug) ?? null
+    : null;
+  const hasUnsavedChanges = Boolean(
+    form && JSON.stringify(form) !== JSON.stringify(originalSeries)
+  );
+  const confirmIfUnsaved = useUnsavedChangesGuard(
+    hasUnsavedChanges,
+    "You have unsaved changes in this series. Leave without saving?"
+  );
+  useAdminEditorShortcuts({
+    onSave: saveForm,
+    onCancel: cancelEdit,
+    saveEnabled: Boolean(form?.title.trim()) && !isSaving,
+  });
 
   function startEdit(s: ManagedSeries) {
+    if (!confirmIfUnsaved()) return;
     setEditingSlug(s.slug);
     setForm({ ...s });
   }
 
   function startNew() {
+    if (!confirmIfUnsaved()) return;
     const blank: ManagedSeries = {
       slug: `series-${Date.now()}`,
       title: "",
@@ -489,6 +754,7 @@ function SeriesManager({
   }
 
   function cancelEdit() {
+    if (!confirmIfUnsaved()) return;
     setEditingSlug(null);
     setForm(null);
   }
@@ -511,6 +777,11 @@ function SeriesManager({
             {isSaving ? "SAVING..." : "SAVE SERIES"}
           </button>
         </div>
+        {hasUnsavedChanges ? (
+          <p className="mb-3 text-[9px] uppercase tracking-[0.16em] text-[#E2B93B]/70 font-['Instrument_Sans']">
+            Unsaved changes · Cmd/Ctrl+S saves · Esc closes when not typing
+          </p>
+        ) : null}
         <div className="border border-white/[0.07] p-6 space-y-4">
           <FormField label="Series Title">
             <input className={adminCx.input} value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} placeholder="e.g. Craft & Code" />
@@ -527,6 +798,7 @@ function SeriesManager({
             <textarea className={adminCx.textarea} rows={2} value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} placeholder="1-2 sentence summary of the series" />
           </FormField>
           <FormField label="Cover Image URL">
+            <ImageRatioHint role="blog-cover" className="mb-2" />
             <input className={adminCx.input} value={form.cover ?? ""} onChange={(e) => setForm({ ...form, cover: e.target.value || undefined })} placeholder="https://..." />
             <ImageFieldGuide role="blog-cover" imageUrl={form.cover} compact className="mt-3" />
           </FormField>
@@ -635,17 +907,20 @@ function SeriesManager({
             >
               <Pencil size={13} />
             </button>
-            <button
-              onClick={() => {
-                if (confirm(`Delete series "${s.title}"? Posts will not be deleted.`)) {
-                  deleteSeries(s.slug);
-                }
-              }}
-              className="text-white/20 hover:text-red-400/60 transition-colors p-1"
-              title="Delete series"
+            <AdminConfirmAction
+              title="Delete series?"
+              description={`Delete "${s.title}" from series organization. Posts inside it will not be deleted.`}
+              confirmLabel="Delete"
+              destructive
+              onConfirm={() => deleteSeries(s.slug)}
             >
-              <Trash2 size={13} />
-            </button>
+              <button
+                className="text-white/20 hover:text-red-400/60 transition-colors p-1"
+                title="Delete series"
+              >
+                <Trash2 size={13} />
+              </button>
+            </AdminConfirmAction>
           </div>
         ))}
       </div>
@@ -761,11 +1036,43 @@ function AdminBlogPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<"all" | ManagedPost["status"]>("all");
   const [categoryFilter, setCategoryFilter] = useState<string>("all");
+  const [filterStorageReady, setFilterStorageReady] = useState(false);
   const [postsPage, setPostsPage] = useState(1);
   const latestCategorySave = useRef(0);
   const latestSeriesSave = useRef(0);
   const skipHydrateOnceRef = useRef(false);
   const POSTS_PAGE_SIZE = 20;
+
+  useEffect(() => {
+    try {
+      const raw = window.localStorage.getItem(BLOG_FILTER_STORAGE_KEY);
+      if (!raw) {
+        return;
+      }
+      const parsed = JSON.parse(raw) as Partial<BlogFilterState>;
+      if (typeof parsed.searchQuery === "string") setSearchQuery(parsed.searchQuery);
+      if (
+        parsed.statusFilter === "all" ||
+        parsed.statusFilter === "published" ||
+        parsed.statusFilter === "draft" ||
+        parsed.statusFilter === "scheduled" ||
+        parsed.statusFilter === "archived"
+      ) {
+        setStatusFilter(parsed.statusFilter);
+      }
+      if (typeof parsed.categoryFilter === "string") setCategoryFilter(parsed.categoryFilter);
+    } catch {
+      window.localStorage.removeItem(BLOG_FILTER_STORAGE_KEY);
+    } finally {
+      setFilterStorageReady(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!filterStorageReady) return;
+    const state: BlogFilterState = { searchQuery, statusFilter, categoryFilter };
+    window.localStorage.setItem(BLOG_FILTER_STORAGE_KEY, JSON.stringify(state));
+  }, [categoryFilter, filterStorageReady, searchQuery, statusFilter]);
 
   useEffect(() => {
     if (pendingRevert?.section === "blog") {
@@ -821,6 +1128,13 @@ function AdminBlogPage() {
     };
   }, []);
 
+  useEffect(() => {
+    const slug = new URLSearchParams(window.location.search).get("post");
+    if (slug && posts.some((post) => post.slug === slug)) {
+      setActiveSlug(slug);
+    }
+  }, [posts]);
+
   const activePost = posts.find((p) => p.slug === activeSlug) ?? null;
   const filteredPosts = useMemo(
     () =>
@@ -859,7 +1173,7 @@ function AdminBlogPage() {
     const exists = posts.some((p) => p.slug === post.slug);
     const final = exists ? updated : [...posts, post];
     const ok = await persistPosts(final, `Saved: ${post.meta.title}`);
-    if (ok) setActiveSlug(post.slug);
+    if (ok) openPost(post);
     setSavingSlug(null);
   }
 
@@ -884,12 +1198,21 @@ function AdminBlogPage() {
   }
 
   async function deletePostFromList(post: ManagedPost) {
-    if (!confirm(`Delete "${post.meta.title}" permanently?`)) return;
     const nextPosts = posts.filter((item) => item.slug !== post.slug);
     const ok = await persistPosts(nextPosts, `Deleted: ${post.meta.title}`);
     if (ok && activeSlug === post.slug) {
       setActiveSlug(null);
     }
+  }
+
+  function openPost(post: ManagedPost) {
+    rememberAdminEditor({
+      section: "blog",
+      label: post.meta.title,
+      href: `/admin/blog?post=${post.slug}`,
+    });
+    window.history.replaceState(null, "", `/admin/blog?post=${post.slug}`);
+    setActiveSlug(post.slug);
   }
 
   async function handleSeriesUpdate(updated: ManagedSeries[]) {
@@ -930,7 +1253,12 @@ function AdminBlogPage() {
       },
     };
     setPosts((p) => [blank, ...p]);
-    setActiveSlug(slug);
+    openPost(blank);
+  }
+
+  function closePostEditor() {
+    window.history.replaceState(null, "", "/admin/blog");
+    setActiveSlug(null);
   }
 
   return (
@@ -990,6 +1318,7 @@ function AdminBlogPage() {
                   <option value="all" style={{ background: "#0A0A0A" }}>All statuses</option>
                   <option value="published" style={{ background: "#0A0A0A" }}>Published</option>
                   <option value="draft" style={{ background: "#0A0A0A" }}>Draft</option>
+                  <option value="scheduled" style={{ background: "#0A0A0A" }}>Scheduled</option>
                   <option value="archived" style={{ background: "#0A0A0A" }}>Archived</option>
                 </select>
                 <select
@@ -1006,16 +1335,38 @@ function AdminBlogPage() {
                 </select>
               </div>
               <div className="max-w-2xl border border-white/[0.07] overflow-hidden">
-                {paginatedPosts.map((post) => (
-                  <PostListItem
-                    key={post.slug}
-                    post={post}
-                    isActive={false}
-                    onClick={() => setActiveSlug(post.slug)}
-                    onToggleArchive={() => toggleArchiveFromList(post)}
-                    onDelete={() => deletePostFromList(post)}
-                  />
-                ))}
+                {paginatedPosts.length > 0 ? (
+                  paginatedPosts.map((post) => (
+                    <PostListItem
+                      key={post.slug}
+                      post={post}
+                      isActive={false}
+                      onClick={() => openPost(post)}
+                      onToggleArchive={() => toggleArchiveFromList(post)}
+                      onDelete={() => deletePostFromList(post)}
+                    />
+                  ))
+                ) : (
+                  <div className="p-8 text-center">
+                    <p className="text-[11px] uppercase tracking-[0.16em] text-white/45 font-['Instrument_Sans']">
+                      No posts match this view
+                    </p>
+                    <p className="mt-2 text-xs leading-relaxed text-white/30 font-['Instrument_Sans']">
+                      Clear the search or switch filters. Your filters are saved so this view will be waiting when you come back.
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSearchQuery("");
+                        setStatusFilter("all");
+                        setCategoryFilter("all");
+                      }}
+                      className="mt-4 border border-white/[0.08] px-4 py-2 text-[10px] uppercase tracking-[0.14em] text-white/45 transition-colors hover:border-[#E2B93B]/35 hover:text-[#E2B93B]/80 font-['Instrument_Sans']"
+                    >
+                      Clear filters
+                    </button>
+                  </div>
+                )}
               </div>
               {filteredPosts.length > POSTS_PAGE_SIZE ? (
                 <div className="max-w-2xl mt-3 flex items-center justify-between">
@@ -1095,7 +1446,8 @@ function AdminBlogPage() {
         <div className="-mx-6 lg:-mx-8 -mt-6 lg:-mt-8 -mb-6 lg:-mb-8 h-[calc(100dvh-3.5rem)] lg:h-[100dvh] flex flex-col">
           <div className="px-6 py-2.5 border-b border-white/[0.05] flex items-center gap-3 bg-[#0A0A0A] shrink-0 sticky top-0 z-20">
             <button
-              onClick={() => setActiveSlug(null)}
+              data-unsaved-guard-trigger
+              onClick={closePostEditor}
               className="text-[10px] font-['Instrument_Sans'] tracking-[0.15em] uppercase text-white/25 hover:text-white/60 transition-colors flex items-center gap-1.5"
             >
               ← All Posts
@@ -1114,7 +1466,7 @@ function AdminBlogPage() {
             <PostEditor
               post={activePost}
               onSave={savePost}
-              onClose={() => setActiveSlug(null)}
+              onClose={closePostEditor}
               isSaving={savingSlug === activePost.slug}
               seriesList={seriesList}
               categoryList={categoryList}

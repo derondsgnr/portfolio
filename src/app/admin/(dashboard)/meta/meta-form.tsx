@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { saveContent } from "../../actions";
 import { AdminSaveFeedback } from "@/components/admin/admin-save-feedback";
+import { ImageRatioHint } from "@/components/admin/image-system-guide";
 import { SaveButton } from "@/design-system";
 import type { SiteMeta } from "@/lib/content/site-meta";
 
@@ -65,6 +66,7 @@ export function MetaForm({ initial }: Props) {
       </div>
       <div>
         <label htmlFor="ogImage" className={labelClass}>OG image (thumbnail for social)</label>
+        <ImageRatioHint role="social-preview" className="mb-2" />
         <input id="ogImage" name="ogImage" type="text" defaultValue={initial.ogImage} className={inputClass} placeholder="/og.png or full URL" />
       </div>
       <div>
@@ -73,10 +75,12 @@ export function MetaForm({ initial }: Props) {
       </div>
       <div>
         <label htmlFor="logo" className={labelClass}>Logo (URL or path)</label>
+        <ImageRatioHint role="avatar-logo" aspectIds={["logo"]} className="mb-2" />
         <input id="logo" name="logo" type="text" defaultValue={initial.logo} className={inputClass} placeholder="/logo.svg" />
       </div>
       <div>
         <label htmlFor="favicon" className={labelClass}>Favicon</label>
+        <ImageRatioHint role="avatar-logo" aspectIds={["avatar"]} className="mb-2" />
         <input id="favicon" name="favicon" type="text" defaultValue={initial.favicon} className={inputClass} placeholder="/favicon.ico" />
       </div>
       <div>

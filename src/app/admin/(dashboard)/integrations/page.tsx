@@ -36,6 +36,15 @@ export default async function AdminIntegrationsPage() {
         {" "}
         (default every 7 days; log when you rotate).
       </p>
+      <div className="mb-8 max-w-2xl border border-white/[0.08] bg-white/[0.02] px-4 py-3">
+        <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#E2B93B]/70">
+          Substack distribution
+        </p>
+        <p className="mt-2 font-mono text-xs leading-relaxed text-white/45">
+          Use <code className="text-white/70">/blog/rss.xml</code> as the portfolio feed for Substack import
+          or external automation. Keep final Substack formatting manual when you want editorial control.
+        </p>
+      </div>
       <IntegrationsForm initial={initial} />
     </div>
   );

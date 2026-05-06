@@ -2,6 +2,13 @@
 
 A phased plan to make the portfolio fully editable from admin, including integrations.
 
+## 2026-05 Reliability & Access Update ✅ DONE
+
+- Added Phase 1 security hardening (same-origin mutation checks, login throttling/lockout, optional admin IP allowlist).
+- Added Phase 2 access split with `owner` and `content_manager` roles.
+- Added sync reliability hardening across admin/public content reads using a shared live source loader (GitHub-first, local fallback).
+- Added list-level archive/delete actions and root filtering/pagination in high-volume admin lists.
+
 ---
 
 ## Vision Summary

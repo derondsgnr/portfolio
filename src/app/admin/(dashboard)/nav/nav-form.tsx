@@ -1,18 +1,213 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import {
+  closestCenter,
+  DndContext,
+  type DragEndEvent,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import { saveNav } from "../../actions";
+import { AdminConfirmAction } from "@/components/admin/admin-confirm-dialog";
+import { useAdmin } from "@/components/admin/admin-context";
 import { AdminSaveFeedback } from "@/components/admin/admin-save-feedback";
 import { formCx } from "@/design-system";
 import type { NavItem } from "@/lib/content/nav";
 
 type Props = { initial: NavItem[] };
 
+function SortableNavItem({
+  id,
+  item,
+  index,
+  editing,
+  itemCount,
+  onEditStart,
+  onEditCancel,
+  onEditSave,
+  onMoveUp,
+  onMoveDown,
+  onRemove,
+}: {
+  id: string;
+  item: NavItem;
+  index: number;
+  editing: boolean;
+  itemCount: number;
+  onEditStart: () => void;
+  onEditCancel: () => void;
+  onEditSave: (data: { label?: string; path?: string; href?: string }) => void;
+  onMoveUp: () => void;
+  onMoveDown: () => void;
+  onRemove: () => void;
+}) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id });
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
+  return (
+    <li
+      ref={setNodeRef}
+      style={style}
+      className={`flex items-center gap-3 p-4 border border-white/10 bg-[#0A0A0A] ${isDragging ? "opacity-50" : ""}`}
+    >
+      <button
+        type="button"
+        {...attributes}
+        {...listeners}
+        className="cursor-grab active:cursor-grabbing p-2 text-white/25 hover:text-[#E2B93B]/70"
+        aria-label={`Drag ${item.label} to reorder`}
+      >
+        ⋮⋮
+      </button>
+
+      <div className="flex flex-col gap-1 shrink-0">
+        <button
+          type="button"
+          onClick={onMoveUp}
+          disabled={index === 0}
+          className="font-mono text-xs text-white/60 hover:text-white disabled:opacity-30"
+        >
+          ↑
+        </button>
+        <button
+          type="button"
+          onClick={onMoveDown}
+          disabled={index === itemCount - 1}
+          className="font-mono text-xs text-white/60 hover:text-white disabled:opacity-30"
+        >
+          ↓
+        </button>
+      </div>
+
+      {editing ? (
+        <div className="flex-1 space-y-3">
+          <div>
+            <label className={formCx.label}>Label</label>
+            <input
+              type="text"
+              defaultValue={item.label}
+              id={`nav-label-${index}`}
+              className={formCx.input}
+              placeholder="Work"
+            />
+          </div>
+          <div className="grid grid-cols-2 gap-2">
+            <div>
+              <label className={formCx.label}>Path (internal, e.g. /work)</label>
+              <input
+                type="text"
+                defaultValue={item.path ?? ""}
+                id={`nav-path-${index}`}
+                className={formCx.input}
+                placeholder="/work"
+              />
+            </div>
+            <div>
+              <label className={formCx.label}>Href (external URL)</label>
+              <input
+                type="text"
+                defaultValue={item.href ?? ""}
+                id={`nav-href-${index}`}
+                className={formCx.input}
+                placeholder="https://..."
+              />
+            </div>
+          </div>
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={() => {
+                const labelInput = document.getElementById(`nav-label-${index}`) as HTMLInputElement;
+                const pathInput = document.getElementById(`nav-path-${index}`) as HTMLInputElement;
+                const hrefInput = document.getElementById(`nav-href-${index}`) as HTMLInputElement;
+                onEditSave({
+                  label: labelInput?.value?.trim() || item.label,
+                  path: pathInput?.value?.trim() || undefined,
+                  href: hrefInput?.value?.trim() || undefined,
+                });
+              }}
+              className="px-3 py-1.5 bg-[#E2B93B] text-[#0A0A0A] font-mono text-xs uppercase"
+            >
+              Save
+            </button>
+            <button
+              type="button"
+              onClick={onEditCancel}
+              className="px-3 py-1.5 border border-white/20 text-white/60 font-mono text-xs hover:text-white"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div className="flex-1 min-w-0">
+          <span className="font-mono text-sm text-white">{item.label}</span>
+          <span className="font-mono text-xs text-white/50 ml-2">
+            {item.path ?? item.href ?? "—"}
+          </span>
+        </div>
+      )}
+
+      {!editing && (
+        <div className="flex gap-2 shrink-0">
+          <button
+            type="button"
+            onClick={onEditStart}
+            className="font-mono text-xs text-[#E2B93B] hover:text-white"
+          >
+            Edit
+          </button>
+          <AdminConfirmAction
+            title="Remove nav item?"
+            description={`Remove "${item.label}" from the public navigation.`}
+            confirmLabel="Remove"
+            destructive
+            onConfirm={onRemove}
+          >
+            <button
+              type="button"
+              className="font-mono text-xs text-white/40 hover:text-red-400"
+            >
+              Remove
+            </button>
+          </AdminConfirmAction>
+        </div>
+      )}
+    </li>
+  );
+}
+
 export function NavForm({ initial }: Props) {
+  const { pushHistory, pendingRevert, clearPendingRevert } = useAdmin();
   const [items, setItems] = useState<NavItem[]>(initial);
   const [editing, setEditing] = useState<number | null>(null);
   const [status, setStatus] = useState<"idle" | "saving" | "ok" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
+  );
+
+  useEffect(() => {
+    if (pendingRevert?.section === "nav" && Array.isArray(pendingRevert.snapshot)) {
+      setItems(pendingRevert.snapshot as NavItem[]);
+      clearPendingRevert();
+    }
+  }, [pendingRevert, clearPendingRevert]);
 
   async function handleSave(updated: NavItem[]) {
     setStatus("saving");
@@ -21,8 +216,9 @@ export function NavForm({ initial }: Props) {
     if (result.ok) {
       setItems(updated);
       setEditing(null);
+      pushHistory("nav", "Navigation", "Updated nav", updated);
       setStatus("ok");
-      setTimeout(() => setStatus("idle"), 2000);
+      setTimeout(() => setStatus("idle"), 6000);
     } else {
       setStatus("error");
       setErrorMsg(result.error ?? null);
@@ -44,8 +240,16 @@ export function NavForm({ initial }: Props) {
   }
 
   function handleRemove(i: number) {
-    if (!confirm(`Remove "${items[i].label}"?`)) return;
     handleSave(items.filter((_, idx) => idx !== i));
+  }
+
+  function handleDragEnd(event: DragEndEvent) {
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
+    const oldIndex = items.findIndex((item, index) => `${item.label}-${index}` === active.id);
+    const newIndex = items.findIndex((item, index) => `${item.label}-${index}` === over.id);
+    if (oldIndex === -1 || newIndex === -1) return;
+    handleSave(arrayMove(items, oldIndex, newIndex));
   }
 
   function handleEdit(i: number, data: { label?: string; path?: string; href?: string }) {
@@ -89,122 +293,38 @@ export function NavForm({ initial }: Props) {
         error={errorMsg}
         savingMessage="Saving changes to content/nav.json..."
         successMessage="Saved to content/nav.json."
+        undoSection="nav"
       />
 
-      <ul className="space-y-3">
-        {items.map((item, i) => (
-          <li
-            key={i}
-            className="flex items-center gap-3 p-4 border border-white/10"
-          >
-            <div className="flex flex-col gap-1 shrink-0">
-              <button
-                type="button"
-                onClick={() => moveUp(i)}
-                disabled={i === 0}
-                className="font-mono text-xs text-white/60 hover:text-white disabled:opacity-30"
-              >
-                ↑
-              </button>
-              <button
-                type="button"
-                onClick={() => moveDown(i)}
-                disabled={i === items.length - 1}
-                className="font-mono text-xs text-white/60 hover:text-white disabled:opacity-30"
-              >
-                ↓
-              </button>
-            </div>
-
-            {editing === i ? (
-              <div className="flex-1 space-y-3">
-                <div>
-                  <label className={formCx.label}>Label</label>
-                  <input
-                    type="text"
-                    defaultValue={item.label}
-                    id={`nav-label-${i}`}
-                    className={formCx.input}
-                    placeholder="Work"
-                  />
-                </div>
-                <div className="grid grid-cols-2 gap-2">
-                  <div>
-                    <label className={formCx.label}>Path (internal, e.g. /work)</label>
-                    <input
-                      type="text"
-                      defaultValue={item.path ?? ""}
-                      id={`nav-path-${i}`}
-                      className={formCx.input}
-                      placeholder="/work"
-                    />
-                  </div>
-                  <div>
-                    <label className={formCx.label}>Href (external URL)</label>
-                    <input
-                      type="text"
-                      defaultValue={item.href ?? ""}
-                      id={`nav-href-${i}`}
-                      className={formCx.input}
-                      placeholder="https://..."
-                    />
-                  </div>
-                </div>
-                <div className="flex gap-2">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      const form = document.getElementById(`nav-label-${i}`) as HTMLInputElement;
-                      const pathInput = document.getElementById(`nav-path-${i}`) as HTMLInputElement;
-                      const hrefInput = document.getElementById(`nav-href-${i}`) as HTMLInputElement;
-                      const label = form?.value?.trim() || item.label;
-                      const path = pathInput?.value?.trim() || undefined;
-                      const href = hrefInput?.value?.trim() || undefined;
-                      handleEdit(i, { label, path: path || undefined, href: href || undefined });
-                    }}
-                    className="px-3 py-1.5 bg-[#E2B93B] text-[#0A0A0A] font-mono text-xs uppercase"
-                  >
-                    Save
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setEditing(null)}
-                    className="px-3 py-1.5 border border-white/20 text-white/60 font-mono text-xs hover:text-white"
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <div className="flex-1 min-w-0">
-                <span className="font-mono text-sm text-white">{item.label}</span>
-                <span className="font-mono text-xs text-white/50 ml-2">
-                  {item.path ?? item.href ?? "—"}
-                </span>
-              </div>
-            )}
-
-            {editing !== i && (
-              <div className="flex gap-2 shrink-0">
-                <button
-                  type="button"
-                  onClick={() => setEditing(i)}
-                  className="font-mono text-xs text-[#E2B93B] hover:text-white"
-                >
-                  Edit
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleRemove(i)}
-                  className="font-mono text-xs text-white/40 hover:text-red-400"
-                >
-                  Remove
-                </button>
-              </div>
-            )}
-          </li>
-        ))}
-      </ul>
+      {items.length === 0 ? (
+        <div className="border border-white/[0.08] bg-white/[0.02] p-8 text-center">
+          <p className="font-mono text-sm uppercase tracking-[0.16em] text-white/50">No nav items yet</p>
+          <p className="mt-2 font-mono text-xs text-white/30">Add your first public route, then drag items to control the order.</p>
+        </div>
+      ) : (
+        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+          <SortableContext items={items.map((item, i) => `${item.label}-${i}`)} strategy={verticalListSortingStrategy}>
+            <ul className="space-y-3">
+              {items.map((item, i) => (
+                <SortableNavItem
+                  key={`${item.label}-${i}`}
+                  id={`${item.label}-${i}`}
+                  item={item}
+                  index={i}
+                  editing={editing === i}
+                  itemCount={items.length}
+                  onEditStart={() => setEditing(i)}
+                  onEditCancel={() => setEditing(null)}
+                  onEditSave={(data) => handleEdit(i, data)}
+                  onMoveUp={() => moveUp(i)}
+                  onMoveDown={() => moveDown(i)}
+                  onRemove={() => handleRemove(i)}
+                />
+              ))}
+            </ul>
+          </SortableContext>
+        </DndContext>
+      )}
     </div>
   );
 }

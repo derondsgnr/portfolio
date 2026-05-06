@@ -1,9 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { saveMedia, saveCraftItems, saveExplorations } from "../../actions";
 import { AdminSaveFeedback } from "@/components/admin/admin-save-feedback";
-import { ImageFieldGuide } from "@/components/admin/image-system-guide";
+import { ImageFieldGuide, ImageRatioHint } from "@/components/admin/image-system-guide";
+import { useAdminEditorShortcuts } from "@/hooks/useAdminEditorShortcuts";
+import { useUnsavedChangesGuard } from "@/hooks/useUnsavedChangesGuard";
 import type { MediaConfig } from "@/lib/content/media";
 import type { CraftItem } from "@/lib/content/craft";
 import type { Exploration } from "@/lib/content/explorations";
@@ -26,9 +28,27 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [savingSection, setSavingSection] = useState<string | null>(null);
   const [feedbackTarget, setFeedbackTarget] = useState<"media" | "craft" | "explorations">("media");
+  const savedSnapshotRef = useRef({
+    media: initialMedia,
+    craft: initialCraft,
+    explorations: initialExplorations,
+  });
+  const hasUnsavedChanges =
+    JSON.stringify(media) !== JSON.stringify(savedSnapshotRef.current.media) ||
+    JSON.stringify(craft) !== JSON.stringify(savedSnapshotRef.current.craft) ||
+    JSON.stringify(explorations) !== JSON.stringify(savedSnapshotRef.current.explorations);
+  useUnsavedChangesGuard(
+    hasUnsavedChanges,
+    "You have unsaved media changes. Leave without saving?"
+  );
+  useAdminEditorShortcuts({
+    onSave: () => {
+      void saveDirtySections();
+    },
+    saveEnabled: hasUnsavedChanges && savingSection === null,
+  });
 
-  async function handleSaveMedia(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  async function persistMedia() {
     setFeedbackTarget("media");
     setSavingSection("media");
     setStatus("saving");
@@ -36,6 +56,7 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
     const result = await saveMedia(media, "Update media");
     setSavingSection(null);
     if (result.ok) {
+      savedSnapshotRef.current.media = media;
       setStatus("ok");
       setTimeout(() => setStatus("idle"), 2000);
     } else {
@@ -44,8 +65,7 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
     }
   }
 
-  async function handleSaveCraft(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  async function persistCraft() {
     setFeedbackTarget("craft");
     setSavingSection("craft");
     setStatus("saving");
@@ -53,6 +73,7 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
     const result = await saveCraftItems(craft, "Update craft items");
     setSavingSection(null);
     if (result.ok) {
+      savedSnapshotRef.current.craft = craft;
       setStatus("ok");
       setTimeout(() => setStatus("idle"), 2000);
     } else {
@@ -61,8 +82,7 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
     }
   }
 
-  async function handleSaveExplorations(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  async function persistExplorations() {
     setFeedbackTarget("explorations");
     setSavingSection("explorations");
     setStatus("saving");
@@ -70,12 +90,40 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
     const result = await saveExplorations(explorations, "Update explorations");
     setSavingSection(null);
     if (result.ok) {
+      savedSnapshotRef.current.explorations = explorations;
       setStatus("ok");
       setTimeout(() => setStatus("idle"), 2000);
     } else {
       setStatus("error");
       setErrorMsg(result.error ?? null);
     }
+  }
+
+  async function saveDirtySections() {
+    if (JSON.stringify(media) !== JSON.stringify(savedSnapshotRef.current.media)) {
+      await persistMedia();
+    }
+    if (JSON.stringify(craft) !== JSON.stringify(savedSnapshotRef.current.craft)) {
+      await persistCraft();
+    }
+    if (JSON.stringify(explorations) !== JSON.stringify(savedSnapshotRef.current.explorations)) {
+      await persistExplorations();
+    }
+  }
+
+  async function handleSaveMedia(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    await persistMedia();
+  }
+
+  async function handleSaveCraft(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    await persistCraft();
+  }
+
+  async function handleSaveExplorations(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    await persistExplorations();
   }
 
   function updateCraftImage(index: number, image: string) {
@@ -119,6 +167,13 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
 
   return (
     <div className="space-y-12 max-w-3xl">
+      {hasUnsavedChanges ? (
+        <div className="border border-[#E2B93B]/25 bg-[#E2B93B]/[0.05] px-4 py-3">
+          <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-[#E2B93B]/80">
+            Unsaved media changes · Cmd/Ctrl+S saves changed sections
+          </p>
+        </div>
+      ) : null}
       <section className="space-y-4 border border-white/10 bg-white/[0.02] p-4">
         <h2 className="font-mono text-sm text-white/80 uppercase tracking-wider">
           Cloudinary setup guide (save this flow)
@@ -157,6 +212,7 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
             <label htmlFor="heroBackground" className={labelClass}>
               Hero background URL
             </label>
+            <ImageRatioHint role="global-background" className="mb-2" />
             <input
               id="heroBackground"
               type="url"
@@ -174,6 +230,7 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
                 <label htmlFor={`sectionBg-${key}`} className="font-mono text-xs text-white/40">
                   {key}
                 </label>
+                <ImageRatioHint role="global-background" className="mb-2 mt-1" />
                 <input
                   id={`sectionBg-${key}`}
                   type="url"
@@ -220,6 +277,7 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
                   <span className="font-mono text-xs text-white/50 block truncate">
                     [{item.id}] {item.title}
                   </span>
+                  <ImageRatioHint role="craft-gallery" className="mt-2" />
                   <input
                     type="url"
                     value={item.image}
@@ -289,6 +347,7 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
                   <span className="font-mono text-xs text-white/50 block truncate">
                     [{item.id}] {item.title}
                   </span>
+                  <ImageRatioHint role="craft-gallery" className="mt-2" />
                   <input
                     type="url"
                     value={item.image}

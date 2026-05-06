@@ -1,7 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ImageFieldGuide } from "@/components/admin/image-system-guide";
+import { ImageFieldGuide, ImageRatioHint } from "@/components/admin/image-system-guide";
+import { useAdminEditorShortcuts } from "@/hooks/useAdminEditorShortcuts";
+import { useUnsavedChangesGuard } from "@/hooks/useUnsavedChangesGuard";
 import type { Project } from "@/lib/content/projects";
 
 type Props = {
@@ -24,6 +26,24 @@ const empty: Partial<Project> = {
 
 export function ProjectForm({ project, onSave, onCancel }: Props) {
   const [form, setForm] = useState<Partial<Project>>(project ?? empty);
+  const baseline = project ?? empty;
+  const hasUnsavedChanges = JSON.stringify(form) !== JSON.stringify(baseline);
+  const confirmIfUnsaved = useUnsavedChangesGuard(
+    hasUnsavedChanges,
+    "You have unsaved changes in this project. Leave without saving?"
+  );
+  const submitForm = () => {
+    const slug = form.slug?.trim() || (form.title ?? "").toLowerCase().replace(/\s+/g, "-");
+    onSave({ ...form, slug });
+  };
+  const cancelForm = () => {
+    if (confirmIfUnsaved()) onCancel();
+  };
+  useAdminEditorShortcuts({
+    onSave: submitForm,
+    onCancel: cancelForm,
+    saveEnabled: Boolean(form.title?.trim()),
+  });
 
   useEffect(() => {
     setForm(project ?? empty);
@@ -31,8 +51,7 @@ export function ProjectForm({ project, onSave, onCancel }: Props) {
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    const slug = form.slug?.trim() || (form.title ?? "").toLowerCase().replace(/\s+/g, "-");
-    onSave({ ...form, slug });
+    submitForm();
   }
 
   const inputClass = "w-full px-4 py-2 bg-[#111] border border-white/10 text-white placeholder:text-white/40 font-mono text-sm focus:outline-none focus:border-[#E2B93B]/50";
@@ -43,6 +62,11 @@ export function ProjectForm({ project, onSave, onCancel }: Props) {
       <h2 className="font-mono text-sm text-[#E2B93B]">
         {project ? "Edit project" : "New project"}
       </h2>
+      {hasUnsavedChanges ? (
+        <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-[#E2B93B]/75">
+          Unsaved changes · Cmd/Ctrl+S saves · Esc closes when not typing
+        </p>
+      ) : null}
       <div>
         <label className={labelClass}>Title</label>
         <input
@@ -125,6 +149,7 @@ export function ProjectForm({ project, onSave, onCancel }: Props) {
       </div>
       <div>
         <label className={labelClass}>Image URL</label>
+        <ImageRatioHint role="project-cover" className="mb-2" />
         <input
           type="text"
           value={form.image ?? ""}
@@ -153,7 +178,7 @@ export function ProjectForm({ project, onSave, onCancel }: Props) {
         </button>
         <button
           type="button"
-          onClick={onCancel}
+          onClick={cancelForm}
           className="px-4 py-2 border border-white/20 text-white/60 font-mono text-xs hover:text-white"
         >
           Cancel

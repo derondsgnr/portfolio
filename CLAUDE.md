@@ -185,18 +185,18 @@ ADMIN_CONTENT_SECRET               → Optional limited admin password (content 
 ## KNOWN ISSUES & TECH DEBT
 
 ### Active Bugs
-- Blog data is static TypeScript, not Supabase KV (TODO in `blog-data.ts:11`)
+- Blog is still file-based (JSON/GitHub overlay), not Supabase KV (long-term TODO in `blog-data.ts:11`)
 - Bookmarks admin uses `MOCK_BOOKMARKS` array that never clears
 - Case study slide editor: `mockup-gallery`, `flow`, `process` types return empty arrays
 - In-memory rate limiting resets on server restart (not persisted)
-- Muted text color `#6B6B6B` on `#0A0A0A` may fail WCAG contrast
+- Public/content consistency still depends on GitHub availability and fallback strategy (no DB-backed content store yet)
 
 ### Tech Debt (see `docs/TECH-DEBT-REVIEW.md` for full list)
-- **Async waterfalls:** Most admin pages fetch GitHub then local sequentially. Should use `Promise.all`.
+- **Content source migration:** Live GitHub-first loader is in place; long-term move content to DB/KV for stronger runtime consistency at scale.
 - **No `next/dynamic`:** All v2 variation components load even when only one is used.
 - **ScrambleText TODO:** Centralized component exists but referenced in 8+ files. The hook `useScrambleText` may be duplicated in some v2 components.
 - **Large unused dependencies:** `@mui/material`, `react-slick`, `recharts`, `@emotion/*` may be partially unused.
-- **No CSRF protection** on admin forms.
+- **No CSRF token model** on admin forms (same-origin mutation checks + strict cookies are implemented as interim protection).
 - **No build-time env validation.** Missing vars cause silent runtime failures.
 - **Hardcoded Supabase function ID** `make-server-3fa6479f` in comments API routes.
 - **Hardcoded KV table name** `kv_store_3fa6479f` in contact.ts.
@@ -277,6 +277,7 @@ ADMIN_CONTENT_SECRET               → Optional limited admin password (content 
 | 2026-03 | Editable blog page copy | "WRITING" title, description editable from admin | Stored in content/copy.json |
 | 2026-05 | Phase 1 admin hardening in app layer | Needed immediate protection before full RBAC and edge WAF rollout | Added admin IP allowlist option, login throttling/lockout, same-origin mutation checks, and mutation rate limits |
 | 2026-05 | Phase 2 role split with content manager | Needed safe delegation for blog/case-study/content updates without exposing system controls | Added `ADMIN_CONTENT_SECRET`, path-level admin access gating, and write/capability permission checks |
+| 2026-05 | Unified live content read path | Needed reliable E2E sync between admin writes and public/admin reads | Added shared GitHub-first + local-fallback loader across content modules and hardened rollback/race handling in blog/growth/now/reminder flows |
 
 ---
 
