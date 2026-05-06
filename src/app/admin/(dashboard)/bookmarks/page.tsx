@@ -11,6 +11,7 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import { AdminConfirmAction } from "@/components/admin/admin-confirm-dialog";
 import { AdminNotice } from "@/components/admin/admin-notice";
 import { adminCx, FormField } from "@/components/admin/admin-primitives";
 import {
@@ -25,6 +26,7 @@ import {
 } from "@/app/admin/actions";
 import { getAdminErrorMessage } from "@/lib/admin/feedback";
 import { bookmarkToInspiration, enqueueInspirationRefs } from "@/lib/admin/presentation-inspiration";
+import { openOnKeyboard } from "@/lib/admin/interaction";
 import Link from "next/link";
 
 // ─── Types ─────────────────────────────────────────────────────────
@@ -385,7 +387,12 @@ function BookmarkCard({
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.95 }}
-      className="group relative border border-white/[0.07] hover:border-white/[0.15] bg-white/[0.01] transition-all overflow-hidden"
+      role="button"
+      tabIndex={0}
+      onDoubleClick={onEdit}
+      onKeyDown={(event) => openOnKeyboard(event, onEdit)}
+      title="Double-click or press Enter to edit"
+      className="group relative border border-white/[0.07] hover:border-[#E2B93B]/25 bg-white/[0.01] transition-all overflow-hidden cursor-pointer focus:outline-none focus:border-[#E2B93B]/50"
     >
       {/* Thumbnail */}
       <div className="aspect-[16/9] w-full overflow-hidden relative bg-white/[0.03]">
@@ -418,7 +425,15 @@ function BookmarkCard({
           </button>
           <button onClick={onEdit} className="p-1.5 bg-white/10 border border-white/20 text-white hover:bg-white/20 transition-colors"><Edit3 size={12} /></button>
           <button onClick={onCopyUrl} className="p-1.5 bg-white/10 border border-white/20 text-white hover:bg-white/20 transition-colors"><Copy size={12} /></button>
-          <button onClick={onDelete} className="p-1.5 bg-red-500/20 border border-red-500/30 text-red-400 hover:bg-red-500/30 transition-colors"><Trash2 size={12} /></button>
+          <AdminConfirmAction
+            title="Delete bookmark?"
+            description={`Delete "${bookmark.title}" from your inspiration board.`}
+            confirmLabel="Delete"
+            destructive
+            onConfirm={onDelete}
+          >
+            <button className="p-1.5 bg-red-500/20 border border-red-500/30 text-red-400 hover:bg-red-500/30 transition-colors"><Trash2 size={12} /></button>
+          </AdminConfirmAction>
         </div>
 
         {/* Platform badge */}
@@ -451,6 +466,9 @@ function BookmarkCard({
         {/* Title */}
         <p className="text-[12px] font-['Instrument_Sans'] text-white/75 leading-snug line-clamp-2 mb-2">
           {bookmark.title}
+        </p>
+        <p className="mb-2 text-[8px] uppercase tracking-[0.14em] text-white/15 opacity-0 transition-opacity group-hover:opacity-100">
+          Double-click to edit
         </p>
 
         {/* Notes */}
@@ -499,7 +517,12 @@ function BookmarkRow({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="group flex items-center gap-4 px-4 py-3 border-b border-white/[0.05] hover:bg-white/[0.02] transition-colors"
+      role="button"
+      tabIndex={0}
+      onDoubleClick={onEdit}
+      onKeyDown={(event) => openOnKeyboard(event, onEdit)}
+      title="Double-click or press Enter to edit"
+      className="group flex items-center gap-4 px-4 py-3 border-b border-white/[0.05] hover:bg-white/[0.02] transition-colors cursor-pointer focus:outline-none focus:bg-white/[0.03]"
     >
       {/* Thumb */}
       <div className="w-12 h-9 shrink-0 border border-white/[0.06] overflow-hidden relative bg-white/[0.03]">
@@ -518,7 +541,10 @@ function BookmarkRow({
       {/* Content */}
       <div className="flex-1 min-w-0">
         <p className="text-[12px] font-['Instrument_Sans'] text-white/75 truncate">{bookmark.title}</p>
-        <p className="text-[10px] text-white/25 font-['Instrument_Sans'] truncate">{bookmark.url}</p>
+        <p className="text-[10px] text-white/25 font-['Instrument_Sans'] truncate">
+          {bookmark.url}
+          <span className="ml-2 text-white/15 opacity-0 transition-opacity group-hover:opacity-100">Double-click to edit</span>
+        </p>
       </div>
 
       {/* Category */}
@@ -543,7 +569,15 @@ function BookmarkRow({
         </button>
         <a href={bookmark.url} target="_blank" rel="noopener noreferrer" className="p-1.5 text-white/20 hover:text-white/60 transition-colors"><ExternalLink size={12} /></a>
         <button onClick={onEdit} className="p-1.5 text-[#E2B93B]/40 hover:text-[#E2B93B] transition-colors"><Edit3 size={12} /></button>
-        <button onClick={onDelete} className="p-1.5 text-white/15 hover:text-red-400/60 transition-colors"><Trash2 size={12} /></button>
+        <AdminConfirmAction
+          title="Delete bookmark?"
+          description={`Delete "${bookmark.title}" from your inspiration board.`}
+          confirmLabel="Delete"
+          destructive
+          onConfirm={onDelete}
+        >
+          <button className="p-1.5 text-white/15 hover:text-red-400/60 transition-colors"><Trash2 size={12} /></button>
+        </AdminConfirmAction>
       </div>
     </motion.div>
   );
@@ -625,7 +659,6 @@ function AdminBookmarksPage() {
   }
 
   async function remove(id: string) {
-    if (!confirm("Delete this bookmark?")) return;
     hasLocalEditsSinceMount.current = true;
     const previous = bookmarks;
     setBookmarks((b) => b.filter((bm) => bm.id !== id));

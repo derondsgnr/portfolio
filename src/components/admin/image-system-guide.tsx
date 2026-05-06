@@ -25,6 +25,17 @@ function fitForSpec(spec: ImageRoleSpec): ImageFit {
   return "cover";
 }
 
+function hasValidImageUrl(imageUrl?: string): boolean {
+  if (!imageUrl) return true;
+  if (imageUrl.startsWith("/")) return true;
+  try {
+    const parsed = new URL(imageUrl);
+    return parsed.protocol === "http:" || parsed.protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+
 export function ImageRatioHint({
   role,
   aspectIds,
@@ -80,7 +91,8 @@ function RatioPreview({
   const [failedUrl, setFailedUrl] = useState<string | null>(null);
   const aspectRatio = ratioToAspect(aspect.ratio);
   const objectFit = aspect.ratio === "natural" ? "contain" : fit;
-  const canPreview = Boolean(imageUrl && failedUrl !== imageUrl);
+  const hasFailed = Boolean(imageUrl && failedUrl === imageUrl);
+  const canPreview = Boolean(imageUrl && !hasFailed);
 
   return (
     <div className="space-y-2">
@@ -122,6 +134,11 @@ function RatioPreview({
             {aspect.size} · {aspect.usage}
           </p>
         ) : null}
+        {hasFailed ? (
+          <p className="mt-1 text-[9px] uppercase tracking-[0.12em] text-red-300/55 font-['Instrument_Sans']">
+            Image could not load
+          </p>
+        ) : null}
       </div>
     </div>
   );
@@ -141,6 +158,7 @@ export function ImageFieldGuide({
   const spec = getImageRoleSpec(role);
   const previewAspects = compact ? spec.aspects.slice(0, 3) : spec.aspects;
   const fit = fitForSpec(spec);
+  const validImageUrl = hasValidImageUrl(imageUrl);
 
   return (
     <div className={cx("border border-white/[0.07] bg-white/[0.02] p-4", className)}>
@@ -161,6 +179,11 @@ export function ImageFieldGuide({
             </p>
           ) : null}
           {compact ? <ImageRatioHint role={role} className="mt-3" /> : null}
+          {!validImageUrl ? (
+            <p className="mt-3 border border-red-400/20 bg-red-400/5 px-3 py-2 text-[10px] uppercase tracking-[0.12em] text-red-300/65 font-['Instrument_Sans']">
+              Enter a valid http, https, or local / image URL.
+            </p>
+          ) : null}
         </div>
         <div className="flex flex-wrap gap-2">
           <span className="border border-white/[0.08] px-2 py-1 text-[9px] uppercase tracking-[0.12em] text-white/35">

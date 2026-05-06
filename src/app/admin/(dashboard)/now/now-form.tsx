@@ -268,6 +268,7 @@ export function AdminNowForm({ initial }: { initial: NowConfig }) {
             error={errorMsg}
             savingMessage="Saving changes to content/now.json..."
             successMessage="Saved to content/now.json."
+            undoSection="now"
           />
         </div>
       </form>

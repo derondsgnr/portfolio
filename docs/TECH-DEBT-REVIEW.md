@@ -2,13 +2,20 @@
 
 Audit against [Vercel React Best Practices](https://github.com/vercel/react-best-practices). Prioritized by impact.
 
+## 2026-05 Status Update
+
+- ✅ Implemented a shared `getContentWithGitHubOverlay` helper for admin pages.
+- ✅ Implemented a shared live content reader (`GitHub-first, local fallback`) for content loaders.
+- ✅ Fixed major admin sync issues (blog category/series/post consistency, reminder banner source alignment, list-level archive/delete workflows).
+- ⚠️ Remaining priority debt in this document should be treated as current; resolved items are marked above.
+
 ---
 
 ## CRITICAL — Async Waterfalls (`async-parallel`)
 
 ### Admin pages: sequential GitHub + local fetches
 
-**Pattern:** Most admin pages await `getGitHubFile`, then conditionally await `getNav()` / `getNow()` / etc. when GitHub has no content or parse fails. This creates a waterfall: 2 round-trips when both are needed.
+**Status:** Mostly addressed via shared overlay helper. Keep auditing new admin pages for regressions.
 
 **Affected:**
 - `admin/(dashboard)/nav/page.tsx`

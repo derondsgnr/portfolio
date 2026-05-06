@@ -1,7 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ImageRatioHint } from "@/components/admin/image-system-guide";
+import { useAdminEditorShortcuts } from "@/hooks/useAdminEditorShortcuts";
+import { useUnsavedChangesGuard } from "@/hooks/useUnsavedChangesGuard";
 import type { TestimonialItem } from "@/lib/content/testimonials";
 
 type Props = {
@@ -20,6 +22,54 @@ export function TestimonialForm({ testimonial, onSave, onCancel }: Props) {
   const [status, setStatus] = useState(testimonial?.status ?? "published");
   const [featured, setFeatured] = useState(Boolean(testimonial?.featured));
   const [pinned, setPinned] = useState(Boolean(testimonial?.pinned));
+  const formValue = {
+    quote,
+    name,
+    role,
+    company,
+    avatar: avatar.trim() || null,
+    companyLogo: companyLogo.trim() || null,
+    status,
+    featured,
+    pinned,
+  };
+  const baselineValue = {
+    quote: testimonial?.quote ?? "",
+    name: testimonial?.name ?? "",
+    role: testimonial?.role ?? "",
+    company: testimonial?.company ?? "",
+    avatar: testimonial?.avatar ?? null,
+    companyLogo: testimonial?.companyLogo ?? null,
+    status: testimonial?.status ?? "published",
+    featured: Boolean(testimonial?.featured),
+    pinned: Boolean(testimonial?.pinned),
+  };
+  const hasUnsavedChanges = JSON.stringify(formValue) !== JSON.stringify(baselineValue);
+  const confirmIfUnsaved = useUnsavedChangesGuard(
+    hasUnsavedChanges,
+    "You have unsaved changes in this testimonial. Leave without saving?"
+  );
+  const submitForm = () => onSave(formValue);
+  const cancelForm = () => {
+    if (confirmIfUnsaved()) onCancel();
+  };
+  useAdminEditorShortcuts({
+    onSave: submitForm,
+    onCancel: cancelForm,
+    saveEnabled: Boolean(quote.trim() && name.trim()),
+  });
+
+  useEffect(() => {
+    setQuote(testimonial?.quote ?? "");
+    setName(testimonial?.name ?? "");
+    setRole(testimonial?.role ?? "");
+    setCompany(testimonial?.company ?? "");
+    setAvatar(testimonial?.avatar ?? "");
+    setCompanyLogo(testimonial?.companyLogo ?? "");
+    setStatus(testimonial?.status ?? "published");
+    setFeatured(Boolean(testimonial?.featured));
+    setPinned(Boolean(testimonial?.pinned));
+  }, [testimonial]);
 
   const inputClass =
     "w-full px-4 py-2 bg-[#111] border border-white/10 text-white placeholder:text-white/40 font-mono text-sm focus:outline-none focus:border-[#E2B93B]/50";
@@ -27,17 +77,7 @@ export function TestimonialForm({ testimonial, onSave, onCancel }: Props) {
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    onSave({
-      quote,
-      name,
-      role,
-      company,
-      avatar: avatar.trim() || null,
-      companyLogo: companyLogo.trim() || null,
-      status,
-      featured,
-      pinned,
-    });
+    submitForm();
   }
 
   return (
@@ -48,6 +88,11 @@ export function TestimonialForm({ testimonial, onSave, onCancel }: Props) {
       <h3 className="font-mono text-sm text-white/80 uppercase tracking-wider">
         {testimonial ? "Edit testimonial" : "Add testimonial"}
       </h3>
+      {hasUnsavedChanges ? (
+        <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-[#E2B93B]/75">
+          Unsaved changes · Cmd/Ctrl+S saves · Esc closes when not typing
+        </p>
+      ) : null}
       <div>
         <label htmlFor="quote" className={labelClass}>
           Quote
@@ -199,7 +244,7 @@ export function TestimonialForm({ testimonial, onSave, onCancel }: Props) {
         </button>
         <button
           type="button"
-          onClick={onCancel}
+          onClick={cancelForm}
           className="px-6 py-2 border border-white/20 text-white/70 font-mono text-xs hover:bg-white/5 transition-colors"
         >
           Cancel

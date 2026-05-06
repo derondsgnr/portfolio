@@ -4,11 +4,13 @@
 
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion } from "motion/react";
 import { useAdmin, formatHistoryTime } from "@/components/admin/admin-context";
 import { GithubPatReminderBanner } from "@/components/admin/github-pat-reminder-banner";
+import { getRememberedAdminEditor, type AdminRecentEditor } from "@/lib/admin/recent-editor";
 import type { GithubPatReminder } from "@/lib/content/admin-reminders";
 import {
   LayoutDashboard, Type, Layers, Navigation, Globe,
@@ -210,6 +212,11 @@ function QuickStats() {
 
 export function AdminDashboardClient({ githubReminder }: { githubReminder: GithubPatReminder }) {
   const { history } = useAdmin();
+  const [recentEditor, setRecentEditor] = useState<AdminRecentEditor | null>(null);
+
+  useEffect(() => {
+    setRecentEditor(getRememberedAdminEditor());
+  }, []);
 
   const lastSavedPerSection: Record<string, number> = {};
   for (const entry of history) {
@@ -266,6 +273,25 @@ export function AdminDashboardClient({ githubReminder }: { githubReminder: Githu
       </div>
 
       <GithubPatReminderBanner reminder={githubReminder} />
+
+      {recentEditor ? (
+        <Link
+          href={recentEditor.href}
+          className="mb-6 flex items-center justify-between border border-[#E2B93B]/20 bg-[#E2B93B]/[0.04] px-4 py-3 transition-colors hover:border-[#E2B93B]/35"
+        >
+          <div>
+            <p className="text-[9px] uppercase tracking-[0.16em] text-[#E2B93B]/70 font-['Instrument_Sans']">
+              Continue editing
+            </p>
+            <p className="mt-1 text-sm text-white/75 font-['Instrument_Sans']">
+              {recentEditor.label}
+            </p>
+          </div>
+          <span className="text-[10px] uppercase tracking-[0.14em] text-white/35 font-['Instrument_Sans']">
+            {recentEditor.section}
+          </span>
+        </Link>
+      ) : null}
 
       <div className="grid grid-cols-1 xl:grid-cols-[1fr_320px] gap-8">
         <div>

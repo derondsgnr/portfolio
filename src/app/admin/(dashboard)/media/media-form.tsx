@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { saveMedia, saveCraftItems, saveExplorations } from "../../actions";
 import { AdminSaveFeedback } from "@/components/admin/admin-save-feedback";
 import { ImageFieldGuide, ImageRatioHint } from "@/components/admin/image-system-guide";
+import { useAdminEditorShortcuts } from "@/hooks/useAdminEditorShortcuts";
 import { useUnsavedChangesGuard } from "@/hooks/useUnsavedChangesGuard";
 import type { MediaConfig } from "@/lib/content/media";
 import type { CraftItem } from "@/lib/content/craft";
@@ -40,9 +41,14 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
     hasUnsavedChanges,
     "You have unsaved media changes. Leave without saving?"
   );
+  useAdminEditorShortcuts({
+    onSave: () => {
+      void saveDirtySections();
+    },
+    saveEnabled: hasUnsavedChanges && savingSection === null,
+  });
 
-  async function handleSaveMedia(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  async function persistMedia() {
     setFeedbackTarget("media");
     setSavingSection("media");
     setStatus("saving");
@@ -59,8 +65,7 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
     }
   }
 
-  async function handleSaveCraft(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  async function persistCraft() {
     setFeedbackTarget("craft");
     setSavingSection("craft");
     setStatus("saving");
@@ -77,8 +82,7 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
     }
   }
 
-  async function handleSaveExplorations(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  async function persistExplorations() {
     setFeedbackTarget("explorations");
     setSavingSection("explorations");
     setStatus("saving");
@@ -93,6 +97,33 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
       setStatus("error");
       setErrorMsg(result.error ?? null);
     }
+  }
+
+  async function saveDirtySections() {
+    if (JSON.stringify(media) !== JSON.stringify(savedSnapshotRef.current.media)) {
+      await persistMedia();
+    }
+    if (JSON.stringify(craft) !== JSON.stringify(savedSnapshotRef.current.craft)) {
+      await persistCraft();
+    }
+    if (JSON.stringify(explorations) !== JSON.stringify(savedSnapshotRef.current.explorations)) {
+      await persistExplorations();
+    }
+  }
+
+  async function handleSaveMedia(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    await persistMedia();
+  }
+
+  async function handleSaveCraft(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    await persistCraft();
+  }
+
+  async function handleSaveExplorations(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    await persistExplorations();
   }
 
   function updateCraftImage(index: number, image: string) {
@@ -136,6 +167,13 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
 
   return (
     <div className="space-y-12 max-w-3xl">
+      {hasUnsavedChanges ? (
+        <div className="border border-[#E2B93B]/25 bg-[#E2B93B]/[0.05] px-4 py-3">
+          <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-[#E2B93B]/80">
+            Unsaved media changes · Cmd/Ctrl+S saves changed sections
+          </p>
+        </div>
+      ) : null}
       <section className="space-y-4 border border-white/10 bg-white/[0.02] p-4">
         <h2 className="font-mono text-sm text-white/80 uppercase tracking-wider">
           Cloudinary setup guide (save this flow)

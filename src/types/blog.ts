@@ -15,7 +15,7 @@ import type { Slide } from "./case-study";
 
 export interface BlogPost {
   slug: string;
-  status?: "published" | "draft" | "archived";
+  status?: "published" | "draft" | "scheduled" | "archived";
   meta: {
     title: string;
     date: string;        // ISO: "2026-03-18"

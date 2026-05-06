@@ -8,6 +8,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { PageHeader, adminCx } from "@/components/admin/admin-primitives";
+import { AdminConfirmAction } from "@/components/admin/admin-confirm-dialog";
 import { AdminNotice } from "@/components/admin/admin-notice";
 import { motion, AnimatePresence } from "motion/react";
 import {
@@ -141,13 +142,20 @@ function CommentCard({
             <Flag size={11} /> Spam
           </button>
         )}
-        <button
-          onClick={onDelete}
-          disabled={disabled}
-          className="flex items-center gap-1.5 text-[10px] font-['Instrument_Sans'] tracking-wider uppercase text-white/15 hover:text-red-400/70 border border-white/[0.06] hover:border-red-500/20 px-3 py-1.5 transition-all ml-auto disabled:opacity-40"
+        <AdminConfirmAction
+          title="Delete comment?"
+          description="Delete this reader comment permanently. This cannot be undone."
+          confirmLabel="Delete"
+          destructive
+          onConfirm={onDelete}
         >
-          <Trash2 size={11} /> Delete
-        </button>
+          <button
+            disabled={disabled}
+            className="flex items-center gap-1.5 text-[10px] font-['Instrument_Sans'] tracking-wider uppercase text-white/15 hover:text-red-400/70 border border-white/[0.06] hover:border-red-500/20 px-3 py-1.5 transition-all ml-auto disabled:opacity-40"
+          >
+            <Trash2 size={11} /> Delete
+          </button>
+        </AdminConfirmAction>
       </div>
     </motion.div>
   );
@@ -198,7 +206,6 @@ function AdminCommentsPage() {
   }
 
   async function handleDelete(kvKey: string) {
-    if (!confirm("Delete this comment? This cannot be undone.")) return;
     const previous = comments;
     setActiveAction(kvKey);
     setError(null);

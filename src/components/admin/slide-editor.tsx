@@ -14,6 +14,7 @@ import { motion, AnimatePresence } from "motion/react";
 import type { Slide } from "@/types/case-study";
 import { adminCx, FormField } from "./admin-primitives";
 import { ImageFieldGuide } from "./image-system-guide";
+import { openOnKeyboard } from "@/lib/admin/interaction";
 import {
   ChevronUp, ChevronDown, Trash2, Plus, X,
   FileText, Quote, BarChart2, Zap, Image, Layers,
@@ -436,6 +437,11 @@ function SlideNavItem({
   return (
     <div
       onClick={onClick}
+      onDoubleClick={onClick}
+      onKeyDown={(event) => openOnKeyboard(event, onClick)}
+      role="button"
+      tabIndex={0}
+      title="Click, double-click, or press Enter to edit"
       className={`group flex items-center gap-2 px-3 py-2.5 cursor-pointer transition-all border-l-2 ${
         isActive
           ? "border-l-[#E2B93B] bg-white/[0.04] text-white"

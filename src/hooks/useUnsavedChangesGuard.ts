@@ -37,6 +37,15 @@ export function useUnsavedChangesGuard(
       if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
 
       const target = event.target instanceof Element ? event.target : null;
+      const guardedTrigger = target?.closest<HTMLElement>("[data-unsaved-guard-trigger]");
+      if (guardedTrigger) {
+        if (!window.confirm(message)) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        return;
+      }
+
       const anchor = target?.closest<HTMLAnchorElement>("a[href]");
       if (!anchor) return;
       if (anchor.target === "_blank" || anchor.hasAttribute("download")) return;
