@@ -14,6 +14,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { saveBlogSeries, saveBlogCategories, loadContent, saveContent } from "@/app/admin/actions";
 import { useAdmin } from "@/components/admin/admin-context";
 import { adminCx, PageHeader, FormField } from "@/components/admin/admin-primitives";
+import { ImageFieldGuide } from "@/components/admin/image-system-guide";
 import { SlideEditor } from "@/components/admin/slide-editor";
 import { BLOG_POSTS } from "@/lib/data/blog-data";
 import { BLOG_SERIES } from "@/lib/data/blog-series-data";
@@ -309,7 +310,7 @@ function PostEditor({
                   </div>
                   <FormField label="Cover Image URL" className="lg:col-span-2">
                     <input className={adminCx.input} value={form.meta.cover} onChange={(e) => setMeta("cover", e.target.value)} placeholder="https://..." />
-                    {form.meta.cover && <img src={form.meta.cover} alt="" className="mt-2 h-16 w-full object-cover border border-white/[0.05]" onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />}
+                    <ImageFieldGuide role="blog-cover" imageUrl={form.meta.cover} compact className="mt-3" />
                   </FormField>
                   <FormField label="Tags" className="lg:col-span-2">
                     <div className="flex flex-wrap gap-1.5 mb-2">
@@ -527,7 +528,7 @@ function SeriesManager({
           </FormField>
           <FormField label="Cover Image URL">
             <input className={adminCx.input} value={form.cover ?? ""} onChange={(e) => setForm({ ...form, cover: e.target.value || undefined })} placeholder="https://..." />
-            {form.cover && <img src={form.cover} alt="" className="mt-2 h-16 w-full object-cover border border-white/[0.05]" onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />}
+            <ImageFieldGuide role="blog-cover" imageUrl={form.cover} compact className="mt-3" />
           </FormField>
           <label className="flex items-center gap-3 cursor-pointer">
             <input type="checkbox" checked={form.archived ?? false} onChange={(e) => setForm({ ...form, archived: e.target.checked })} className="h-4 w-4 accent-[#E2B93B]" />

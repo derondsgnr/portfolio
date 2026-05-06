@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { saveMedia, saveCraftItems, saveExplorations } from "../../actions";
 import { AdminSaveFeedback } from "@/components/admin/admin-save-feedback";
+import { ImageFieldGuide } from "@/components/admin/image-system-guide";
 import type { MediaConfig } from "@/lib/content/media";
 import type { CraftItem } from "@/lib/content/craft";
 import type { Exploration } from "@/lib/content/explorations";
@@ -164,6 +165,7 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
               className={inputClass}
               placeholder="https://..."
             />
+            <ImageFieldGuide role="global-background" imageUrl={media.heroBackground} compact className="mt-3" />
           </div>
           <div>
             <span className={labelClass}>Section backgrounds</span>
@@ -206,6 +208,7 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
         <h2 className="font-mono text-sm text-white/80 uppercase tracking-wider">
           Craft items
         </h2>
+        <ImageFieldGuide role="craft-gallery" compact />
         <form onSubmit={handleSaveCraft} className="space-y-4">
           <div className="space-y-3">
             {craft.map((item, i) => (
@@ -274,6 +277,7 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
         <h2 className="font-mono text-sm text-white/80 uppercase tracking-wider">
           Explorations
         </h2>
+        <ImageFieldGuide role="craft-gallery" compact />
         <form onSubmit={handleSaveExplorations} className="space-y-4">
           <div className="space-y-3">
             {explorations.map((item, i) => (

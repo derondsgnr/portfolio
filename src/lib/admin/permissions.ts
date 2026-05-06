@@ -12,6 +12,7 @@ const CONTENT_MANAGER_ALLOWED_ADMIN_PREFIXES = [
   "/admin/blog",
   "/admin/case-studies",
   "/admin/media",
+  "/admin/image-system",
   "/admin/testimonials",
   "/admin/projects",
   "/admin/copy",

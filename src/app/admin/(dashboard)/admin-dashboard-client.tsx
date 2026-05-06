@@ -15,7 +15,7 @@ import {
   BookOpen, Zap, Palette, Image, Volume2, Search,
   Link2, Layout, ArrowUpRight, RotateCcw, Trash2,
   TrendingUp, FileText, Clock, MessageSquare, Bookmark, Mail,
-  Rocket, CalendarClock, Users, Send, Bot, Brain,
+  Rocket, CalendarClock, Users, Send, Bot, Brain, Crop,
 } from "lucide-react";
 
 const SECTIONS = [
@@ -29,7 +29,8 @@ const SECTIONS = [
   { key: "bookmarks",      label: "Bookmarks",      path: "/admin/bookmarks",      index: 9,  icon: Bookmark,       group: "content",  desc: "Media inspiration board" },
   { key: "theme",          label: "Theme",          path: "/admin/theme",          index: 10, icon: Palette,        group: "style",    desc: "Fonts, colors, spacing" },
   { key: "media",          label: "Media",          path: "/admin/media",          index: 11, icon: Image,          group: "style",    desc: "Images + backgrounds" },
-  { key: "sounds",         label: "Sounds",         path: "/admin/sounds",        index: 12, icon: Volume2,        group: "style",    desc: "Audio events" },
+  { key: "image-system",   label: "Image System",   path: "/admin/image-system",   index: 12, icon: Crop,           group: "style",    desc: "Ratios, crops, upload rules" },
+  { key: "sounds",         label: "Sounds",         path: "/admin/sounds",        index: 13, icon: Volume2,        group: "style",    desc: "Audio events" },
   { key: "nav",            label: "Navigation",     path: "/admin/nav",            index: 13, icon: Navigation,     group: "system",   desc: "Nav links + order" },
   { key: "global",         label: "Global",         path: "/admin/global",         index: 14, icon: Globe,          group: "system",   desc: "Footer + social links" },
   { key: "projects",       label: "Projects",       path: "/admin/projects",       index: 15, icon: Layers,         group: "system",   desc: "Work grid items" },
