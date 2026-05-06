@@ -7,6 +7,7 @@ export const SECTION_OPTIONS: Record<string, string[]> = {
   hero: ["synthesis", "void", "signal", "cipher", "drift", "echo", "fracture", "gravity"],
   about: ["synthesis"],
   capabilities: ["synthesis"],
+  writing: ["synthesis"],
   process: ["synthesis", "void", "signal", "drift", "echo", "fracture", "gravity"],
   work: ["synthesis", "void", "signal", "cipher", "drift", "echo", "fracture", "gravity"],
   philosophy: ["synthesis", "void", "cipher", "drift", "echo", "fracture", "gravity"],

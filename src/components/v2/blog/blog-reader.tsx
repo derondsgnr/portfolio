@@ -273,7 +273,7 @@ function AuthorBio() {
           className="text-[#555] text-[12px] leading-relaxed mb-4 max-w-lg"
           style={{ fontFamily: "monospace" }}
         >
-          Product designer and builder based in Lagos. I work at the intersection of design and engineering — which means I don&apos;t just hand off Figma files. I build what I design.
+          Designer and builder — I prototype to learn what&apos;s possible, then refine until it ships. Systems-thinking, hands-on builds, and interfaces people remember.
         </p>
         <div className="flex items-center gap-4">
           <Link

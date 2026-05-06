@@ -23,6 +23,7 @@ const DEFAULT_HOMEPAGE: PageConfig = {
     { id: "about", variation: "synthesis" },
     { id: "capabilities", variation: "synthesis" },
     { id: "process", variation: "synthesis" },
+    { id: "writing", variation: "synthesis" },
     { id: "work", variation: "synthesis" },
     { id: "philosophy", variation: "synthesis" },
     { id: "testimonials", variation: "synthesis" },

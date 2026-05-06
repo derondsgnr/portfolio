@@ -13,7 +13,7 @@ export interface SynthesisHeroProps {
 export function SynthesisHeroSection({
   name = "DERON",
   tagline = "PRODUCT_DESIGNER // BUILDER",
-  philosophy = "Your product will be judged on how it looks before anyone uses it.",
+  philosophy = "Prototype to learn what's possible, then refine until it ships—clear enough to use, memorable enough to feel.",
 }: SynthesisHeroProps) {
   const [decoded, setDecoded] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -58,9 +58,9 @@ export function SynthesisHeroSection({
         }}
       >
         <p>SIG_001</p>
-        <p>06&deg;31&apos;28.0&quot;N</p>
-        <p>003&deg;22&apos;45.0&quot;E</p>
-        <p>2025.03.16</p>
+        <p>PROTOTYPE</p>
+        <p>VALIDATE</p>
+        <p>SHIP</p>
       </motion.div>
       <div className="relative z-10">
         <motion.div

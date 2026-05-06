@@ -556,7 +556,7 @@ export function VoidCTA() {
         }}
       >
         <span>&copy; 2025 derondsgnr</span>
-        <span>Based in Lagos, NG</span>
+        <span>Remote, Nigeria</span>
       </div>
     </section>
   );

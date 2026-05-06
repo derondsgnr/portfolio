@@ -17,7 +17,7 @@ export const V2_TESTIMONIALS = DEFAULT_TESTIMONIALS;
 export const V2_SERVICES = [
   "Product Design",
   "Design Systems",
-  "Web Development",
+  "Build & Ship",
   "Brand Identity",
   "AI Product Design",
   "Interactive Prototypes",
@@ -35,8 +35,8 @@ export const V2_SERVICES_DETAILED = [
     icon: "grid",
   },
   {
-    name: "Web Development",
-    description: "React, Next.js, and modern stacks — I ship what I design.",
+    name: "Build & Ship",
+    description: "Hands-on implementation with modern stacks—prototype to production with validation, not theatre.",
     icon: "code",
   },
   {
@@ -61,27 +61,31 @@ export const V2_PROCESS = ["Discover", "Define", "Design", "Deliver"];
 export const V2_PROCESS_DETAILED = [
   {
     word: "Discover",
-    label: "RESEARCH & INSIGHT",
-    description: "User interviews, competitive analysis, stakeholder alignment — understanding the problem before touching a pixel.",
-    deliverables: ["User Research", "Market Analysis", "Problem Framing"],
+    label: "EXPLORE & LEARN",
+    description:
+      "Prototype to see what's possible—references, flows, friction. Pressure-test assumptions with something tangible before the details harden.",
+    deliverables: ["Direction", "Interactive probe", "Problem boundaries"],
   },
   {
     word: "Define",
-    label: "STRATEGY & STRUCTURE",
-    description: "Information architecture, user flows, success metrics — mapping the solution space with precision.",
-    deliverables: ["IA & Flows", "Product Strategy", "Success Criteria"],
+    label: "STRUCTURE & INTENT",
+    description:
+      "Turn learning into decisions: IA, journeys, and the non-negotiables. Name the tradeoffs so the UI isn't negotiating them in silence.",
+    deliverables: ["Flows & IA", "Principles", "Success signals"],
   },
   {
     word: "Design",
-    label: "CRAFT & ITERATION",
-    description: "Visual systems, interactive prototypes, user testing — crafting experiences that feel inevitable.",
-    deliverables: ["UI Design", "Design System", "Prototypes"],
+    label: "CRAFT & FEEL",
+    description:
+      "Systems, motion, typography, and the micro-moments that make a product memorable—not just usable.",
+    deliverables: ["UI system", "Motion", "High-fidelity surface"],
   },
   {
     word: "Deliver",
-    label: "BUILD & SHIP",
-    description: "Developer handoff, QA collaboration, launch support — shipping with the same care as designing.",
-    deliverables: ["Dev Handoff", "QA Support", "Launch"],
+    label: "SHIP & VALIDATE",
+    description:
+      "Build alongside production reality. The bar is simple: real interactions, validated end-to-end—not slides dressed as software.",
+    deliverables: ["Prototype → product", "QA mindset", "Launch support"],
   },
 ];
 
@@ -89,19 +93,19 @@ export const V2_ABOUT = {
   name: "Deron",
   handle: "derondsgnr",
   title: "Product Designer & Builder",
-  location: "Lagos, Nigeria",
-  coordinates: { lat: "6.5244° N", lng: "3.3792° E" },
+  location: "Remote, Nigeria",
+  coordinates: { lat: "", lng: "" },
   bio: [
-    "I'm Deron — a product designer and builder based in Lagos, Nigeria. I work at the intersection of design and engineering, which means I don't just hand off Figma files. I build what I design.",
-    "Over 5 years, I've helped startups and scale-ups ship products that users actually love — not just tolerate. I think in systems, obsess over details, and believe that how something feels is as important as what it does.",
+    "I'm Deron — a designer who ships and builds. I start by prototyping to explore what's possible, test the problem, and pressure the solution until it's real. Then I go back and refine the finer details until they fit—interaction, motion, typography, and the moments people remember.",
+    "I care that products are intuitive, and also delightful: users should leave with a feeling, not just a completed task. I've spent years with startups and teams at the intersection of design and product—thinking in systems, validating what we ship, and staying hungry to learn and push what's next.",
   ],
-  philosophy: "Your product will be judged on how it looks before anyone uses it.",
+  philosophy: "Prototype to learn what's possible, then refine until it ships—clear enough to use, memorable enough to feel.",
   stats: [
     { label: "YEARS", value: "5+" },
     { label: "PROJECTS", value: "40+" },
     { label: "CLIENTS", value: "25+" },
   ],
-  tools: ["Figma", "Framer", "React", "TypeScript", "Next.js", "Cursor"],
+  tools: ["Figma", "Figma Make", "Cursor", "Claude", "React", "Next.js", "TypeScript"],
   socials: [
     { label: "Twitter / X", handle: "@derondsgnr", url: "#" },
     { label: "LinkedIn", handle: "/in/derondsgnr", url: "#" },
@@ -110,9 +114,9 @@ export const V2_ABOUT = {
   ],
   currently: "Available for projects",
   values: [
-    { word: "Clarity", desc: "Strip away everything that doesn't serve the user." },
-    { word: "Craft", desc: "Every pixel is a decision. Make it count." },
-    { word: "Speed", desc: "Move fast, but never sloppy. Velocity with intention." },
-    { word: "Honesty", desc: "Design that doesn't manipulate. Products that respect." },
+    { word: "Clarity", desc: "Strip what doesn't serve the user—then make what's left inevitable." },
+    { word: "Craft", desc: "Details are the product. Motion and typography carry as much truth as layout." },
+    { word: "Curiosity", desc: "Keep learning tools and patterns so the work stays current, not nostalgic." },
+    { word: "Honesty", desc: "Ship what's real. Validate like your reputation depends on it—because it does." },
   ],
 };

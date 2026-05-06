@@ -29,10 +29,18 @@ export type CtaCopy = {
   tagline?: string;
 };
 
+export type WritingStripCopy = {
+  label?: string;
+  title?: string;
+  archiveLabel?: string;
+  emptyHint?: string;
+};
+
 export type PageCopy = {
   hero?: HeroCopy;
   about?: AboutCopy;
   cta?: CtaCopy;
+  writing?: WritingStripCopy;
   [key: string]: unknown;
 };
 
@@ -42,16 +50,27 @@ export type CopyConfig = {
 
 const DEFAULTS: CopyConfig = {
   homepage: {
-    hero: { name: "DERON", tagline: "PRODUCT_DESIGNER // BUILDER", philosophy: "Your product will be judged on how it looks before anyone uses it." },
+    hero: {
+      name: "DERON",
+      tagline: "PRODUCT_DESIGNER // BUILDER",
+      philosophy:
+        "Prototype to learn what's possible, then refine until it ships—clear enough to use, memorable enough to feel.",
+    },
     about: {
       label: "> ABOUT.DECODE()",
       headline: "Designer who",
       headlineAccent: "ships",
       bioParagraphs: [
-        "I'm Deron — a product designer and builder based in Lagos, Nigeria...",
-        "Over 5 years, I've helped startups and scale-ups ship products...",
+        "I'm Deron — a designer who ships and builds. I start by prototyping to explore what's possible, test the problem, and pressure the solution until it's real. Then I go back and refine the finer details until they fit—interaction, motion, typography, and the moments people remember.",
+        "I care that products are intuitive, and also delightful: users should leave with a feeling, not just a completed task. I've spent years with startups and teams at the intersection of design and product—thinking in systems, validating what we ship, and staying hungry to learn and push what's next.",
       ],
       stats: [{ label: "YEARS", value: "5+" }, { label: "PROJECTS", value: "40+" }, { label: "CLIENTS", value: "25+" }],
+    },
+    writing: {
+      label: "> FROM_THE_JOURNAL",
+      title: "WRITING",
+      archiveLabel: "VIEW ALL",
+      emptyHint: "Notes on design, build, and how products ship. The archive is open—more pieces landing here as I publish.",
     },
     cta: { label: "[READY TO DECODE YOUR NEXT PROJECT?]", headline: "LET'S BUILD", ctaPrimary: "BOOK A CALL", ctaSecondary: "SEND A MESSAGE", subtext: "FREE 30-MINUTE DISCOVERY CALL", tagline: "Designed & built by hand" },
   },

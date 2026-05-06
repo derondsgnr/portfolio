@@ -11,6 +11,7 @@
  *   4. That's it — routing and grid auto-populate
  */
 
+import { CAREEREDGE_CASE_STUDY } from "./careeredge";
 import { DARA_CASE_STUDY } from "./dara";
 import { PULSE_CASE_STUDY } from "./pulse";
 import { KORA_CASE_STUDY } from "./kora";
@@ -21,6 +22,7 @@ import { CUSTOMER_SUPPORT_PLATFORM_CASE_STUDY } from "./customer-support-platfor
 import type { CaseStudy } from "../../types/case-study";
 
 export const ALL_CASE_STUDIES: CaseStudy[] = [
+  CAREEREDGE_CASE_STUDY,
   BRIDGEPAY_CASE_STUDY,
   URBAN_CASE_STUDY,
   CUSTOMER_SUPPORT_PLATFORM_CASE_STUDY,
