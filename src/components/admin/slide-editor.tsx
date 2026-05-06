@@ -13,6 +13,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import type { Slide } from "@/types/case-study";
 import { adminCx, FormField } from "./admin-primitives";
+import { ImageFieldGuide } from "./image-system-guide";
 import {
   ChevronUp, ChevronDown, Trash2, Plus, X,
   FileText, Quote, BarChart2, Zap, Image, Layers,
@@ -151,7 +152,10 @@ function SlideForm({
         <>
           <FormField label="Headline"><input className={adminCx.input} value={slide.headline} onChange={(e) => set("headline", e.target.value)} placeholder="The big opening statement" /></FormField>
           <FormField label="Subtitle"><textarea className={adminCx.textarea} rows={2} value={slide.subtitle ?? ""} onChange={(e) => set("subtitle", e.target.value)} /></FormField>
-          <FormField label="Hero Image URL"><input className={adminCx.input} value={slide.heroImage ?? ""} onChange={(e) => set("heroImage", e.target.value)} placeholder="https://..." /></FormField>
+          <FormField label="Hero Image URL">
+            <input className={adminCx.input} value={slide.heroImage ?? ""} onChange={(e) => set("heroImage", e.target.value)} placeholder="https://..." />
+            <ImageFieldGuide role="case-study-hero" imageUrl={slide.heroImage} compact className="mt-3" />
+          </FormField>
           <div className="grid grid-cols-2 gap-3">
             <FormField label="Device Frame">
               <select className={adminCx.select} value={slide.device ?? "none"} onChange={(e) => set("device", e.target.value)}>
@@ -205,7 +209,10 @@ function SlideForm({
             <FormField label="Insight Label"><input className={adminCx.input} value={slide.insightLabel} onChange={(e) => set("insightLabel", e.target.value)} placeholder="THE KEY INSIGHT" /></FormField>
             <FormField label="Insight Text"><input className={adminCx.input} value={slide.insightText} onChange={(e) => set("insightText", e.target.value)} /></FormField>
           </div>
-          <FormField label="Supporting Image"><input className={adminCx.input} value={slide.image ?? ""} onChange={(e) => set("image", e.target.value || undefined)} placeholder="https://..." /></FormField>
+          <FormField label="Supporting Image">
+            <input className={adminCx.input} value={slide.image ?? ""} onChange={(e) => set("image", e.target.value || undefined)} placeholder="https://..." />
+            <ImageFieldGuide role="craft-gallery" imageUrl={slide.image} compact className="mt-3" />
+          </FormField>
           <NarratorEditor narrator={(slide as { narrator?: { text: string; label?: string; mood?: string } }).narrator} onChange={(n) => set("narrator", n)} />
         </>
       )}
@@ -236,12 +243,14 @@ function SlideForm({
       {slide.type === "single-mockup" && (
         <>
           <FormField label="Headline"><input className={adminCx.input} value={slide.headline ?? ""} onChange={(e) => set("headline", e.target.value || undefined)} /></FormField>
-          <FormField label="Image URL *"><input className={adminCx.input} value={slide.image} onChange={(e) => set("image", e.target.value)} placeholder="https://..." /></FormField>
+          <FormField label="Image URL *">
+            <input className={adminCx.input} value={slide.image} onChange={(e) => set("image", e.target.value)} placeholder="https://..." />
+            <ImageFieldGuide role="case-study-screenshot" imageUrl={slide.image} compact className="mt-3" />
+          </FormField>
           <div className="grid grid-cols-2 gap-3">
             <FormField label="Device Frame"><select className={adminCx.select} value={slide.device} onChange={(e) => set("device", e.target.value)}>{DEVICE_OPTIONS.map((d) => <option key={d} value={d} style={{ background: "#0A0A0A" }}>{d}</option>)}</select></FormField>
             <FormField label="Caption"><input className={adminCx.input} value={slide.caption ?? ""} onChange={(e) => set("caption", e.target.value || undefined)} /></FormField>
           </div>
-          {slide.image && <img src={slide.image} alt="" className="mt-2 h-24 w-full object-contain border border-white/[0.05]" onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />}
           <NarratorEditor narrator={(slide as { narrator?: { text: string; label?: string; mood?: string } }).narrator} onChange={(n) => set("narrator", n)} />
         </>
       )}
@@ -262,6 +271,7 @@ function SlideForm({
               <input className={adminCx.input} value={slide.after.image} onChange={(e) => set("after", { ...slide.after, image: e.target.value })} placeholder="Image URL" />
             </div>
           </div>
+          <ImageFieldGuide role="case-study-screenshot" imageUrl={slide.after.image || slide.before.image} compact />
           <NarratorEditor narrator={(slide as { narrator?: { text: string; label?: string; mood?: string } }).narrator} onChange={(n) => set("narrator", n)} />
         </>
       )}
@@ -272,6 +282,7 @@ function SlideForm({
           <FormField label="Headline"><input className={adminCx.input} value={slide.headline ?? ""} onChange={(e) => set("headline", e.target.value || undefined)} /></FormField>
           <div className="space-y-2">
             <label className={adminCx.label}>Screens</label>
+            <ImageFieldGuide role="case-study-screenshot" imageUrl={slide.mockups[0]?.image} compact className="mb-3" />
             {slide.mockups.map((m, i) => (
               <div key={i} className="grid grid-cols-[1fr_auto_auto] gap-2 items-start">
                 <input className={adminCx.input} value={m.image} onChange={(e) => { const ms = [...slide.mockups]; ms[i] = { ...ms[i], image: e.target.value }; set("mockups", ms); }} placeholder="Image URL" />
@@ -291,6 +302,7 @@ function SlideForm({
           <FormField label="Headline"><input className={adminCx.input} value={slide.headline ?? ""} onChange={(e) => set("headline", e.target.value || undefined)} /></FormField>
           <div className="space-y-2">
             <label className={adminCx.label}>Screens</label>
+            <ImageFieldGuide role="case-study-screenshot" imageUrl={slide.screens[0]?.image} compact className="mb-3" />
             {slide.screens.map((s, i) => (
               <div key={i} className="grid grid-cols-[1fr_1fr_auto] gap-2">
                 <input className={adminCx.input} value={s.image} onChange={(e) => { const sc = [...slide.screens]; sc[i] = { ...sc[i], image: e.target.value }; set("screens", sc); }} placeholder="Image URL" />
@@ -309,7 +321,10 @@ function SlideForm({
         <>
           <FormField label="Headline"><input className={adminCx.input} value={slide.headline ?? ""} onChange={(e) => set("headline", e.target.value || undefined)} /></FormField>
           <FormField label="Video URL"><input className={adminCx.input} value={slide.videoUrl ?? ""} onChange={(e) => set("videoUrl", e.target.value || undefined)} placeholder="https://..." /></FormField>
-          <FormField label="Poster Image *"><input className={adminCx.input} value={slide.posterImage} onChange={(e) => set("posterImage", e.target.value)} placeholder="Thumbnail image URL" /></FormField>
+          <FormField label="Poster Image *">
+            <input className={adminCx.input} value={slide.posterImage} onChange={(e) => set("posterImage", e.target.value)} placeholder="Thumbnail image URL" />
+            <ImageFieldGuide role="case-study-screenshot" imageUrl={slide.posterImage} compact className="mt-3" />
+          </FormField>
           <div className="grid grid-cols-2 gap-3">
             <FormField label="Device"><select className={adminCx.select} value={slide.device ?? "none"} onChange={(e) => set("device", e.target.value)}>{DEVICE_OPTIONS.map((d) => <option key={d} value={d} style={{ background: "#0A0A0A" }}>{d}</option>)}</select></FormField>
             <FormField label="Caption"><input className={adminCx.input} value={slide.caption ?? ""} onChange={(e) => set("caption", e.target.value || undefined)} /></FormField>
@@ -323,7 +338,10 @@ function SlideForm({
         <>
           <FormField label="Headline"><input className={adminCx.input} value={slide.headline ?? ""} onChange={(e) => set("headline", e.target.value || undefined)} /></FormField>
           <FormField label="Embed URL *" hint="Figma share link, CodeSandbox, etc."><input className={adminCx.input} value={slide.embedUrl} onChange={(e) => set("embedUrl", e.target.value)} placeholder="https://..." /></FormField>
-          <FormField label="Fallback Image *"><input className={adminCx.input} value={slide.fallbackImage} onChange={(e) => set("fallbackImage", e.target.value)} placeholder="Shown when embed fails" /></FormField>
+          <FormField label="Fallback Image *">
+            <input className={adminCx.input} value={slide.fallbackImage} onChange={(e) => set("fallbackImage", e.target.value)} placeholder="Shown when embed fails" />
+            <ImageFieldGuide role="case-study-screenshot" imageUrl={slide.fallbackImage} compact className="mt-3" />
+          </FormField>
           <div className="grid grid-cols-2 gap-3">
             <FormField label="Device"><select className={adminCx.select} value={slide.device ?? "browser"} onChange={(e) => set("device", e.target.value)}>{DEVICE_OPTIONS.map((d) => <option key={d} value={d} style={{ background: "#0A0A0A" }}>{d}</option>)}</select></FormField>
             <FormField label="Caption"><input className={adminCx.input} value={slide.caption ?? ""} onChange={(e) => set("caption", e.target.value || undefined)} /></FormField>
@@ -338,6 +356,7 @@ function SlideForm({
           <FormField label="Headline"><input className={adminCx.input} value={slide.headline ?? ""} onChange={(e) => set("headline", e.target.value || undefined)} /></FormField>
           <div className="space-y-3">
             <label className={adminCx.label}>Artifacts</label>
+            <ImageFieldGuide role="craft-gallery" imageUrl={slide.artifacts[0]?.image} compact className="mb-3" />
             {slide.artifacts.map((a, i) => (
               <div key={i} className="p-3 border border-white/[0.06] space-y-2 relative group">
                 <button type="button" onClick={() => set("artifacts", slide.artifacts.filter((_, idx) => idx !== i))} className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 text-white/20 hover:text-red-400/60 transition-all"><Trash2 size={11} /></button>

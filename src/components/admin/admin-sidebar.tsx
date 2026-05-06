@@ -19,7 +19,7 @@ import {
   BookOpen, Zap, Palette, Image, Volume2, Search,
   Link2, Layout, X, Menu, LogOut, ExternalLink,
   MessageSquare, Bookmark, FileText, Mail, Rocket,
-  CalendarClock, Users, Send, Bot, Brain, Clapperboard, KeyRound,
+  CalendarClock, Users, Send, Bot, Brain, Clapperboard, KeyRound, Crop,
 } from "lucide-react";
 import { logout } from "@/app/admin/actions";
 
@@ -47,7 +47,8 @@ const NAV_GROUPS = [
     items: [
       { number: 10, label: "Theme",         path: "/admin/theme",         icon: Palette },
       { number: 11, label: "Media",         path: "/admin/media",         icon: Image },
-      { number: 12, label: "Sounds",        path: "/admin/sounds",        icon: Volume2 },
+      { number: 12, label: "Image System",  path: "/admin/image-system",  icon: Crop },
+      { number: 13, label: "Sounds",        path: "/admin/sounds",        icon: Volume2 },
     ],
   },
   {

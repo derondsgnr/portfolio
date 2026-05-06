@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { ImageFieldGuide } from "@/components/admin/image-system-guide";
 import type { Project } from "@/lib/content/projects";
 
 type Props = {
@@ -131,6 +132,7 @@ export function ProjectForm({ project, onSave, onCancel }: Props) {
           className={inputClass}
           placeholder="https://..."
         />
+        <ImageFieldGuide role="project-cover" imageUrl={form.image} compact className="mt-3" />
       </div>
       <div>
         <label className={labelClass}>Slug (URL path)</label>

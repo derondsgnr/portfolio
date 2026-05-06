@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { saveCaseStudies } from "@/app/admin/actions";
 import { useAdmin } from "@/components/admin/admin-context";
 import { adminCx, PageHeader, FormField } from "@/components/admin/admin-primitives";
+import { ImageFieldGuide } from "@/components/admin/image-system-guide";
 import { SlideEditor } from "@/components/admin/slide-editor";
 import type { CaseStudy, Act, Slide } from "@/types/case-study";
 import {
@@ -260,7 +261,7 @@ function StudyEditor({
                   </div>
                   <FormField label="Cover Image URL" className="lg:col-span-2">
                     <input className={adminCx.input} value={form.meta.cover} onChange={(e) => setMeta("cover", e.target.value)} placeholder="https://..." />
-                    {form.meta.cover && <img src={form.meta.cover} alt="" className="mt-2 h-14 w-full object-cover border border-white/[0.05]" onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />}
+                    <ImageFieldGuide role="case-study-hero" imageUrl={form.meta.cover} compact className="mt-3" />
                   </FormField>
                   <FormField label="Template">
                     <div className="grid grid-cols-2 gap-2">
