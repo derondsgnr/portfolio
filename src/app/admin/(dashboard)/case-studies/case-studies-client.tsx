@@ -7,6 +7,7 @@ import { useAdmin } from "@/components/admin/admin-context";
 import { adminCx, PageHeader, FormField } from "@/components/admin/admin-primitives";
 import { ImageFieldGuide } from "@/components/admin/image-system-guide";
 import { SlideEditor } from "@/components/admin/slide-editor";
+import { useUnsavedChangesGuard } from "@/hooks/useUnsavedChangesGuard";
 import type { CaseStudy, Act, Slide } from "@/types/case-study";
 import {
   Plus, ChevronRight, ChevronDown, Trash2, Eye,
@@ -143,6 +144,11 @@ function StudyEditor({
   const [form, setForm] = useState<CaseStudy>(study);
   const [tagInput, setTagInput] = useState("");
   const [metaOpen, setMetaOpen] = useState(false);
+  const hasUnsavedChanges = JSON.stringify(form) !== JSON.stringify(study);
+  useUnsavedChangesGuard(
+    hasUnsavedChanges,
+    "You have unsaved changes in this case study. Leave without saving?"
+  );
 
   useEffect(() => { setForm(study); }, [study]);
 

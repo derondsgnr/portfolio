@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { ImageFieldGuide } from "@/components/admin/image-system-guide";
+import { useUnsavedChangesGuard } from "@/hooks/useUnsavedChangesGuard";
 import type { Project } from "@/lib/content/projects";
 
 type Props = {
@@ -24,6 +25,12 @@ const empty: Partial<Project> = {
 
 export function ProjectForm({ project, onSave, onCancel }: Props) {
   const [form, setForm] = useState<Partial<Project>>(project ?? empty);
+  const baseline = project ?? empty;
+  const hasUnsavedChanges = JSON.stringify(form) !== JSON.stringify(baseline);
+  const confirmIfUnsaved = useUnsavedChangesGuard(
+    hasUnsavedChanges,
+    "You have unsaved changes in this project. Leave without saving?"
+  );
 
   useEffect(() => {
     setForm(project ?? empty);
@@ -153,7 +160,9 @@ export function ProjectForm({ project, onSave, onCancel }: Props) {
         </button>
         <button
           type="button"
-          onClick={onCancel}
+          onClick={() => {
+            if (confirmIfUnsaved()) onCancel();
+          }}
           className="px-4 py-2 border border-white/20 text-white/60 font-mono text-xs hover:text-white"
         >
           Cancel

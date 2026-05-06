@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { saveMedia, saveCraftItems, saveExplorations } from "../../actions";
 import { AdminSaveFeedback } from "@/components/admin/admin-save-feedback";
 import { ImageFieldGuide } from "@/components/admin/image-system-guide";
+import { useUnsavedChangesGuard } from "@/hooks/useUnsavedChangesGuard";
 import type { MediaConfig } from "@/lib/content/media";
 import type { CraftItem } from "@/lib/content/craft";
 import type { Exploration } from "@/lib/content/explorations";
@@ -26,6 +27,19 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [savingSection, setSavingSection] = useState<string | null>(null);
   const [feedbackTarget, setFeedbackTarget] = useState<"media" | "craft" | "explorations">("media");
+  const savedSnapshotRef = useRef({
+    media: initialMedia,
+    craft: initialCraft,
+    explorations: initialExplorations,
+  });
+  const hasUnsavedChanges =
+    JSON.stringify(media) !== JSON.stringify(savedSnapshotRef.current.media) ||
+    JSON.stringify(craft) !== JSON.stringify(savedSnapshotRef.current.craft) ||
+    JSON.stringify(explorations) !== JSON.stringify(savedSnapshotRef.current.explorations);
+  useUnsavedChangesGuard(
+    hasUnsavedChanges,
+    "You have unsaved media changes. Leave without saving?"
+  );
 
   async function handleSaveMedia(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -36,6 +50,7 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
     const result = await saveMedia(media, "Update media");
     setSavingSection(null);
     if (result.ok) {
+      savedSnapshotRef.current.media = media;
       setStatus("ok");
       setTimeout(() => setStatus("idle"), 2000);
     } else {
@@ -53,6 +68,7 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
     const result = await saveCraftItems(craft, "Update craft items");
     setSavingSection(null);
     if (result.ok) {
+      savedSnapshotRef.current.craft = craft;
       setStatus("ok");
       setTimeout(() => setStatus("idle"), 2000);
     } else {
@@ -70,6 +86,7 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
     const result = await saveExplorations(explorations, "Update explorations");
     setSavingSection(null);
     if (result.ok) {
+      savedSnapshotRef.current.explorations = explorations;
       setStatus("ok");
       setTimeout(() => setStatus("idle"), 2000);
     } else {

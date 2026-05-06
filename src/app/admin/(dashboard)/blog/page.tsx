@@ -16,6 +16,7 @@ import { useAdmin } from "@/components/admin/admin-context";
 import { adminCx, PageHeader, FormField } from "@/components/admin/admin-primitives";
 import { ImageFieldGuide } from "@/components/admin/image-system-guide";
 import { SlideEditor } from "@/components/admin/slide-editor";
+import { useUnsavedChangesGuard } from "@/hooks/useUnsavedChangesGuard";
 import { BLOG_POSTS } from "@/lib/data/blog-data";
 import { BLOG_SERIES } from "@/lib/data/blog-series-data";
 import type { BlogSeries } from "@/types/blog";
@@ -201,6 +202,14 @@ function PostEditor({
     form.meta.category && !categoryList.includes(form.meta.category)
       ? [form.meta.category, ...categoryList]
       : categoryList;
+  const hasUnsavedChanges = useMemo(
+    () => JSON.stringify(form) !== JSON.stringify(post),
+    [form, post]
+  );
+  useUnsavedChangesGuard(
+    hasUnsavedChanges,
+    "You have unsaved changes in this blog post. Leave without saving?"
+  );
 
   // Sync when post changes (switching posts)
   useEffect(() => { setForm(post); }, [post]);
@@ -449,13 +458,25 @@ function SeriesManager({
 }) {
   const [editingSlug, setEditingSlug] = useState<string | null>(null);
   const [form, setForm] = useState<ManagedSeries | null>(null);
+  const originalSeries = editingSlug && editingSlug !== "__new__"
+    ? series.find((item) => item.slug === editingSlug) ?? null
+    : null;
+  const hasUnsavedChanges = Boolean(
+    form && JSON.stringify(form) !== JSON.stringify(originalSeries)
+  );
+  const confirmIfUnsaved = useUnsavedChangesGuard(
+    hasUnsavedChanges,
+    "You have unsaved changes in this series. Leave without saving?"
+  );
 
   function startEdit(s: ManagedSeries) {
+    if (!confirmIfUnsaved()) return;
     setEditingSlug(s.slug);
     setForm({ ...s });
   }
 
   function startNew() {
+    if (!confirmIfUnsaved()) return;
     const blank: ManagedSeries = {
       slug: `series-${Date.now()}`,
       title: "",
@@ -489,6 +510,7 @@ function SeriesManager({
   }
 
   function cancelEdit() {
+    if (!confirmIfUnsaved()) return;
     setEditingSlug(null);
     setForm(null);
   }
