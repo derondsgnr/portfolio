@@ -1,13 +1,7 @@
 import type { CaseStudy } from "@/types/case-study";
 import { ALL_CASE_STUDIES as STATIC_CASE_STUDIES } from "@/data/case-studies";
+import { isPlaceholderRemoteImage } from "./placeholder-remote-image";
 import { readContentJson } from "./live-source";
-
-/** Matches `caseStudyPlaceholder` (placehold.co) and legacy generic placeholders */
-function looksLikePlaceholderHeroImage(url?: string): boolean {
-  if (!url?.trim()) return true;
-  const u = url.toLowerCase();
-  return u.includes("placehold.co") || u.includes("via.placeholder");
-}
 
 /**
  * Admin often updates `meta.cover` first; the opening cover slide still reads `heroImage`.
@@ -16,14 +10,14 @@ function looksLikePlaceholderHeroImage(url?: string): boolean {
 function hydrateCoverSlidesFromMetaCover(study: CaseStudy): CaseStudy {
   const metaCover =
     typeof study.meta?.cover === "string" ? study.meta.cover.trim() : "";
-  if (!metaCover || looksLikePlaceholderHeroImage(metaCover)) return study;
+  if (!metaCover || isPlaceholderRemoteImage(metaCover)) return study;
 
   const acts = study.acts.map((act) => ({
     ...act,
     slides: act.slides.map((slide) => {
       if (slide.type !== "cover") return slide;
       const hi = slide.heroImage?.trim() ?? "";
-      if (hi && !looksLikePlaceholderHeroImage(hi)) return slide;
+      if (hi && !isPlaceholderRemoteImage(hi)) return slide;
       return { ...slide, heroImage: metaCover };
     }),
   }));
@@ -50,8 +44,9 @@ function sortCaseStudies(items: CaseStudy[]): CaseStudy[] {
 }
 
 /**
- * Merge persisted JSON (GitHub or content/case-studies.json) with the static registry by slug.
- * Persisted entry wins per slug; slugs that exist only in code remain listed.
+ * Merge persisted JSON (GitHub `content/case-studies.json`) over the code registry.
+ * For each slug present in JSON, the **saved payload wins in full** — copy, slides, and images.
+ * Code-only slugs (not in JSON) still appear from `/src/data/case-studies`.
  */
 export function mergeCaseStudiesOverlay(local: CaseStudy[], overlay: unknown): CaseStudy[] {
   if (!Array.isArray(overlay)) return local;
@@ -94,6 +89,11 @@ export async function getCaseStudies(options?: {
     // Fallback to static case studies when content file is unavailable.
   }
 
+  /** Pre-filter merged status — used so we never resurrect static TS when GitHub hides a slug */
+  const mergedStatusBySlug = new Map<string, string>(
+    base.map((study) => [study.slug, study.status ?? "published"])
+  );
+
   const filtered = base.filter((study) => {
     const status = study.status ?? "published";
     if (!includeArchived && status === "archived") return false;
@@ -107,6 +107,13 @@ export async function getCaseStudies(options?: {
     for (const raw of STATIC_CASE_STUDIES) {
       const s = normalizeCaseStudy(raw);
       if (seen.has(s.slug)) continue;
+
+      /** JSON explicitly archived or drafted this slug — do not bring back bundled TS publish. */
+      const mergedStatus = mergedStatusBySlug.get(s.slug);
+      if (mergedStatus === "draft" || mergedStatus === "archived") {
+        continue;
+      }
+
       const status = s.status ?? "published";
       if (status === "archived" && !includeArchived) continue;
       if (status === "draft") continue;
