@@ -2,25 +2,28 @@
 
 import { SynthesisCraftPage } from "../v2/pages/synthesis-pages";
 import type { PageCopy } from "@/lib/content/copy";
-import type { CraftItem } from "@/lib/content/craft";
+import type { CraftDocument, CraftItem } from "@/lib/content/craft-model";
 import type { Exploration } from "@/lib/content/explorations";
 import type { MediaConfig } from "@/lib/content/media";
 
 export function CraftPage({
   copy,
-  craftItems = [],
+  craftDocument,
+  craftListItems = [],
   explorations = [],
   media,
 }: {
   copy?: PageCopy;
-  craftItems?: CraftItem[];
+  craftDocument: CraftDocument;
+  craftListItems?: CraftItem[];
   explorations?: Exploration[];
   media?: MediaConfig;
 }) {
   return (
     <SynthesisCraftPage
       copy={copy}
-      craftItems={craftItems}
+      craftDocument={craftDocument}
+      craftListItems={craftListItems}
       explorations={explorations}
       media={media}
     />

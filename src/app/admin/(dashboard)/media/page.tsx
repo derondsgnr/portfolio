@@ -1,10 +1,7 @@
 import { getContentWithGitHubOverlay } from "@/lib/admin/content-overlay";
 import { getMedia } from "@/lib/content/media";
-import { getCraftItems } from "@/lib/content/craft";
+import { getCraftDocument, parseCraftDocumentFromUnknown, type CraftDocument } from "@/lib/content/craft";
 import { getExplorations } from "@/lib/content/explorations";
-import type { MediaConfig } from "@/lib/content/media";
-import type { CraftItem } from "@/lib/content/craft";
-import type { Exploration } from "@/lib/content/explorations";
 import { MediaForm } from "./media-form";
 
 export const dynamic = "force-dynamic";
@@ -22,10 +19,10 @@ export default async function AdminMediaPage() {
         };
       }
     ),
-    getContentWithGitHubOverlay(
+    getContentWithGitHubOverlay<CraftDocument>(
       "content/craft.json",
-      () => getCraftItems({ includeDrafts: true, includeArchived: true }),
-      (local, parsed) => (Array.isArray(parsed) ? parsed : local)
+      () => getCraftDocument({ includeDrafts: true, includeArchived: true }),
+      (_local, parsed) => parseCraftDocumentFromUnknown(parsed)
     ),
     getContentWithGitHubOverlay(
       "content/explorations.json",

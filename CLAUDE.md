@@ -1,7 +1,7 @@
 # PORTFOLIO — AI Agent Index
 
 > **Living document.** This is the single source of truth for any AI coding tool working on this project.
-> Last updated: 2026-03-28. Update this file when making architectural or design decisions.
+> Last updated: 2026-05-07. Update this file when making architectural or design decisions.
 
 ---
 
@@ -71,7 +71,7 @@ content/
   integrations.json → Analytics IDs (GTM, GA)
   landing.json      → Homepage variation selection
   pages.json        → Page layout config
-  craft.json        → Craft items
+   craft.json        → Craft document: `{ "sections": [...] }`; each section `layoutMode`: `masonry-2` | `masonry-3` | `editorial-cover` | `list`, plus `items`. Legacy flat `CraftItem[]` migrates on read. Types live in `craft-model.ts`; loaders in `craft.ts`.
 ```
 
 **Blog data** is currently in `src/lib/data/blog-data.ts` (static TypeScript array). TODO: migrate to Supabase KV.
@@ -278,6 +278,7 @@ ADMIN_CONTENT_SECRET               → Optional limited admin password (content 
 | 2026-05 | Phase 1 admin hardening in app layer | Needed immediate protection before full RBAC and edge WAF rollout | Added admin IP allowlist option, login throttling/lockout, same-origin mutation checks, and mutation rate limits |
 | 2026-05 | Phase 2 role split with content manager | Needed safe delegation for blog/case-study/content updates without exposing system controls | Added `ADMIN_CONTENT_SECRET`, path-level admin access gating, and write/capability permission checks |
 | 2026-05 | Unified live content read path | Needed reliable E2E sync between admin writes and public/admin reads | Added shared GitHub-first + local-fallback loader across content modules and hardened rollback/race handling in blog/growth/now/reminder flows |
+| 2026-05 | Structured craft content + `craft-model.ts` | Per-section galleries (masonry / editorial / list) with native aspect ratios; avoid bundling `fs` into admin client | `content/craft.json` is `{ sections[] }`; loaders in `craft.ts`; types/constants in `craft-model.ts` for RSC + client consumers |
 
 ---
 

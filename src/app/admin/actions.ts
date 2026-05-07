@@ -163,8 +163,8 @@ export async function saveMedia(data: unknown, message?: string): Promise<{ ok: 
   return saveContent("content/media.json", content, message ?? "Update media");
 }
 
-export async function saveCraftItems(items: unknown[], message?: string): Promise<{ ok: boolean; error?: string }> {
-  const content = JSON.stringify(items, null, 2);
+export async function saveCraftItems(payload: unknown, message?: string): Promise<{ ok: boolean; error?: string }> {
+  const content = JSON.stringify(payload, null, 2);
   return saveContent("content/craft.json", content, message ?? "Update craft items");
 }
 

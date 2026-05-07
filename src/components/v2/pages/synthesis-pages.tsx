@@ -4,7 +4,8 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence, useInView } from "motion/react";
 import { useRouter } from "next/navigation";
 import { V2_PROJECTS, V2_ABOUT } from "../v2-data";
-import type { CraftItem } from "@/lib/content/craft";
+import type { CraftDocument, CraftItem } from "@/lib/content/craft-model";
+import { CraftProjectSections } from "../craft/craft-project-sections";
 import type { Exploration } from "@/lib/content/explorations";
 import type { MediaConfig } from "@/lib/content/media";
 import type { PageCopy } from "@/lib/content/copy";
@@ -19,9 +20,7 @@ import { YouTubeVideoFrame, toYouTubeEmbedUrl } from "../shared/youtube-video-fr
    ARCHITECTURE
    ────────────
    Work  → Signal terminal hero + List/Grid toggle (SynthesisWorkPage)
-   Craft → Synthesis gravity-drop hero + two-tab system (SynthesisCraftPage)
-           Tab 1: "Projects" — structured mini case studies, Grid/List toggle
-           Tab 2: "Graphics & Motion" — masonry gallery → full-screen viewer
+   Craft → `SynthesisCraftPage`: Projects tab = sectioned layouts (`CraftProjectSections`: masonry intrinsic, editorial-cover, list); List toggle = flattened sorted rows. Motion tab unchanged.
    About → Signal scan-reveal hero + Cipher body (SynthesisAboutPage)
 
    CRAFT PAGE — EXPLORATION VIEWER (Aristide-inspired)
@@ -502,58 +501,7 @@ function SynthesisCraftHero({ copy, heroBackground }: { copy?: PageCopy; heroBac
   );
 }
 
-/* Synthesis asymmetric grid view */
-function CraftGridView({ craftItems }: { craftItems: CraftItem[] }) {
-  if (craftItems.length === 0) return null;
-  return (
-    <div className="max-w-6xl mx-auto">
-      {craftItems.map((item, i) => {
-        const positions = [
-          { ml: "0%", w: "50%", aspect: "4/5" },
-          { ml: "45%", w: "45%", aspect: "3/2" },
-          { ml: "10%", w: "55%", aspect: "16/10" },
-          { ml: "0%", w: "38%", aspect: "1/1" },
-          { ml: "50%", w: "42%", aspect: "4/3" },
-          { ml: "5%", w: "48%", aspect: "4/5" },
-          { ml: "40%", w: "50%", aspect: "3/2" },
-          { ml: "15%", w: "45%", aspect: "16/10" },
-        ];
-        const p = positions[i % positions.length];
-
-        return (
-          <motion.div
-            key={item.id}
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.1 }}
-            className="mb-16 group cursor-pointer"
-            style={{ marginLeft: p.ml, width: p.w }}
-          >
-            <div className="overflow-hidden relative" style={{ aspectRatio: p.aspect }}>
-              <img src={item.image} alt={item.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" style={{ filter: "grayscale(0.4)" }} />
-              <div className="absolute inset-0 pointer-events-none" style={{ background: "repeating-linear-gradient(0deg, transparent 0px, transparent 3px, rgba(10,10,10,0.2) 3px, rgba(10,10,10,0.2) 4px)" }} />
-              <div className="absolute top-4 left-4">
-                <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#E2B93B", letterSpacing: "0.1em" }}>EXP_{item.id.replace("c-", "")}</span>
-              </div>
-            </div>
-            <div className="mt-4 flex items-center gap-4">
-              <span style={{ fontFamily: "monospace", fontSize: "9px", letterSpacing: "0.15em", color: "rgba(226,185,59,0.4)", textTransform: "uppercase" }}>[{item.category}]</span>
-              <span className="group-hover:text-white/60 transition-colors duration-300" style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "0.85rem", color: "rgba(255,255,255,0.3)" }}>
-                <ScrambleText text={item.title} speed={15} />
-              </span>
-            </div>
-            <p className="mt-2 max-w-sm" style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "0.75rem", lineHeight: 1.5, fontWeight: 300, color: "rgba(255,255,255,0.15)" }}>
-              {item.description}
-            </p>
-          </motion.div>
-        );
-      })}
-    </div>
-  );
-}
-
-/* Cipher-style list view */
+/* Cipher-style list view — global index (sorted by pin / feature / title) */
 function CraftListView({ craftItems }: { craftItems: CraftItem[] }) {
   if (craftItems.length === 0) return null;
   return (
@@ -568,10 +516,20 @@ function CraftListView({ craftItems }: { craftItems: CraftItem[] }) {
             transition={{ delay: i * 0.08, duration: 0.5 }}
             className="py-8 grid grid-cols-1 md:grid-cols-12 gap-6 items-center group cursor-pointer"
           >
-            <div className="md:col-span-2 overflow-hidden" style={{ aspectRatio: "1/1" }}>
+            <div
+              className="md:col-span-2 overflow-hidden rounded-[0.625rem] border border-[rgba(255,255,255,0.08)]"
+              style={{
+                aspectRatio:
+                  typeof item.width === "number" && typeof item.height === "number" && item.height > 0
+                    ? `${item.width} / ${item.height}`
+                    : "1 / 1",
+              }}
+            >
               <img
                 src={item.image}
                 alt={item.title}
+                width={item.width}
+                height={item.height}
                 className="w-full h-full object-cover transition-all duration-500 group-hover:grayscale-0"
                 style={{ filter: "grayscale(1) brightness(0.5)" }}
               />
@@ -1136,7 +1094,19 @@ function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: {
   );
 }
 
-export function SynthesisCraftPage({ copy, craftItems = [], explorations = [], media }: { copy?: PageCopy; craftItems?: CraftItem[]; explorations?: Exploration[]; media?: MediaConfig } = {}) {
+export function SynthesisCraftPage({
+  copy,
+  craftDocument,
+  craftListItems = [],
+  explorations = [],
+  media,
+}: {
+  copy?: PageCopy;
+  craftDocument: CraftDocument;
+  craftListItems?: CraftItem[];
+  explorations?: Exploration[];
+  media?: MediaConfig;
+}) {
   const [tab, setTab] = useState<"projects" | "explorations">("projects");
   const [view, setView] = useState<"a" | "b">("a");
   const [viewerIndex, setViewerIndex] = useState<number | null>(null);
@@ -1221,7 +1191,7 @@ export function SynthesisCraftPage({ copy, craftItems = [], explorations = [], m
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.4 }}
               >
-                {view === "a" ? <CraftGridView craftItems={craftItems} /> : <CraftListView craftItems={craftItems} />}
+                {view === "a" ? <CraftProjectSections document={craftDocument} /> : <CraftListView craftItems={craftListItems} />}
               </motion.div>
             ) : (
               <motion.div
