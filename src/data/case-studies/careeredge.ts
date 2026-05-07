@@ -3,8 +3,10 @@ import { caseStudyPlaceholder as ph } from "@/lib/case-study-placeholders";
 
 /**
  * CareerEdge(d) — flagship case study
- * Copy and structure only; replace placeholder images via admin → content/case-studies.json or edit this file.
- * Live: https://careeredged.com (floating CTA uses liveDemoUrl on the case study page).
+ * Replace images in Admin → Case Studies in **top-to-bottom slide order**:
+ *   Cover hero → M01 shell → M02 Sophia strip → F01–F03 onboarding flow → P01–P03 process → G01–G03 gallery
+ * (captions echo these IDs so you can paste URLs without hunting.)
+ * Live: https://careeredged.com
  */
 
 const cover = ph("CareerEdge · AI-guided career OS", 1920, 1080);
@@ -29,7 +31,7 @@ export const CAREEREDGE_CASE_STUDY: CaseStudy = {
     ],
     cover,
     summary:
-      "A multi-role career platform where I repositioned the AI guide as the spine of the product—making a huge surface area learnable without turning the UI into an inventory list.",
+      "Built fast and wide first—eight roles and twenty-plus features—CareerEdge needed design to turn breadth into a legible product. I reframed the AI guide as the spine so the experience could breathe without giving up the roadmap.",
     color: "#E2B93B",
   },
   template: "full-product",
@@ -50,15 +52,35 @@ export const CAREEREDGE_CASE_STUDY: CaseStudy = {
         },
         {
           type: "narrative",
-          id: "ce-why",
-          headline: "Career software fails in the gaps, not the hero section",
-          body: "People don't struggle because a dashboard is ugly. They struggle because the product asks for attention in the wrong order—too much at once, too late, or repeated across screens.\n\nCareerEdge sits in that high-stakes space: guidance, progression, identity across roles, and a long list of ambitions from the business. My job was to turn that collision into a coherent experience: one spine users can follow, and a product team can ship without turning every feature into a homepage.",
-          annotation:
-            "If you only read one thing: the win was architectural—what to surface, what to defer, and what Sophia is responsible for remembering.",
+          id: "ce-origin",
+          headline: "Fast shipping rewired the sequence—design had to catch a moving train",
+          body: "We live in a moment where almost anyone can ship breadth: more roles, more dashboards, more toggles, faster than ever. That speed is not the enemy. What gets dangerous is when experience becomes the last discipline to get a real seat. The interface becomes a mirror of the backlog—honest, exhaustive, and exhausting.\n\nCareerEdge arrived in that shape: real ambition, real build velocity, and a footprint that had already outgrown casual browsing. My entry point was not “pick nicer cards.” It was redesigning how the product asks for attention.",
           narrator: {
             label: "DESIGNER'S NOTE",
             mood: "thinking",
-            text: "I name the real job early: reduce cognitive load without hiding legitimate power. That is the same problem founders feel when they say “we need AI”—they need sequencing and trust, not more panels.",
+            text: "I am not knocking the build. I am naming the new normal: if you wait on UX until the map is huge, you are not polishing—you are negotiating reality.",
+          },
+        },
+        {
+          type: "insight",
+          id: "ce-built-breadth",
+          headline: "What landed on the table first was coverage, not clarity",
+          insightLabel: "WHERE IT STARTED",
+          insightText:
+            "Development had already assembled eight distinct roles—each with its own dashboard—and north of twenty features surfaced across the product. The system was real. The story users could hold in their heads was not.",
+          body: "Numbers like that are not melodrama. They describe load: every role multiplies mental models, navigation hooks, and permission edges. Without a spine, the product does not feel “feature-rich.” It feels like homework with no teacher.\n\nThat is the gap my work targeted: keep the capability, earn comprehension.",
+        },
+        {
+          type: "narrative",
+          id: "ce-why",
+          headline: "Career software fails in the gaps, not the hero section",
+          body: "People don't struggle because a dashboard is ugly. They stall because the product pulls them through the wrong sequence—too much at once, too late, or the same questions asked again because nothing remembers.\n\nCareerEdge sits in a sharp corner of that problem: guidance, progression, identities that overlap, and a roadmap that refuses to shrink politely. My job was to compress that collision into something followable: one spine users could trust, and a shell the team could ship without turning every ambition into a homepage takeover.",
+          annotation:
+            "Structural win: what surfaces first, what waits, and what Sophia is allowed to remember so humans do not rehearse their life story on every screen.",
+          narrator: {
+            label: "DESIGNER'S NOTE",
+            mood: "thinking",
+            text: "Reduce cognitive load without burying power. Founders say “we need AI” here when what they need is sequencing and trust—not another panel parade.",
           },
         },
         {
@@ -67,8 +89,8 @@ export const CAREEREDGE_CASE_STUDY: CaseStudy = {
           headline: "What made this hard was not visuals",
           insightLabel: "SYSTEM TRUTH",
           insightText:
-            "This was an ecosystem problem: many actors, many journeys, and overlapping mental models. The interface had to feel simple while the backend reality stayed complex.",
-          body: "When the surface area grows, teams often respond by exposing everything—because every stakeholder can point to a “critical” screen. The UX failure mode is different: the product becomes honest but unusable.\n\nI treated that tension as the primary design input, not a polish pass at the end.",
+            "This stayed an ecosystem problem end to end: many actors, many journeys, overlapping mental models. The interface had to feel simple while the backend reality stayed honestly complex.",
+          body: "Teams under pressure default to exposure—every stakeholder has a “critical” surface. The UX failure mode is quieter but crueler: the UI tells the truth about scope, and the user absorbs the anxiety.\n\nSo I did not treat this as a polish pass. I treated the tension as the brief.",
         },
       ],
     },
@@ -128,27 +150,41 @@ export const CAREEREDGE_CASE_STUDY: CaseStudy = {
         {
           type: "single-mockup",
           id: "ce-mock-shell",
-          headline: "Product shell + guidance layer (replace with your export)",
-          image: ph("CareerEdge · Shell + guidance", 1600, 1000),
+          headline: "[M01] Product shell — primary dashboard or role home",
+          image: ph("CareerEdge · M01 shell", 1600, 1000),
           device: "browser",
-          caption: "Placeholder hero — upload the real dashboard / shell screenshot.",
+          caption:
+            "Admin: paste image URL here — best frame that shows structure + density before the spine work reads.",
         },
         {
           type: "single-mockup",
           id: "ce-mock-sophia",
-          headline: "Context strip, not generic chat noise",
-          image: ph("CareerEdge · Sophia context", 1600, 1000),
+          headline: "[M02] Sophia layer — context strip, not ambient chat",
+          image: ph("CareerEdge · M02 Sophia", 1600, 1000),
           device: "browser",
-          caption: "Capture the moment Sophia interprets state—milestones, deadlines, next actions.",
+          caption:
+            "Admin: paste URL — show Sophia interpreting state (deadlines, next moves). If you have video, use a still here and link video elsewhere.",
         },
         {
           type: "flow",
           id: "ce-flow-onboarding",
-          headline: "A walkthrough that earns the next screen",
+          headline: "[F01–F03] Onboarding walkthrough (three beats)",
           screens: [
-            { image: ph("CareerEdge · Step 01", 900, 1200), label: "Entry", device: "phone" },
-            { image: ph("CareerEdge · Step 02", 900, 1200), label: "Context", device: "phone" },
-            { image: ph("CareerEdge · Step 03", 900, 1200), label: "Commitment", device: "phone" },
+            {
+              image: ph("CareerEdge · F01 onboarding", 900, 1200),
+              label: "F01 Entry",
+              device: "phone",
+            },
+            {
+              image: ph("CareerEdge · F02 onboarding", 900, 1200),
+              label: "F02 Context",
+              device: "phone",
+            },
+            {
+              image: ph("CareerEdge · F03 onboarding", 900, 1200),
+              label: "F03 Commitment",
+              device: "phone",
+            },
           ],
         },
       ],
@@ -213,33 +249,45 @@ export const CAREEREDGE_CASE_STUDY: CaseStudy = {
         {
           type: "process",
           id: "ce-process-artifacts",
-          headline: "Artifacts you can swap in for credibility",
+          headline: "[P01–P03] Process artifacts — proof, not decoration",
           artifacts: [
             {
-              image: ph("CareerEdge · IA map", 1200, 800),
-              label: "IA / journey map",
-              description: "Replace with your navigation model, role map, or simplified diagram.",
+              image: ph("CareerEdge · P01 IA", 1200, 800),
+              label: "P01 IA / nav model",
+              description: "Admin: URL here — journey map, simplified role×surface diagram, or excerpt that shows how you reordered the story.",
             },
             {
-              image: ph("CareerEdge · UI audit", 1200, 800),
-              label: "Rigor screenshots",
-              description: "Optional: validation notes, edge cases, or before/after captures—proof you ship carefully.",
+              image: ph("CareerEdge · P02 rigor", 1200, 800),
+              label: "P02 Validation / audit capture",
+              description: "Admin: URL — notes, edge-case screen, or before/after that shows your verification standard.",
             },
             {
-              image: ph("CareerEdge · Design system", 1200, 800),
-              label: "System moments",
-              description: "Tokens, components, or the “earned moment” highlights—whatever best shows taste with reasons.",
+              image: ph("CareerEdge · P03 system", 1200, 800),
+              label: "P03 System / moment",
+              description: "Admin: URL — token hit, component, or branded “earned” instant that shows taste with rationale.",
             },
           ],
         },
         {
           type: "mockup-gallery",
           id: "ce-gallery",
-          headline: "Surface gallery (replace with final media)",
+          headline: "[G01–G03] Extra surfaces — fill what best sells the breadth",
           mockups: [
-            { image: ph("CareerEdge · Screen A", 1200, 800), device: "browser", label: "Core surface A" },
-            { image: ph("CareerEdge · Screen B", 1200, 800), device: "browser", label: "Core surface B" },
-            { image: ph("CareerEdge · Mobile", 900, 1200), device: "phone", label: "Mobile-critical path" },
+            {
+              image: ph("CareerEdge · G01 browser", 1200, 800),
+              device: "browser",
+              label: "G01 Core browser surface",
+            },
+            {
+              image: ph("CareerEdge · G02 browser", 1200, 800),
+              device: "browser",
+              label: "G02 Second hero flow",
+            },
+            {
+              image: ph("CareerEdge · G03 mobile", 900, 1200),
+              device: "phone",
+              label: "G03 Mobile-critical path",
+            },
           ],
         },
         {
