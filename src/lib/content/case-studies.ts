@@ -40,6 +40,15 @@ export function mergeCaseStudiesOverlay(local: CaseStudy[], overlay: unknown): C
   return sortCaseStudies(Array.from(map.values()));
 }
 
+/**
+ * Canonical list from `/src/data/case-studies` (what ships in git).
+ * Admin merges persisted JSON over this—call this seed first so new code-only studies
+ * cannot disappear when the loader ever returns GitHub-only data.
+ */
+export function seedCaseStudiesFromRegistry(): CaseStudy[] {
+  return STATIC_CASE_STUDIES.map(normalizeCaseStudy);
+}
+
 export async function getCaseStudies(options?: {
   includeDrafts?: boolean;
   includeArchived?: boolean;
