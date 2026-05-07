@@ -2,13 +2,41 @@ import type { CaseStudy } from "@/types/case-study";
 import { ALL_CASE_STUDIES as STATIC_CASE_STUDIES } from "@/data/case-studies";
 import { readContentJson } from "./live-source";
 
+/** Matches `caseStudyPlaceholder` (placehold.co) and legacy generic placeholders */
+function looksLikePlaceholderHeroImage(url?: string): boolean {
+  if (!url?.trim()) return true;
+  const u = url.toLowerCase();
+  return u.includes("placehold.co") || u.includes("via.placeholder");
+}
+
+/**
+ * Admin often updates `meta.cover` first; the opening cover slide still reads `heroImage`.
+ * When meta has a real asset URL and the slide uses a placeholder, show the uploaded image everywhere.
+ */
+function hydrateCoverSlidesFromMetaCover(study: CaseStudy): CaseStudy {
+  const metaCover =
+    typeof study.meta?.cover === "string" ? study.meta.cover.trim() : "";
+  if (!metaCover || looksLikePlaceholderHeroImage(metaCover)) return study;
+
+  const acts = study.acts.map((act) => ({
+    ...act,
+    slides: act.slides.map((slide) => {
+      if (slide.type !== "cover") return slide;
+      const hi = slide.heroImage?.trim() ?? "";
+      if (hi && !looksLikePlaceholderHeroImage(hi)) return slide;
+      return { ...slide, heroImage: metaCover };
+    }),
+  }));
+  return { ...study, acts };
+}
+
 function normalizeCaseStudy(study: CaseStudy): CaseStudy {
-  return {
+  return hydrateCoverSlidesFromMetaCover({
     ...study,
     status: study.status ?? "published",
     featured: study.featured ?? false,
     pinned: study.pinned ?? false,
-  };
+  });
 }
 
 function sortCaseStudies(items: CaseStudy[]): CaseStudy[] {
