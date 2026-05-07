@@ -1,7 +1,19 @@
 import type { CaseStudy } from "@/types/case-study";
+import { cache } from "react";
 import { ALL_CASE_STUDIES as STATIC_CASE_STUDIES } from "@/data/case-studies";
 import { isPlaceholderRemoteImage } from "./placeholder-remote-image";
 import { readContentJson } from "./live-source";
+
+function normalizeCaseStudyStatus(
+  raw: CaseStudy["status"] | string | undefined
+): "published" | "draft" | "archived" {
+  if (raw === "draft" || raw === "archived") return raw;
+  if (typeof raw === "string") {
+    const s = raw.trim().toLowerCase();
+    if (s === "draft" || s === "archived") return s;
+  }
+  return "published";
+}
 
 /**
  * Admin often updates `meta.cover` first; the opening cover slide still reads `heroImage`.
@@ -27,7 +39,7 @@ function hydrateCoverSlidesFromMetaCover(study: CaseStudy): CaseStudy {
 function normalizeCaseStudy(study: CaseStudy): CaseStudy {
   return hydrateCoverSlidesFromMetaCover({
     ...study,
-    status: study.status ?? "published",
+    status: normalizeCaseStudyStatus(study.status),
     featured: study.featured ?? false,
     pinned: study.pinned ?? false,
   });
@@ -63,6 +75,20 @@ export function mergeCaseStudiesOverlay(local: CaseStudy[], overlay: unknown): C
   return sortCaseStudies(Array.from(map.values()));
 }
 
+/** One filesystem/GitHub merge per request — dedupes nested `getCaseStudies` callers. */
+const loadCaseStudiesMergedOnce = cache(async (): Promise<CaseStudy[]> => {
+  let base: CaseStudy[] = STATIC_CASE_STUDIES.map(normalizeCaseStudy);
+  try {
+    const parsed = await readContentJson<CaseStudy[]>("case-studies.json");
+    if (Array.isArray(parsed)) {
+      base = mergeCaseStudiesOverlay(base, parsed);
+    }
+  } catch {
+    // Keep bundled registry only.
+  }
+  return base;
+});
+
 /**
  * Canonical list from `/src/data/case-studies` (what ships in git).
  * Admin merges persisted JSON over this—call this seed first so new code-only studies
@@ -79,23 +105,15 @@ export async function getCaseStudies(options?: {
   const includeDrafts = options?.includeDrafts ?? false;
   const includeArchived = options?.includeArchived ?? false;
 
-  let base: CaseStudy[] = STATIC_CASE_STUDIES.map(normalizeCaseStudy);
-  try {
-    const parsed = await readContentJson<CaseStudy[]>("case-studies.json");
-    if (Array.isArray(parsed)) {
-      base = mergeCaseStudiesOverlay(base, parsed);
-    }
-  } catch {
-    // Fallback to static case studies when content file is unavailable.
-  }
+  const base = await loadCaseStudiesMergedOnce();
 
   /** Pre-filter merged status — used so we never resurrect static TS when GitHub hides a slug */
-  const mergedStatusBySlug = new Map<string, string>(
-    base.map((study) => [study.slug, study.status ?? "published"])
+  const mergedStatusBySlug = new Map<string, "published" | "draft" | "archived">(
+    base.map((study) => [study.slug, normalizeCaseStudyStatus(study.status)])
   );
 
   const filtered = base.filter((study) => {
-    const status = study.status ?? "published";
+    const status = normalizeCaseStudyStatus(study.status);
     if (!includeArchived && status === "archived") return false;
     if (!includeDrafts && status === "draft") return false;
     return true;
@@ -114,7 +132,7 @@ export async function getCaseStudies(options?: {
         continue;
       }
 
-      const status = s.status ?? "published";
+      const status = normalizeCaseStudyStatus(s.status);
       if (status === "archived" && !includeArchived) continue;
       if (status === "draft") continue;
       filtered.push(s);
