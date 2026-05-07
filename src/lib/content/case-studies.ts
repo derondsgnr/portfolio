@@ -64,6 +64,20 @@ export async function getCaseStudies(options?: {
     return true;
   });
 
+  /** Re-add code-only published studies if GitHub overlay downgraded them to draft (avoids public 404). */
+  if (!includeDrafts) {
+    const seen = new Set(filtered.map((s) => s.slug));
+    for (const raw of STATIC_CASE_STUDIES) {
+      const s = normalizeCaseStudy(raw);
+      if (seen.has(s.slug)) continue;
+      const status = s.status ?? "published";
+      if (status === "archived" && !includeArchived) continue;
+      if (status === "draft") continue;
+      filtered.push(s);
+      seen.add(s.slug);
+    }
+  }
+
   return sortCaseStudies(filtered);
 }
 
