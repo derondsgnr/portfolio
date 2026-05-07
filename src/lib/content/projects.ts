@@ -62,6 +62,31 @@ async function hydrateProjectImagesFromCaseStudies(
   }
 }
 
+/** Slugs with case studies hidden from the requested visibility (draft/archived filtered out). */
+async function suppressedCaseStudySlugsForTiles(options: {
+  includeDrafts: boolean;
+  includeArchived: boolean;
+}): Promise<Set<string>> {
+  try {
+    const wide = await getCaseStudies({
+      includeDrafts: true,
+      includeArchived: true,
+    });
+    return new Set(
+      wide
+        .filter((s) => {
+          const st = s.status ?? "published";
+          if (!options.includeArchived && st === "archived") return true;
+          if (!options.includeDrafts && st === "draft") return true;
+          return false;
+        })
+        .map((s) => s.slug)
+    );
+  } catch {
+    return new Set();
+  }
+}
+
 export async function getProjects(options?: {
   includeDrafts?: boolean;
   includeArchived?: boolean;
@@ -81,10 +106,13 @@ export async function getProjects(options?: {
       if (!includeDrafts && status === "draft") return false;
       return true;
     });
-    const hydrated = await hydrateProjectImagesFromCaseStudies(
-      filtered,
-      visibility
-    );
+    let hydrated = await hydrateProjectImagesFromCaseStudies(filtered, visibility);
+    const hiddenCs = await suppressedCaseStudySlugsForTiles({
+      includeDrafts,
+      includeArchived,
+    });
+    hydrated = hydrated.filter((p) => !p.slug || !hiddenCs.has(p.slug));
+
     return sortProjects(hydrated);
   } catch {
     const normalized = DEFAULT_PROJECTS.map((project) =>
@@ -96,10 +124,13 @@ export async function getProjects(options?: {
       if (!includeDrafts && status === "draft") return false;
       return true;
     });
-    const hydrated = await hydrateProjectImagesFromCaseStudies(
-      filtered,
-      visibility
-    );
+    let hydrated = await hydrateProjectImagesFromCaseStudies(filtered, visibility);
+    const hiddenCs = await suppressedCaseStudySlugsForTiles({
+      includeDrafts,
+      includeArchived,
+    });
+    hydrated = hydrated.filter((p) => !p.slug || !hiddenCs.has(p.slug));
+
     return sortProjects(hydrated);
   }
 }

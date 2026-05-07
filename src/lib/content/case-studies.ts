@@ -89,6 +89,11 @@ export async function getCaseStudies(options?: {
     // Fallback to static case studies when content file is unavailable.
   }
 
+  /** Pre-filter merged status — used so we never resurrect static TS when GitHub hides a slug */
+  const mergedStatusBySlug = new Map<string, string>(
+    base.map((study) => [study.slug, study.status ?? "published"])
+  );
+
   const filtered = base.filter((study) => {
     const status = study.status ?? "published";
     if (!includeArchived && status === "archived") return false;
@@ -102,6 +107,13 @@ export async function getCaseStudies(options?: {
     for (const raw of STATIC_CASE_STUDIES) {
       const s = normalizeCaseStudy(raw);
       if (seen.has(s.slug)) continue;
+
+      /** JSON explicitly archived or drafted this slug — do not bring back bundled TS publish. */
+      const mergedStatus = mergedStatusBySlug.get(s.slug);
+      if (mergedStatus === "draft" || mergedStatus === "archived") {
+        continue;
+      }
+
       const status = s.status ?? "published";
       if (status === "archived" && !includeArchived) continue;
       if (status === "draft") continue;
