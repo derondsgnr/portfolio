@@ -339,14 +339,45 @@ function WorkListView({ projects = V2_PROJECTS }: { projects?: typeof V2_PROJECT
                 className="overflow-hidden relative"
               >
                 <img src={project.image} alt={project.title} className="w-full h-full object-cover" style={{ filter: "grayscale(0.3) contrast(1.1)" }} />
-                <div className="absolute inset-0 pointer-events-none" style={{ background: "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(10,10,10,0.4) 2px, rgba(10,10,10,0.4) 4px)" }} />
-                <div className="absolute bottom-6 left-6 right-6">
-                  <p style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "0.85rem", lineHeight: 1.6, fontWeight: 300, color: "rgba(255,255,255,0.6)" }}>
+                {/* Read legibility: dark lift under type (busy photography) */}
+                <div
+                  className="absolute inset-0 z-[1] pointer-events-none"
+                  style={{
+                    background:
+                      "linear-gradient(180deg, rgba(10,10,10,0.65) 0%, transparent 22%, transparent 58%, rgba(10,10,10,0.97) 100%)",
+                  }}
+                />
+                <div
+                  className="absolute inset-0 z-[2] pointer-events-none"
+                  style={{ background: "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(10,10,10,0.22) 2px, rgba(10,10,10,0.22) 4px)" }}
+                />
+                <div className="absolute bottom-0 left-0 right-0 z-[3] px-6 pb-7 pt-16 sm:px-8 sm:pb-8">
+                  <p
+                    className="max-w-2xl"
+                    style={{
+                      fontFamily: "'Instrument Sans', sans-serif",
+                      fontSize: "0.85rem",
+                      lineHeight: 1.65,
+                      fontWeight: 400,
+                      color: "#F0F0F0",
+                      textShadow: "0 1px 2px rgba(0,0,0,0.85), 0 0 24px rgba(10,10,10,0.9)",
+                    }}
+                  >
                     {project.description}
                   </p>
                 </div>
-                <div className="absolute top-4 left-4">
-                  <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#E2B93B", letterSpacing: "0.1em" }}>FREQ_{project.id}</span>
+                <div className="absolute top-4 left-4 z-[3] pr-4">
+                  <span
+                    style={{
+                      fontFamily: "monospace",
+                      fontSize: "9px",
+                      color: "#E2B93B",
+                      letterSpacing: "0.1em",
+                      textShadow: "0 1px 3px rgba(0,0,0,0.9)",
+                    }}
+                  >
+                    FREQ_{project.id}
+                  </span>
                 </div>
               </motion.div>
             )}
@@ -381,22 +412,83 @@ function WorkGridView({ projects = V2_PROJECTS }: { projects?: typeof V2_PROJECT
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
             style={{ filter: "grayscale(0.6) contrast(1.2)" }}
           />
+          {/* Read legibility over photography */}
+          <div
+            className="absolute inset-0 z-[1] pointer-events-none"
+            style={{
+              background:
+                "linear-gradient(180deg, rgba(10,10,10,0.72) 0%, rgba(10,10,10,0.2) 22%, transparent 42%, rgba(10,10,10,0.55) 68%, rgba(10,10,10,0.96) 100%)",
+            }}
+          />
           {/* Scan overlay */}
-          <div className="absolute inset-0 pointer-events-none" style={{ background: "repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.15) 3px, rgba(0,0,0,0.15) 4px)" }} />
+          <div
+            className="absolute inset-0 z-[2] pointer-events-none"
+            style={{ background: "repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.12) 3px, rgba(0,0,0,0.12) 4px)" }}
+          />
           {/* Info */}
-          <div className="absolute inset-0 flex flex-col justify-between p-6">
-            <div className="flex justify-between">
-              <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#E2B93B", letterSpacing: "0.1em" }}>FREQ_{project.id}</span>
-              <span style={{ fontFamily: "monospace", fontSize: "9px", color: "rgba(255,255,255,0.3)", letterSpacing: "0.1em" }}>{project.year}</span>
+          <div className="absolute inset-0 z-[3] flex flex-col justify-between p-6 sm:p-8 min-w-0">
+            <div className="flex justify-between gap-3 shrink-0">
+              <span
+                style={{
+                  fontFamily: "monospace",
+                  fontSize: "9px",
+                  color: "#E2B93B",
+                  letterSpacing: "0.1em",
+                  textShadow: "0 1px 3px rgba(0,0,0,0.9)",
+                }}
+              >
+                FREQ_{project.id}
+              </span>
+              <span
+                style={{
+                  fontFamily: "monospace",
+                  fontSize: "9px",
+                  color: "rgba(255,255,255,0.75)",
+                  letterSpacing: "0.1em",
+                  textShadow: "0 1px 3px rgba(0,0,0,0.85)",
+                }}
+              >
+                {project.year}
+              </span>
             </div>
-            <div>
-              <span style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(1.5rem, 3vw, 2.5rem)", lineHeight: 1, letterSpacing: "-0.02em", textTransform: "uppercase", color: "#f0f0f0", display: "block" }}>
+            <div className="min-w-0 pb-1">
+              <span
+                style={{
+                  fontFamily: "'Anton', sans-serif",
+                  fontSize: "clamp(1.5rem, 3vw, 2.5rem)",
+                  lineHeight: 1.05,
+                  letterSpacing: "-0.02em",
+                  textTransform: "uppercase",
+                  color: "#F0F0F0",
+                  display: "block",
+                  textShadow: "0 2px 20px rgba(0,0,0,0.95), 0 0 1px rgba(0,0,0,1)",
+                }}
+              >
                 {project.title}
               </span>
-              <span className="block mt-2" style={{ fontFamily: "monospace", fontSize: "10px", color: "rgba(255,255,255,0.3)", letterSpacing: "0.1em" }}>
+              <span
+                className="block mt-2"
+                style={{
+                  fontFamily: "monospace",
+                  fontSize: "10px",
+                  color: "rgba(226,185,59,0.95)",
+                  letterSpacing: "0.1em",
+                  textShadow: "0 1px 8px rgba(0,0,0,0.9)",
+                }}
+              >
                 {project.category}
               </span>
-              <p className="mt-3 max-w-xs opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "0.8rem", lineHeight: 1.6, fontWeight: 300, color: "rgba(255,255,255,0.5)" }}>
+              <p
+                className="mt-4 max-w-prose"
+                style={{
+                  fontFamily: "'Instrument Sans', sans-serif",
+                  fontSize: "0.8rem",
+                  lineHeight: 1.65,
+                  fontWeight: 400,
+                  color: "#F0F0F0",
+                  textShadow: "0 1px 3px rgba(0,0,0,0.9), 0 0 20px rgba(10,10,10,0.75)",
+                }}
+              >
                 {project.description}
               </p>
             </div>

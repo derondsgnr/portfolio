@@ -465,33 +465,42 @@ export function SynthesisWork({ projects = V2_PROJECTS }: { projects?: typeof V2
                       className="w-full h-full object-cover"
                       style={{ filter: "grayscale(0.3) contrast(1.1)" }}
                     />
-                    {/* Cipher scan-line texture */}
                     <div
-                      className="absolute inset-0 pointer-events-none"
+                      className="absolute inset-0 z-[1] pointer-events-none"
                       style={{
                         background:
-                          "repeating-linear-gradient(0deg, transparent 0px, transparent 2px, rgba(10,10,10,0.4) 2px, rgba(10,10,10,0.4) 4px)",
+                          "linear-gradient(180deg, rgba(10,10,10,0.65) 0%, transparent 22%, transparent 58%, rgba(10,10,10,0.97) 100%)",
                       }}
                     />
-                    <div className="absolute top-4 left-4">
+                    {/* Cipher scan-line texture */}
+                    <div
+                      className="absolute inset-0 z-[2] pointer-events-none"
+                      style={{
+                        background:
+                          "repeating-linear-gradient(0deg, transparent 0px, transparent 2px, rgba(10,10,10,0.22) 2px, rgba(10,10,10,0.22) 4px)",
+                      }}
+                    />
+                    <div className="absolute top-4 left-4 z-[3]">
                       <span
                         style={{
                           fontFamily: "monospace",
                           fontSize: "9px",
                           color: "#E2B93B",
                           letterSpacing: "0.1em",
+                          textShadow: "0 1px 3px rgba(0,0,0,0.9)",
                         }}
                       >
                         FREQ_{project.id}
                       </span>
                     </div>
-                    <div className="absolute top-4 right-4">
+                    <div className="absolute top-4 right-4 z-[3]">
                       <span
                         style={{
                           fontFamily: "monospace",
                           fontSize: "9px",
-                          color: "rgba(255,255,255,0.3)",
+                          color: "rgba(255,255,255,0.78)",
                           letterSpacing: "0.1em",
+                          textShadow: "0 1px 3px rgba(0,0,0,0.85)",
                         }}
                       >
                         {project.year}
