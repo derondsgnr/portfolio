@@ -2,6 +2,22 @@ import { getCaseStudies } from "./case-studies";
 import { DEFAULT_PROJECTS } from "./defaults";
 import { isPlaceholderRemoteImage } from "./placeholder-remote-image";
 import { readContentJson } from "./live-source";
+import type { CaseStudy } from "@/types/case-study";
+
+/** Prefer meta cover, then first real Cover-slide hero (Admin often fills one but not the other). */
+function bestCaseStudyCoverThumb(cs: CaseStudy): string | null {
+  const meta = typeof cs.meta?.cover === "string" ? cs.meta.cover.trim() : "";
+  if (meta && !isPlaceholderRemoteImage(meta)) return meta;
+
+  for (const act of cs.acts) {
+    for (const sl of act.slides) {
+      if (sl.type !== "cover") continue;
+      const hi = sl.heroImage?.trim() ?? "";
+      if (hi && !isPlaceholderRemoteImage(hi)) return hi;
+    }
+  }
+  return null;
+}
 
 export type Project = {
   id: string;
@@ -47,10 +63,8 @@ async function hydrateProjectImagesFromCaseStudies(
     const studies = await getCaseStudies(visibility);
     const coverBySlug = new Map<string, string>();
     for (const cs of studies) {
-      const url =
-        typeof cs.meta?.cover === "string" ? cs.meta.cover.trim() : "";
-      if (!url || isPlaceholderRemoteImage(url)) continue;
-      coverBySlug.set(cs.slug, url);
+      const url = bestCaseStudyCoverThumb(cs);
+      if (url) coverBySlug.set(cs.slug, url);
     }
     return projects.map((p) => {
       if (!isPlaceholderRemoteImage(p.image)) return p;
@@ -75,7 +89,7 @@ async function suppressedCaseStudySlugsForTiles(options: {
     return new Set(
       wide
         .filter((s) => {
-          const st = s.status ?? "published";
+          const st = (s.status ?? "published") as string;
           if (!options.includeArchived && st === "archived") return true;
           if (!options.includeDrafts && st === "draft") return true;
           return false;

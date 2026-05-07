@@ -11,10 +11,16 @@ async function readPublicRawRepoContent<T>(contentPath: string): Promise<T | nul
 
   const owner = process.env.GITHUB_REPO_OWNER || "derondsgnr";
   const repo = process.env.GITHUB_REPO_NAME || "portfolio";
+  /**
+   * Production should follow `main`’s content files (where Admin saves land), not the deploy
+   * commit’s snapshot — otherwise archives/images lag until the next code deploy.
+   * Previews still follow the branch ref unless GITHUB_CONTENT_BRANCH is set.
+   */
   const branch =
     process.env.GITHUB_CONTENT_BRANCH ||
-    process.env.VERCEL_GIT_COMMIT_REF ||
-    "main";
+    (process.env.VERCEL_ENV === "production"
+      ? "main"
+      : process.env.VERCEL_GIT_COMMIT_REF || "main");
   const url = `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${contentPath}`;
 
   try {
