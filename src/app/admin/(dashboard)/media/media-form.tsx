@@ -7,12 +7,18 @@ import { ImageFieldGuide, ImageRatioHint } from "@/components/admin/image-system
 import { useAdminEditorShortcuts } from "@/hooks/useAdminEditorShortcuts";
 import { useUnsavedChangesGuard } from "@/hooks/useUnsavedChangesGuard";
 import type { MediaConfig } from "@/lib/content/media";
-import type { CraftItem } from "@/lib/content/craft";
+import {
+  CRAFT_LAYOUT_MODES,
+  normalizeCraftItem,
+  type CraftDocument,
+  type CraftItem,
+  type CraftLayoutMode,
+} from "@/lib/content/craft-model";
 import type { Exploration } from "@/lib/content/explorations";
 
 type Props = {
   initialMedia: MediaConfig;
-  initialCraft: CraftItem[];
+  initialCraft: CraftDocument;
   initialExplorations: Exploration[];
 };
 
@@ -126,23 +132,131 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
     await persistExplorations();
   }
 
-  function updateCraftImage(index: number, image: string) {
+  function updateCraftSectionLayout(si: number, layoutMode: CraftLayoutMode) {
     setCraft((prev) => {
-      const next = [...prev];
-      if (next[index]) next[index] = { ...next[index], image };
-      return next;
+      const sections = prev.sections.map((s, i) => (i === si ? { ...s, layoutMode } : s));
+      return { sections };
     });
   }
 
-  function updateCraftMeta(
-    index: number,
-    updates: Partial<Pick<CraftItem, "status" | "featured" | "pinned">>
+  function updateCraftSectionTitle(si: number, title: string) {
+    setCraft((prev) => {
+      const sections = prev.sections.map((s, i) => (i === si ? { ...s, title } : s));
+      return { sections };
+    });
+  }
+
+  function updateCraftSectionId(si: number, id: string) {
+    setCraft((prev) => {
+      const sections = prev.sections.map((s, i) => (i === si ? { ...s, id } : s));
+      return { sections };
+    });
+  }
+
+  function updateCraftImage(si: number, ii: number, image: string) {
+    setCraft((prev) => {
+      const sections = prev.sections.map((s, i) => {
+        if (i !== si) return s;
+        const items = s.items.map((it, j) => (j === ii ? { ...it, image } : it));
+        return { ...s, items };
+      });
+      return { sections };
+    });
+  }
+
+  function updateCraftDims(si: number, ii: number, field: "width" | "height", raw: string) {
+    const parsed = raw.trim() === "" ? undefined : Number(raw);
+    const value = typeof parsed === "number" && Number.isFinite(parsed) && parsed > 0 ? Math.round(parsed) : undefined;
+    setCraft((prev) => {
+      const sections = prev.sections.map((s, i) => {
+        if (i !== si) return s;
+        const items = s.items.map((it, j) => (j === ii ? { ...it, [field]: value } : it));
+        return { ...s, items };
+      });
+      return { sections };
+    });
+  }
+
+  function updateCraftMeta(si: number, ii: number, updates: Partial<Pick<CraftItem, "status" | "featured" | "pinned">>) {
+    setCraft((prev) => {
+      const sections = prev.sections.map((s, i) => {
+        if (i !== si) return s;
+        const items = s.items.map((it, j) => (j === ii ? { ...it, ...updates } : it));
+        return { ...s, items };
+      });
+      return { sections };
+    });
+  }
+
+  function addCraftSection() {
+    setCraft((prev) => ({
+      sections: [
+        ...prev.sections,
+        { id: `section-${Date.now()}`, title: "", layoutMode: "masonry-3" as const, items: [] },
+      ],
+    }));
+  }
+
+  function removeCraftSection(si: number) {
+    setCraft((prev) => {
+      if (prev.sections.length <= 1) return prev;
+      return { sections: prev.sections.filter((_, i) => i !== si) };
+    });
+  }
+
+  function addCraftItem(si: number) {
+    const draft: CraftItem = {
+      id: `c-${Date.now()}`,
+      title: "New piece",
+      category: "Visual",
+      description: "",
+      image: "",
+      status: "draft",
+      featured: false,
+      pinned: false,
+    };
+    setCraft((prev) => {
+      const sections = prev.sections.map((s, i) => {
+        if (i !== si) return s;
+        return { ...s, items: [...s.items, normalizeCraftItem(draft)] };
+      });
+      return { sections };
+    });
+  }
+
+  function updateCraftText(
+    si: number,
+    ii: number,
+    field: "title" | "category" | "description",
+    value: string
   ) {
     setCraft((prev) => {
-      const next = [...prev];
-      if (next[index]) next[index] = { ...next[index], ...updates };
-      return next;
+      const sections = prev.sections.map((s, i) => {
+        if (i !== si) return s;
+        const items = s.items.map((it, j) => (j === ii ? { ...it, [field]: value } : it));
+        return { ...s, items };
+      });
+      return { sections };
     });
+  }
+
+  function updateCraftItemId(si: number, ii: number, id: string) {
+    setCraft((prev) => {
+      const sections = prev.sections.map((s, i) => {
+        if (i !== si) return s;
+        const items = s.items.map((it, j) => (j === ii ? { ...it, id } : it));
+        return { ...s, items };
+      });
+      return { sections };
+    });
+  }
+
+  function removeCraftItem(si: number, ii: number) {
+    setCraft((prev) => ({
+      sections: prev.sections.map((s, i) =>
+        i !== si ? s : { ...s, items: s.items.filter((_, j) => j !== ii) }
+      ),
+    }));
   }
 
   function updateExplorationImage(index: number, image: string) {
@@ -260,72 +374,214 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
         </form>
       </section>
 
-      {/* Section 2: Craft items */}
+      {/* Section 2: Craft document (sections + layouts) */}
       <section className="space-y-4">
-        <h2 className="font-mono text-sm text-white/80 uppercase tracking-wider">
-          Craft items
-        </h2>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h2 className="font-mono text-sm text-white/80 uppercase tracking-wider">Craft</h2>
+          <button
+            type="button"
+            onClick={() => addCraftSection()}
+            className="px-4 py-1.5 border border-[#E2B93B]/40 font-mono text-[10px] uppercase tracking-[0.12em] text-[#E2B93B] hover:bg-[#E2B93B]/10 transition-colors"
+          >
+            Add section
+          </button>
+        </div>
+        <p className="font-mono text-xs text-white/50 leading-relaxed max-w-2xl">
+          Each section renders in order on the Craft page (Projects tab / Grid view). Masonry preserves real poster proportions — set Width and Height from your source file so layout stays stable before images load.
+        </p>
         <ImageFieldGuide role="craft-gallery" compact />
-        <form onSubmit={handleSaveCraft} className="space-y-4">
-          <div className="space-y-3">
-            {craft.map((item, i) => (
-              <div
-                key={item.id}
-                className="flex flex-col sm:flex-row sm:items-center gap-2 p-3 border border-white/10 rounded"
-              >
-                <div className="flex-1 min-w-0">
-                  <span className="font-mono text-xs text-white/50 block truncate">
-                    [{item.id}] {item.title}
-                  </span>
-                  <ImageRatioHint role="craft-gallery" className="mt-2" />
-                  <input
-                    type="url"
-                    value={item.image}
-                    onChange={(e) => updateCraftImage(i, e.target.value)}
-                    className={`${inputClass} mt-1`}
-                    placeholder="Image URL"
-                  />
-                  <div className="mt-2 flex flex-wrap items-center gap-3">
+        <form onSubmit={handleSaveCraft} className="space-y-8">
+          {craft.sections.map((section, si) => (
+            <div key={`${section.id}-${si}`} className="border border-white/12 p-4 space-y-4 bg-black/20">
+              <div className="flex flex-wrap gap-4 items-start justify-between">
+                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 flex-1">
+                  <div className="min-w-0">
+                    <label className={labelClass}>Section id</label>
+                    <input
+                      type="text"
+                      value={section.id}
+                      onChange={(e) => updateCraftSectionId(si, e.target.value)}
+                      className={inputClass}
+                    />
+                  </div>
+                  <div className="min-w-0 sm:col-span-2">
+                    <label className={labelClass}>Heading (optional)</label>
+                    <input
+                      type="text"
+                      value={section.title ?? ""}
+                      onChange={(e) => updateCraftSectionTitle(si, e.target.value)}
+                      className={inputClass}
+                      placeholder="Displayed above this block"
+                    />
+                  </div>
+                  <div className="min-w-0">
+                    <label className={labelClass}>Layout mode</label>
                     <select
-                      value={item.status ?? "published"}
+                      value={section.layoutMode}
                       onChange={(e) =>
-                        updateCraftMeta(i, { status: e.target.value as CraftItem["status"] })
+                        updateCraftSectionLayout(si, e.target.value as CraftLayoutMode)
                       }
-                      className="bg-[#111] border border-white/10 text-white/70 font-mono text-[11px] px-2 py-1"
+                      className={inputClass}
                     >
-                      <option value="published">Published</option>
-                      <option value="draft">Draft</option>
-                      <option value="archived">Archived</option>
+                      {CRAFT_LAYOUT_MODES.map((mode) => (
+                        <option key={mode} value={mode}>
+                          {mode}
+                        </option>
+                      ))}
                     </select>
-                    <label className="font-mono text-[11px] text-white/55 inline-flex items-center gap-1.5">
-                      <input
-                        type="checkbox"
-                        checked={Boolean(item.featured)}
-                        onChange={(e) => updateCraftMeta(i, { featured: e.target.checked })}
-                        className="h-3.5 w-3.5 accent-[#E2B93B]"
-                      />
-                      Featured
-                    </label>
-                    <label className="font-mono text-[11px] text-white/55 inline-flex items-center gap-1.5">
-                      <input
-                        type="checkbox"
-                        checked={Boolean(item.pinned)}
-                        onChange={(e) => updateCraftMeta(i, { pinned: e.target.checked })}
-                        className="h-3.5 w-3.5 accent-[#E2B93B]"
-                      />
-                      Pinned
-                    </label>
                   </div>
                 </div>
+                <button
+                  type="button"
+                  disabled={craft.sections.length <= 1}
+                  onClick={() => removeCraftSection(si)}
+                  className="font-mono text-[10px] uppercase tracking-wider text-red-400/90 hover:text-red-300 disabled:opacity-25 disabled:pointer-events-none"
+                >
+                  Remove section
+                </button>
               </div>
-            ))}
-          </div>
+              <div className="flex justify-end mb-3">
+                <button
+                  type="button"
+                  onClick={() => addCraftItem(si)}
+                  className="font-mono text-[10px] uppercase tracking-wider text-[#E2B93B]/90 hover:text-[#E2B93B]"
+                >
+                  + Add item
+                </button>
+              </div>
+              <div className="border-t border-white/[0.07] pt-4 space-y-4">
+                {section.items.map((item, ii) => (
+                  <div
+                    key={`${si}-${item.id}-${ii}`}
+                    className="rounded border border-white/[0.08] p-3 bg-[#0f0f0f]"
+                  >
+                    <div className="grid gap-3 sm:grid-cols-2 mb-3">
+                      <div>
+                        <label className={labelClass}>Item id</label>
+                        <input
+                          type="text"
+                          value={item.id}
+                          onChange={(e) => updateCraftItemId(si, ii, e.target.value)}
+                          className={inputClass}
+                        />
+                      </div>
+                      <div>
+                        <label className={labelClass}>Category</label>
+                        <input
+                          type="text"
+                          value={item.category}
+                          onChange={(e) => updateCraftText(si, ii, "category", e.target.value)}
+                          className={inputClass}
+                          placeholder="e.g. Poster"
+                        />
+                      </div>
+                      <div className="sm:col-span-2">
+                        <label className={labelClass}>Title</label>
+                        <input
+                          type="text"
+                          value={item.title}
+                          onChange={(e) => updateCraftText(si, ii, "title", e.target.value)}
+                          className={inputClass}
+                        />
+                      </div>
+                      <div className="sm:col-span-2">
+                        <label className={labelClass}>Description</label>
+                        <textarea
+                          value={item.description}
+                          onChange={(e) => updateCraftText(si, ii, "description", e.target.value)}
+                          className={`${inputClass} min-h-[72px]`}
+                          rows={3}
+                        />
+                      </div>
+                    </div>
+                    <ImageRatioHint role="craft-gallery" className="mb-2" />
+                    <input
+                      type="url"
+                      value={item.image}
+                      onChange={(e) => updateCraftImage(si, ii, e.target.value)}
+                      className={inputClass}
+                      placeholder="Image URL"
+                    />
+                    <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                      <div>
+                        <label className={labelClass}>Width px</label>
+                        <input
+                          type="number"
+                          min={1}
+                          value={item.width ?? ""}
+                          onChange={(e) => updateCraftDims(si, ii, "width", e.target.value)}
+                          className={inputClass}
+                          placeholder="e.g. 1200"
+                        />
+                      </div>
+                      <div>
+                        <label className={labelClass}>Height px</label>
+                        <input
+                          type="number"
+                          min={1}
+                          value={item.height ?? ""}
+                          onChange={(e) => updateCraftDims(si, ii, "height", e.target.value)}
+                          className={inputClass}
+                          placeholder="e.g. 1800"
+                        />
+                      </div>
+                    </div>
+                    <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
+                      <div className="flex flex-wrap items-center gap-3">
+                        <select
+                          value={item.status ?? "published"}
+                          onChange={(e) =>
+                            updateCraftMeta(si, ii, {
+                              status: e.target.value as CraftItem["status"],
+                            })
+                          }
+                          className="bg-[#111] border border-white/10 text-white/70 font-mono text-[11px] px-2 py-1"
+                        >
+                          <option value="published">Published</option>
+                          <option value="draft">Draft</option>
+                          <option value="archived">Archived</option>
+                        </select>
+                        <label className="font-mono text-[11px] text-white/55 inline-flex items-center gap-1.5">
+                          <input
+                            type="checkbox"
+                            checked={Boolean(item.featured)}
+                            onChange={(e) => updateCraftMeta(si, ii, { featured: e.target.checked })}
+                            className="h-3.5 w-3.5 accent-[#E2B93B]"
+                          />
+                          Featured
+                        </label>
+                        <label className="font-mono text-[11px] text-white/55 inline-flex items-center gap-1.5">
+                          <input
+                            type="checkbox"
+                            checked={Boolean(item.pinned)}
+                            onChange={(e) => updateCraftMeta(si, ii, { pinned: e.target.checked })}
+                            className="h-3.5 w-3.5 accent-[#E2B93B]"
+                          />
+                          Pinned
+                        </label>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => removeCraftItem(si, ii)}
+                        className="font-mono text-[10px] uppercase tracking-wider text-red-400/85 hover:text-red-300"
+                      >
+                        Remove item
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              {section.items.length === 0 ? (
+                <p className="font-mono text-[11px] text-white/35">No items in this section.</p>
+              ) : null}
+            </div>
+          ))}
           <button
             type="submit"
             disabled={savingSection === "craft"}
             className="px-6 py-2 bg-[#E2B93B] text-[#0A0A0A] font-mono text-xs tracking-wider uppercase hover:bg-white transition-colors disabled:opacity-50"
           >
-            {savingSection === "craft" ? "Saving…" : "Save craft items"}
+            {savingSection === "craft" ? "Saving…" : "Save craft"}
           </button>
         </form>
       </section>
