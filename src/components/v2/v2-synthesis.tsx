@@ -454,57 +454,110 @@ export function SynthesisWork({ projects = V2_PROJECTS }: { projects?: typeof V2
                 {hoveredIdx === i && (
                   <motion.div
                     initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "50vh", opacity: 1 }}
+                    animate={{ height: "min(52vh, 560px)", opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.6, ease: [0.77, 0, 0.175, 1] }}
-                    className="overflow-hidden relative"
+                    className="overflow-hidden border-x border-white/[0.06] border-b border-white/[0.06]"
                   >
-                    <img
-                      src={project.image}
-                      alt={project.title}
-                      className="w-full h-full object-cover"
-                      style={{ filter: "grayscale(0.3) contrast(1.1)" }}
-                    />
-                    <div
-                      className="absolute inset-0 z-[1] pointer-events-none"
-                      style={{
-                        background:
-                          "linear-gradient(180deg, rgba(10,10,10,0.65) 0%, transparent 22%, transparent 58%, rgba(10,10,10,0.97) 100%)",
-                      }}
-                    />
-                    {/* Cipher scan-line texture */}
-                    <div
-                      className="absolute inset-0 z-[2] pointer-events-none"
-                      style={{
-                        background:
-                          "repeating-linear-gradient(0deg, transparent 0px, transparent 2px, rgba(10,10,10,0.22) 2px, rgba(10,10,10,0.22) 4px)",
-                      }}
-                    />
-                    <div className="absolute top-4 left-4 z-[3]">
-                      <span
+                    <div className="flex h-full min-h-[280px] flex-col bg-[#0A0A0A]">
+                      <div className="relative min-h-[160px] flex-[1.15] shrink-0">
+                        <img
+                          src={project.image}
+                          alt=""
+                          className="absolute inset-0 h-full w-full object-cover"
+                          style={{ filter: "grayscale(0.35) contrast(1.08)" }}
+                        />
+                        <div
+                          className="pointer-events-none absolute inset-0"
+                          style={{
+                            background:
+                              "repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.12) 3px, rgba(0,0,0,0.12) 4px)",
+                          }}
+                        />
+                        <div className="absolute left-4 top-4 z-[1]">
+                          <span
+                            style={{
+                              fontFamily: "monospace",
+                              fontSize: "9px",
+                              color: "#E2B93B",
+                              letterSpacing: "0.1em",
+                              textShadow: "0 1px 4px rgba(0,0,0,0.9)",
+                            }}
+                          >
+                            FREQ_{project.id}
+                          </span>
+                        </div>
+                        <div className="absolute right-4 top-4 z-[1]">
+                          <span
+                            style={{
+                              fontFamily: "monospace",
+                              fontSize: "9px",
+                              color: "rgba(255,255,255,0.78)",
+                              letterSpacing: "0.1em",
+                              textShadow: "0 1px 4px rgba(0,0,0,0.85)",
+                            }}
+                          >
+                            {project.year}
+                          </span>
+                        </div>
+                      </div>
+                      <div
+                        className="flex flex-[0.95] flex-col justify-center gap-3 border-t border-white/[0.08] px-6 py-6 sm:px-8 sm:py-7"
                         style={{
-                          fontFamily: "monospace",
-                          fontSize: "9px",
-                          color: "#E2B93B",
-                          letterSpacing: "0.1em",
-                          textShadow: "0 1px 3px rgba(0,0,0,0.9)",
+                          backgroundColor: "#0A0A0A",
+                          backgroundImage:
+                            "linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)",
+                          backgroundSize: "20px 20px",
                         }}
                       >
-                        FREQ_{project.id}
-                      </span>
-                    </div>
-                    <div className="absolute top-4 right-4 z-[3]">
-                      <span
-                        style={{
-                          fontFamily: "monospace",
-                          fontSize: "9px",
-                          color: "rgba(255,255,255,0.78)",
-                          letterSpacing: "0.1em",
-                          textShadow: "0 1px 3px rgba(0,0,0,0.85)",
-                        }}
-                      >
-                        {project.year}
-                      </span>
+                        <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
+                          <span
+                            style={{
+                              fontFamily: "monospace",
+                              fontSize: "10px",
+                              letterSpacing: "0.14em",
+                              color: "#E2B93B",
+                            }}
+                          >
+                            [{project.id}]
+                          </span>
+                          <span
+                            style={{
+                              fontFamily: "monospace",
+                              fontSize: "10px",
+                              letterSpacing: "0.12em",
+                              color: "rgba(255,255,255,0.35)",
+                              textTransform: "uppercase",
+                            }}
+                          >
+                            {project.category}
+                          </span>
+                        </div>
+                        <span
+                          style={{
+                            fontFamily: "'Anton', sans-serif",
+                            fontSize: "clamp(1.25rem, 2.5vw, 1.75rem)",
+                            lineHeight: 1.05,
+                            letterSpacing: "-0.02em",
+                            textTransform: "uppercase",
+                            color: "#F0F0F0",
+                          }}
+                        >
+                          {project.title}
+                        </span>
+                        <p
+                          className="max-w-3xl pt-1"
+                          style={{
+                            fontFamily: "'Instrument Sans', sans-serif",
+                            fontSize: "0.85rem",
+                            lineHeight: 1.65,
+                            fontWeight: 400,
+                            color: "rgba(240,240,240,0.82)",
+                          }}
+                        >
+                          {project.description}
+                        </p>
+                      </div>
                     </div>
                   </motion.div>
                 )}
