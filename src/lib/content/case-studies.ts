@@ -1,7 +1,13 @@
 import type { CaseStudy } from "@/types/case-study";
 import { ALL_CASE_STUDIES as STATIC_CASE_STUDIES } from "@/data/case-studies";
+import { mergePersistedAssetsOntoRegistryStudy } from "./case-study-registry-merge";
 import { isPlaceholderRemoteImage } from "./placeholder-remote-image";
 import { readContentJson } from "./live-source";
+
+/** Slug → study shipped from repo (canonical narrative). */
+const REGISTRY_CASE_STUDY_BY_SLUG = new Map<string, CaseStudy>(
+  STATIC_CASE_STUDIES.map((s) => [s.slug, s])
+);
 
 /**
  * Admin often updates `meta.cover` first; the opening cover slide still reads `heroImage`.
@@ -44,8 +50,9 @@ function sortCaseStudies(items: CaseStudy[]): CaseStudy[] {
 }
 
 /**
- * Merge persisted JSON (GitHub or content/case-studies.json) with the static registry by slug.
- * Persisted entry wins per slug; slugs that exist only in code remain listed.
+ * Merge persisted JSON with the shipped registry (`/src/data/case-studies`).
+ * Same slug → registry owns narrative/copy; persisted supplies status/flags + real asset URLs per slide id.
+ * JSON-only slug (no TS study) stays fully persisted-driven.
  */
 export function mergeCaseStudiesOverlay(local: CaseStudy[], overlay: unknown): CaseStudy[] {
   if (!Array.isArray(overlay)) return local;
@@ -56,7 +63,11 @@ export function mergeCaseStudiesOverlay(local: CaseStudy[], overlay: unknown): C
   for (const item of overlay) {
     if (item && typeof item === "object" && "slug" in item && typeof (item as CaseStudy).slug === "string") {
       const cs = item as CaseStudy;
-      map.set(cs.slug, normalizeCaseStudy(cs));
+      const rawRegistry = REGISTRY_CASE_STUDY_BY_SLUG.get(cs.slug);
+      const merged = rawRegistry
+        ? mergePersistedAssetsOntoRegistryStudy(rawRegistry, cs)
+        : cs;
+      map.set(cs.slug, normalizeCaseStudy(merged));
     }
   }
   return sortCaseStudies(Array.from(map.values()));
