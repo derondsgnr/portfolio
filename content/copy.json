@@ -6,7 +6,7 @@
       "philosophy": "Prototype to learn what's possible, then refine until it ships—clear enough to use, memorable enough to feel."
     },
     "about": {
-      "label": "> ABOUT.DECODE()",
+      "label": "> ABOUT.()",
       "headline": "Designer who",
       "headlineAccent": "ships",
       "bioParagraphs": [
@@ -14,9 +14,18 @@
         "I care that products are intuitive, and also delightful: users should leave with a feeling, not just a completed task. I've spent years with startups and teams at the intersection of design and product—thinking in systems, validating what we ship, and staying hungry to learn and push what's next."
       ],
       "stats": [
-        { "label": "YEARS", "value": "5+" },
-        { "label": "PROJECTS", "value": "40+" },
-        { "label": "CLIENTS", "value": "25+" }
+        {
+          "label": "YEARS",
+          "value": "5+"
+        },
+        {
+          "label": "PROJECTS",
+          "value": "40+"
+        },
+        {
+          "label": "CLIENTS",
+          "value": "25+"
+        }
       ]
     },
     "cta": {
@@ -36,10 +45,10 @@
   },
   "work": {
     "hero": {
-      "accessLabel": "> ACCESSING WORK_ARCHIVE...",
+      "accessLabel": "> WORK_ARCHIVE...",
       "title": "WORK",
-      "countSuffix": "TRANSMISSIONS FOUND",
-      "activeLabel": "SIGNAL: ACTIVE"
+      "countSuffix": "ARTIFACTS FOUND",
+      "activeLabel": "SIGNAL: AVAILABLE FOR WORK"
     },
     "cta": {
       "label": "[READY TO DECODE YOUR NEXT PROJECT?]",
@@ -51,7 +60,7 @@
   },
   "about": {
     "hero": {
-      "label": "> OPERATOR_PROFILE.READ()",
+      "label": "> PROFILE.READ()",
       "name": "DERON",
       "tagline": "PRODUCT_DESIGNER // BUILDER"
     },
