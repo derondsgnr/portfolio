@@ -106,10 +106,12 @@ const GUIDE_MAP: Record<string, FeatureGuide> = {
   },
   "/admin/media": {
     title: "Media + Cloudinary Workflow",
-    canDo: "Update image/video URLs for hero assets, craft items, and explorations.",
+    canDo:
+      "Update image/video URLs for hero assets, craft items (upload when Cloudinary env is set), and explorations.",
     youNeedToDo:
       "Upload files to Cloudinary, copy each Secure URL, paste into matching fields in Media, then save each edited section.",
-    limits: "This panel stores URLs only; it does not upload files to Cloudinary for you.",
+    limits:
+      "Media and craft panels store JSON URLs. Optional client upload to Cloudinary when NEXT_PUBLIC_CLOUDINARY_* is set; otherwise paste hosted URLs.",
   },
   "/admin/nav": {
     title: "Navigation",

@@ -6,10 +6,25 @@ import { ScrambleText } from "../shared/scramble-text";
 
 const EASE = [0.25, 0.46, 0.45, 0.94] as const;
 
+function isPlayableVideoUrl(url: string | undefined): boolean {
+  if (!url?.trim()) return false;
+  const u = url.trim();
+  if (/\.(mp4|webm|ogg)(\?|#|$)/i.test(u)) return true;
+  if (u.includes("res.cloudinary.com") && u.includes("/video/upload/")) return true;
+  return false;
+}
+
 function CraftImageIntrinsic({ item }: { item: CraftItem }) {
   const w = item.width;
   const h = item.height;
   const hasDims = typeof w === "number" && typeof h === "number" && w > 0 && h > 0;
+  if (!item.image?.trim()) {
+    return (
+      <div className="w-full min-h-[120px] bg-[#111] flex items-center justify-center">
+        <span className="font-mono text-[9px] text-white/25 uppercase tracking-wider">No still</span>
+      </div>
+    );
+  }
   return (
     <img
       src={item.image}
@@ -21,6 +36,22 @@ function CraftImageIntrinsic({ item }: { item: CraftItem }) {
       loading="lazy"
     />
   );
+}
+
+function CraftMasonryMedia({ item }: { item: CraftItem }) {
+  if (isPlayableVideoUrl(item.videoUrl)) {
+    return (
+      <video
+        src={item.videoUrl}
+        poster={item.image || undefined}
+        controls
+        playsInline
+        preload="metadata"
+        className="w-full h-auto block align-middle bg-black"
+      />
+    );
+  }
+  return <CraftImageIntrinsic item={item} />;
 }
 
 function EditorialCoverSection({ section }: { section: CraftSection }) {
@@ -54,17 +85,33 @@ function EditorialCoverSection({ section }: { section: CraftSection }) {
               className="overflow-hidden relative border border-[rgba(255,255,255,0.08)] rounded-[0.625rem]"
               style={{ aspectRatio: p.aspect.replace("/", " / ") }}
             >
-              <img
-                src={item.image}
-                alt={item.title}
-                width={item.width ?? 900}
-                height={item.height ?? 600}
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                style={{ filter: "grayscale(0.35)" }}
-                decoding="async"
-              />
+              {isPlayableVideoUrl(item.videoUrl) ? (
+                <video
+                  src={item.videoUrl}
+                  poster={item.image || undefined}
+                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  style={{ filter: "grayscale(0.35)" }}
+                  controls
+                  playsInline
+                  preload="metadata"
+                />
+              ) : item.image?.trim() ? (
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  width={item.width ?? 900}
+                  height={item.height ?? 600}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  style={{ filter: "grayscale(0.35)" }}
+                  decoding="async"
+                />
+              ) : (
+                <div className="absolute inset-0 flex items-center justify-center bg-[#111] font-mono text-[9px] text-white/25 uppercase tracking-wider">
+                  No still
+                </div>
+              )}
               <div
-                className="absolute inset-0 pointer-events-none"
+                className="pointer-events-none absolute inset-0"
                 style={{
                   background:
                     "repeating-linear-gradient(0deg, transparent 0px, transparent 3px, rgba(10,10,10,0.2) 3px, rgba(10,10,10,0.2) 4px)",
@@ -135,14 +182,27 @@ function MasonrySection({ section, cols }: { section: CraftSection; cols: 2 | 3 
             className="mb-2.5 break-inside-avoid"
           >
             <div className="border border-[rgba(255,255,255,0.08)] rounded-[0.625rem] overflow-hidden bg-[#0a0a0a]">
-              <CraftImageIntrinsic item={item} />
-              <div className="px-3 py-2 flex items-start justify-between gap-2 border-t border-[rgba(255,255,255,0.06)]">
-                <span
-                  className="tabular-nums"
-                  style={{ fontFamily: "monospace", fontSize: "9px", color: "#E2B93B", letterSpacing: "0.1em" }}
-                >
-                  [{item.category}]
-                </span>
+              <CraftMasonryMedia item={item} />
+              <div className="px-3 py-2 flex flex-col gap-1 border-t border-[rgba(255,255,255,0.06)] sm:flex-row sm:items-start sm:justify-between sm:gap-2">
+                <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                  <span
+                    className="tabular-nums"
+                    style={{ fontFamily: "monospace", fontSize: "9px", color: "#E2B93B", letterSpacing: "0.1em" }}
+                  >
+                    [{item.category}]
+                  </span>
+                  {item.videoUrl && !isPlayableVideoUrl(item.videoUrl) ? (
+                    <a
+                      href={item.videoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-mono text-[9px] text-[#E2B93B]/85 hover:text-[#E2B93B] underline underline-offset-2"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      ▶ Video
+                    </a>
+                  ) : null}
+                </div>
                 <span
                   style={{
                     fontFamily: "'Instrument Sans', sans-serif",
@@ -183,14 +243,32 @@ function ListSection({ section }: { section: CraftSection }) {
               className="py-8 grid grid-cols-1 md:grid-cols-12 gap-6 items-center group"
             >
               <div className="md:col-span-2 overflow-hidden border border-[rgba(255,255,255,0.08)] rounded-[0.625rem]" style={{ aspectRatio: ratio }}>
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  width={w ?? undefined}
-                  height={h ?? undefined}
-                  className="w-full h-full object-cover transition-all duration-500 group-hover:grayscale-0"
-                  style={{ filter: "grayscale(1) brightness(0.5)" }}
-                />
+                {isPlayableVideoUrl(item.videoUrl) ? (
+                  <video
+                    src={item.videoUrl}
+                    poster={item.image || undefined}
+                    width={w ?? undefined}
+                    height={h ?? undefined}
+                    className="w-full h-full object-cover transition-all duration-500 group-hover:grayscale-0"
+                    style={{ filter: "grayscale(1) brightness(0.5)" }}
+                    controls
+                    playsInline
+                    preload="metadata"
+                  />
+                ) : item.image?.trim() ? (
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    width={w ?? undefined}
+                    height={h ?? undefined}
+                    className="w-full h-full object-cover transition-all duration-500 group-hover:grayscale-0"
+                    style={{ filter: "grayscale(1) brightness(0.5)" }}
+                  />
+                ) : (
+                  <div className="flex h-full min-h-[100px] w-full items-center justify-center bg-[#111] font-mono text-[9px] text-white/25">
+                    Add still or video
+                  </div>
+                )}
               </div>
               <div className="md:col-span-1">
                 <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#E2B93B" }}>

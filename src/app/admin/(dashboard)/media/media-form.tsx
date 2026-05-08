@@ -15,6 +15,8 @@ import {
   type CraftLayoutMode,
 } from "@/lib/content/craft-model";
 import type { Exploration } from "@/lib/content/explorations";
+import type { CloudinaryUploadResult } from "@/lib/admin/cloudinary-upload";
+import { CloudinaryUploadField } from "@/components/admin/cloudinary-upload-field";
 
 type Props = {
   initialMedia: MediaConfig;
@@ -211,6 +213,7 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
       category: "Visual",
       description: "",
       image: "",
+      videoUrl: undefined,
       status: "draft",
       featured: false,
       pinned: false,
@@ -257,6 +260,35 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
         i !== si ? s : { ...s, items: s.items.filter((_, j) => j !== ii) }
       ),
     }));
+  }
+
+  function patchCraftItem(si: number, ii: number, patch: Partial<CraftItem>) {
+    setCraft((prev) => ({
+      sections: prev.sections.map((s, i) => {
+        if (i !== si) return s;
+        const items = s.items.map((it, j) =>
+          j === ii ? normalizeCraftItem({ ...it, ...patch } as CraftItem) : it
+        );
+        return { ...s, items };
+      }),
+    }));
+  }
+
+  function applyCraftCloudinaryResult(si: number, ii: number, r: CloudinaryUploadResult) {
+    if (r.resource_type === "video") {
+      patchCraftItem(si, ii, {
+        videoUrl: r.secure_url,
+        ...(r.thumbnail_url ? { image: r.thumbnail_url } : {}),
+        ...(typeof r.width === "number" && typeof r.height === "number" ? { width: r.width, height: r.height } : {}),
+      });
+    } else {
+      patchCraftItem(si, ii, {
+        image: r.secure_url,
+        videoUrl: undefined,
+        width: r.width,
+        height: r.height,
+      });
+    }
   }
 
   function updateExplorationImage(index: number, image: string) {
@@ -387,7 +419,7 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
           </button>
         </div>
         <p className="font-mono text-xs text-white/50 leading-relaxed max-w-2xl">
-          Each section renders in order on the Craft page (Projects tab / Grid view). Masonry preserves real poster proportions — set Width and Height from your source file so layout stays stable before images load.
+          Each section renders in order on the Craft page (Projects tab / Grid view). Masonry preserves real poster proportions — set Width and Height from your source file when needed. Use <strong className="text-white/65 font-normal">Upload file</strong> when Cloudinary env is configured; otherwise paste still and video links.
         </p>
         <ImageFieldGuide role="craft-gallery" compact />
         <form onSubmit={handleSaveCraft} className="space-y-8">
@@ -495,13 +527,31 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
                       </div>
                     </div>
                     <ImageRatioHint role="craft-gallery" className="mb-2" />
+                    <label className={labelClass}>Still / poster image URL</label>
                     <input
                       type="url"
                       value={item.image}
                       onChange={(e) => updateCraftImage(si, ii, e.target.value)}
                       className={inputClass}
-                      placeholder="Image URL"
+                      placeholder="https://…"
                     />
+                    <CloudinaryUploadField
+                      onUploaded={(r) => applyCraftCloudinaryResult(si, ii, r)}
+                    />
+                    <div className="mt-3">
+                      <label className={labelClass}>Video URL (optional)</label>
+                      <input
+                        type="url"
+                        value={item.videoUrl ?? ""}
+                        onChange={(e) =>
+                          patchCraftItem(si, ii, {
+                            videoUrl: e.target.value.trim() ? e.target.value.trim() : undefined,
+                          })
+                        }
+                        className={inputClass}
+                        placeholder="YouTube / Vimeo / MP4…"
+                      />
+                    </div>
                     <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
                       <div>
                         <label className={labelClass}>Width px</label>
