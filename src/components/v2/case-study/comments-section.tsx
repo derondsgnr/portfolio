@@ -120,8 +120,9 @@ export function CommentsSection({ slug }: CommentsSectionProps) {
 
           {!showForm && !loadError && (
             <button
+              type="button"
               onClick={() => setShowForm(true)}
-              className="text-[10px] tracking-[0.15em] text-[#0A0A0A] bg-[#E2B93B] px-4 py-2 hover:bg-[#E2B93B]/90 transition-colors"
+              className="border border-[#E2B93B]/40 bg-transparent px-4 py-2 text-[10px] tracking-[0.15em] text-[#E2B93B] transition-colors hover:border-[#E2B93B]/70 hover:bg-[#E2B93B]/5"
               style={{ fontFamily: "monospace" }}
             >
               LEAVE A COMMENT
@@ -224,7 +225,7 @@ export function CommentsSection({ slug }: CommentsSectionProps) {
                   <button
                     type="submit"
                     disabled={submitting || !text.trim()}
-                    className="text-[10px] tracking-[0.15em] text-[#0A0A0A] bg-[#E2B93B] px-4 py-2 hover:bg-[#E2B93B]/90 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                    className="border border-[#E2B93B]/40 bg-transparent px-4 py-2 text-[10px] tracking-[0.15em] text-[#E2B93B] transition-colors hover:border-[#E2B93B]/70 hover:bg-[#E2B93B]/5 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent"
                     style={{ fontFamily: "monospace" }}
                   >
                     {submitting ? "POSTING..." : "POST"}

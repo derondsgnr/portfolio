@@ -19,7 +19,7 @@ export const DARA_CASE_STUDY: CaseStudy = {
     tags: ["Fintech", "Product Design", "Full-Stack", "AI-Assisted", "Tax"],
     cover: daraHero,
     summary:
-      "Dara turns bank and fintech alerts into something you can file from—Gemini first, you confirm, it learns. I'm documenting how I built that while leveling up on AI-assisted shipping; the long posts unpack each layer.",
+      "Dara turns bank and fintech alerts into filing signal: scan email, run Gemini, you classify into buckets, the system learns, then it aggregates toward what you owe and when. Extraction is still patchy by provider—I am not dressing that up. Long posts unpack prompts, tax content, and what broke in beta.",
     color: "#E2B93B",
   },
   template: "full-product",
@@ -31,9 +31,9 @@ export const DARA_CASE_STUDY: CaseStudy = {
         {
           type: "cover",
           id: "dara-cover",
-          headline: "From email alerts to something you can file from",
+          headline: "From inbox noise to filing signal",
           subtitle:
-            "Gemini first, you confirm, it learns. Built while I leveled up on AI-assisted shipping—the write-ups unpack each layer.",
+            "Email alerts → Gemini → you verify → buckets improve over time → aggregation and tax guidance. Built while I leveled up on AI-assisted shipping; the write-ups unpack each layer.",
           tags: ["Fintech", "Tax", "AI-Assisted Build"],
           heroImage: daraHero,
           device: "browser",
@@ -43,7 +43,7 @@ export const DARA_CASE_STUDY: CaseStudy = {
           id: "dara-context",
           headline: "Start with the real friction",
           body:
-            "Personal income tax in Nigeria is a long, opaque process. Official education is thin, mistakes are expensive, and penalties are heavy. More freelancers and self-employed people earn in naira and dollars now—they are being introduced to a system that was never explained in plain language.",
+            "Personal income tax in Nigeria is strenuous, overcomplicated, and thin on public education. Fines are heavy. A huge pool of freelancers and self-employed people earn in naira and dollars and are meeting that system for the first time with almost no plain-language on-ramp.",
           annotation:
             "I'm building for self-employed people first. Grassroots scale is the vision, but the story has to work for one person's inbox before it works for millions.",
           narrator: {
@@ -59,9 +59,9 @@ export const DARA_CASE_STUDY: CaseStudy = {
           headline: "The wedge is what people already have",
           insightLabel: "PRODUCT CALL",
           insightText:
-            "Debit and credit alerts already land in email from banks and fintech. The job is extraction, classification, aggregation—then tax guidance that respects state rules.",
+            "Debit and credit alerts already land in email from banks and fintech. The job is extraction → classification → aggregation, then tax guidance that respects state rules.",
           body:
-            "If the pipeline can't turn those alerts into structured truth, the rest of the app is theatre. Extraction is uneven across providers today. That's the honest state of the build.",
+            "If the pipeline lies, the dashboard is a dark theme on garbage. Extraction is uneven by bank and sender today. I state that on purpose so the story stays mechanical, not magical.",
         },
         {
           type: "single-mockup",
@@ -96,14 +96,28 @@ export const DARA_CASE_STUDY: CaseStudy = {
                 "https://images.unsplash.com/photo-1576153192396-180ecef2a715?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
               label: "Ingest",
               description:
-                "Scan email for debit and credit alerts from banks and fintech. Not every provider parses cleanly yet—that's an active engineering edge.",
+                "Scan email for debit and credit alerts from banks and fintech. Not every provider parses cleanly—that is still an active engineering edge.",
             },
             {
               image:
                 "https://images.unsplash.com/photo-1562601555-513820e5d0eb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-              label: "Gemini → you verify",
+              label: "Gemini, then you verify",
               description:
-                "Every alert runs through Gemini, then you classify into buckets so the system learns and can take more of the work over time with fewer mistakes.",
+                "Alerts run through Gemini, then you classify into buckets. The model does not get a free pass. Over time that feedback teaches the system to take more of the sorting with fewer mistakes.",
+            },
+            {
+              image:
+                "https://images.unsplash.com/photo-1554224155-6726b3ff858f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+              label: "Aggregate and tax path",
+              description:
+                "Structured signals roll up into estimates for what you owe, when to pay, and how to pay—plus state-level due dates and filing steps where that content is locked in the build.",
+            },
+            {
+              image:
+                "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+              label: "Same pipe, wider surface (direction)",
+              description:
+                "Savings and investment platforms can ride the same ingestion idea later. Goals, journeys, and one centralized view across providers are the next horizon—not something I am pretending is finished in the flagship build.",
             },
           ],
           narrator: {
@@ -118,9 +132,9 @@ export const DARA_CASE_STUDY: CaseStudy = {
           id: "dara-decisions",
           headline: "Calls that shaped the product",
           body:
-            "• Tax output: aggregate, estimate what you owe, when to pay, and how to pay—with state-specific due dates and filing steps where we've locked content.\n\n• Human-in-the-loop after Gemini so classification improves from real use, not guesswork.\n\n• WhatsApp nudges were cut. Cost and implementation weight weren't worth it for where the product is.\n\n• Pioneer / beta: people can register; welcome-email automation isn't end-to-end yet. I'm not pretending the growth layer is finished.",
+            "• Tax output: aggregate, estimate what you owe, when to pay, and how to pay—with state-specific due dates and filing steps where content is locked.\n\n• Human-in-the-loop after Gemini so classification improves from real use, not vibes.\n\n• WhatsApp nudges were cut. Cost and implementation weight were not worth it for where the product is.\n\n• Pioneer / beta: people can register; welcome-email automation is not end-to-end yet. I am not pretending the growth layer is finished.\n\n• Sub-features and edge cases stay out of this flagship so the spine stays readable. They ship in follow-up posts.",
           annotation:
-            "Distribution and monetization extend the same data: savings and investment platforms next, then goals and one consolidated view across providers. That arc belongs in the flagship only as direction—the series goes deep.",
+            "Distribution and monetization hook to the same data plane: widen ingestion to savings and investments, then goals and one view across providers. I keep that in the case study as direction—the series goes deep on each slice.",
         },
         {
           type: "single-mockup",
@@ -164,7 +178,7 @@ export const DARA_CASE_STUDY: CaseStudy = {
           },
           after: {
             image: daraHero,
-            label: "Alerts → verify → learn → tax clarity",
+            label: "Inbox → verify → learn → clarity",
           },
           device: "browser",
         },
@@ -208,7 +222,7 @@ export const DARA_CASE_STUDY: CaseStudy = {
           ],
           narrator: {
             text:
-              "No inflated percentages on this slide. If I didn't measure it rigorously, it doesn't get a vanity metric.",
+              "No inflated percentages on this slide. If I did not measure it rigorously, it does not get a vanity metric.",
             label: "NOTE",
             mood: "thinking",
           },

@@ -486,10 +486,10 @@ function MetricSlideComponent({ slide }: { slide: Extract<Slide, { type: "metric
                 initial={{ opacity: 0, y: 30 }}
                 animate={inView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.6, delay: 0.2 + i * 0.1 }}
-                className="border-t border-[#E2B93B]/30 pt-4"
+                className="min-w-0 border-t border-[#E2B93B]/30 pt-4"
               >
                 <span
-                  className="text-3xl md:text-5xl text-white block mb-2"
+                  className="text-3xl md:text-5xl text-white block mb-2 break-words [overflow-wrap:anywhere]"
                   style={{ letterSpacing: "-0.02em" }}
                 >
                   {metric.value}
