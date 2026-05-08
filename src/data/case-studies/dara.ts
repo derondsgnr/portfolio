@@ -23,7 +23,7 @@ export const DARA_CASE_STUDY: CaseStudy = {
     color: "#E2B93B",
   },
   template: "full-product",
-  liveDemoUrl: "#",
+  liveDemoUrl: "https://mydara.co",
   acts: [
     {
       title: "Discovery",
@@ -162,8 +162,8 @@ export const DARA_CASE_STUDY: CaseStudy = {
             {
               image:
                 "https://images.unsplash.com/photo-1642055509518-adafcad1d22e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-              device: "phone",
-              label: "Mobile / responsive",
+              device: "browser",
+              label: "Additional surface",
             },
           ],
         },
@@ -230,16 +230,16 @@ export const DARA_CASE_STUDY: CaseStudy = {
         {
           type: "embed",
           id: "dara-live",
-          headline: "Try it when the link is public",
-          embedUrl: "#",
+          headline: "Live beta",
+          embedUrl: "https://mydara.co",
           fallbackImage: daraHero,
           device: "browser",
           caption:
-            "Wire the real beta or app URL here when you want the iframe live. Until then this slide stays a deliberate stub.",
+            "Beta is open registration at mydara.co. If this frame is empty, the app may block embedding—use the Live demo link above or open the site in a new tab. Mail access runs only after you authorize your mail provider sign-in flow; you can revoke anytime from provider security settings or in-app disconnect actions. Anything about retention or data handling on mydara.co privacy/terms is authoritative over this portfolio copy. This slide is explanatory, not a separate legal agreement.",
           narrator: {
             text:
-              "Flagship case study + follow-up posts for extraction, prompts, tax content, and what broke in beta. That's the publishing shape I want.",
-            label: "NOTE",
+              "Trust is often the bottleneck, not novelty: granting read access to mail feels existential until consent, revoke, and what we persist are plainly visible. Published policy pages carry the commitment; flagship copy only points people there honestly while extraction and classification still improve.",
+            label: "TRUST NOTE",
             mood: "pointing",
           },
         },
