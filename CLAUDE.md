@@ -172,6 +172,8 @@ NOW_ADMIN_PIN                       → PIN for Now page admin drawer
 NEXT_PUBLIC_BOOKING_URL             → Cal.com booking URL for CTA drawer
 NEXT_PUBLIC_GA_MEASUREMENT_ID       → Google Analytics
 NEXT_PUBLIC_GTM_ID                  → Google Tag Manager
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME   → Enables admin “Upload file” for Craft/Media (with preset below)
+NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET → Unsigned Cloudinary preset for browser uploads
 RESEND_FROM                         → Email "from" address (defaults to Resend onboarding)
 MONITORING_SITE_URL                 → Canonical deployed URL for public health probes
 MONITORING_WEBHOOK_URL              → Webhook target for alert notifications

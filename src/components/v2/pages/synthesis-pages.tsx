@@ -332,20 +332,115 @@ function WorkListView({ projects = V2_PROJECTS }: { projects?: typeof V2_PROJECT
             {hoveredIdx === i && (
               <motion.div
                 initial={{ height: 0, opacity: 0 }}
-                animate={{ height: "50vh", opacity: 1 }}
+                animate={{ height: "min(52vh, 560px)", opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
                 transition={{ duration: 0.6, ease: [0.77, 0, 0.175, 1] }}
-                className="overflow-hidden relative"
+                className="overflow-hidden border-x border-white/[0.06] border-b border-white/[0.06]"
               >
-                <img src={project.image} alt={project.title} className="w-full h-full object-cover" style={{ filter: "grayscale(0.3) contrast(1.1)" }} />
-                <div className="absolute inset-0 pointer-events-none" style={{ background: "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(10,10,10,0.4) 2px, rgba(10,10,10,0.4) 4px)" }} />
-                <div className="absolute bottom-6 left-6 right-6">
-                  <p style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "0.85rem", lineHeight: 1.6, fontWeight: 300, color: "rgba(255,255,255,0.6)" }}>
+                <div className="flex h-full min-h-[280px] flex-col bg-[#0A0A0A]">
+                  {/* Media strip — typography never sits on photography */}
+                  <div className="relative min-h-[160px] flex-[1.15] shrink-0">
+                    <img
+                      src={project.image}
+                      alt=""
+                      className="absolute inset-0 h-full w-full object-cover"
+                      style={{ filter: "grayscale(0.35) contrast(1.08)" }}
+                    />
+                    <div
+                      className="pointer-events-none absolute inset-0"
+                      style={{
+                        background:
+                          "repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.12) 3px, rgba(0,0,0,0.12) 4px)",
+                      }}
+                    />
+                    <div className="absolute left-4 top-4 z-[1]">
+                      <span
+                        style={{
+                          fontFamily: "monospace",
+                          fontSize: "9px",
+                          color: "#E2B93B",
+                          letterSpacing: "0.1em",
+                          textShadow: "0 1px 4px rgba(0,0,0,0.9)",
+                        }}
+                      >
+                        FREQ_{project.id}
+                      </span>
+                    </div>
+                    <div className="absolute right-4 top-4 z-[1]">
+                      <span
+                        style={{
+                          fontFamily: "monospace",
+                          fontSize: "9px",
+                          color: "rgba(255,255,255,0.75)",
+                          letterSpacing: "0.1em",
+                          textShadow: "0 1px 4px rgba(0,0,0,0.85)",
+                        }}
+                      >
+                        {project.year}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Description — page background only, directly under the image strip */}
+                  <p
+                    className="max-w-3xl px-6 py-5 sm:px-8 sm:py-6"
+                    style={{
+                      fontFamily: "'Instrument Sans', sans-serif",
+                      fontSize: "0.85rem",
+                      lineHeight: 1.65,
+                      fontWeight: 400,
+                      color: "rgba(240,240,240,0.82)",
+                    }}
+                  >
                     {project.description}
                   </p>
-                </div>
-                <div className="absolute top-4 left-4">
-                  <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#E2B93B", letterSpacing: "0.1em" }}>FREQ_{project.id}</span>
+
+                  {/* Copy deck — brutalist slab (reference: Craft / cipher cards) */}
+                  <div
+                    className="flex flex-[0.95] flex-col justify-center gap-3 border-t border-white/[0.08] px-6 py-6 sm:px-8 sm:py-7"
+                    style={{
+                      backgroundColor: "#0A0A0A",
+                      backgroundImage:
+                        "linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)",
+                      backgroundSize: "20px 20px",
+                    }}
+                  >
+                    <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
+                      <span
+                        style={{
+                          fontFamily: "monospace",
+                          fontSize: "10px",
+                          letterSpacing: "0.14em",
+                          color: "#E2B93B",
+                        }}
+                      >
+                        [{project.id}]
+                      </span>
+                      <span
+                        style={{
+                          fontFamily: "monospace",
+                          fontSize: "10px",
+                          letterSpacing: "0.12em",
+                          color: "rgba(255,255,255,0.35)",
+                          textTransform: "uppercase",
+                        }}
+                      >
+                        {project.category}
+                      </span>
+                    </div>
+                    <span
+                      style={{
+                        fontFamily: "'Anton', sans-serif",
+                        fontSize: "clamp(1.25rem, 2.5vw, 1.75rem)",
+                        lineHeight: 1.05,
+                        letterSpacing: "-0.02em",
+                        textTransform: "uppercase",
+                        color: "#F0F0F0",
+                      }}
+                    >
+                      {project.title}
+                    </span>
+                  </div>
                 </div>
               </motion.div>
             )}
@@ -357,7 +452,7 @@ function WorkListView({ projects = V2_PROJECTS }: { projects?: typeof V2_PROJECT
   );
 }
 
-/* Signal grid view (2-col with scan textures) */
+/* Signal grid — image slab + copy slab (same legibility model as expanded list) */
 function WorkGridView({ projects = V2_PROJECTS }: { projects?: typeof V2_PROJECTS }) {
   const router = useRouter();
 
@@ -370,35 +465,94 @@ function WorkGridView({ projects = V2_PROJECTS }: { projects?: typeof V2_PROJECT
           whileInView={{ opacity: 1, clipPath: "inset(0 0% 0 0)" }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: i * 0.15, ease: [0.77, 0, 0.175, 1] }}
-          className="relative group overflow-hidden cursor-pointer"
-          style={{ aspectRatio: "4/3" }}
+          className="group relative flex min-h-[400px] cursor-pointer flex-col overflow-hidden md:min-h-[420px]"
           onClick={withSound(() => (project as any).slug && router.push(`/work/${(project as any).slug}`), "navigate")}
         >
-          <img
-            src={project.image}
-            alt={project.title}
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-            style={{ filter: "grayscale(0.6) contrast(1.2)" }}
-          />
-          {/* Scan overlay */}
-          <div className="absolute inset-0 pointer-events-none" style={{ background: "repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.15) 3px, rgba(0,0,0,0.15) 4px)" }} />
-          {/* Info */}
-          <div className="absolute inset-0 flex flex-col justify-between p-6">
-            <div className="flex justify-between">
-              <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#E2B93B", letterSpacing: "0.1em" }}>FREQ_{project.id}</span>
-              <span style={{ fontFamily: "monospace", fontSize: "9px", color: "rgba(255,255,255,0.3)", letterSpacing: "0.1em" }}>{project.year}</span>
-            </div>
-            <div>
-              <span style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(1.5rem, 3vw, 2.5rem)", lineHeight: 1, letterSpacing: "-0.02em", textTransform: "uppercase", color: "#f0f0f0", display: "block" }}>
-                {project.title}
+          <div className="relative min-h-[200px] flex-[1.2] shrink-0">
+            <img
+              src={project.image}
+              alt=""
+              className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+              style={{ filter: "grayscale(0.5) contrast(1.15)" }}
+            />
+            <div
+              className="pointer-events-none absolute inset-0"
+              style={{
+                background:
+                  "repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.12) 3px, rgba(0,0,0,0.12) 4px)",
+              }}
+            />
+            <div className="absolute left-4 right-4 top-4 z-[1] flex items-start justify-between gap-3">
+              <span
+                style={{
+                  fontFamily: "monospace",
+                  fontSize: "9px",
+                  color: "#E2B93B",
+                  letterSpacing: "0.1em",
+                  textShadow: "0 1px 4px rgba(0,0,0,0.9)",
+                }}
+              >
+                FREQ_{project.id}
               </span>
-              <span className="block mt-2" style={{ fontFamily: "monospace", fontSize: "10px", color: "rgba(255,255,255,0.3)", letterSpacing: "0.1em" }}>
-                {project.category}
+              <span
+                style={{
+                  fontFamily: "monospace",
+                  fontSize: "9px",
+                  color: "rgba(255,255,255,0.82)",
+                  letterSpacing: "0.1em",
+                  textShadow: "0 1px 4px rgba(0,0,0,0.85)",
+                }}
+              >
+                {project.year}
               </span>
-              <p className="mt-3 max-w-xs opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "0.8rem", lineHeight: 1.6, fontWeight: 300, color: "rgba(255,255,255,0.5)" }}>
-                {project.description}
-              </p>
             </div>
+          </div>
+
+          <p
+            className="max-w-prose px-6 pt-5 pb-1 sm:px-8"
+            style={{
+              fontFamily: "'Instrument Sans', sans-serif",
+              fontSize: "0.8rem",
+              lineHeight: 1.65,
+              fontWeight: 400,
+              color: "rgba(240,240,240,0.82)",
+            }}
+          >
+            {project.description}
+          </p>
+
+          <div
+            className="flex flex-[1] flex-col justify-center gap-3 border-t border-white/[0.08] px-6 py-6 sm:px-8 sm:py-7"
+            style={{
+              backgroundColor: "#0A0A0A",
+              backgroundImage:
+                "linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)",
+              backgroundSize: "20px 20px",
+            }}
+          >
+            <span
+              style={{
+                fontFamily: "'Anton', sans-serif",
+                fontSize: "clamp(1.35rem, 2.8vw, 2rem)",
+                lineHeight: 1.05,
+                letterSpacing: "-0.02em",
+                textTransform: "uppercase",
+                color: "#F0F0F0",
+              }}
+            >
+              {project.title}
+            </span>
+            <span
+              style={{
+                fontFamily: "monospace",
+                fontSize: "10px",
+                color: "#E2B93B",
+                letterSpacing: "0.12em",
+                textTransform: "uppercase",
+              }}
+            >
+              {project.category}
+            </span>
           </div>
         </motion.div>
       ))}
