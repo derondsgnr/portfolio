@@ -1,25 +1,25 @@
 import type { CaseStudy } from "../../types/case-study";
 
-// Placeholder: replace with actual Dara hero asset when available
+// TODO: swap for real Dara UI captures when exported from mydara
 const daraHero =
   "https://images.unsplash.com/photo-1623593476737-0fc80f6be51d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080";
 
 /**
- * DARA — Personal fintech project
- * Built with Claude, Figma Make, and Cursor
- * Nigerian tax & finance management platform
+ * DARA — Personal fintech (tax + money clarity)
+ * Source of truth for product flows: mydara/ at repo root.
  */
 export const DARA_CASE_STUDY: CaseStudy = {
   slug: "dara",
   meta: {
     title: "Dara",
     client: "Personal Project",
-    year: "2025",
-    role: "Product Designer & Developer",
-    duration: "3 weeks",
-    tags: ["Fintech", "Product Design", "Full-Stack", "AI-Assisted"],
+    year: "2025–26",
+    role: "Founder, product, UX, frontend, AI-assisted build",
+    duration: "Ongoing",
+    tags: ["Fintech", "Product Design", "Full-Stack", "AI-Assisted", "Tax"],
     cover: daraHero,
-    summary: "A personal finance & tax management platform for Nigerian freelancers and SMEs — designed and built entirely with AI-assisted tools.",
+    summary:
+      "Dara turns bank and fintech alerts into something you can file from—Gemini first, you confirm, it learns. I'm documenting how I built that while leveling up on AI-assisted shipping; the long posts unpack each layer.",
     color: "#E2B93B",
   },
   template: "full-product",
@@ -31,71 +31,84 @@ export const DARA_CASE_STUDY: CaseStudy = {
         {
           type: "cover",
           id: "dara-cover",
-          headline: "Tax shouldn't feel like punishment",
-          subtitle: "Designing a finance platform that makes Nigerian tax compliance feel effortless — not terrifying.",
-          tags: ["Fintech", "Product Design", "AI-Assisted Build"],
+          headline: "From email alerts to something you can file from",
+          subtitle:
+            "Gemini first, you confirm, it learns. Built while I leveled up on AI-assisted shipping—the write-ups unpack each layer.",
+          tags: ["Fintech", "Tax", "AI-Assisted Build"],
           heroImage: daraHero,
           device: "browser",
         },
         {
           type: "narrative",
           id: "dara-context",
-          headline: "The problem nobody was solving properly",
-          body: "Nigerian freelancers and small business owners face a uniquely frustrating tax landscape. The tools that exist are built for accountants, not for people who just want to know: how much do I owe, and when is it due?",
-          annotation: "This insight came from personal frustration — I was one of these people.",
+          headline: "Start with the real friction",
+          body:
+            "Personal income tax in Nigeria is a long, opaque process. Official education is thin, mistakes are expensive, and penalties are heavy. More freelancers and self-employed people earn in naira and dollars now—they are being introduced to a system that was never explained in plain language.",
+          annotation:
+            "I'm building for self-employed people first. Grassroots scale is the vision, but the story has to work for one person's inbox before it works for millions.",
           narrator: {
-            text: "I started this project because I was tired of the spreadsheet gymnastics every quarter. If I — a tech-literate designer — was struggling, what about everyone else?",
-            label: "DESIGNER'S NOTE",
+            text:
+              "This wasn't a brief from a client. It started with my own frustration and what I see around me. The product is how I'm learning to ship with AI—not a slide deck about AI.",
+            label: "NOTE",
             mood: "thinking",
           },
         },
         {
           type: "insight",
           id: "dara-insight-1",
-          headline: "The trust deficit in Nigerian fintech",
-          insightLabel: "RESEARCH FINDING",
-          insightText: "7 out of 10 Nigerian freelancers surveyed said they don't trust any existing tool with their financial data. The barrier isn't technology — it's confidence.",
-          body: "I spoke with 12 freelancers and small business owners across Lagos and Abuja. The pattern was consistent: they wanted to comply with tax regulations, but every tool made them feel like they needed an accounting degree first.",
+          headline: "The wedge is what people already have",
+          insightLabel: "PRODUCT CALL",
+          insightText:
+            "Debit and credit alerts already land in email from banks and fintech. The job is extraction, classification, aggregation—then tax guidance that respects state rules.",
+          body:
+            "If the pipeline can't turn those alerts into structured truth, the rest of the app is theatre. Extraction is uneven across providers today. That's the honest state of the build.",
         },
         {
           type: "single-mockup",
           id: "dara-competitor",
-          headline: "What existing tools looked like",
-          annotation: "Dense tables, accounting jargon, zero context. Every tool assumed you already knew what you were doing.",
-          image: "https://images.unsplash.com/photo-1629963918958-1b62cfe3fe92?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+          headline: "What most tax products assume",
+          annotation:
+            "They assume patience for jargon, dense tables, and accountant-first mental models. I'm designing for someone who needs to know what they owe, when, and how to pay—without treating them like they already passed a tax exam.",
+          image:
+            "https://images.unsplash.com/photo-1629963918958-1b62cfe3fe92?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
           device: "browser",
-          caption: "A typical Nigerian tax compliance dashboard — built for accountants, not humans.",
+          caption: "Placeholder stand-in for legacy / spreadsheet-heavy compliance UX — swap for labeled comparison when assets are ready.",
         },
       ],
     },
     {
-      title: "Design",
+      title: "Build",
       slides: [
         {
           type: "section-break",
           id: "dara-act2",
-          actTitle: "Design",
+          actTitle: "Build",
           actNumber: 2,
-          subtitle: "From chaos to clarity",
+          subtitle: "Pipeline, pivots, what ships today",
         },
         {
           type: "process",
           id: "dara-process",
-          headline: "How the solution took shape",
+          headline: "How the core loop works",
           artifacts: [
             {
-              image: "https://images.unsplash.com/photo-1576153192396-180ecef2a715?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-              label: "Information Architecture",
-              description: "Mapping the mental model of how freelancers think about money — not how accountants categorize it.",
+              image:
+                "https://images.unsplash.com/photo-1576153192396-180ecef2a715?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+              label: "Ingest",
+              description:
+                "Scan email for debit and credit alerts from banks and fintech. Not every provider parses cleanly yet—that's an active engineering edge.",
             },
             {
-              image: "https://images.unsplash.com/photo-1562601555-513820e5d0eb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-              label: "Component System",
-              description: "A design system built for dark mode from day one — every component optimized for financial data density.",
+              image:
+                "https://images.unsplash.com/photo-1562601555-513820e5d0eb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+              label: "Gemini → you verify",
+              description:
+                "Every alert runs through Gemini, then you classify into buckets so the system learns and can take more of the work over time with fewer mistakes.",
             },
           ],
           narrator: {
-            text: "I didn't follow a linear process here. I was designing in Figma Make, building in Cursor, and using Claude to generate the business logic simultaneously. The tools shaped the process as much as the thinking did.",
+            text:
+              "I work in Cursor and Claude with the real repo in mydara/. Figma is in the loop when the UI needs it. The stack and prompts will get their own posts—this case study is the spine.",
             label: "PROCESS NOTE",
             mood: "pointing",
           },
@@ -103,101 +116,138 @@ export const DARA_CASE_STUDY: CaseStudy = {
         {
           type: "narrative",
           id: "dara-decisions",
-          headline: "Three design decisions that defined everything",
-          body: "1. Dark mode as default — because finances feel private, and dark interfaces feel more secure.\n\n2. The dashboard speaks in natural language — 'Good afternoon, Sharon. Here's your financial overview for Q1 2026' instead of raw data dumps.\n\n3. Tax deadlines as a countdown, not a date — '16 DAYS' hits different than 'April 1, 2026'.",
-          annotation: "Every decision traced back to one principle: reduce cognitive load around money.",
+          headline: "Calls that shaped the product",
+          body:
+            "• Tax output: aggregate, estimate what you owe, when to pay, and how to pay—with state-specific due dates and filing steps where we've locked content.\n\n• Human-in-the-loop after Gemini so classification improves from real use, not guesswork.\n\n• WhatsApp nudges were cut. Cost and implementation weight weren't worth it for where the product is.\n\n• Pioneer / beta: people can register; welcome-email automation isn't end-to-end yet. I'm not pretending the growth layer is finished.",
+          annotation:
+            "Distribution and monetization extend the same data: savings and investment platforms next, then goals and one consolidated view across providers. That arc belongs in the flagship only as direction—the series goes deep.",
         },
         {
           type: "single-mockup",
           id: "dara-dashboard",
-          headline: "The dashboard that tells you what you need to know",
+          headline: "Where clarity is supposed to land",
           image: daraHero,
           device: "browser",
-          caption: "Dara's main dashboard — financial overview, tax deadlines, and quick actions in one view.",
-          annotation: "Take-home income, tax owed, income sources, upcoming deadlines — all visible without scrolling.",
+          caption:
+            "Dashboard shell — replace with current Dara UI from production or staging when exported.",
+          annotation:
+            "The promise is: money signal in, verified buckets, tax guidance out—plus a path to goals across accounts as the ingestion surface grows.",
           narrator: {
-            text: "The 'Good afternoon, Sharon' greeting wasn't just polish — it was a deliberate choice to make a financial tool feel like it knows you, not like it's auditing you.",
-            label: "DESIGNER'S NOTE",
-            mood: "celebrating",
+            text:
+              "Dark-first UI and plain language stayed non-negotiable. Money UIs fail when they feel like they're auditing the user instead of briefing them.",
+            label: "NOTE",
+            mood: "neutral",
           },
         },
         {
           type: "mockup-gallery",
           id: "dara-screens",
-          headline: "Key screens across the platform",
+          headline: "Surfaces to document next",
           mockups: [
             { image: daraHero, device: "browser", label: "Dashboard" },
-            { image: "https://images.unsplash.com/photo-1642055509518-adafcad1d22e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080", device: "phone", label: "Mobile View" },
+            {
+              image:
+                "https://images.unsplash.com/photo-1642055509518-adafcad1d22e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+              device: "phone",
+              label: "Mobile / responsive",
+            },
           ],
         },
         {
           type: "comparison",
           id: "dara-before-after",
-          headline: "Before vs. After: Tax overview",
+          headline: "Traditional stack vs. Dara's bet",
           before: {
-            image: "https://images.unsplash.com/photo-1629963918958-1b62cfe3fe92?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-            label: "Traditional tax tools",
+            image:
+              "https://images.unsplash.com/photo-1629963918958-1b62cfe3fe92?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+            label: "Spreadsheets & accountant-first tools",
           },
           after: {
             image: daraHero,
-            label: "Dara's approach",
+            label: "Alerts → verify → learn → tax clarity",
           },
           device: "browser",
         },
       ],
     },
     {
-      title: "Outcome",
+      title: "Now",
       slides: [
         {
           type: "section-break",
           id: "dara-act3",
-          actTitle: "Outcome",
+          actTitle: "Now",
           actNumber: 3,
-          subtitle: "What happened when it shipped",
+          subtitle: "Beta truth, not launch theatre",
         },
         {
           type: "metric",
           id: "dara-metrics",
-          headline: "The numbers that mattered",
+          headline: "Where it actually is",
           metrics: [
-            { label: "Build time", value: "3 weeks", delta: "vs. typical 3 months" },
-            { label: "Design to code", value: "0 handoff", delta: "I built what I designed" },
-            { label: "AI assistance", value: "80%", delta: "of code generated" },
-            { label: "Components", value: "45+", delta: "in the design system" },
+            {
+              label: "Beta testers",
+              value: "10",
+              delta: "learning from real inboxes",
+            },
+            {
+              label: "Tax guidance",
+              value: "State-level",
+              delta: "due dates + filing steps where locked",
+            },
+            {
+              label: "Core loop",
+              value: "Email → Gemini → verify",
+              delta: "classification improves with use",
+            },
+            {
+              label: "Extraction",
+              value: "Patchy",
+              delta: "by bank / sender — in progress",
+            },
           ],
+          narrator: {
+            text:
+              "No inflated percentages on this slide. If I didn't measure it rigorously, it doesn't get a vanity metric.",
+            label: "NOTE",
+            mood: "thinking",
+          },
         },
         {
           type: "embed",
           id: "dara-live",
-          headline: "Try it yourself",
+          headline: "Try it when the link is public",
           embedUrl: "#",
           fallbackImage: daraHero,
           device: "browser",
-          caption: "Live interactive prototype — click through the actual interface.",
+          caption:
+            "Wire the real beta or app URL here when you want the iframe live. Until then this slide stays a deliberate stub.",
           narrator: {
-            text: "This is the actual deployed application, not a Figma prototype. Built with Figma Make and Cursor, running on real infrastructure.",
-            label: "TECH NOTE",
-            mood: "celebrating",
+            text:
+              "Flagship case study + follow-up posts for extraction, prompts, tax content, and what broke in beta. That's the publishing shape I want.",
+            label: "NOTE",
+            mood: "pointing",
           },
         },
         {
           type: "quote",
           id: "dara-reflection",
-          quote: "The future of design isn't choosing between designing and building. It's doing both — simultaneously, with AI as your collaborator.",
+          quote:
+            "Dara is where I stopped treating AI as a shortcut and started treating it as part of the loop—same as email parsers, state tables, and UI. The case study is one thread; the rest is documented in pieces so nothing sounds like marketing filler.",
           attribution: "Deron",
-          role: "Reflection on the process",
+          role: "Reflection",
         },
       ],
     },
   ],
   outcome: {
     metrics: [
-      { label: "Build time", value: "3 weeks" },
-      { label: "Components", value: "45+" },
-      { label: "AI-generated code", value: "80%" },
+      { label: "Beta testers", value: "10" },
+      { label: "Status", value: "In beta" },
+      { label: "Build", value: "AI-assisted, ongoing" },
     ],
-    testimonial: "Dara proved that a single designer-developer, armed with the right AI tools, can ship a production-quality fintech platform in weeks, not months.",
+    testimonial:
+      "Shipping Dara meant accepting uneven extraction, cutting WhatsApp for cost, and publishing beta status without dressing it up. The work continues in the open.",
     testimonialAuthor: "Personal reflection",
   },
 };

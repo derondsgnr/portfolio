@@ -1,7 +1,7 @@
 # PORTFOLIO — AI Agent Index
 
 > **Living document.** This is the single source of truth for any AI coding tool working on this project.
-> Last updated: 2026-05-07. Update this file when making architectural or design decisions.
+> Last updated: 2026-05-08. Update this file when making architectural or design decisions.
 
 ---
 
@@ -48,6 +48,45 @@ These are the non-negotiable visual and interaction principles. Every change mus
 - Border radius: `0.625rem` (10px) base.
 - Mobile-first. Breakpoints: `sm:640` `md:768` `lg:1024` `xl:1280`.
 - Grid: single column mobile → sidebar layouts on `lg:`.
+
+---
+
+## CASE STUDY & NARRATIVE VOICE (DERON)
+
+Use for **case studies** (`src/data/case-studies/*`), **flagship blog posts**, and **project narratives**. This is verbal DNA alongside Design DNA: reflective builder journey, not pitch tone.
+
+### Golden anchor (tone reference)
+
+New copy must sit next to this example without a style jump—**short** sentences, **mechanical truth**, **ongoing learning**, **no pandering**:
+
+> Dara turns bank and fintech alerts into something you can file from—Gemini first, you confirm, it learns. I'm documenting how I built that while leveling up on AI-assisted shipping; the long posts unpack each layer.
+
+### Intent
+
+- **Journey over trophy:** Lead with **learnings, blockers, decisions, pivots**—not vanity metrics or hype outcomes.
+- **Honest scope:** Say what is **live**, what was **cut** (e.g. cost/process pivots), and what is **half-built** when that is accurate.
+- **Concrete mechanics:** Name real **loops** (e.g. ingest → model → user verify → system learns). Avoid vague **“AI-powered”** with no chain.
+- **Flagship + series:** The **case study** carries one clear through-line; **deeper components** (stack choices, classification, tax content, beta mechanics) belong in **follow-up posts** so the flagship does not bloat.
+
+### Rubric (preflight)
+
+Before shipping narrative copy, confirm:
+
+- Does it sound like something Deron would say out loud—**direct**, not corporate?
+- Is there at least one **specific mechanism** or **constraint** a skeptical reader can picture?
+- Are **tradeoffs** visible (what changed, what was abandoned, what is unfinished)?
+- If numbers appear, are they **true and defensible**—never inflated for polish?
+
+### Anti-patterns (rewrite immediately)
+
+- LinkedIn / “thought leadership” cadence, hype adjectives, **game-changer** energy.
+- Generic **problem → solution → impact** with **no** Deron-specific detail.
+- Bragging without **cost**; hiding pivots to appear finished.
+- **Vanity metrics** or performance for engagement instead of documented reality.
+
+### Reference code
+
+- **Dara product source (local):** `mydara/` at repo root (sibling to `src/`). Use for technical accuracy when writing about Dara; do not invent flows.
 
 ---
 
@@ -122,6 +161,7 @@ GET  /api/monitor/run       → Protected monitoring sweep endpoint (also accept
 
 ### Do
 - Read files before modifying them.
+- For case studies and flagship project copy, follow **Case Study & Narrative Voice (DERON)** above.
 - Use existing components (`ScrambleText`, `DeviceMockup`, `SlideRenderer`, Radix UI primitives in `src/components/ui/`).
 - Follow the dark theme. Gold accent only.
 - Use `motion/react` for animations (not `framer-motion`).
@@ -143,6 +183,7 @@ GET  /api/monitor/run       → Protected monitoring sweep endpoint (also accept
 - Skip input validation on API routes.
 - Use `dangerouslySetInnerHTML` outside the existing theme injection in layout.tsx.
 - Auto-approve or auto-merge PRs.
+- Pitch-deck or generic LinkedIn case study voice on Deron case-study copy (see **Case Study & Narrative Voice** anti-patterns).
 
 ---
 
@@ -250,6 +291,7 @@ ADMIN_CONTENT_SECRET               → Optional limited admin password (content 
 │   ├── design-system/          Tokens, atoms, molecules
 │   └── middleware.ts           Admin route protection
 ├── docs/                       Supplementary documentation
+├── mydara/                     Dara product source (reference for accurate case study copy)
 ├── supabase/                   Supabase config + migrations
 └── CLAUDE.md                   THIS FILE
 ```
@@ -279,6 +321,7 @@ ADMIN_CONTENT_SECRET               → Optional limited admin password (content 
 | 2026-05 | Phase 2 role split with content manager | Needed safe delegation for blog/case-study/content updates without exposing system controls | Added `ADMIN_CONTENT_SECRET`, path-level admin access gating, and write/capability permission checks |
 | 2026-05 | Unified live content read path | Needed reliable E2E sync between admin writes and public/admin reads | Added shared GitHub-first + local-fallback loader across content modules and hardened rollback/race handling in blog/growth/now/reminder flows |
 | 2026-05 | Structured craft content + `craft-model.ts` | Per-section galleries (masonry / editorial / list) with native aspect ratios; avoid bundling `fs` into admin client | `content/craft.json` is `{ sections[] }`; loaders in `craft.ts`; types/constants in `craft-model.ts` for RSC + client consumers |
+| 2026-05 | Case study & narrative voice locked in `CLAUDE.md` | Portfolio stories should read as reflective builder journey (mechanics, pivots, honest scope)—not vanity or pitch tone; flagship + series pattern for depth | Golden anchor + rubric + anti-patterns; agents use when editing `src/data/case-studies/*` and related longform |
 
 ---
 
