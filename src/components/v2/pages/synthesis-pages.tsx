@@ -383,7 +383,7 @@ function WorkListView({ projects = V2_PROJECTS }: { projects?: typeof V2_PROJECT
 
                   {/* Description — page background only, directly under the image strip */}
                   <p
-                    className="max-w-3xl px-6 py-5 sm:px-8 sm:py-6"
+                    className="max-w-3xl px-6 py-5 pb-8 sm:px-8 sm:py-6 sm:pb-10"
                     style={{
                       fontFamily: "'Instrument Sans', sans-serif",
                       fontSize: "0.85rem",
@@ -394,53 +394,6 @@ function WorkListView({ projects = V2_PROJECTS }: { projects?: typeof V2_PROJECT
                   >
                     {project.description}
                   </p>
-
-                  {/* Copy deck — brutalist slab (reference: Craft / cipher cards) */}
-                  <div
-                    className="flex flex-[0.95] flex-col justify-center gap-3 border-t border-white/[0.08] px-6 py-6 sm:px-8 sm:py-7"
-                    style={{
-                      backgroundColor: "#0A0A0A",
-                      backgroundImage:
-                        "linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)",
-                      backgroundSize: "20px 20px",
-                    }}
-                  >
-                    <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
-                      <span
-                        style={{
-                          fontFamily: "monospace",
-                          fontSize: "10px",
-                          letterSpacing: "0.14em",
-                          color: "#E2B93B",
-                        }}
-                      >
-                        [{project.id}]
-                      </span>
-                      <span
-                        style={{
-                          fontFamily: "monospace",
-                          fontSize: "10px",
-                          letterSpacing: "0.12em",
-                          color: "rgba(255,255,255,0.35)",
-                          textTransform: "uppercase",
-                        }}
-                      >
-                        {project.category}
-                      </span>
-                    </div>
-                    <span
-                      style={{
-                        fontFamily: "'Anton', sans-serif",
-                        fontSize: "clamp(1.25rem, 2.5vw, 1.75rem)",
-                        lineHeight: 1.05,
-                        letterSpacing: "-0.02em",
-                        textTransform: "uppercase",
-                        color: "#F0F0F0",
-                      }}
-                    >
-                      {project.title}
-                    </span>
-                  </div>
                 </div>
               </motion.div>
             )}
@@ -509,7 +462,7 @@ function WorkGridView({ projects = V2_PROJECTS }: { projects?: typeof V2_PROJECT
           </div>
 
           <p
-            className="max-w-prose px-6 pt-5 pb-1 sm:px-8"
+            className="max-w-prose flex-1 px-6 pt-5 pb-8 sm:px-8 sm:pb-10"
             style={{
               fontFamily: "'Instrument Sans', sans-serif",
               fontSize: "0.8rem",
@@ -520,40 +473,6 @@ function WorkGridView({ projects = V2_PROJECTS }: { projects?: typeof V2_PROJECT
           >
             {project.description}
           </p>
-
-          <div
-            className="flex flex-[1] flex-col justify-center gap-3 border-t border-white/[0.08] px-6 py-6 sm:px-8 sm:py-7"
-            style={{
-              backgroundColor: "#0A0A0A",
-              backgroundImage:
-                "linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)",
-              backgroundSize: "20px 20px",
-            }}
-          >
-            <span
-              style={{
-                fontFamily: "'Anton', sans-serif",
-                fontSize: "clamp(1.35rem, 2.8vw, 2rem)",
-                lineHeight: 1.05,
-                letterSpacing: "-0.02em",
-                textTransform: "uppercase",
-                color: "#F0F0F0",
-              }}
-            >
-              {project.title}
-            </span>
-            <span
-              style={{
-                fontFamily: "monospace",
-                fontSize: "10px",
-                color: "#E2B93B",
-                letterSpacing: "0.12em",
-                textTransform: "uppercase",
-              }}
-            >
-              {project.category}
-            </span>
-          </div>
         </motion.div>
       ))}
     </div>

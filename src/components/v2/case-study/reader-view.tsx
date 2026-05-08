@@ -79,7 +79,7 @@ export function ReaderView({
   const hasMultipleActs = caseStudy.acts.length > 1;
 
   return (
-    <div ref={containerRef} className="relative bg-[#0A0A0A] min-h-screen">
+    <div ref={containerRef} className="relative min-h-screen bg-[#0A0A0A] pb-28 md:pb-24">
       {/* ─── Signal grid + scan lines (Synthesis DNA) ──── */}
       <div
         className="fixed inset-0 pointer-events-none z-0"
@@ -121,10 +121,10 @@ export function ReaderView({
                 <button
                   key={i}
                   onClick={() => actRefs.current[i]?.scrollIntoView({ behavior: "smooth" })}
-                  className={`text-[10px] tracking-[0.15em] px-3 py-1 transition-colors ${
+                  className={`text-[10px] tracking-[0.15em] px-2 py-1 transition-colors border-b-2 ${
                     activeAct === i
-                      ? "text-[#E2B93B] bg-[#E2B93B]/10"
-                      : "text-[#555] hover:text-[#999]"
+                      ? "text-[#E2B93B] border-[#E2B93B]"
+                      : "text-[#555] border-transparent hover:text-[#999]"
                   }`}
                   style={{ fontFamily: "monospace" }}
                 >
@@ -157,8 +157,8 @@ export function ReaderView({
                 onClick={() => actRefs.current[i]?.scrollIntoView({ behavior: "smooth" })}
                 className={`flex-shrink-0 text-[9px] tracking-[0.15em] px-3 py-1 border transition-colors ${
                   activeAct === i
-                    ? "text-[#E2B93B] border-[#E2B93B]/40 bg-[#E2B93B]/10"
-                    : "text-[#555] border-[#222]"
+                    ? "text-[#E2B93B] border-[#E2B93B]/50 bg-transparent"
+                    : "text-[#555] border-[#222] bg-transparent"
                 }`}
                 style={{ fontFamily: "monospace" }}
               >
@@ -303,8 +303,11 @@ export function ReaderView({
 
             <div className="grid grid-cols-2 md:grid-cols-3 gap-8 mb-16">
               {caseStudy.outcome.metrics.map((m) => (
-                <div key={m.label} className="border-t border-[#E2B93B]/30 pt-4">
-                  <span className="text-3xl md:text-4xl text-white block mb-1" style={{ letterSpacing: "-0.02em" }}>
+                <div key={m.label} className="min-w-0 border-t border-[#E2B93B]/30 pt-4">
+                  <span
+                    className="text-3xl md:text-4xl text-white block mb-1 break-words [overflow-wrap:anywhere]"
+                    style={{ letterSpacing: "-0.02em" }}
+                  >
                     {m.value}
                   </span>
                   <span className="text-[10px] text-[#666] tracking-[0.1em]" style={{ fontFamily: "monospace" }}>
@@ -333,31 +336,36 @@ export function ReaderView({
         </div>
       )}
 
-      {/* ─── Live demo floating button ───────────────── */}
-      {caseStudy.liveDemoUrl && caseStudy.liveDemoUrl !== "#" && (
-        <a
-          href={caseStudy.liveDemoUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="fixed bottom-6 right-6 z-40 bg-[#E2B93B] text-[#0A0A0A] px-4 py-2 text-[10px] tracking-[0.2em] hover:bg-white transition-colors shadow-lg"
+      {/* ─── View mode + demo (secondary controls — solid gold reserved for BOOK A CALL) ─── */}
+      <div
+        className="fixed bottom-6 left-1/2 z-40 flex -translate-x-1/2 items-center gap-2 md:left-auto md:right-6 md:translate-x-0"
+        role="toolbar"
+        aria-label="Case study view options"
+      >
+        <button
+          type="button"
+          onClick={onSwitchToCinematic}
+          className="flex items-center gap-2 border border-[#E2B93B]/40 bg-[#0A0A0A]/90 px-4 py-2 text-[10px] tracking-[0.2em] text-[#E2B93B] backdrop-blur-sm transition-colors hover:border-[#E2B93B]/70 hover:bg-[#E2B93B]/5"
           style={{ fontFamily: "monospace" }}
         >
-          LIVE DEMO &rarr;
-        </a>
-      )}
-
-      {/* ─── Floating cinematic mode button (bottom) ──── */}
-      <button
-        onClick={onSwitchToCinematic}
-        className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 bg-[#E2B93B] text-[#0A0A0A] px-5 py-2.5 text-[10px] tracking-[0.2em] hover:bg-white transition-colors shadow-lg flex items-center gap-2"
-        style={{ fontFamily: "monospace" }}
-      >
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <rect x="2" y="4" width="20" height="16" rx="2" />
-          <path d="M10 9l5 3-5 3V9z" />
-        </svg>
-        CINEMATIC MODE
-      </button>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+            <rect x="2" y="4" width="20" height="16" rx="2" />
+            <path d="M10 9l5 3-5 3V9z" />
+          </svg>
+          CINEMATIC
+        </button>
+        {caseStudy.liveDemoUrl && caseStudy.liveDemoUrl !== "#" && (
+          <a
+            href={caseStudy.liveDemoUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="border border-[#E2B93B]/40 bg-[#0A0A0A]/90 px-4 py-2 text-[10px] tracking-[0.2em] text-[#E2B93B] backdrop-blur-sm transition-colors hover:border-[#E2B93B]/70 hover:bg-[#E2B93B]/5"
+            style={{ fontFamily: "monospace" }}
+          >
+            LIVE DEMO &rarr;
+          </a>
+        )}
+      </div>
 
       {/* ─── Interested CTA ────────────────────────── */}
       <CaseStudyCTA />
