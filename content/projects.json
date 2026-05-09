@@ -41,8 +41,8 @@
     "id": "04",
     "title": "Dara",
     "category": "Fintech",
-    "year": "2025",
-    "description": "A personal finance & tax management platform for Nigerian freelancers and SMEs — designed and built entirely with AI-assisted tools.",
+    "year": "2025–26",
+    "description": "Dara turns bank and fintech alerts into filing signal: scan email, run Gemini, you classify into buckets, the system learns, then it aggregates toward what you owe and when. Extraction is still patchy by provider—I am not dressing that up.",
     "image": "https://images.unsplash.com/photo-1623593476737-0fc80f6be51d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
     "slug": "dara"
   },

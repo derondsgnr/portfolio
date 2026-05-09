@@ -102,6 +102,7 @@ content/
   global.json       → Footer, social links, CTA label
   site-meta.json    → Title, description, OG image
   projects.json     → Work/case study grid items
+  case-studies.json → Full case study payloads (admin + GitHub). **Loader merges this over `src/data/case-studies/*.ts` — for any slug in JSON, JSON wins in full.**
   copy.json         → Homepage hero text, blog page copy
   testimonials.json → Quotes + attribution
   now.json          → Current status, activity log
@@ -116,7 +117,7 @@ content/
 **Blog data** is currently in `src/lib/data/blog-data.ts` (static TypeScript array). TODO: migrate to Supabase KV.
 **Blog series** in `src/lib/data/blog-series-data.ts`.
 **Blog categories** in `src/lib/data/blog-categories.ts` (reads from file, dynamic).
-**Case studies** in `src/data/case-studies/*.ts`.
+**Case studies:** author in `src/data/case-studies/*.ts`; **sync slug to `content/case-studies.json`** or production shows stale copy from JSON. Cross-reference: `docs/dara-case-study-copy.md` (Dara only).
 
 ### Slide System (Shared by Blog + Case Studies)
 Both blog posts and case studies use a **flat array of typed slides**. The renderer is `src/components/v2/case-study/slide-renderer.tsx`.
@@ -324,6 +325,7 @@ ADMIN_CONTENT_SECRET               → Optional limited admin password (content 
 | 2026-05 | Unified live content read path | Needed reliable E2E sync between admin writes and public/admin reads | Added shared GitHub-first + local-fallback loader across content modules and hardened rollback/race handling in blog/growth/now/reminder flows |
 | 2026-05 | Structured craft content + `craft-model.ts` | Per-section galleries (masonry / editorial / list) with native aspect ratios; avoid bundling `fs` into admin client | `content/craft.json` is `{ sections[] }`; loaders in `craft.ts`; types/constants in `craft-model.ts` for RSC + client consumers |
 | 2026-05 | Case study & narrative voice locked in `CLAUDE.md` | Portfolio stories should read as reflective builder journey (mechanics, pivots, honest scope)—not vanity or pitch tone; flagship + series pattern for depth | Golden anchor + rubric + anti-patterns; agents use when editing `src/data/case-studies/*` and related longform |
+| 2026-05 | Case study content dual source (`content/case-studies.json` + TS registry) documented | Public loader merges JSON **over** bundled `src/data/case-studies/*`; editing TS alone left production on stale admin JSON | Agents must sync slug payloads to `case-studies.json`; `docs/dara-case-study-copy.md` for human cross-check |
 
 ---
 
