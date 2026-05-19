@@ -18,12 +18,15 @@ export default async function Page() {
   ]);
   const craftListItems = flattenedSortedCraftItems(craftDocument);
   return (
-    <CraftPage
-      copy={copy}
-      craftDocument={craftDocument}
-      craftListItems={craftListItems}
-      explorations={explorations}
-      media={media}
-    />
+    <>
+      <h1 className="sr-only">Craft — Visual Explorations</h1>
+      <CraftPage
+        copy={copy}
+        craftDocument={craftDocument}
+        craftListItems={craftListItems}
+        explorations={explorations}
+        media={media}
+      />
+    </>
   );
 }

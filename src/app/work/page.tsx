@@ -17,11 +17,14 @@ export default async function Page() {
     getPageConfig("work"),
   ]);
   return (
-    <WorkPage
-      projects={projects}
-      copy={copy}
-      pageConfig={pageConfig}
-      landing={landing}
-    />
+    <>
+      <h1 className="sr-only">Work — Selected Projects</h1>
+      <WorkPage
+        projects={projects}
+        copy={copy}
+        pageConfig={pageConfig}
+        landing={landing}
+      />
+    </>
   );
 }

@@ -107,6 +107,10 @@ export const BLOG_POSTS: BlogPost[] = [
         id: "ai-07",
         headline: "I use it like an intern who's read everything.",
         body: "My workflow now: I handle the strategy, the POV, the user framing. I use AI to generate raw material fast — screens, copy directions, code scaffolds. Then I edit. Ruthlessly. The editing is where the design happens. The generation is just the starting gun. Knowing what to keep, what to throw away, and why — that's still entirely a human skill. And it's getting more valuable, not less.",
+        references: [
+          { label: "Nielsen Norman Group — AI in UX", url: "https://www.nngroup.com/articles/ai-ux/" },
+          { label: "Anthropic — How Claude works", url: "https://www.anthropic.com/research" },
+        ],
       },
       {
         type: "metric",
@@ -193,6 +197,10 @@ export const BLOG_POSTS: BlogPost[] = [
         id: "build-05",
         headline: "The real superpower isn't building. It's the conversation.",
         body: "When I'm in a room with engineers and I can say 'let's do this in a CSS variable instead of hardcoding it' or 'that animation can be done in 8 lines of Motion' — the dynamic changes. I'm not an outsider handing down a spec anymore. I'm a collaborator speaking the same language. That changes what's possible. Engineers suggest interactions they would have assumed were too expensive. Design reviews become dialogues. The product gets better because the friction went away.",
+        references: [
+          { label: "MDN — CSS animation reference", url: "https://developer.mozilla.org/en-US/docs/Web/CSS/animation" },
+          { label: "Vercel — Design Engineering", url: "https://vercel.com/blog/design-engineering" },
+        ],
       },
       {
         type: "metric",

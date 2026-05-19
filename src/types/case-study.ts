@@ -52,6 +52,7 @@ export interface NarrativeSlide {
   body: string;
   annotation?: string;
   narrator?: NarratorBlock;
+  references?: { label: string; url: string }[];
 }
 
 export interface SingleMockupSlide {

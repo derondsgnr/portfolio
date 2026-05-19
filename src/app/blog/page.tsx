@@ -17,6 +17,8 @@ export default async function Page() {
   ]);
 
   return (
+    <>
+    <h1 className="sr-only">Writing — Blog & Notes</h1>
     <BlogPageClient
       copy={{
         title: (copy.hero?.title as string) ?? "WRITING",
@@ -29,5 +31,6 @@ export default async function Page() {
       posts={posts}
       series={series}
     />
+    </>
   );
 }

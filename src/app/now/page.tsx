@@ -11,5 +11,10 @@ export const metadata: Metadata = {
 export default async function NowPage() {
   const initial = await getNow();
   const hasPin = !!process.env.NOW_ADMIN_PIN;
-  return <NowClient initial={initial} hasAdminPin={hasPin} />;
+  return (
+    <>
+      <h1 className="sr-only">Now — What I&apos;m Working On</h1>
+      <NowClient initial={initial} hasAdminPin={hasPin} />
+    </>
+  );
 }

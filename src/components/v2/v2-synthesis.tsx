@@ -114,16 +114,17 @@ export function SynthesisProcess() {
           viewport={{ once: true }}
           className="mb-20"
         >
-          <span
+          <h2
             style={{
               fontFamily: "monospace",
               fontSize: "10px",
               letterSpacing: "0.3em",
               color: "#E2B93B",
+              margin: 0,
             }}
           >
             &gt; HOW_I_WORK
-          </span>
+          </h2>
           <p
             className="mt-4 max-w-lg"
             style={{
@@ -274,16 +275,17 @@ export function SynthesisCapabilities() {
           viewport={{ once: true }}
           className="mb-16"
         >
-          <span
+          <h2
             style={{
               fontFamily: "monospace",
               fontSize: "10px",
               letterSpacing: "0.3em",
               color: "#E2B93B",
+              margin: 0,
             }}
           >
             &gt; CAPABILITIES_INDEX
-          </span>
+          </h2>
           <p
             className="mt-4 max-w-md"
             style={{
@@ -384,16 +386,17 @@ export function SynthesisWork({ projects = V2_PROJECTS }: { projects?: typeof V2
         viewport={{ once: true }}
         className="mb-16"
       >
-        <span
+        <h2
           style={{
             fontFamily: "monospace",
             fontSize: "10px",
             letterSpacing: "0.3em",
             color: "#E2B93B",
+            margin: 0,
           }}
         >
           &gt; SELECTED_WORK.MAP()
-        </span>
+        </h2>
       </motion.div>
 
       <div className="max-w-6xl mx-auto">
@@ -509,6 +512,78 @@ export function SynthesisWork({ projects = V2_PROJECTS }: { projects?: typeof V2
   );
 }
 
+/* ─── Nav Strip — contextual internal links ──────────────────── */
+const NAV_LINKS = [
+  { id: "01", label: "DARA", sub: "AI BANK PARSER", href: "/work/dara" },
+  { id: "02", label: "CAREEREDGE", sub: "JOB READINESS", href: "/work/careeredge" },
+  { id: "03", label: "WRITING", sub: "BLOG & NOTES", href: "/blog" },
+  { id: "04", label: "ABOUT", sub: "BACKGROUND", href: "/about" },
+  { id: "05", label: "CRAFT", sub: "EXPLORATIONS", href: "/craft" },
+];
+
+export function SynthesisNavStrip() {
+  const onHover = useSoundOnHover("hover");
+  return (
+    <section className="relative py-20 px-8 overflow-hidden">
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{ borderTop: "1px solid rgba(255,255,255,0.04)", borderBottom: "1px solid rgba(255,255,255,0.04)" }}
+      />
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        className="max-w-6xl mx-auto"
+      >
+        <span
+          style={{ fontFamily: "monospace", fontSize: "9px", letterSpacing: "0.3em", color: "rgba(255,255,255,0.15)" }}
+          className="block mb-8"
+        >
+          &gt; EXPLORE.SIGNAL()
+        </span>
+        <div className="flex flex-wrap gap-4">
+          {NAV_LINKS.map((link, i) => (
+            <motion.div
+              key={link.id}
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.08, duration: 0.4 }}
+            >
+              <Link
+                href={link.href}
+                onMouseEnter={onHover}
+                className="group flex items-center gap-3 border border-white/5 px-5 py-3 hover:border-[#E2B93B]/30 hover:bg-[#E2B93B]/5 transition-all duration-300"
+              >
+                <span style={{ fontFamily: "monospace", fontSize: "9px", color: "rgba(255,255,255,0.2)", letterSpacing: "0.1em" }}>
+                  [{link.id}]
+                </span>
+                <div>
+                  <span
+                    className="block group-hover:text-[#E2B93B] transition-colors duration-300"
+                    style={{ fontFamily: "monospace", fontSize: "11px", letterSpacing: "0.15em", color: "rgba(255,255,255,0.6)" }}
+                  >
+                    {link.label}
+                  </span>
+                  <span style={{ fontFamily: "monospace", fontSize: "8px", letterSpacing: "0.12em", color: "rgba(255,255,255,0.2)" }}>
+                    {link.sub}
+                  </span>
+                </div>
+                <span
+                  className="opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  style={{ fontFamily: "monospace", fontSize: "9px", color: "#E2B93B" }}
+                >
+                  /
+                </span>
+              </Link>
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
+    </section>
+  );
+}
+
 /* ─── Philosophy — Fracture copy + Cipher decode ─────────────── */
 export function SynthesisPhilosophy() {
   const ref = useRef<HTMLDivElement>(null);
@@ -544,16 +619,17 @@ export function SynthesisPhilosophy() {
           viewport={{ once: true }}
           className="mb-8"
         >
-          <span
+          <h2
             style={{
               fontFamily: "monospace",
               fontSize: "9px",
               letterSpacing: "0.2em",
               color: "rgba(226,185,59,0.3)",
+              margin: 0,
             }}
           >
             [PHILOSOPHY.DECRYPT()]
-          </span>
+          </h2>
         </motion.div>
 
         <motion.div
@@ -632,16 +708,17 @@ export function SynthesisTestimonials() {
           viewport={{ once: true }}
           className="mb-16"
         >
-          <span
+          <h2
             style={{
               fontFamily: "monospace",
               fontSize: "10px",
               letterSpacing: "0.3em",
               color: "#E2B93B",
+              margin: 0,
             }}
           >
             &gt; INCOMING_SIGNALS
-          </span>
+          </h2>
         </motion.div>
 
         {testimonials.slice(0, 4).map((t, i) => (
@@ -773,6 +850,7 @@ export function SynthesisVariation({ projects, landing }: { projects?: typeof V2
           <SynthesisCapabilities />
           <SynthesisProcess />
           <SynthesisWork projects={projects} />
+          <SynthesisNavStrip />
           <SynthesisPhilosophy />
           <SynthesisTestimonials />
           <SynthesisCTASection

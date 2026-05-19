@@ -17,11 +17,14 @@ export default async function Page() {
     getPageConfig("about"),
   ]);
   return (
-    <AboutPage
-      copy={copy}
-      pageConfig={pageConfig}
-      landing={landing}
-      projects={projects}
-    />
+    <>
+      <h1 className="sr-only">About — Deron, Product Designer & Builder</h1>
+      <AboutPage
+        copy={copy}
+        pageConfig={pageConfig}
+        landing={landing}
+        projects={projects}
+      />
+    </>
   );
 }
