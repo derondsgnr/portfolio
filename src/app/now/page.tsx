@@ -1,7 +1,12 @@
+import type { Metadata } from "next";
 import { getNow } from "@/lib/content/now";
 import NowClient from "./now-client";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/now" },
+};
 
 export default async function NowPage() {
   const initial = await getNow();

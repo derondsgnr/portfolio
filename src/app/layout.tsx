@@ -36,6 +36,9 @@ export async function generateMetadata(): Promise<Metadata> {
     title: meta.title,
     description: meta.description,
     metadataBase: new URL(meta.url),
+    alternates: {
+      canonical: "/",
+    },
     openGraph: {
       title: meta.title,
       description: meta.description,
@@ -59,13 +62,14 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [integrations, theme, nav, global, sounds, testimonials] = await Promise.all([
+  const [integrations, theme, nav, global, sounds, testimonials, siteMeta] = await Promise.all([
     getIntegrations(),
     getTheme(),
     getNav(),
     getGlobal(),
     getSounds(),
     getTestimonials(),
+    getSiteMeta(),
   ]);
   const pair = theme.fonts.pair in FONT_PAIR_VARS ? theme.fonts.pair : "anton-instrument";
   const fonts = FONT_PAIR_VARS[pair];
@@ -93,6 +97,33 @@ export default async function RootLayout({
     <html lang="en" className={allFontVars}>
       <body>
         <style dangerouslySetInnerHTML={{ __html: `:root { ${themeStyles} }` }} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@graph": [
+                {
+                  "@type": "Person",
+                  "@id": `${siteMeta.url}/#person`,
+                  name: "Deron",
+                  url: siteMeta.url,
+                  jobTitle: "Product Designer & Builder",
+                  description: siteMeta.description,
+                },
+                {
+                  "@type": "WebSite",
+                  "@id": `${siteMeta.url}/#website`,
+                  url: siteMeta.url,
+                  name: siteMeta.siteName,
+                  description: siteMeta.description,
+                  author: { "@id": `${siteMeta.url}/#person` },
+                  dateModified: "2026-05-08",
+                },
+              ],
+            }),
+          }}
+        />
         <Providers nav={nav} global={global} sounds={sounds} testimonials={testimonials}>{children}</Providers>
         <AnalyticsScripts integrations={integrations} />
       </body>
