@@ -2,14 +2,29 @@ import type { CaseStudy } from "../../types/case-study";
 import { caseStudyPlaceholder as ph } from "@/lib/case-study-placeholders";
 
 /**
- * CareerEdge(d) — flagship case study
- * Replace images in Admin → Case Studies in **top-to-bottom slide order**:
- *   Cover hero → M01 shell → M02 Sophia strip → F01–F03 onboarding flow → P01–P03 process → G01–G03 gallery
- * (captions echo these IDs so you can paste URLs without hunting.)
- * Live: https://careeredged.com
+ * CareerEdge — flagship case study
+ *
+ * IMAGE SLOTS (replace via Admin → Case Studies in slide order):
+ *   IMG-01  Cover hero           — product overview, dashboard or hero screen
+ *   IMG-02  Brand identity       — color palette, typography, logo variants
+ *   IMG-03  Comparison before    — original overwhelming navigation
+ *   IMG-04  Comparison after     — redesigned 5-item navigation
+ *   IMG-05  Flow screen 1        — sidebar navigation (role-filtered)
+ *   IMG-06  Flow screen 2        — Sophia in guidance mode
+ *   IMG-07  Flow screen 3        — "more" menu expanded
+ *   IMG-08  Sophia single mockup — Sophia on career roadmap, reading state
+ *   IMG-09  Gallery Sophia 1     — career roadmap surface
+ *   IMG-10  Gallery Sophia 2     — employer dashboard
+ *   IMG-11  Gallery Sophia 3     — coaching surface
+ *   IMG-12  Process artifact 1   — 3-tier color system chart
+ *   IMG-13  Process artifact 2   — navigation architecture / IA model
+ *   IMG-14  Process artifact 3   — verification / edge case documentation
+ *   IMG-15  Embed fallback       — screenshot of live careeredged.com
  */
 
-const cover = ph("CareerEdge · AI-guided career OS", 1920, 1080);
+const ph16x10 = (label: string) => ph(label, 1600, 1000);
+const ph9x12 = (label: string) => ph(label, 900, 1200);
+const ph12x8 = (label: string) => ph(label, 1200, 800);
 
 export const CAREEREDGE_CASE_STUDY: CaseStudy = {
   slug: "careeredge",
@@ -26,283 +41,296 @@ export const CAREEREDGE_CASE_STUDY: CaseStudy = {
       "Product Design",
       "AI UX",
       "Multi-sided Platform",
-      "Information Architecture",
       "Design Systems",
+      "Design Engineering",
     ],
-    cover,
+    cover: ph16x10("CareerEdge · IMG-01 cover hero"),
     summary:
-      "Built fast and wide first—eight roles and twenty-plus features—CareerEdge needed design to turn breadth into a legible product. I reframed the AI guide as the spine so the experience could breathe without giving up the roadmap.",
+      "Redesigned an 8-user career platform — navigation, AI layer, and full frontend build — without removing a single feature. Sophia went from a chat button to the contextual intelligence running the entire product.",
     color: "#E2B93B",
   },
   template: "full-product",
   liveDemoUrl: "https://careeredged.com",
   acts: [
+    /* ─────────────────────────────────────────────────────────────
+       ACT 1 — CONTEXT
+       The brief, the scope, the constraint, first strategic moves
+    ───────────────────────────────────────────────────────────── */
     {
-      title: "Stakes",
+      title: "Context",
       slides: [
         {
           type: "cover",
           id: "ce-cover",
           headline: "CareerEdge",
           subtitle:
-            "Designing calm inside a complex career OS—AI as the spine, not the wallpaper.",
-          tags: ["Career", "AI UX", "Platform design"],
-          heroImage: cover,
+            "Redesigning an 8-user career platform without removing a single feature.",
+          tags: ["Career OS", "AI UX", "Multi-sided Platform"],
+          heroImage: ph16x10("CareerEdge · IMG-01 cover hero"),
           device: "browser",
         },
         {
           type: "narrative",
-          id: "ce-origin",
-          headline: "Fast shipping rewired the sequence—design had to catch a moving train",
-          body: "We live in a moment where almost anyone can ship breadth: more roles, more dashboards, more toggles, faster than ever. That speed is not the enemy. What gets dangerous is when experience becomes the last discipline to get a real seat. The interface becomes a mirror of the backlog—honest, exhaustive, and exhausting.\n\nCareerEdge arrived in that shape: real ambition, real build velocity, and a footprint that had already outgrown casual browsing. My entry point was not “pick nicer cards.” It was redesigning how the product asks for attention.",
+          id: "ce-brief",
+          headline: "The product was built. The experience wasn't.",
+          body: "CareerEdge came through a referral from a previous client. The backend was robust. The infrastructure was solid. The features were extensive. The problem was everything the user actually touches.\n\nWhen I got into the dashboard for the first time, it was overwhelming and disorienting. Nothing had hierarchy. Everything competed for attention. It looked like what it was — a product built for functionality, not for use.\n\nDuring our first calls I learned the full scope: eight user types, each with their own dashboard, their own features, their own goals. I asked for a PRD and they did not have one. I suggested they ask their coding agent to generate one from the existing codebase. What came back confirmed what I suspected — this was a genuinely robust system. The problem was that nobody had designed how people would actually use it.",
           narrator: {
-            label: "DESIGNER'S NOTE",
+            label: "THE CONSTRAINT",
+            text: "The brief was complete: overhaul the UI and experience across all eight user types. The constraint was firm — nothing could be removed. Every feature had to ship.",
             mood: "thinking",
-            text: "I am not knocking the build. I am naming the new normal: if you wait on UX until the map is huge, you are not polishing—you are negotiating reality.",
           },
         },
         {
           type: "insight",
-          id: "ce-built-breadth",
-          headline: "What landed on the table first was coverage, not clarity",
-          insightLabel: "WHERE IT STARTED",
+          id: "ce-scope",
+          headline: "Eight distinct user types. North of 33 features. One navigation system.",
+          insightLabel: "SCOPE",
           insightText:
-            "Development had already assembled eight distinct roles—each with its own dashboard—and north of twenty features surfaced across the product. The system was real. The story users could hold in their heads was not.",
-          body: "Numbers like that are not melodrama. They describe load: every role multiplies mental models, navigation hooks, and permission edges. Without a spine, the product does not feel “feature-rich.” It feels like homework with no teacher.\n\nThat is the gap my work targeted: keep the capability, earn comprehension.",
+            "Job seekers, coaches, employers, parents, students, governments, NGOs, and guides — each with their own dashboard and feature set. The system was real. The story users could hold in their heads was not.",
+          body: "Numbers like that describe load: every role multiplies mental models, navigation hooks, and permission edges. Without a spine, the product does not feel feature-rich. It feels like homework with no teacher. That is the gap my work targeted.",
         },
         {
           type: "narrative",
-          id: "ce-why",
-          headline: "Career software fails in the gaps, not the hero section",
-          body: "People don't struggle because a dashboard is ugly. They stall because the product pulls them through the wrong sequence—too much at once, too late, or the same questions asked again because nothing remembers.\n\nCareerEdge sits in a sharp corner of that problem: guidance, progression, identities that overlap, and a roadmap that refuses to shrink politely. My job was to compress that collision into something followable: one spine users could trust, and a shell the team could ship without turning every ambition into a homepage takeover.",
-          annotation:
-            "Structural win: what surfaces first, what waits, and what Sophia is allowed to remember so humans do not rehearse their life story on every screen.",
+          id: "ce-first-moves",
+          headline: "Before touching a single screen, I made two suggestions.",
+          body: "First — they needed a brand identity. There was no visual language, no color system, no typography direction, no tone. Everything downstream would be guessing without it. I referred a brand designer I knew and we moodboarded together across several calls to sync on vision. He delivered colors, fonts, visual language, logo and brand assets. That gave me a foundation to build on.\n\nSecond — I fed Claude the generated PRD alongside my custom product skills covering business strategy, UX and product design. We went through ideas, research and brainstorming. I used Figma Make to prototype multiple flows and variations, targeting navigation and onboarding first. The prototypes were not deliverables — they were thinking tools. A way to feel whether a direction was right before committing to building it.",
           narrator: {
-            label: "DESIGNER'S NOTE",
-            mood: "thinking",
-            text: "Reduce cognitive load without burying power. Founders say “we need AI” here when what they need is sequencing and trust—not another panel parade.",
+            label: "EARLY CATCH",
+            text: "I logged into the parent dashboard and found that parents could not create their own career paths — only manage their children's. If a parent wanted to manage their own career, they needed a second account with a different email. That was a role architecture problem, not a UI problem. I flagged it.",
+            mood: "pointing",
           },
         },
         {
-          type: "insight",
-          id: "ce-insight-complexity",
-          headline: "What made this hard was not visuals",
-          insightLabel: "SYSTEM TRUTH",
-          insightText:
-            "This stayed an ecosystem problem end to end: many actors, many journeys, overlapping mental models. The interface had to feel simple while the backend reality stayed honestly complex.",
-          body: "Teams under pressure default to exposure—every stakeholder has a “critical” surface. The UX failure mode is quieter but crueler: the UI tells the truth about scope, and the user absorbs the anxiety.\n\nSo I did not treat this as a polish pass. I treated the tension as the brief.",
+          type: "single-mockup",
+          id: "ce-brand",
+          headline: "Brand identity — the foundation for everything downstream",
+          image: ph16x10("CareerEdge · IMG-02 brand identity"),
+          device: "browser",
+          caption: "IMG-02 — Add: brand system overview — color palette, typography scale, logo variants",
         },
       ],
     },
+
+    /* ─────────────────────────────────────────────────────────────
+       ACT 2 — ARCHITECTURE
+       Navigation that serves eight, and AI that reads the room
+    ───────────────────────────────────────────────────────────── */
     {
-      title: "Strategy",
+      title: "Architecture",
       slides: [
         {
           type: "section-break",
-          id: "ce-act-strategy",
-          actTitle: "Strategy",
+          id: "ce-act-architecture",
+          actTitle: "Architecture",
           actNumber: 2,
-          subtitle: "Spine, disclosure, and permissions—not another chat bolt-on",
+          subtitle: "Navigation that serves eight, and AI that reads the room",
         },
         {
           type: "narrative",
-          id: "ce-sophia-spine",
-          headline: "Sophia as the product spine—experience + business",
-          body: "I reframed Sophia from “an assistant you can open” into the connective tissue of the product.\n\nFor users, the goal was directional: meet people where they are, move them to the next best action, and keep context so they are not re-explaining themselves on every surface.\n\nFor the business, the goal was conservation: keep the roadmap’s breadth without turning the UI into a yard sale of features. If the spine works, the product can carry depth without screaming it.",
+          id: "ce-nav-problem",
+          headline: "Everything was visible. Nothing was prioritised.",
+          body: "The original navigation was the source of most of the disorientation I felt on first use. Every feature, every link, every option — presented with equal weight. For a job seeker who just needs to update their resume and check their applications, seeing coaching management tools, employer dashboards and government reporting features is noise.\n\nMy first instinct was to strip it — remove features from the navigation entirely and let Sophia surface them contextually. The team pushed back. Some of their target users are not tech-savvy. Some are sensitive to AI. A navigation layer that requires you to know what to ask is not accessible to everyone.\n\nThey were right.",
           narrator: {
-            label: "PROCESS NOTE",
-            mood: "pointing",
-            text: "This is the product-management heart of the work: one spine that lets you preserve capability while improving legibility. That is how you earn the right to complexity.",
+            label: "THE COMPROMISE",
+            text: "Main navigation comes down to five items per role — the five most relevant to what that user actually needs daily. A 'more' item hosts everything else. Sophia becomes the intelligence layer on top of both.",
+            mood: "thinking",
           },
         },
         {
-          type: "insight",
-          id: "ce-insight-disclosure",
-          headline: "Progressive disclosure beats “show everything”",
-          insightLabel: "POSITIONING DECISION",
-          insightText:
-            "The team needed breadth visible for legitimate reasons. Users need a path. I argued for layering: insight-first surfaces with a route into depth for power users—instead of an information inventory on first load.",
-          body: "This is not aesthetic minimalism. It is risk management. When everything is visible, nothing signals priority—and users blame themselves when they cannot find progress.\n\nMy direction was to let Sophia carry interpreted insight and next steps, while the full map remains available for people who want control.",
-        },
-        {
-          type: "narrative",
-          id: "ce-access-matrix",
-          headline: "Roles are not personas—they are permissions and life reality",
-          body: "One of the sharpest product inconsistencies we had to unwind was access logic that ignored real human overlap.\n\nIf a parent is also building their own career, forcing a separate identity or email to access basic progression is not “security”—it is a workflow tax. I pushed the team to rethink the access matrix so cross-user reality could exist without asking humans to fractured themselves across accounts.\n\nBetter forms followed from the same principle: if Sophia already holds context from prior steps, the UI should not repeat fields for sport.",
-        },
-        {
-          type: "narrative",
-          id: "ce-forms",
-          headline: "Shorter forms by design—context carries",
-          body: "Traditional career products love giant questionnaires because they are easy to implement. Users hate them because they feel like homework with no feedback loop.\n\nBecause Sophia can gather and reuse context across touchpoints, I routed the experience toward fewer, better questions—timed where they matter—so each step feels like progress, not bureaucracy.",
-        },
-        {
-          type: "narrative",
-          id: "ce-navigation-philosophy",
-          headline: "Navigation is emotional infrastructure",
-          body: "Conversational UI is powerful, but “replace the shell with chat” is rarely correct for repeated work software. People build spatial memory: where a thing lives becomes part of how they trust the system.\n\nMy recommendation stayed grounded in three complementary modes: a stable structure users can learn, a contextual intelligence layer for guidance, and fast paths for expert intent. The goal is not novelty—it is reducing retrieval cost on bad days.",
-          narrator: {
-            label: "DESIGNER'S NOTE",
-            mood: "neutral",
-            text: "If you are hiring: this is the kind of argument I bring into a room—evidence-backed, user-honest, and compatible with serious engineering constraints.",
+          type: "comparison",
+          id: "ce-nav-compare",
+          headline: "Navigation — before and after",
+          before: {
+            image: ph16x10("CareerEdge · IMG-03 nav before"),
+            label: "Original — 33 features, equal weight",
           },
-        },
-        {
-          type: "single-mockup",
-          id: "ce-mock-shell",
-          headline: "[M01] Product shell — primary dashboard or role home",
-          image: ph("CareerEdge · M01 shell", 1600, 1000),
-          device: "browser",
-          caption:
-            "Admin: paste image URL here — best frame that shows structure + density before the spine work reads.",
-        },
-        {
-          type: "single-mockup",
-          id: "ce-mock-sophia",
-          headline: "[M02] Sophia layer — context strip, not ambient chat",
-          image: ph("CareerEdge · M02 Sophia", 1600, 1000),
-          device: "browser",
-          caption:
-            "Admin: paste URL — show Sophia interpreting state (deadlines, next moves). If you have video, use a still here and link video elsewhere.",
+          after: {
+            image: ph16x10("CareerEdge · IMG-04 nav after"),
+            label: "Redesigned — 5 items per role + more",
+          },
         },
         {
           type: "flow",
-          id: "ce-flow-onboarding",
-          headline: "[F01–F03] Onboarding walkthrough (three beats)",
+          id: "ce-nav-layers",
+          headline: "Three ways to navigate — different users reach for different layers",
           screens: [
             {
-              image: ph("CareerEdge · F01 onboarding", 900, 1200),
-              label: "F01 Entry",
-              device: "phone",
+              image: ph16x10("CareerEdge · IMG-05 sidebar nav"),
+              label: "Sidebar — spatial memory",
+              device: "browser",
             },
             {
-              image: ph("CareerEdge · F02 onboarding", 900, 1200),
-              label: "F02 Context",
-              device: "phone",
+              image: ph16x10("CareerEdge · IMG-06 Sophia guidance"),
+              label: "Sophia — guided action",
+              device: "browser",
             },
             {
-              image: ph("CareerEdge · F03 onboarding", 900, 1200),
-              label: "F03 Commitment",
-              device: "phone",
+              image: ph16x10("CareerEdge · IMG-07 more menu"),
+              label: "More — full feature access",
+              device: "browser",
+            },
+          ],
+          narrator: {
+            label: "THREE LAYERS",
+            text: "Users who know where they are going use the sidebar. Users who need direction use Sophia. Users who want everything use the more menu. Same product, three interfaces for three different states of mind.",
+            mood: "pointing",
+          },
+        },
+        {
+          type: "narrative",
+          id: "ce-sophia-intro",
+          headline: "Sophia was a floating chat button. I redesigned her as the spine.",
+          body: "When I first looked at Sophia, she was a floating chat button. Click it, ask a question, get a generic answer. She treated all eight user types the same. No awareness of where you were in the product, what you were trying to do, or what the system already knew about you.\n\nI redesigned her from a chat button into a contextual intelligence layer that runs across every surface of the product. On the career roadmap, she knows your current phase and your deadline. On the dashboard, she surfaces what is urgent today. She does not wait for you to ask — she reads where you are and acts on it.",
+          narrator: {
+            label: "THE SHIFT",
+            text: "The amount of information CareerEdge needed to present was significant — career data, application statuses, coaching schedules, financial tracking, skill assessments, job matches. For one user type alone. Sophia was my answer to information overload.",
+            mood: "thinking",
+          },
+        },
+        {
+          type: "single-mockup",
+          id: "ce-sophia-mockup",
+          headline: "Sophia on the career roadmap — knows your phase, knows your deadline",
+          image: ph16x10("CareerEdge · IMG-08 Sophia in context"),
+          device: "browser",
+          caption: "IMG-08 — Add: Sophia contextual strip on career roadmap — showing phase-aware guidance and next action",
+        },
+        {
+          type: "narrative",
+          id: "ce-sophia-complexity",
+          headline: "The most complex part of the entire project",
+          body: "Contextualising Sophia across eight user types and over 33 features meant accounting for edge cases at a scale I had not worked with before. Her tone needed to stay consistent. Her guided interactions needed to be specific to the surface. She needed to maintain user context across the product so she was not asking the same questions on different pages. And every interaction she initiates had to reduce friction — not add a step.\n\nThe team agreed on this direction from the start. The compromise was ensuring Sophia was an addition to the navigation, not a replacement. Users comfortable with AI can do almost everything through her. Users who are not can ignore her entirely and use the sidebar. Both paths lead to the same place.",
+        },
+        {
+          type: "mockup-gallery",
+          id: "ce-sophia-gallery",
+          headline: "Sophia across surfaces — same intelligence, different contexts",
+          mockups: [
+            {
+              image: ph16x10("CareerEdge · IMG-09 Sophia roadmap"),
+              device: "browser",
+              label: "IMG-09 — Career roadmap",
+            },
+            {
+              image: ph16x10("CareerEdge · IMG-10 Sophia employer"),
+              device: "browser",
+              label: "IMG-10 — Employer dashboard",
+            },
+            {
+              image: ph16x10("CareerEdge · IMG-11 Sophia coaching"),
+              device: "browser",
+              label: "IMG-11 — Coaching surface",
             },
           ],
         },
       ],
     },
+
+    /* ─────────────────────────────────────────────────────────────
+       ACT 3 — BUILD
+       One designer. Eight dashboards. Six weeks. Built in code.
+    ───────────────────────────────────────────────────────────── */
     {
-      title: "Execution",
+      title: "Build",
       slides: [
         {
           type: "section-break",
-          id: "ce-act-ship",
-          actTitle: "Execution",
+          id: "ce-act-build",
+          actTitle: "Build",
           actNumber: 3,
-          subtitle: "Prototype-first, validation-led—ship what survives contact with reality",
+          subtitle: "One designer. Eight dashboards. Six weeks. Built in code.",
         },
         {
           type: "narrative",
-          id: "ce-build",
-          headline: "How I actually worked (and how I judge “done”)",
-          body: "This product could not afford theatre. A beautiful walkthrough that dead-ends is worse than an ugly one that tells the truth.\n\nMy standard is end-to-end fidelity for anything we claim: if a path is marked shipped, it must survive real interaction—states, transitions, empty cases, and the boring branches—not a demo that only works on the golden path.\n\nWhen tooling speed created gaps, I treated that as a process failure to fix, not a secret to live with.",
+          id: "ce-build-method",
+          headline: "I did not design a single screen in Figma.",
+          body: "Given the timeline — initially two weeks, ultimately a little over a month — I could not have designed eight user dashboards end-to-end in Figma and then built them. So I went from PRD to Figma Make prototypes to building directly in code. Every surface, every component, every interaction across all eight user types — built in the frontend.\n\nThe tools: Claude for strategy, brainstorming and code generation. Figma Make for rapid prototyping. Cursor for the build itself. My custom product skills for structured decision-making across UX, business strategy and product design. I worked alone on the entire build, collaborating with the product owner throughout.",
+          narrator: {
+            label: "PROCESS DISCOVERY",
+            text: "Claude's service was unreliable for roughly two weeks during the project. There was a week where Claude told me features were built. When I tested them, they were not there. That is when I started using Git branches as checkpoints — every commit a state I could revert to when the AI's output did not match what it claimed.",
+            mood: "frustrated",
+          },
         },
         {
           type: "insight",
-          id: "ce-insight-validation",
-          headline: "The hidden metric is trust velocity",
-          insightLabel: "QUALITY BAR",
+          id: "ce-color-system",
+          headline: "Eight user types needed a color system, not a color palette",
+          insightLabel: "THE COLOR SYSTEM",
           insightText:
-            "Teams do not lose weeks because pixels are wrong—they lose weeks because work is marked complete when it is not. I optimized for verification: fewer promises, sharper proof.",
-          body: "That discipline matters more in AI-assisted builds because speed can disguise incompleteness. I care about the moment someone tries the real click path—because that is when credibility is won or lost.",
-        },
-        {
-          type: "metric",
-          id: "ce-metrics-honest",
-          headline: "What we can say without inventing KPIs",
-          metrics: [
-            {
-              label: "Planning window",
-              value: "~2 weeks",
-              delta: "initial sprint shape",
-            },
-            {
-              label: "Delivery window",
-              value: "~1 month",
-              delta: "real collaboration cadence",
-            },
-            {
-              label: "Live iteration",
-              value: "careeredged.com",
-              delta: "external URL — verify in production",
-            },
-            {
-              label: "Primary deliverable",
-              value: "Spine + IA",
-              delta: "directional platform UX",
-            },
-          ],
-          narrator: {
-            label: "REALITY CHECK",
-            mood: "thinking",
-            text: "If a number cannot be verified, it does not belong on a flagship case study. This panel is intentionally honest so founders trust the rest of the story.",
-          },
+            "Three tiers: role accent (one per user type), brand and semantic (cyan for Sophia and AI interactions, lime reserved exclusively for earned success moments), neutral gray for everything else. Every colored element had to earn its color.",
+          body: "Without that system, eight user types worth of badges, icons, tags and avatars become visual chaos. The discipline was not aesthetic — it was architectural. Color became a signal, not decoration.",
         },
         {
           type: "process",
           id: "ce-process-artifacts",
-          headline: "[P01–P03] Process artifacts — proof, not decoration",
+          headline: "How the work was structured",
           artifacts: [
             {
-              image: ph("CareerEdge · P01 IA", 1200, 800),
-              label: "P01 IA / nav model",
-              description: "Admin: URL here — journey map, simplified role×surface diagram, or excerpt that shows how you reordered the story.",
+              image: ph12x8("CareerEdge · IMG-12 color system"),
+              label: "IMG-12 — 3-tier color system",
+              description: "Add: color system documentation — role accents, semantic colors (cyan, lime), neutral tier",
             },
             {
-              image: ph("CareerEdge · P02 rigor", 1200, 800),
-              label: "P02 Validation / audit capture",
-              description: "Admin: URL — notes, edge-case screen, or before/after that shows your verification standard.",
+              image: ph12x8("CareerEdge · IMG-13 nav architecture"),
+              label: "IMG-13 — Navigation architecture",
+              description: "Add: role × navigation model — which 5 items each user type sees, IA diagram",
             },
             {
-              image: ph("CareerEdge · P03 system", 1200, 800),
-              label: "P03 System / moment",
-              description: "Admin: URL — token hit, component, or branded “earned” instant that shows taste with rationale.",
-            },
-          ],
-        },
-        {
-          type: "mockup-gallery",
-          id: "ce-gallery",
-          headline: "[G01–G03] Extra surfaces — fill what best sells the breadth",
-          mockups: [
-            {
-              image: ph("CareerEdge · G01 browser", 1200, 800),
-              device: "browser",
-              label: "G01 Core browser surface",
-            },
-            {
-              image: ph("CareerEdge · G02 browser", 1200, 800),
-              device: "browser",
-              label: "G02 Second hero flow",
-            },
-            {
-              image: ph("CareerEdge · G03 mobile", 900, 1200),
-              device: "phone",
-              label: "G03 Mobile-critical path",
+              image: ph12x8("CareerEdge · IMG-14 verification"),
+              label: "IMG-14 — Verification standard",
+              description: "Add: edge case screen, state documentation, or before/after showing quality bar",
             },
           ],
         },
         {
           type: "narrative",
-          id: "ce-close",
-          headline: "What I would tell a founder reviewing this",
-          body: "If you are building something with multiple audiences and an AI layer, your competitive advantage is not the model card.\n\nIt is sequencing: what to show first, what to earn over time, what the system remembers, and what never deserves a user’s attention on day one.\n\nThat is the work I want more of—high-trust product craft where the interface earns the right to be intelligent.",
+          id: "ce-hard-parts",
+          headline: "What actually tested me",
+          body: "EdgePath and EdgeMap were the two features the team was most particular about. They wanted many sub-features visible and accessible directly from the surface. My recommendation was to embed those interactions into Sophia — let her prompt those actions contextually while the user was actively working. We went back and forth and landed somewhere in between.\n\nThe product is US-based and the founders' personal experiences are tied to immigration. Given the political climate, there were valid concerns around the language used — around immigration, race and AI. We had to navigate that carefully in all the copy across the platform.\n\nThe hardest part was holding the entire system in mind while making decisions at the component level. Every decision I made on one surface could affect another. If Sophia's behaviour changed on the coaching dashboard, I needed to think through what that meant for the student dashboard, the employer dashboard, the parent dashboard. That kind of systems thinking at this scale was something I had not done before. It stretched me in ways I did not expect.",
+          narrator: {
+            label: "WHAT STRETCHED ME",
+            text: "Building the frontend in code meant I needed to understand how the backend worked — not just the UI layer but how data flowed, how roles were authenticated, how features communicated across the system. This deepened my understanding of backend architecture in a way pure design work never could.",
+            mood: "thinking",
+          },
+        },
+        {
+          type: "metric",
+          id: "ce-what-shipped",
+          headline: "What shipped",
+          metrics: [
+            { label: "User types covered", value: "8", delta: "end-to-end" },
+            { label: "Features redesigned", value: "33+", delta: "across all roles" },
+            { label: "Build method", value: "Code", delta: "zero Figma screens" },
+            { label: "Live product", value: "careeredged.com", delta: "in testing" },
+          ],
+          narrator: {
+            label: "FULL SCOPE",
+            text: "Entire frontend across all eight user types — redesigned and built in code. New navigation architecture. Sophia from chat button to contextual intelligence layer. 3-tier color system. Brand identity integrated end-to-end. Onboarding flows.",
+            mood: "neutral",
+          },
+        },
+        {
+          type: "embed",
+          id: "ce-live",
+          headline: "Live at careeredged.com",
+          embedUrl: "https://careeredged.com",
+          fallbackImage: ph16x10("CareerEdge · IMG-15 live product"),
+          device: "browser",
+          caption: "IMG-15 — Add: screenshot of live careeredged.com for mobile fallback",
+        },
+        {
+          type: "narrative",
+          id: "ce-learned",
+          headline: "What I learned",
+          body: "This was the most complex work I have done. It tested my ability to hold an entire system in mind while making decisions at the component level. It forced me to think about how Sophia's behaviour needed to stay consistent and contextual across eight user types and over 33 features. It deepened my understanding of backend architecture and how infrastructure decisions shape what is possible on the frontend.\n\nAnd it confirmed something I have been building toward: a designer who builds in code does not just see the interface. They see the system. The constraints are different. The tradeoffs are different. The conversations with engineering are different when you understand what is actually happening beneath the surface you are designing.\n\nI built this entire frontend alone, with AI, in a little over a month. Two years ago I could not have done that. The tools changed. I changed with them.",
         },
       ],
     },
   ],
   outcome: {
     metrics: [
-      { label: "Focus", value: "Spine-led IA" },
-      { label: "Honest cadence", value: "~2 wk → ~1 mo" },
+      { label: "User types", value: "8 covered" },
+      { label: "Features", value: "33+ redesigned" },
       { label: "Live product", value: "careeredged.com" },
     ],
   },
