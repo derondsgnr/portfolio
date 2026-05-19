@@ -261,6 +261,37 @@ function NarrativeSlideComponent({ slide }: { slide: Extract<Slide, { type: "nar
               </p>
             </motion.div>
           )}
+
+          {slide.references && slide.references.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={inView ? { opacity: 1 } : {}}
+              transition={{ duration: 0.5, delay: 0.8 }}
+              className="mt-10 pt-6"
+              style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}
+            >
+              <span
+                className="block mb-3"
+                style={{ fontFamily: "monospace", fontSize: "9px", letterSpacing: "0.2em", color: "rgba(255,255,255,0.15)" }}
+              >
+                [REFERENCES]
+              </span>
+              <div className="flex flex-col gap-1">
+                {slide.references.map((ref) => (
+                  <a
+                    key={ref.url}
+                    href={ref.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-[#E2B93B] transition-colors duration-300"
+                    style={{ fontFamily: "monospace", fontSize: "10px", letterSpacing: "0.1em", color: "rgba(255,255,255,0.25)" }}
+                  >
+                    ↗ {ref.label}
+                  </a>
+                ))}
+              </div>
+            </motion.div>
+          )}
         </div>
       </SlideLayout>
     </div>

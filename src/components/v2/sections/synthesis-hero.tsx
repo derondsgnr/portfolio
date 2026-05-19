@@ -29,6 +29,7 @@ export function SynthesisHeroSection({
 
   return (
     <section ref={ref} className="relative h-screen flex flex-col justify-end overflow-hidden pb-16 px-8">
+      <h1 className="sr-only">Product Designer, Builder & Design Engineer</h1>
       <motion.div
         className="absolute left-0 right-0 h-px z-10"
         style={{ top: scanY, background: "color-mix(in srgb, var(--color-accent) 30%, transparent)" }}

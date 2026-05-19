@@ -66,7 +66,7 @@ export function SynthesisAboutSection({
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <span
+            <h2
               style={{
                 fontFamily: "'Anton', sans-serif",
                 fontSize: "clamp(2rem, 4vw, 3.5rem)",
@@ -75,12 +75,13 @@ export function SynthesisAboutSection({
                 textTransform: "uppercase",
                 color: "rgba(255,255,255,0.8)",
                 display: "block",
+                margin: 0,
               }}
             >
               {headline}
               <br />
               <span style={{ color: "#E2B93B" }}>{headlineAccent}</span>
-            </span>
+            </h2>
           </motion.div>
 
           <motion.div

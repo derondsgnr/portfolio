@@ -70,7 +70,7 @@ export function SynthesisCTASection({
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          <span
+          <h2
             style={{
               fontFamily: "'Anton', sans-serif",
               fontSize: "clamp(3rem, 10vw, 8rem)",
@@ -79,10 +79,11 @@ export function SynthesisCTASection({
               textTransform: "uppercase",
               color: "#f0f0f0",
               display: "block",
+              margin: 0,
             }}
           >
             <ScrambleText text={headline} speed={40} />
-          </span>
+          </h2>
         </motion.div>
 
         <motion.div

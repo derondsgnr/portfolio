@@ -1,8 +1,13 @@
+import type { Metadata } from "next";
 import { getProjects } from "@/lib/content/projects";
 import { getPageCopy } from "@/lib/content/copy";
 import { getLandingContent } from "@/lib/content/landing";
 import { getPageConfig } from "@/lib/content/pages";
 import { AboutPage } from "@/components/pages/about-page";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/about" },
+};
 
 export default async function Page() {
   const [projects, copy, landing, pageConfig] = await Promise.all([
@@ -12,11 +17,14 @@ export default async function Page() {
     getPageConfig("about"),
   ]);
   return (
-    <AboutPage
-      copy={copy}
-      pageConfig={pageConfig}
-      landing={landing}
-      projects={projects}
-    />
+    <>
+      <h1 className="sr-only">About — Deron, Product Designer & Builder</h1>
+      <AboutPage
+        copy={copy}
+        pageConfig={pageConfig}
+        landing={landing}
+        projects={projects}
+      />
+    </>
   );
 }

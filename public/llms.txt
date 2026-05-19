@@ -1,0 +1,26 @@
+# derondsgnr
+
+> Product designer and builder (remote, Nigeria). Prototype-first product work — systems, interfaces, and shipped software.
+
+## About
+
+Deron is a product designer who builds. He works remotely from Nigeria on product systems, interfaces, and software. His process is prototype-first — he designs and ships, not just specs.
+
+## Work
+
+Case studies covering product design across fintech, AI tooling, HR tech, and interface systems. Each project documents the decisions, blockers, pivots, and real mechanics — not just polished outcomes.
+
+Projects include: Dara (AI-powered bank alert parser), CareerEdge (job readiness platform), BridgePay (cross-border payments), and others.
+
+## Writing
+
+Blog posts on design craft, building with AI, shipping software, and what it means to work across the design-engineering boundary.
+
+## Pages
+
+- /: Homepage — overview of work and current focus
+- /work: Case studies and project work
+- /blog: Writing on design and building
+- /craft: Visual explorations and design artifacts
+- /now: Current status and recent activity
+- /about: Background, approach, and contact
