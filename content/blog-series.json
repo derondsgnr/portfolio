@@ -13,6 +13,16 @@
     "slug": "building-careeredge-ai-design-code",
     "title": "Building Careeredge(AI, Design & Code)",
     "description": "This is an ongoing series on the architectural, experience and system design work I did for Careeredged.\nI will walk you through my thinking and how i arrived at several decisions that made this a usable, delightful and scalable AI integrated system.",
-    "posts": []
+    "posts": [
+      "how-i-redesigned-sophia",
+      "zero-figma-careeredge",
+      "prd-from-codebase-careeredge",
+      "systems-thinking-careeredge",
+      "claude-lied-to-me-careeredge",
+      "navigation-compromise-careeredge",
+      "brand-first-careeredge",
+      "post-handoff-careeredge"
+    ],
+    "cover": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1778162482/Cover_photo_behl7l.png"
   }
 ]
