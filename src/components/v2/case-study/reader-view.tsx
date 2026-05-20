@@ -295,46 +295,6 @@ export function ReaderView({
         ))}
       </div>
 
-      {/* ─── Outcome section ─────────────────────────── */}
-      {caseStudy.outcome && (
-        <div className="relative z-10 px-6 md:px-16 lg:px-24 py-20 border-t border-[#1a1a1a]">
-          <div className="max-w-4xl">
-            <ScrambleHeading text="OUTCOME" className="text-3xl md:text-5xl mb-12" />
-
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-8 mb-16">
-              {caseStudy.outcome.metrics.map((m) => (
-                <div key={m.label} className="min-w-0 border-t border-[#E2B93B]/30 pt-4">
-                  <span
-                    className="text-3xl md:text-4xl text-white block mb-1 break-words [overflow-wrap:anywhere]"
-                    style={{ letterSpacing: "-0.02em" }}
-                  >
-                    {m.value}
-                  </span>
-                  <span className="text-[10px] text-[#666] tracking-[0.1em]" style={{ fontFamily: "monospace" }}>
-                    {m.label}
-                  </span>
-                </div>
-              ))}
-            </div>
-
-            {caseStudy.outcome.testimonial && (
-              <div className="border-l-2 border-[#E2B93B]/40 pl-6">
-                <p
-                  className="text-lg md:text-xl text-[#ccc] mb-4"
-                  style={{ fontFamily: "'Instrument Sans', sans-serif", lineHeight: 1.6, fontStyle: "italic" }}
-                >
-                  &ldquo;{caseStudy.outcome.testimonial}&rdquo;
-                </p>
-                {caseStudy.outcome.testimonialAuthor && (
-                  <span className="text-[10px] text-[#666] tracking-[0.1em]" style={{ fontFamily: "monospace" }}>
-                    &mdash; {caseStudy.outcome.testimonialAuthor}
-                  </span>
-                )}
-              </div>
-            )}
-          </div>
-        </div>
-      )}
 
       {/* ─── View mode + demo (secondary controls — solid gold reserved for BOOK A CALL) ─── */}
       <div

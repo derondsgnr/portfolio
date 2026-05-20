@@ -41,15 +41,6 @@ function NarratorStrip({ narrator }: { narrator: NarratorBlock }) {
       <p className="text-[#999] text-sm" style={{ fontFamily: "monospace", lineHeight: 1.7 }}>
         {narrator.text}
       </p>
-      {/* Future: character illustration slot */}
-      {narrator.mood && (
-        <span
-          className="block text-[9px] tracking-[0.15em] text-[#444] mt-2"
-          style={{ fontFamily: "monospace" }}
-        >
-          [{narrator.mood.toUpperCase()}]
-        </span>
-      )}
     </motion.div>
   );
 }
@@ -196,18 +187,6 @@ function CoverSlideComponent({ slide }: { slide: Extract<Slide, { type: "cover" 
           </motion.p>
         )}
 
-        {/* Scroll indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.6, delay: 1 }}
-          className="mt-16 flex items-center gap-3"
-        >
-          <div className="w-px h-8 bg-[#E2B93B]/40" />
-          <span className="text-[10px] tracking-[0.3em] text-[#555]" style={{ fontFamily: "monospace" }}>
-            SCROLL TO EXPLORE
-          </span>
-        </motion.div>
       </div>
     </div>
   );
@@ -947,9 +926,6 @@ function SectionBreakSlideComponent({ slide }: { slide: Extract<Slide, { type: "
         transition={{ duration: 0.7 }}
         className="relative z-10 text-center"
       >
-        <span className="text-[10px] tracking-[0.3em] text-[#E2B93B] block mb-4" style={{ fontFamily: "monospace" }}>
-          ACT {String(slide.actNumber).padStart(2, "0")}
-        </span>
         <ScrambleHeading text={slide.actTitle} className="text-4xl md:text-6xl" />
         {slide.subtitle && (
           <p className="text-[#666] mt-4 text-sm" style={{ fontFamily: "monospace" }}>
