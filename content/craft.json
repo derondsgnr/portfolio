@@ -31,12 +31,12 @@
         },
         {
           "id": "c-03",
-          "title": "Brand Identity Concept",
+          "title": "Lingua AI - Brand Identity Concept",
           "category": "Branding",
-          "description": "Speculative brand systems for fictional companies and side ventures.",
-          "image": "https://images.unsplash.com/photo-1765448808249-a3610f38e612?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-          "width": 1080,
-          "height": 1080,
+          "description": "Speculative brand systems for fictional gamified language learning app",
+          "image": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1778180612/Banner_eplrve.png",
+          "width": 1400,
+          "height": 920,
           "status": "published",
           "featured": false,
           "pinned": false
