@@ -8,6 +8,7 @@ import { siX, siGithub, siDribbble } from "simple-icons";
 import { ScrambleText } from "./shared/scramble-text";
 import type { Project } from "@/lib/content/projects";
 import type { TestimonialItem } from "@/lib/content/testimonials";
+import type { CraftItem } from "@/lib/content/craft";
 
 // LinkedIn dropped from simple-icons v16 — path from the official spec
 const SI_LINKEDIN =
@@ -1149,6 +1150,180 @@ function TransmissionWriting({ posts }: { posts: BlogMeta[] }) {
   );
 }
 
+// ── Craft ─────────────────────────────────────────────────────────────────
+
+function TransmissionCraft({ items }: { items: CraftItem[] }) {
+  const ref = useRef<HTMLElement>(null);
+  const inView = useInView(ref, { once: true, amount: 0.08 });
+  const published = items.filter((i) => !i.status || i.status === "published").slice(0, 8);
+
+  return (
+    <motion.section
+      ref={ref as React.RefObject<HTMLElement>}
+      initial={{ opacity: 0, y: 28 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
+      className="px-14 py-20"
+      style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}
+    >
+      {/* Section header */}
+      <div className="flex items-center justify-between mb-8">
+        <span
+          style={{
+            fontFamily: "monospace",
+            fontSize: "7.5px",
+            letterSpacing: "0.22em",
+            textTransform: "uppercase",
+            color: "rgba(255,255,255,0.2)",
+          }}
+        >
+          Craft
+        </span>
+        <Link
+          href="/craft"
+          style={{
+            fontFamily: "monospace",
+            fontSize: "7.5px",
+            letterSpacing: "0.16em",
+            textTransform: "uppercase",
+            color: "rgba(255,255,255,0.28)",
+            transition: "color 0.2s",
+          }}
+          onMouseEnter={(e) => (e.currentTarget.style.color = "#E2B93B")}
+          onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.28)")}
+        >
+          View all →
+        </Link>
+      </div>
+
+      {/* Masonry-style grid — 4 cols, variable heights */}
+      <div
+        style={{
+          columns: "4",
+          columnGap: "6px",
+          gap: "6px",
+        }}
+      >
+        {published.map((item, i) => (
+          <CraftTile key={item.id} item={item} index={i} inView={inView} />
+        ))}
+      </div>
+    </motion.section>
+  );
+}
+
+function CraftTile({ item, index, inView }: { item: CraftItem; index: number; inView: boolean }) {
+  const [hovered, setHovered] = useState(false);
+  const aspectRatio =
+    item.width && item.height ? item.width / item.height : index % 3 === 0 ? 0.75 : 1.33;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.6, delay: index * 0.04, ease: [0.25, 0.46, 0.45, 0.94] }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      data-cursor="true"
+      data-cursor-label="VIEW"
+      style={{
+        breakInside: "avoid",
+        marginBottom: 6,
+        position: "relative",
+        cursor: "none",
+        overflow: "hidden",
+        background: "#111111",
+      }}
+    >
+      <Link href="/craft" style={{ display: "block", position: "relative" }}>
+        {/* Media */}
+        <div
+          style={{
+            position: "relative",
+            paddingBottom: `${(1 / aspectRatio) * 100}%`,
+            overflow: "hidden",
+          }}
+        >
+          {item.videoUrl ? (
+            <video
+              src={item.videoUrl}
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="absolute inset-0 w-full h-full object-cover"
+              style={{ filter: hovered ? "brightness(0.55)" : "brightness(0.7)", transition: "filter 0.4s" }}
+            />
+          ) : item.image ? (
+            <motion.div
+              className="absolute inset-0"
+              animate={{ scale: hovered ? 1.05 : 1 }}
+              transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+              style={{ transformOrigin: "center" }}
+            >
+              <Image
+                src={item.image}
+                alt={item.title}
+                fill
+                className="object-cover"
+                style={{ filter: hovered ? "brightness(0.55)" : "brightness(0.7)", transition: "filter 0.4s" }}
+                sizes="(max-width: 1280px) 25vw, 20vw"
+              />
+            </motion.div>
+          ) : (
+            <div
+              className="absolute inset-0 flex items-center justify-center"
+              style={{ background: "#1A1A1A" }}
+            >
+              <span style={{ fontFamily: "'Anton', sans-serif", fontSize: "24px", color: "rgba(255,255,255,0.06)" }}>
+                {item.category}
+              </span>
+            </div>
+          )}
+        </div>
+
+        {/* Hover overlay — title + category */}
+        <AnimatePresence>
+          {hovered && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="absolute inset-0 flex flex-col justify-end"
+              style={{ padding: "12px", background: "linear-gradient(to top, rgba(10,10,10,0.85) 0%, transparent 60%)" }}
+            >
+              <span
+                style={{
+                  fontFamily: "monospace",
+                  fontSize: "6.5px",
+                  letterSpacing: "0.18em",
+                  textTransform: "uppercase",
+                  color: "#E2B93B",
+                  display: "block",
+                  marginBottom: 3,
+                }}
+              >
+                {item.category}
+              </span>
+              <span
+                style={{
+                  fontFamily: "'Instrument Sans', sans-serif",
+                  fontSize: "11px",
+                  color: "#F0F0F0",
+                  lineHeight: 1.3,
+                }}
+              >
+                {item.title}
+              </span>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </Link>
+    </motion.div>
+  );
+}
+
 // ── CTA ───────────────────────────────────────────────────────────────────
 
 function TransmissionCTA({ ctaCopy, ctaLabel }: { ctaCopy: CtaCopy; ctaLabel: string }) {
@@ -1223,6 +1398,7 @@ export function TransmissionVariation({
   projects,
   testimonials,
   posts,
+  craftItems,
   nav,
   global: globalConfig,
   copy,
@@ -1230,6 +1406,7 @@ export function TransmissionVariation({
   projects: Project[];
   testimonials: TestimonialItem[];
   posts: BlogMeta[];
+  craftItems: CraftItem[];
   nav: NavItem[];
   global: AdminGlobal;
   copy: AdminCopy;
@@ -1293,6 +1470,7 @@ export function TransmissionVariation({
         ))}
 
         <TransmissionAbout aboutCopy={aboutCopy} />
+        <TransmissionCraft items={craftItems} />
         <TransmissionTestimonials testimonials={testimonials} />
         <TransmissionWriting posts={posts} />
         <TransmissionCTA ctaCopy={ctaCopy} ctaLabel={globalConfig.ctaButtonLabel} />
