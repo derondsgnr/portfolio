@@ -34,6 +34,7 @@ export function Providers({ children, nav = [], global: globalConfig, sounds, te
   const isBlogPost = /^\/blog\/[^/]+$/.test(pathname ?? "");
   const isNow = pathname === "/now";
   const isAdmin = pathname?.startsWith("/admin") ?? false;
+  const isPreview = pathname?.startsWith("/preview") ?? false;
 
   const effectiveNav = nav.length > 0 ? nav : ([{ label: "Work", path: "/work" }, { label: "Craft", path: "/craft" }, { label: "About", path: "/about" }, { label: "Now", path: "/now" }] as NavItem[]);
   const effectiveGlobal = globalConfig ?? {
@@ -48,7 +49,7 @@ export function Providers({ children, nav = [], global: globalConfig, sounds, te
     <TestimonialsProvider testimonials={testimonials}>
     <BookingProvider>
         <div className="relative min-h-screen text-white overflow-x-hidden" style={{ backgroundColor: "var(--color-background)" }}>
-        {!isCaseStudy && !isBlogPost && !isNow && !isAdmin && <Navbar />}
+        {!isCaseStudy && !isBlogPost && !isNow && !isAdmin && !isPreview && <Navbar />}
         <AnimatePresence mode="wait">
           <motion.div
             key={pathname ?? "root"}

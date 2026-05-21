@@ -221,123 +221,192 @@ function TransmissionCursor() {
   );
 }
 
-// ── Top Bar ───────────────────────────────────────────────────────────────
+// ── Sidebar ───────────────────────────────────────────────────────────────
 
-function TransmissionTopBar({ nav, global: g }: { nav: NavItem[]; global: AdminGlobal }) {
+function TransmissionSidebar({ nav, global: g }: { nav: NavItem[]; global: AdminGlobal }) {
   return (
-    <header
-      className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between"
+    <aside
+      className="fixed top-0 left-0 h-screen flex flex-col z-40"
       style={{
-        height: 56,
-        paddingLeft: 40,
-        paddingRight: 40,
-        background: "rgba(10,10,10,0.94)",
-        backdropFilter: "blur(12px)",
-        borderBottom: "1px solid rgba(255,255,255,0.05)",
+        width: 260,
+        background: "#0A0A0A",
+        borderRight: "1px solid rgba(255,255,255,0.055)",
       }}
     >
       {/* Logo */}
-      <Link href="/">
-        <span
-          style={{
-            fontFamily: "'Anton', sans-serif",
-            fontSize: "15px",
-            letterSpacing: "0.12em",
-            color: "#E2B93B",
-            textTransform: "uppercase",
-          }}
-        >
-          D/
-        </span>
-      </Link>
+      <div className="px-8 pt-8 pb-6">
+        <Link href="/">
+          <span
+            style={{
+              fontFamily: "'Anton', sans-serif",
+              fontSize: "22px",
+              letterSpacing: "0.08em",
+              color: "#E2B93B",
+              textTransform: "uppercase",
+            }}
+          >
+            D/
+          </span>
+        </Link>
+      </div>
 
-      {/* Nav links — center */}
-      <nav className="flex items-center gap-8">
+      {/* Nav — vertically centered, from admin nav.json */}
+      <nav className="flex-1 flex flex-col justify-center px-8 gap-1">
         {nav.map((link) => (
           <Link
             key={link.label}
             href={link.path ?? link.href ?? "/"}
             style={{
               fontFamily: "monospace",
-              fontSize: "9px",
-              letterSpacing: "0.18em",
+              fontSize: "11px",
+              letterSpacing: "0.14em",
               textTransform: "uppercase",
-              color: "rgba(255,255,255,0.3)",
+              color: "rgba(255,255,255,0.28)",
+              padding: "10px 0",
+              display: "block",
               transition: "color 0.2s",
             }}
             onMouseEnter={(e) => (e.currentTarget.style.color = "#F0F0F0")}
-            onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.3)")}
+            onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.28)")}
           >
             {link.label}
           </Link>
         ))}
       </nav>
 
-      {/* Right — socials + CTA */}
-      <div className="flex items-center gap-3">
-        {g.socialLinks.map((s) => {
-          const path = socialIconPath(s.label);
-          if (!path) return null;
-          return (
-            <Link
-              key={s.label}
-              href={s.url}
-              aria-label={s.label}
-              target="_blank"
-              rel="noopener noreferrer"
+      {/* Identity — bottom */}
+      <div className="px-8 pb-8">
+        {/* Availability pulse */}
+        <div className="flex items-center gap-2 mb-5">
+          <span
+            style={{
+              width: 6,
+              height: 6,
+              borderRadius: "50%",
+              background: "#4ade80",
+              display: "block",
+              boxShadow: "0 0 6px #4ade80",
+              animation: "pulse 2s ease-in-out infinite",
+              flexShrink: 0,
+            }}
+          />
+          <span
+            style={{
+              fontFamily: "monospace",
+              fontSize: "9px",
+              letterSpacing: "0.16em",
+              textTransform: "uppercase",
+              color: "rgba(255,255,255,0.35)",
+            }}
+          >
+            Available for work
+          </span>
+        </div>
+
+        {/* Profile image + name row */}
+        <div className="flex items-center gap-3 mb-5">
+          {PROFILE_IMAGE ? (
+            <Image
+              src={PROFILE_IMAGE}
+              alt="Deron"
+              width={38}
+              height={38}
+              style={{ borderRadius: "50%", objectFit: "cover", flexShrink: 0 }}
+            />
+          ) : (
+            <div
               style={{
-                width: 30,
-                height: 30,
+                width: 38,
+                height: 38,
+                borderRadius: "50%",
+                background: "#1A1A1A",
                 border: "1px solid rgba(255,255,255,0.1)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                color: "rgba(255,255,255,0.35)",
-                transition: "all 0.2s",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.color = "#E2B93B";
-                e.currentTarget.style.borderColor = "#E2B93B";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.color = "rgba(255,255,255,0.35)";
-                e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)";
+                flexShrink: 0,
               }}
             >
-              <svg viewBox="0 0 24 24" fill="currentColor" width={11} height={11} aria-hidden>
-                <path d={path} />
-              </svg>
-            </Link>
-          );
-        })}
+              <span
+                style={{
+                  fontFamily: "'Anton', sans-serif",
+                  fontSize: "14px",
+                  color: "#E2B93B",
+                  letterSpacing: "0.04em",
+                }}
+              >
+                D
+              </span>
+            </div>
+          )}
+          <div>
+            <p
+              style={{
+                fontFamily: "'Instrument Sans', sans-serif",
+                fontSize: "13px",
+                color: "#F0F0F0",
+                fontWeight: 500,
+                marginBottom: 1,
+              }}
+            >
+              Deron
+            </p>
+            <p
+              style={{
+                fontFamily: "monospace",
+                fontSize: "9px",
+                color: "rgba(255,255,255,0.3)",
+                letterSpacing: "0.1em",
+              }}
+            >
+              @derondsgnr
+            </p>
+          </div>
+        </div>
 
-        <Link
-          href="#contact"
-          data-cursor-label="BOOK"
-          style={{
-            fontFamily: "monospace",
-            fontSize: "8.5px",
-            letterSpacing: "0.16em",
-            textTransform: "uppercase",
-            color: "#E2B93B",
-            border: "1px solid #E2B93B",
-            padding: "8px 16px",
-            display: "inline-block",
-            transition: "all 0.2s",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.background = "#E2B93B";
-            e.currentTarget.style.color = "#0A0A0A";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.background = "transparent";
-            e.currentTarget.style.color = "#E2B93B";
-          }}
-        >
-          {g.ctaButtonLabel}
-        </Link>
+        {/* Social icons — brand SVGs from admin global.json */}
+        <div className="flex items-center gap-2">
+          {g.socialLinks.map((s) => {
+            const iconPath = socialIconPath(s.label);
+            if (!iconPath) return null;
+            return (
+              <Link
+                key={s.label}
+                href={s.url}
+                aria-label={s.label}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  width: 36,
+                  height: 36,
+                  border: "1px solid rgba(255,255,255,0.1)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  color: "rgba(255,255,255,0.4)",
+                  transition: "all 0.2s",
+                  flexShrink: 0,
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = "#E2B93B";
+                  e.currentTarget.style.borderColor = "#E2B93B";
+                  e.currentTarget.style.background = "rgba(226,185,59,0.06)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = "rgba(255,255,255,0.4)";
+                  e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)";
+                  e.currentTarget.style.background = "transparent";
+                }}
+              >
+                <svg viewBox="0 0 24 24" fill="currentColor" width={14} height={14} aria-hidden>
+                  <path d={iconPath} />
+                </svg>
+              </Link>
+            );
+          })}
+        </div>
       </div>
-    </header>
+    </aside>
   );
 }
 
@@ -1172,13 +1241,14 @@ export function TransmissionVariation({
   return (
     <div style={{ background: "#0A0A0A", minHeight: "100vh", cursor: "none" }}>
       <style>{`
+        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
         .transmission-root * { cursor: none !important; }
       `}</style>
 
       <TransmissionCursor />
-      <TransmissionTopBar nav={nav} global={globalConfig} />
+      <TransmissionSidebar nav={nav} global={globalConfig} />
 
-      <main className="transmission-root" style={{ paddingTop: 56 }}>
+      <main className="transmission-root" style={{ marginLeft: 260 }}>
         <TransmissionHero projects={projects} heroCopy={heroCopy} />
 
         {/* Work section header */}
