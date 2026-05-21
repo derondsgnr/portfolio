@@ -4,9 +4,14 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence, useInView } from "motion/react";
+import { siX, siGithub, siDribbble } from "simple-icons";
 import { ScrambleText } from "./shared/scramble-text";
 import type { Project } from "@/lib/content/projects";
 import type { TestimonialItem } from "@/lib/content/testimonials";
+
+// LinkedIn dropped from simple-icons v16 — path from the official spec
+const SI_LINKEDIN =
+  "M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z";
 
 /* ═══════════════════════════════════════════════════════════════
    TRANSMISSION — Dispatch sidebar + editorial rows + full sections
@@ -41,10 +46,10 @@ const NAV_LINKS = [
 ];
 
 const SOCIALS = [
-  { label: "X", href: "https://x.com/derondsgnr" },
-  { label: "LI", href: "#" },
-  { label: "DR", href: "#" },
-  { label: "GH", href: "https://github.com/derondsgnr" },
+  { label: "X", path: () => siX.path, href: "https://x.com/derondsgnr" },
+  { label: "LinkedIn", path: () => SI_LINKEDIN, href: "#" },
+  { label: "Dribbble", path: () => siDribbble.path, href: "#" },
+  { label: "GitHub", path: () => siGithub.path, href: "https://github.com/derondsgnr" },
 ];
 
 // Industry context lines with inline SVG icons
@@ -356,12 +361,13 @@ function TransmissionSidebar() {
           </div>
         </div>
 
-        {/* Social icons — prominent squares */}
+        {/* Social icons — brand SVGs in bordered squares */}
         <div className="flex items-center gap-2">
           {SOCIALS.map((s) => (
             <Link
               key={s.label}
               href={s.href}
+              aria-label={s.label}
               style={{
                 width: 36,
                 height: 36,
@@ -369,9 +375,6 @@ function TransmissionSidebar() {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                fontFamily: "monospace",
-                fontSize: "9px",
-                letterSpacing: "0.08em",
                 color: "rgba(255,255,255,0.4)",
                 transition: "all 0.2s",
                 flexShrink: 0,
@@ -387,7 +390,15 @@ function TransmissionSidebar() {
                 e.currentTarget.style.background = "transparent";
               }}
             >
-              {s.label}
+              <svg
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                width={14}
+                height={14}
+                aria-hidden
+              >
+                <path d={s.path()} />
+              </svg>
             </Link>
           ))}
         </div>
