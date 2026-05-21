@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
-import { Navbar } from "./navbar";
+import { GlobalSidebar, SIDEBAR_WIDTH } from "./v2/global-sidebar";
 import { BookingProvider } from "./v2/booking-context";
 import { BookingDrawer } from "./v2/booking-drawer";
 import { SiteConfigProvider } from "@/contexts/site-config-context";
@@ -30,13 +30,15 @@ export function Providers({ children, nav = [], global: globalConfig, sounds, te
     }
   }, [sounds]);
   const pathname = usePathname();
-  const isCaseStudy = /^\/work\/[^/]+$/.test(pathname ?? "");
-  const isBlogPost = /^\/blog\/[^/]+$/.test(pathname ?? "");
-  const isNow = pathname === "/now";
   const isAdmin = pathname?.startsWith("/admin") ?? false;
   const isPreview = pathname?.startsWith("/preview") ?? false;
+  const isHomepage = pathname === "/";
 
-  const effectiveNav = nav.length > 0 ? nav : ([{ label: "Work", path: "/work" }, { label: "Craft", path: "/craft" }, { label: "About", path: "/about" }, { label: "Now", path: "/now" }] as NavItem[]);
+  // Show sidebar on all pages except: homepage (variation has its own),
+  // admin panel, and /preview/* routes (each variation handles its own nav)
+  const showSidebar = !isAdmin && !isPreview && !isHomepage;
+
+  const effectiveNav = nav.length > 0 ? nav : ([{ label: "Work", path: "/work" }, { label: "Craft", path: "/craft" }, { label: "Writing", path: "/blog" }, { label: "About", path: "/about" }, { label: "Now", path: "/now" }] as NavItem[]);
   const effectiveGlobal = globalConfig ?? {
     socialLinks: [{ label: "Twitter / X", url: "https://twitter.com/derondsgnr" }, { label: "LinkedIn", url: "https://linkedin.com/in/derondsgnr" }, { label: "Dribbble", url: "https://dribbble.com/derondsgnr" }],
     footerCopyright: "© 2025 DERONDSGNR",
@@ -48,8 +50,8 @@ export function Providers({ children, nav = [], global: globalConfig, sounds, te
     <SiteConfigProvider nav={effectiveNav} global={effectiveGlobal}>
     <TestimonialsProvider testimonials={testimonials}>
     <BookingProvider>
-        <div className="relative min-h-screen text-white overflow-x-hidden" style={{ backgroundColor: "var(--color-background)" }}>
-        {!isCaseStudy && !isBlogPost && !isNow && !isAdmin && !isPreview && <Navbar />}
+      <div className="relative min-h-screen text-white overflow-x-hidden" style={{ backgroundColor: "var(--color-background)" }}>
+        {showSidebar && <GlobalSidebar />}
         <AnimatePresence mode="wait">
           <motion.div
             key={pathname ?? "root"}
@@ -57,6 +59,7 @@ export function Providers({ children, nav = [], global: globalConfig, sounds, te
             animate={{ opacity: 1 }}
             exit={isAdmin ? { opacity: 1 } : { opacity: 0 }}
             transition={{ duration: isAdmin ? 0 : 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+            style={showSidebar ? { marginLeft: SIDEBAR_WIDTH } : undefined}
           >
             {children}
           </motion.div>

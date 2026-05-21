@@ -1,6 +1,5 @@
 import { getProjects } from "@/lib/content/projects";
 import { getTestimonials } from "@/lib/content/testimonials";
-import { getNav } from "@/lib/content/nav";
 import { getGlobal } from "@/lib/content/global";
 import { getCopy } from "@/lib/content/copy";
 import { getCraftItems } from "@/lib/content/craft";
@@ -10,10 +9,9 @@ import { TransmissionVariation } from "@/components/v2/v2-transmission";
 export const metadata = { title: "Preview — Transmission | Deron" };
 
 export default async function TransmissionPreviewPage() {
-  const [projects, testimonials, nav, globalConfig, copy, craftItems] = await Promise.all([
+  const [projects, testimonials, globalConfig, copy, craftItems] = await Promise.all([
     getProjects(),
     getTestimonials(),
-    getNav(),
     getGlobal(),
     getCopy(),
     getCraftItems(),
@@ -37,7 +35,6 @@ export default async function TransmissionPreviewPage() {
       testimonials={testimonials}
       posts={posts}
       craftItems={craftItems}
-      nav={nav}
       global={globalConfig}
       copy={copy}
     />
