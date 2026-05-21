@@ -1,14 +1,20 @@
 import { getProjects } from "@/lib/content/projects";
 import { getTestimonials } from "@/lib/content/testimonials";
+import { getNav } from "@/lib/content/nav";
+import { getGlobal } from "@/lib/content/global";
+import { getCopy } from "@/lib/content/copy";
 import { BLOG_POSTS } from "@/lib/data/blog-data";
 import { TransmissionVariation } from "@/components/v2/v2-transmission";
 
 export const metadata = { title: "Preview — Transmission | Deron" };
 
 export default async function TransmissionPreviewPage() {
-  const [projects, testimonials] = await Promise.all([
+  const [projects, testimonials, nav, globalConfig, copy] = await Promise.all([
     getProjects(),
     getTestimonials(),
+    getNav(),
+    getGlobal(),
+    getCopy(),
   ]);
 
   const posts = BLOG_POSTS.filter(
@@ -28,6 +34,9 @@ export default async function TransmissionPreviewPage() {
       projects={projects}
       testimonials={testimonials}
       posts={posts}
+      nav={nav}
+      global={globalConfig}
+      copy={copy}
     />
   );
 }

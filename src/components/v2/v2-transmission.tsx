@@ -36,21 +36,24 @@ type BlogMeta = {
   readingTime: number;
 };
 
-// ── Static data ───────────────────────────────────────────────────────────
+type NavItem = { label: string; path?: string; href?: string };
+type SocialLink = { label: string; url: string };
+type HeroCopy = { name?: string; philosophy?: string };
+type AboutCopy = { headline?: string; headlineAccent?: string; bioParagraphs?: string[]; stats?: { label: string; value: string }[] };
+type CtaCopy = { headline?: string; ctaPrimary?: string };
+type AdminGlobal = { ctaButtonLabel: string; socialLinks: SocialLink[] };
+type AdminCopy = { homepage?: { hero?: HeroCopy; about?: AboutCopy; cta?: CtaCopy } };
 
-const NAV_LINKS = [
-  { label: "Work", href: "/work" },
-  { label: "About", href: "/about" },
-  { label: "Writing", href: "/blog" },
-  { label: "Contact", href: "#contact" },
-];
+// ── Helpers ───────────────────────────────────────────────────────────────
 
-const SOCIALS = [
-  { label: "X", path: () => siX.path, href: "https://x.com/derondsgnr" },
-  { label: "LinkedIn", path: () => SI_LINKEDIN, href: "#" },
-  { label: "Dribbble", path: () => siDribbble.path, href: "#" },
-  { label: "GitHub", path: () => siGithub.path, href: "https://github.com/derondsgnr" },
-];
+function socialIconPath(label: string): string | null {
+  const l = label.toLowerCase();
+  if (l.includes("x") || l.includes("twitter")) return siX.path;
+  if (l.includes("linkedin")) return SI_LINKEDIN;
+  if (l.includes("dribbble")) return siDribbble.path;
+  if (l.includes("github")) return siGithub.path;
+  return null;
+}
 
 // Industry context lines with inline SVG icons
 const CONTEXT_LINES = [
@@ -218,198 +221,129 @@ function TransmissionCursor() {
   );
 }
 
-// ── Sidebar ───────────────────────────────────────────────────────────────
+// ── Top Bar ───────────────────────────────────────────────────────────────
 
-function TransmissionSidebar() {
+function TransmissionTopBar({ nav, global: g }: { nav: NavItem[]; global: AdminGlobal }) {
   return (
-    <aside
-      className="fixed top-0 left-0 h-screen flex flex-col z-40"
+    <header
+      className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between"
       style={{
-        width: 260,
-        background: "#0A0A0A",
-        borderRight: "1px solid rgba(255,255,255,0.055)",
+        height: 56,
+        paddingLeft: 40,
+        paddingRight: 40,
+        background: "rgba(10,10,10,0.94)",
+        backdropFilter: "blur(12px)",
+        borderBottom: "1px solid rgba(255,255,255,0.05)",
       }}
     >
       {/* Logo */}
-      <div className="px-8 pt-8 pb-6">
-        <Link href="/">
-          <span
-            style={{
-              fontFamily: "'Anton', sans-serif",
-              fontSize: "22px",
-              letterSpacing: "0.08em",
-              color: "#E2B93B",
-              textTransform: "uppercase",
-            }}
-          >
-            D/
-          </span>
-        </Link>
-      </div>
+      <Link href="/">
+        <span
+          style={{
+            fontFamily: "'Anton', sans-serif",
+            fontSize: "15px",
+            letterSpacing: "0.12em",
+            color: "#E2B93B",
+            textTransform: "uppercase",
+          }}
+        >
+          D/
+        </span>
+      </Link>
 
-      {/* Nav — vertically centered */}
-      <nav className="flex-1 flex flex-col justify-center px-8 gap-1">
-        {NAV_LINKS.map((link) => (
+      {/* Nav links — center */}
+      <nav className="flex items-center gap-8">
+        {nav.map((link) => (
           <Link
             key={link.label}
-            href={link.href}
+            href={link.path ?? link.href ?? "/"}
             style={{
               fontFamily: "monospace",
-              fontSize: "11px",
-              letterSpacing: "0.14em",
+              fontSize: "9px",
+              letterSpacing: "0.18em",
               textTransform: "uppercase",
-              color: "rgba(255,255,255,0.28)",
-              padding: "10px 0",
-              display: "block",
+              color: "rgba(255,255,255,0.3)",
               transition: "color 0.2s",
             }}
             onMouseEnter={(e) => (e.currentTarget.style.color = "#F0F0F0")}
-            onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.28)")}
+            onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.3)")}
           >
             {link.label}
           </Link>
         ))}
       </nav>
 
-      {/* Identity — bottom */}
-      <div className="px-8 pb-8">
-        {/* Availability pulse */}
-        <div className="flex items-center gap-2 mb-5">
-          <span
-            style={{
-              width: 6,
-              height: 6,
-              borderRadius: "50%",
-              background: "#4ade80",
-              display: "block",
-              boxShadow: "0 0 6px #4ade80",
-              animation: "pulse 2s ease-in-out infinite",
-              flexShrink: 0,
-            }}
-          />
-          <span
-            style={{
-              fontFamily: "monospace",
-              fontSize: "9px",
-              letterSpacing: "0.16em",
-              textTransform: "uppercase",
-              color: "rgba(255,255,255,0.35)",
-            }}
-          >
-            Available for work
-          </span>
-        </div>
-
-        {/* Profile image + name row */}
-        <div className="flex items-center gap-3 mb-5">
-          {PROFILE_IMAGE ? (
-            <Image
-              src={PROFILE_IMAGE}
-              alt="Deron"
-              width={38}
-              height={38}
-              style={{ borderRadius: "50%", objectFit: "cover", flexShrink: 0 }}
-            />
-          ) : (
-            <div
-              style={{
-                width: 38,
-                height: 38,
-                borderRadius: "50%",
-                background: "#1A1A1A",
-                border: "1px solid rgba(255,255,255,0.1)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                flexShrink: 0,
-              }}
-            >
-              <span
-                style={{
-                  fontFamily: "'Anton', sans-serif",
-                  fontSize: "14px",
-                  color: "#E2B93B",
-                  letterSpacing: "0.04em",
-                }}
-              >
-                D
-              </span>
-            </div>
-          )}
-          <div>
-            <p
-              style={{
-                fontFamily: "'Instrument Sans', sans-serif",
-                fontSize: "13px",
-                color: "#F0F0F0",
-                fontWeight: 500,
-                marginBottom: 1,
-              }}
-            >
-              Deron
-            </p>
-            <p
-              style={{
-                fontFamily: "monospace",
-                fontSize: "9px",
-                color: "rgba(255,255,255,0.3)",
-                letterSpacing: "0.1em",
-              }}
-            >
-              @derondsgnr
-            </p>
-          </div>
-        </div>
-
-        {/* Social icons — brand SVGs in bordered squares */}
-        <div className="flex items-center gap-2">
-          {SOCIALS.map((s) => (
+      {/* Right — socials + CTA */}
+      <div className="flex items-center gap-3">
+        {g.socialLinks.map((s) => {
+          const path = socialIconPath(s.label);
+          if (!path) return null;
+          return (
             <Link
               key={s.label}
-              href={s.href}
+              href={s.url}
               aria-label={s.label}
+              target="_blank"
+              rel="noopener noreferrer"
               style={{
-                width: 36,
-                height: 36,
+                width: 30,
+                height: 30,
                 border: "1px solid rgba(255,255,255,0.1)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                color: "rgba(255,255,255,0.4)",
+                color: "rgba(255,255,255,0.35)",
                 transition: "all 0.2s",
-                flexShrink: 0,
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.color = "#E2B93B";
                 e.currentTarget.style.borderColor = "#E2B93B";
-                e.currentTarget.style.background = "rgba(226,185,59,0.06)";
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.color = "rgba(255,255,255,0.4)";
+                e.currentTarget.style.color = "rgba(255,255,255,0.35)";
                 e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)";
-                e.currentTarget.style.background = "transparent";
               }}
             >
-              <svg
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                width={14}
-                height={14}
-                aria-hidden
-              >
-                <path d={s.path()} />
+              <svg viewBox="0 0 24 24" fill="currentColor" width={11} height={11} aria-hidden>
+                <path d={path} />
               </svg>
             </Link>
-          ))}
-        </div>
+          );
+        })}
+
+        <Link
+          href="#contact"
+          data-cursor-label="BOOK"
+          style={{
+            fontFamily: "monospace",
+            fontSize: "8.5px",
+            letterSpacing: "0.16em",
+            textTransform: "uppercase",
+            color: "#E2B93B",
+            border: "1px solid #E2B93B",
+            padding: "8px 16px",
+            display: "inline-block",
+            transition: "all 0.2s",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = "#E2B93B";
+            e.currentTarget.style.color = "#0A0A0A";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = "transparent";
+            e.currentTarget.style.color = "#E2B93B";
+          }}
+        >
+          {g.ctaButtonLabel}
+        </Link>
       </div>
-    </aside>
+    </header>
   );
 }
 
 // ── Hero ──────────────────────────────────────────────────────────────────
 
-function TransmissionHero({ projects }: { projects: Project[] }) {
+function TransmissionHero({ projects, heroCopy }: { projects: Project[]; heroCopy: HeroCopy }) {
   const [ctxIdx, setCtxIdx] = useState(0);
   const featured = projects[0];
 
@@ -516,7 +450,7 @@ function TransmissionHero({ projects }: { projects: Project[] }) {
             marginBottom: 14,
           }}
         >
-          Deron
+          {heroCopy.name ?? "Deron"}
         </motion.h1>
 
         {/* Sub-copy — improved contrast */}
@@ -533,7 +467,7 @@ function TransmissionHero({ projects }: { projects: Project[] }) {
             lineHeight: 1.65,
           }}
         >
-          Product designer & builder. I prototype to find what's real, then refine until it ships.
+          {heroCopy.philosophy ?? "Product designer & builder. I prototype to find what's real, then refine until it ships."}
         </motion.p>
 
         {/* CTAs */}
@@ -779,7 +713,7 @@ function TransmissionProjectRow({
 
 // ── About Strip ───────────────────────────────────────────────────────────
 
-const ABOUT_STATS = [
+const ABOUT_STATS_FALLBACK = [
   { label: "Mode", value: "Remote" },
   { label: "Years", value: "2022 — now" },
   { label: "Industries", value: "Fintech, Transport, AI, Startups" },
@@ -787,7 +721,8 @@ const ABOUT_STATS = [
   { label: "Available", value: "Yes" },
 ];
 
-function TransmissionAbout() {
+function TransmissionAbout({ aboutCopy }: { aboutCopy: AboutCopy }) {
+  const stats = aboutCopy.stats?.length ? aboutCopy.stats : ABOUT_STATS_FALLBACK;
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.14 });
 
@@ -836,7 +771,9 @@ function TransmissionAbout() {
               marginBottom: 20,
             }}
           >
-            Designer who ships. Based in Nigeria, building for the world.
+            {aboutCopy.headline ?? "Designer who"}{" "}
+            <span style={{ color: "#E2B93B" }}>{aboutCopy.headlineAccent ?? "ships"}</span>
+            {". Based in Nigeria, building for the world."}
           </p>
 
           <p
@@ -848,10 +785,7 @@ function TransmissionAbout() {
               marginBottom: 28,
             }}
           >
-            I work at the intersection of product design and engineering. I
-            prototype in code, design in Figma, and ship in whatever order makes
-            sense. Right now building Dara — an AI finance assistant — and taking
-            on select client work.
+            {aboutCopy.bioParagraphs?.[0] ?? "I work at the intersection of product design and engineering. I prototype in code, design in Figma, and ship in whatever order makes sense. Right now building Dara — an AI finance assistant — and taking on select client work."}
           </p>
 
           <Link
@@ -883,7 +817,7 @@ function TransmissionAbout() {
 
         {/* Right — stats grid */}
         <div style={{ paddingTop: 36 }}>
-          {ABOUT_STATS.map((stat, i) => (
+          {stats.map((stat, i) => (
             <motion.div
               key={stat.label}
               initial={{ opacity: 0, x: 16 }}
@@ -1148,7 +1082,7 @@ function TransmissionWriting({ posts }: { posts: BlogMeta[] }) {
 
 // ── CTA ───────────────────────────────────────────────────────────────────
 
-function TransmissionCTA() {
+function TransmissionCTA({ ctaCopy, ctaLabel }: { ctaCopy: CtaCopy; ctaLabel: string }) {
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.2 });
 
@@ -1188,11 +1122,11 @@ function TransmissionCTA() {
           marginBottom: 32,
         }}
       >
-        I'm the designer you call when you need to ship something real.
+        {ctaCopy.headline ?? "I'm the designer you call when you need to ship something real."}
       </h2>
 
       <Link
-        href="mailto:deronation1@gmail.com"
+        href="#contact"
         data-cursor-label="BOOK"
         style={{
           fontFamily: "monospace",
@@ -1208,7 +1142,7 @@ function TransmissionCTA() {
         onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.85")}
         onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
       >
-        Book a call
+        {ctaLabel}
       </Link>
     </motion.section>
   );
@@ -1220,23 +1154,32 @@ export function TransmissionVariation({
   projects,
   testimonials,
   posts,
+  nav,
+  global: globalConfig,
+  copy,
 }: {
   projects: Project[];
   testimonials: TestimonialItem[];
   posts: BlogMeta[];
+  nav: NavItem[];
+  global: AdminGlobal;
+  copy: AdminCopy;
 }) {
+  const heroCopy = copy.homepage?.hero ?? {};
+  const aboutCopy = copy.homepage?.about ?? {};
+  const ctaCopy = copy.homepage?.cta ?? {};
+
   return (
     <div style={{ background: "#0A0A0A", minHeight: "100vh", cursor: "none" }}>
       <style>{`
-        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
         .transmission-root * { cursor: none !important; }
       `}</style>
 
       <TransmissionCursor />
-      <TransmissionSidebar />
+      <TransmissionTopBar nav={nav} global={globalConfig} />
 
-      <main className="transmission-root" style={{ marginLeft: 260 }}>
-        <TransmissionHero projects={projects} />
+      <main className="transmission-root" style={{ paddingTop: 56 }}>
+        <TransmissionHero projects={projects} heroCopy={heroCopy} />
 
         {/* Work section header */}
         <div
@@ -1279,10 +1222,10 @@ export function TransmissionVariation({
           />
         ))}
 
-        <TransmissionAbout />
+        <TransmissionAbout aboutCopy={aboutCopy} />
         <TransmissionTestimonials testimonials={testimonials} />
         <TransmissionWriting posts={posts} />
-        <TransmissionCTA />
+        <TransmissionCTA ctaCopy={ctaCopy} ctaLabel={globalConfig.ctaButtonLabel} />
       </main>
     </div>
   );
