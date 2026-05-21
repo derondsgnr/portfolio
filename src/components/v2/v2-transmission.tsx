@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence, useInView } from "motion/react";
@@ -9,11 +9,17 @@ import type { Project } from "@/lib/content/projects";
 import type { TestimonialItem } from "@/lib/content/testimonials";
 
 /* ═══════════════════════════════════════════════════════════════
-   TRANSMISSION — Synthesis of Dispatch + Broadcast
-   Dispatch: fixed sidebar, editorial project rows, full-bleed hero
-   Broadcast: reactive sidebar live panel that tracks scrolled work
-   New: custom cursor, industry icons, full content sections
+   TRANSMISSION — Dispatch sidebar + editorial rows + full sections
+   Custom cursor · industry icons · about stats · video hero
    ═══════════════════════════════════════════════════════════════ */
+
+// Profile image URL — set to your Cloudinary photo
+const PROFILE_IMAGE = "";
+
+// Detect video by extension so the hero renders <video> instead of <img>
+function isVideoUrl(url: string) {
+  return /\.(mp4|webm|ogg)(\?.*)?$/i.test(url);
+}
 
 // ── Types ─────────────────────────────────────────────────────────────────
 
@@ -209,7 +215,7 @@ function TransmissionCursor() {
 
 // ── Sidebar ───────────────────────────────────────────────────────────────
 
-function TransmissionSidebar({ activeProject }: { activeProject: Project | null }) {
+function TransmissionSidebar() {
   return (
     <aside
       className="fixed top-0 left-0 h-screen flex flex-col z-40"
@@ -219,13 +225,13 @@ function TransmissionSidebar({ activeProject }: { activeProject: Project | null 
         borderRight: "1px solid rgba(255,255,255,0.055)",
       }}
     >
-      {/* Logo + nav — top block */}
-      <div className="px-7 pt-7 pb-6">
-        <Link href="/" style={{ display: "block", marginBottom: 24 }}>
+      {/* Logo */}
+      <div className="px-8 pt-8 pb-6">
+        <Link href="/">
           <span
             style={{
               fontFamily: "'Anton', sans-serif",
-              fontSize: "19px",
+              fontSize: "22px",
               letterSpacing: "0.08em",
               color: "#E2B93B",
               textTransform: "uppercase",
@@ -234,168 +240,44 @@ function TransmissionSidebar({ activeProject }: { activeProject: Project | null 
             D/
           </span>
         </Link>
-
-        <nav>
-          {NAV_LINKS.map((link, i) => (
-            <Link
-              key={link.label}
-              href={link.href}
-              style={{
-                fontFamily: "monospace",
-                fontSize: "9.5px",
-                letterSpacing: "0.15em",
-                textTransform: "uppercase",
-                color: "rgba(255,255,255,0.22)",
-                padding: "6px 0",
-                display: "flex",
-                alignItems: "center",
-                gap: 9,
-                borderBottom:
-                  i < NAV_LINKS.length - 1 ? "1px solid rgba(255,255,255,0.035)" : "none",
-                transition: "color 0.2s",
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = "#F0F0F0")}
-              onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.22)")}
-            >
-              <span
-                style={{
-                  fontFamily: "monospace",
-                  fontSize: "7.5px",
-                  color: "rgba(255,255,255,0.1)",
-                  letterSpacing: "0.06em",
-                  minWidth: 14,
-                }}
-              >
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              {link.label}
-            </Link>
-          ))}
-        </nav>
       </div>
 
-      {/* Live "in view" panel — middle */}
-      <div className="flex-1 flex flex-col justify-center px-7">
-        <div
-          style={{
-            borderTop: "1px solid rgba(255,255,255,0.045)",
-            paddingTop: 18,
-            borderBottom: "1px solid rgba(255,255,255,0.045)",
-            paddingBottom: 18,
-          }}
-        >
-          <span
+      {/* Nav — vertically centered */}
+      <nav className="flex-1 flex flex-col justify-center px-8 gap-1">
+        {NAV_LINKS.map((link) => (
+          <Link
+            key={link.label}
+            href={link.href}
             style={{
               fontFamily: "monospace",
-              fontSize: "6.5px",
-              letterSpacing: "0.24em",
+              fontSize: "11px",
+              letterSpacing: "0.14em",
               textTransform: "uppercase",
-              color: "rgba(255,255,255,0.15)",
+              color: "rgba(255,255,255,0.28)",
+              padding: "10px 0",
               display: "block",
-              marginBottom: 14,
+              transition: "color 0.2s",
             }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = "#F0F0F0")}
+            onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.28)")}
           >
-            In view
-          </span>
-
-          <AnimatePresence mode="wait">
-            {activeProject ? (
-              <motion.div
-                key={activeProject.id}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.32, ease: [0.25, 0.46, 0.45, 0.94] }}
-              >
-                <span
-                  style={{
-                    fontFamily: "monospace",
-                    fontSize: "7px",
-                    letterSpacing: "0.18em",
-                    textTransform: "uppercase",
-                    color: "#E2B93B",
-                    display: "block",
-                    marginBottom: 7,
-                  }}
-                >
-                  {activeProject.category}
-                </span>
-                <p
-                  style={{
-                    fontFamily: "'Anton', sans-serif",
-                    fontSize: "15px",
-                    letterSpacing: "0.04em",
-                    textTransform: "uppercase",
-                    color: "#F0F0F0",
-                    lineHeight: 1.15,
-                    marginBottom: 9,
-                  }}
-                >
-                  {activeProject.title}
-                </p>
-                <p
-                  style={{
-                    fontFamily: "'Instrument Sans', sans-serif",
-                    fontSize: "11px",
-                    lineHeight: 1.6,
-                    color: "rgba(255,255,255,0.32)",
-                    marginBottom: 12,
-                  }}
-                >
-                  {activeProject.description.length > 85
-                    ? activeProject.description.slice(0, 85) + "…"
-                    : activeProject.description}
-                </p>
-                <Link
-                  href={`/work/${activeProject.slug}`}
-                  data-cursor-label="OPEN"
-                  style={{
-                    fontFamily: "monospace",
-                    fontSize: "7.5px",
-                    letterSpacing: "0.16em",
-                    textTransform: "uppercase",
-                    color: "#E2B93B",
-                    display: "inline-block",
-                    transition: "opacity 0.15s",
-                  }}
-                  onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.7")}
-                  onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
-                >
-                  View case study →
-                </Link>
-              </motion.div>
-            ) : (
-              <motion.p
-                key="idle"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
-                style={{
-                  fontFamily: "'Instrument Sans', sans-serif",
-                  fontSize: "11px",
-                  lineHeight: 1.6,
-                  color: "rgba(255,255,255,0.18)",
-                }}
-              >
-                Scroll to explore the work.
-              </motion.p>
-            )}
-          </AnimatePresence>
-        </div>
-      </div>
+            {link.label}
+          </Link>
+        ))}
+      </nav>
 
       {/* Identity — bottom */}
-      <div className="px-7 pb-7">
-        <div className="flex items-center gap-2 mb-3">
+      <div className="px-8 pb-8">
+        {/* Availability pulse */}
+        <div className="flex items-center gap-2 mb-5">
           <span
             style={{
-              width: 5,
-              height: 5,
+              width: 6,
+              height: 6,
               borderRadius: "50%",
               background: "#4ade80",
               display: "block",
-              boxShadow: "0 0 5px #4ade80",
+              boxShadow: "0 0 6px #4ade80",
               animation: "pulse 2s ease-in-out infinite",
               flexShrink: 0,
             }}
@@ -403,53 +285,107 @@ function TransmissionSidebar({ activeProject }: { activeProject: Project | null 
           <span
             style={{
               fontFamily: "monospace",
-              fontSize: "7.5px",
+              fontSize: "9px",
               letterSpacing: "0.16em",
               textTransform: "uppercase",
-              color: "rgba(255,255,255,0.28)",
+              color: "rgba(255,255,255,0.35)",
             }}
           >
             Available for work
           </span>
         </div>
 
-        <p
-          style={{
-            fontFamily: "'Instrument Sans', sans-serif",
-            fontSize: "12px",
-            color: "#F0F0F0",
-            fontWeight: 500,
-            marginBottom: 1,
-          }}
-        >
-          Deron
-        </p>
-        <p
-          style={{
-            fontFamily: "monospace",
-            fontSize: "8.5px",
-            color: "rgba(255,255,255,0.22)",
-            letterSpacing: "0.1em",
-            marginBottom: 13,
-          }}
-        >
-          @derondsgnr
-        </p>
+        {/* Profile image + name row */}
+        <div className="flex items-center gap-3 mb-5">
+          {PROFILE_IMAGE ? (
+            <Image
+              src={PROFILE_IMAGE}
+              alt="Deron"
+              width={38}
+              height={38}
+              style={{ borderRadius: "50%", objectFit: "cover", flexShrink: 0 }}
+            />
+          ) : (
+            <div
+              style={{
+                width: 38,
+                height: 38,
+                borderRadius: "50%",
+                background: "#1A1A1A",
+                border: "1px solid rgba(255,255,255,0.1)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexShrink: 0,
+              }}
+            >
+              <span
+                style={{
+                  fontFamily: "'Anton', sans-serif",
+                  fontSize: "14px",
+                  color: "#E2B93B",
+                  letterSpacing: "0.04em",
+                }}
+              >
+                D
+              </span>
+            </div>
+          )}
+          <div>
+            <p
+              style={{
+                fontFamily: "'Instrument Sans', sans-serif",
+                fontSize: "13px",
+                color: "#F0F0F0",
+                fontWeight: 500,
+                marginBottom: 1,
+              }}
+            >
+              Deron
+            </p>
+            <p
+              style={{
+                fontFamily: "monospace",
+                fontSize: "9px",
+                color: "rgba(255,255,255,0.3)",
+                letterSpacing: "0.1em",
+              }}
+            >
+              @derondsgnr
+            </p>
+          </div>
+        </div>
 
-        <div className="flex items-center gap-3">
+        {/* Social icons — prominent squares */}
+        <div className="flex items-center gap-2">
           {SOCIALS.map((s) => (
             <Link
               key={s.label}
               href={s.href}
               style={{
+                width: 36,
+                height: 36,
+                border: "1px solid rgba(255,255,255,0.1)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
                 fontFamily: "monospace",
-                fontSize: "8px",
-                letterSpacing: "0.1em",
-                color: "rgba(255,255,255,0.18)",
-                transition: "color 0.2s",
+                fontSize: "9px",
+                letterSpacing: "0.08em",
+                color: "rgba(255,255,255,0.4)",
+                transition: "all 0.2s",
+                flexShrink: 0,
               }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = "#E2B93B")}
-              onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.18)")}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = "#E2B93B";
+                e.currentTarget.style.borderColor = "#E2B93B";
+                e.currentTarget.style.background = "rgba(226,185,59,0.06)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = "rgba(255,255,255,0.4)";
+                e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)";
+                e.currentTarget.style.background = "transparent";
+              }}
             >
               {s.label}
             </Link>
@@ -475,17 +411,29 @@ function TransmissionHero({ projects }: { projects: Project[] }) {
 
   return (
     <section className="relative" style={{ height: "100vh" }}>
-      {/* Full-bleed image */}
+      {/* Full-bleed image or video */}
       <div className="absolute inset-0">
         {featured?.image && (
-          <Image
-            src={featured.image}
-            alt={featured.title}
-            fill
-            className="object-cover"
-            style={{ filter: "brightness(0.32)" }}
-            priority
-          />
+          isVideoUrl(featured.image) ? (
+            <video
+              src={featured.image}
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="absolute inset-0 w-full h-full object-cover"
+              style={{ filter: "brightness(0.32)" }}
+            />
+          ) : (
+            <Image
+              src={featured.image}
+              alt={featured.title}
+              fill
+              className="object-cover"
+              style={{ filter: "brightness(0.32)" }}
+              priority
+            />
+          )
         )}
         <div
           className="absolute inset-0"
@@ -653,27 +601,14 @@ function TransmissionHero({ projects }: { projects: Project[] }) {
 function TransmissionProjectRow({
   project,
   index,
-  onVisible,
 }: {
   project: Project;
   index: number;
-  onVisible: (p: Project) => void;
 }) {
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.18 });
   const [hovered, setHovered] = useState(false);
   const catIcon = CATEGORY_ICONS[project.category] ?? DefaultCategoryIcon;
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) onVisible(project); },
-      { threshold: 0.28 }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, [project, onVisible]);
 
   return (
     <motion.article
@@ -833,9 +768,17 @@ function TransmissionProjectRow({
 
 // ── About Strip ───────────────────────────────────────────────────────────
 
+const ABOUT_STATS = [
+  { label: "Mode", value: "Remote" },
+  { label: "Years", value: "2022 — now" },
+  { label: "Industries", value: "Fintech, Transport, AI, Startups" },
+  { label: "Shipped", value: "3 live products" },
+  { label: "Available", value: "Yes" },
+];
+
 function TransmissionAbout() {
   const ref = useRef<HTMLElement>(null);
-  const inView = useInView(ref, { once: true, amount: 0.18 });
+  const inView = useInView(ref, { once: true, amount: 0.14 });
 
   return (
     <motion.section
@@ -843,99 +786,131 @@ function TransmissionAbout() {
       initial={{ opacity: 0, y: 28 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
-      className="relative px-14 py-24 overflow-hidden"
+      className="relative overflow-hidden"
       style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}
     >
-      {/* Ghost heading */}
       <div
-        className="absolute inset-0 flex items-center overflow-hidden pointer-events-none"
-        aria-hidden
+        className="px-14 pt-20 pb-16"
+        style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          gap: "64px",
+          alignItems: "start",
+        }}
       >
-        <span
-          style={{
-            fontFamily: "'Anton', sans-serif",
-            fontSize: "clamp(5rem, 13vw, 13rem)",
-            letterSpacing: "0.04em",
-            textTransform: "uppercase",
-            color: "rgba(255,255,255,0.022)",
-            lineHeight: 1,
-            userSelect: "none",
-            whiteSpace: "nowrap",
-          }}
-        >
-          BUILDER
-        </span>
-      </div>
+        {/* Left — heading + bio */}
+        <div>
+          <span
+            style={{
+              fontFamily: "monospace",
+              fontSize: "7.5px",
+              letterSpacing: "0.22em",
+              textTransform: "uppercase",
+              color: "rgba(255,255,255,0.2)",
+              display: "block",
+              marginBottom: 20,
+            }}
+          >
+            About
+          </span>
 
-      <div className="relative max-w-xl">
-        <span
-          style={{
-            fontFamily: "monospace",
-            fontSize: "7.5px",
-            letterSpacing: "0.22em",
-            textTransform: "uppercase",
-            color: "rgba(255,255,255,0.2)",
-            display: "block",
-            marginBottom: 20,
-          }}
-        >
-          About
-        </span>
+          <p
+            style={{
+              fontFamily: "'Anton', sans-serif",
+              fontSize: "clamp(1.5rem, 2.5vw, 2rem)",
+              letterSpacing: "0.03em",
+              textTransform: "uppercase",
+              color: "#F0F0F0",
+              lineHeight: 1.2,
+              marginBottom: 20,
+            }}
+          >
+            Designer who ships. Based in Nigeria, building for the world.
+          </p>
 
-        <p
-          style={{
-            fontFamily: "'Anton', sans-serif",
-            fontSize: "clamp(1.4rem, 2.3vw, 1.9rem)",
-            letterSpacing: "0.03em",
-            textTransform: "uppercase",
-            color: "#F0F0F0",
-            lineHeight: 1.25,
-            marginBottom: 18,
-          }}
-        >
-          Designer who ships. Based in Nigeria, building for the world.
-        </p>
+          <p
+            style={{
+              fontFamily: "'Instrument Sans', sans-serif",
+              fontSize: "14px",
+              lineHeight: 1.78,
+              color: "rgba(255,255,255,0.52)",
+              marginBottom: 28,
+            }}
+          >
+            I work at the intersection of product design and engineering. I
+            prototype in code, design in Figma, and ship in whatever order makes
+            sense. Right now building Dara — an AI finance assistant — and taking
+            on select client work.
+          </p>
 
-        <p
-          style={{
-            fontFamily: "'Instrument Sans', sans-serif",
-            fontSize: "13.5px",
-            lineHeight: 1.75,
-            color: "rgba(255,255,255,0.52)",
-            maxWidth: 500,
-            marginBottom: 28,
-          }}
-        >
-          I work at the intersection of product design and engineering. I prototype in code,
-          design in Figma, and ship in whatever order makes sense. Right now building Dara
-          — an AI finance assistant — and taking on select client work.
-        </p>
+          <Link
+            href="/about"
+            data-cursor-label="ABOUT"
+            style={{
+              fontFamily: "monospace",
+              fontSize: "8.5px",
+              letterSpacing: "0.18em",
+              textTransform: "uppercase",
+              color: "rgba(255,255,255,0.38)",
+              border: "1px solid rgba(255,255,255,0.12)",
+              padding: "10px 22px",
+              display: "inline-block",
+              transition: "all 0.2s",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = "#F0F0F0";
+              e.currentTarget.style.borderColor = "rgba(255,255,255,0.38)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = "rgba(255,255,255,0.38)";
+              e.currentTarget.style.borderColor = "rgba(255,255,255,0.12)";
+            }}
+          >
+            Full story →
+          </Link>
+        </div>
 
-        <Link
-          href="/about"
-          data-cursor-label="ABOUT"
-          style={{
-            fontFamily: "monospace",
-            fontSize: "8.5px",
-            letterSpacing: "0.18em",
-            textTransform: "uppercase",
-            color: "rgba(255,255,255,0.38)",
-            border: "1px solid rgba(255,255,255,0.12)",
-            padding: "10px 22px",
-            display: "inline-block",
-            transition: "all 0.2s",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.color = "#F0F0F0";
-            e.currentTarget.style.borderColor = "rgba(255,255,255,0.38)";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.color = "rgba(255,255,255,0.38)";
-            e.currentTarget.style.borderColor = "rgba(255,255,255,0.12)";
-          }}
-        >
-          Full story →
-        </Link>
+        {/* Right — stats grid */}
+        <div style={{ paddingTop: 36 }}>
+          {ABOUT_STATS.map((stat, i) => (
+            <motion.div
+              key={stat.label}
+              initial={{ opacity: 0, x: 16 }}
+              animate={inView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.55, delay: 0.1 + i * 0.07, ease: [0.25, 0.46, 0.45, 0.94] }}
+              style={{
+                display: "grid",
+                gridTemplateColumns: "140px 1fr",
+                gap: 16,
+                alignItems: "baseline",
+                padding: "14px 0",
+                borderBottom: "1px solid rgba(255,255,255,0.05)",
+              }}
+            >
+              <span
+                style={{
+                  fontFamily: "monospace",
+                  fontSize: "8px",
+                  letterSpacing: "0.2em",
+                  textTransform: "uppercase",
+                  color: "rgba(255,255,255,0.28)",
+                }}
+              >
+                {stat.label}
+              </span>
+              <span
+                style={{
+                  fontFamily: "'Instrument Sans', sans-serif",
+                  fontSize: "14px",
+                  color: "rgba(255,255,255,0.72)",
+                  fontWeight: 400,
+                }}
+              >
+                {stat.value}
+              </span>
+            </motion.div>
+          ))}
+        </div>
       </div>
     </motion.section>
   );
@@ -1239,10 +1214,6 @@ export function TransmissionVariation({
   testimonials: TestimonialItem[];
   posts: BlogMeta[];
 }) {
-  const [activeProject, setActiveProject] = useState<Project | null>(null);
-
-  const handleVisible = useCallback((p: Project) => setActiveProject(p), []);
-
   return (
     <div style={{ background: "#0A0A0A", minHeight: "100vh", cursor: "none" }}>
       <style>{`
@@ -1251,7 +1222,7 @@ export function TransmissionVariation({
       `}</style>
 
       <TransmissionCursor />
-      <TransmissionSidebar activeProject={activeProject} />
+      <TransmissionSidebar />
 
       <main className="transmission-root" style={{ marginLeft: 260 }}>
         <TransmissionHero projects={projects} />
@@ -1294,7 +1265,6 @@ export function TransmissionVariation({
             key={project.id}
             project={project}
             index={i}
-            onVisible={handleVisible}
           />
         ))}
 
