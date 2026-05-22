@@ -127,10 +127,10 @@ function ViewToggle({ mode, onToggle, labelA, labelB }: { mode: "a" | "b"; onTog
         className="px-3 py-1.5 rounded-full transition-all duration-300"
         style={{
           fontFamily: "monospace",
-          fontSize: "9px",
+          fontSize: "11px",
           letterSpacing: "0.15em",
           textTransform: "uppercase",
-          color: mode === "a" ? "#0A0A0A" : "rgba(255,255,255,0.3)",
+          color: mode === "a" ? "#0A0A0A" : "rgba(255,255,255,0.5)",
           background: mode === "a" ? "#E2B93B" : "transparent",
         }}
       >
@@ -142,10 +142,10 @@ function ViewToggle({ mode, onToggle, labelA, labelB }: { mode: "a" | "b"; onTog
         className="px-3 py-1.5 rounded-full transition-all duration-300"
         style={{
           fontFamily: "monospace",
-          fontSize: "9px",
+          fontSize: "11px",
           letterSpacing: "0.15em",
           textTransform: "uppercase",
-          color: mode === "b" ? "#0A0A0A" : "rgba(255,255,255,0.3)",
+          color: mode === "b" ? "#0A0A0A" : "rgba(255,255,255,0.5)",
           background: mode === "b" ? "#E2B93B" : "transparent",
         }}
       >
@@ -198,7 +198,7 @@ function AboutCTA({ copy }: { copy?: PageCopy }) {
             {ctaSecondary}
           </button>
         </motion.div>
-        <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.8, duration: 0.6 }} className="mt-6" style={{ fontFamily: "monospace", fontSize: "10px", letterSpacing: "0.15em", color: "rgba(255,255,255,0.2)" }}>
+        <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.8, duration: 0.6 }} className="mt-6" style={{ fontFamily: "monospace", fontSize: "11px", letterSpacing: "0.15em", color: "rgba(255,255,255,0.45)" }}>
           {subtext}
         </motion.p>
       </div>
@@ -214,11 +214,11 @@ function SynthesisFooter() {
   return (
     <div className="relative z-[2] py-8 px-8">
       <motion.div style={{ transform: "rotate(-1.5deg)" }}>
-        <span style={{ fontFamily: "monospace", fontSize: "9px", letterSpacing: "0.15em", color: "rgba(255,255,255,0.1)", textTransform: "uppercase" }}>{copyright}</span>
+        <span style={{ fontFamily: "monospace", fontSize: "11px", letterSpacing: "0.15em", color: "rgba(255,255,255,0.4)", textTransform: "uppercase" }}>{copyright}</span>
       </motion.div>
       <div className="flex justify-end gap-6 mt-4" style={{ transform: "rotate(1.5deg)" }}>
         {(socialLinks ?? []).map((link) => (
-          <a key={link.label} href={link.url} target="_blank" rel="noopener noreferrer" className="hover:text-[#E2B93B] transition-colors" style={{ fontFamily: "monospace", fontSize: "9px", letterSpacing: "0.15em", color: "rgba(255,255,255,0.1)", textTransform: "uppercase" }}>
+          <a key={link.label} href={link.url} target="_blank" rel="noopener noreferrer" className="hover:text-[#E2B93B] transition-colors" style={{ fontFamily: "monospace", fontSize: "11px", letterSpacing: "0.15em", color: "rgba(255,255,255,0.45)", textTransform: "uppercase" }}>
             {link.label}
           </a>
         ))}
@@ -244,7 +244,7 @@ function SignalWorkHero({ projects = V2_PROJECTS, copy }: { projects?: typeof V2
   const activeLabel = copy?.hero?.activeLabel ?? "SIGNAL: ACTIVE";
 
   return (
-    <section className="relative z-[2] pt-32 pb-16 px-8">
+    <section className="relative z-[2] pt-24 pb-10 px-4 sm:px-6 md:pt-32 md:pb-16 md:px-8">
       <motion.div
         initial={{ opacity: 0, clipPath: "inset(0 100% 0 0)" }}
         animate={{ opacity: 1, clipPath: "inset(0 0% 0 0)" }}
@@ -280,7 +280,7 @@ function SignalWorkHero({ projects = V2_PROJECTS, copy }: { projects?: typeof V2
         transition={{ delay: 1, duration: 0.8 }}
         className="mt-6 flex justify-between items-center"
       >
-        <span style={{ fontFamily: "monospace", fontSize: "9px", color: "rgba(255,255,255,0.2)", letterSpacing: "0.1em" }}>
+        <span style={{ fontFamily: "monospace", fontSize: "11px", color: "rgba(255,255,255,0.45)", letterSpacing: "0.1em" }}>
           {projects.length} {countSuffix}
         </span>
         <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#E2B93B" }}>
@@ -311,18 +311,38 @@ function WorkListView({ projects = V2_PROJECTS }: { projects?: typeof V2_PROJECT
           onClick={withSound(() => (project as any).slug && router.push(`/work/${(project as any).slug}`), "navigate")}
         >
           <div className="h-px" style={{ background: "rgba(255,255,255,0.04)" }} />
-          <div className="py-10 flex items-baseline justify-between">
-            <span style={{ fontFamily: "monospace", fontSize: "9px", letterSpacing: "0.2em", color: hoveredIdx === i ? "#E2B93B" : "rgba(255,255,255,0.15)", transition: "color 0.3s" }}>
+
+          {/* Mobile layout — stacked */}
+          <div className="md:hidden py-6">
+            <div className="flex items-center justify-between mb-2">
+              <span style={{ fontFamily: "monospace", fontSize: "11px", letterSpacing: "0.2em", color: hoveredIdx === i ? "#E2B93B" : "rgba(255,255,255,0.5)" }}>
+                [{project.id}]
+              </span>
+              <span style={{ fontFamily: "monospace", fontSize: "11px", color: "rgba(255,255,255,0.45)" }}>
+                {project.year}
+              </span>
+            </div>
+            <span style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(2rem, 10vw, 3.5rem)", lineHeight: 1, letterSpacing: "-0.02em", textTransform: "uppercase", color: hoveredIdx === i ? "#E2B93B" : "rgba(255,255,255,0.85)", display: "block", marginBottom: "6px" }}>
+              <ScrambleText text={project.title} speed={20} />
+            </span>
+            <span style={{ fontFamily: "monospace", fontSize: "11px", letterSpacing: "0.12em", color: "rgba(255,255,255,0.45)", textTransform: "uppercase" }}>
+              {project.category}
+            </span>
+          </div>
+
+          {/* Desktop layout — horizontal */}
+          <div className="hidden md:flex py-10 items-baseline justify-between">
+            <span style={{ fontFamily: "monospace", fontSize: "11px", letterSpacing: "0.2em", color: hoveredIdx === i ? "#E2B93B" : "rgba(255,255,255,0.5)", transition: "color 0.3s" }}>
               [{project.id}]
             </span>
             <span style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(2rem, 5vw, 4.5rem)", lineHeight: 1, letterSpacing: "-0.02em", textTransform: "uppercase", color: hoveredIdx === i ? "#E2B93B" : "rgba(255,255,255,0.8)", transition: "color 0.5s ease" }}>
               <ScrambleText text={project.title} speed={20} />
             </span>
             <div className="text-right">
-              <span className="block" style={{ fontFamily: "monospace", fontSize: "10px", letterSpacing: "0.15em", color: "rgba(255,255,255,0.2)", textTransform: "uppercase" }}>
+              <span className="block" style={{ fontFamily: "monospace", fontSize: "11px", letterSpacing: "0.15em", color: "rgba(255,255,255,0.5)", textTransform: "uppercase" }}>
                 {project.category}
               </span>
-              <span className="block mt-1" style={{ fontFamily: "monospace", fontSize: "9px", color: "rgba(255,255,255,0.1)" }}>
+              <span className="block mt-1" style={{ fontFamily: "monospace", fontSize: "11px", color: "rgba(255,255,255,0.45)" }}>
                 {project.year}
               </span>
             </div>
@@ -418,10 +438,10 @@ function WorkGridView({ projects = V2_PROJECTS }: { projects?: typeof V2_PROJECT
           whileInView={{ opacity: 1, clipPath: "inset(0 0% 0 0)" }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: i * 0.15, ease: [0.77, 0, 0.175, 1] }}
-          className="group relative flex min-h-[400px] cursor-pointer flex-col overflow-hidden md:min-h-[420px]"
+          className="group relative flex min-h-[380px] cursor-pointer flex-col overflow-hidden sm:min-h-[460px] md:min-h-[560px]"
           onClick={withSound(() => (project as any).slug && router.push(`/work/${(project as any).slug}`), "navigate")}
         >
-          <div className="relative min-h-[200px] flex-[1.2] shrink-0">
+          <div className="relative min-h-[220px] sm:min-h-[280px] md:min-h-[340px] flex-[2.5] shrink-0">
             <img
               src={project.image}
               alt=""
@@ -479,8 +499,147 @@ function WorkGridView({ projects = V2_PROJECTS }: { projects?: typeof V2_PROJECT
   );
 }
 
+/* ─── Code Snippets ──────────────────────────────────────────── */
+type CodeSnippet = {
+  id: string;
+  title: string;
+  description: string;
+  tags: string[];
+  type: "component" | "hook" | "flow" | "animation";
+  previewUrl?: string;
+  githubUrl?: string;
+};
+
+const CODE_SNIPPETS: CodeSnippet[] = [
+  {
+    id: "cs-01",
+    title: "Scramble Text",
+    description: "Character-by-character random reveal. Scroll-triggered, configurable speed, sound-aware. Core signature interaction across the site.",
+    tags: ["React", "TypeScript", "Hooks"],
+    type: "hook",
+  },
+  {
+    id: "cs-02",
+    title: "Ghost Trail Cursor",
+    description: "Crosshair with spring physics + 7-dot ghost trail via requestAnimationFrame. Arms retract on hover, label tag on data-cursor-label elements.",
+    tags: ["React", "motion/react", "rAF"],
+    type: "animation",
+  },
+  {
+    id: "cs-03",
+    title: "Booking Drawer",
+    description: "Slide-over contact drawer with Cal.com embed, tab routing between Book / Message, and full reduced-motion support.",
+    tags: ["React", "Radix UI", "TypeScript"],
+    type: "component",
+  },
+  {
+    id: "cs-04",
+    title: "Exploration Viewer",
+    description: "Full-screen media viewer — wheel navigation, touch swipe, keyboard control, direction-aware transitions, focus trap, and ARIA live region.",
+    tags: ["React", "motion/react", "A11y"],
+    type: "flow",
+  },
+];
+
+function CodeSnippetsView() {
+  const [active, setActive] = useState<CodeSnippet | null>(null);
+
+  return (
+    <>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-1">
+        {CODE_SNIPPETS.map((snippet, i) => (
+          <motion.div
+            key={snippet.id}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: i * 0.1 }}
+            className="group relative flex flex-col gap-4 p-5 sm:p-6 md:p-8 overflow-hidden"
+            style={{ background: "rgba(255,255,255,0.015)", border: "1px solid rgba(255,255,255,0.06)" }}
+          >
+            {/* Hover accent line */}
+            <div className="absolute top-0 left-0 right-0 h-px transition-all duration-500" style={{ background: "rgba(226,185,59,0)" }} onMouseEnter={(e) => ((e.currentTarget as HTMLDivElement).style.background = "rgba(226,185,59,0.4)")} onMouseLeave={(e) => ((e.currentTarget as HTMLDivElement).style.background = "rgba(226,185,59,0)")} />
+
+            <div className="flex items-start justify-between gap-4">
+              <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#E2B93B", letterSpacing: "0.15em" }}>[{snippet.id}]</span>
+              <span style={{ fontFamily: "monospace", fontSize: "10px", color: "rgba(255,255,255,0.5)", letterSpacing: "0.15em", textTransform: "uppercase", border: "1px solid rgba(255,255,255,0.12)", padding: "2px 8px" }}>
+                {snippet.type}
+              </span>
+            </div>
+
+            <span style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(1.5rem, 5vw, 2rem)", lineHeight: 1, letterSpacing: "-0.02em", textTransform: "uppercase", color: "rgba(255,255,255,0.85)" }}>
+              {snippet.title}
+            </span>
+
+            <p style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "0.85rem", lineHeight: 1.7, fontWeight: 300, color: "rgba(255,255,255,0.65)", flex: 1 }}>
+              {snippet.description}
+            </p>
+
+            <div className="flex flex-wrap gap-1.5">
+              {snippet.tags.map((tag) => (
+                <span key={tag} style={{ fontFamily: "monospace", fontSize: "10px", color: "rgba(255,255,255,0.45)", border: "1px solid rgba(255,255,255,0.1)", padding: "2px 8px", letterSpacing: "0.05em" }}>
+                  {tag}
+                </span>
+              ))}
+            </div>
+
+            {snippet.previewUrl && (
+              <button
+                onClick={() => setActive(snippet)}
+                className="self-start transition-colors duration-300 hover:bg-white"
+                style={{ fontFamily: "monospace", fontSize: "9px", letterSpacing: "0.15em", textTransform: "uppercase", color: "#0A0A0A", background: "#E2B93B", padding: "8px 20px" }}
+              >
+                Preview →
+              </button>
+            )}
+          </motion.div>
+        ))}
+      </div>
+
+      <p className="mt-16 text-center" style={{ fontFamily: "monospace", fontSize: "11px", color: "rgba(255,255,255,0.35)", letterSpacing: "0.15em" }}>
+        MORE COMPONENTS INCOMING — EACH ONE WILL BE INTERACTIVE
+      </p>
+
+      {/* Fullscreen preview overlay */}
+      <AnimatePresence>
+        {active?.previewUrl && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex flex-col"
+            style={{ background: "#0A0A0A" }}
+          >
+            <div className="flex items-center justify-between px-6 py-4 border-b" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
+              <div className="flex items-center gap-4">
+                <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#E2B93B", letterSpacing: "0.15em" }}>[{active.id}]</span>
+                <span style={{ fontFamily: "'Anton', sans-serif", fontSize: "1.2rem", letterSpacing: "-0.02em", textTransform: "uppercase", color: "#f0f0f0" }}>{active.title}</span>
+              </div>
+              <button
+                onClick={() => setActive(null)}
+                className="w-8 h-8 flex items-center justify-center hover:border-[#E2B93B] transition-colors"
+                style={{ border: "1px solid rgba(255,255,255,0.15)" }}
+              >
+                <span style={{ fontFamily: "monospace", fontSize: "14px", color: "rgba(255,255,255,0.6)" }}>×</span>
+              </button>
+            </div>
+            <iframe
+              src={active.previewUrl}
+              className="flex-1 border-0"
+              title={active.title}
+              allow="accelerometer; camera; encrypted-media; geolocation; gyroscope; microphone; midi"
+              sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+}
+
 export function SynthesisWorkPage({ projects, copy }: { projects?: typeof V2_PROJECTS; copy?: PageCopy } = {}) {
-  const [view, setView] = useState<"a" | "b">("a");
+  const [view, setView] = useState<"a" | "b">("a"); // "a" = Grid (default), "b" = List
+  const [tab, setTab] = useState<"projects" | "code">("projects");
 
   return (
     <main className="relative bg-[#0A0A0A] min-h-screen">
@@ -490,27 +649,74 @@ export function SynthesisWorkPage({ projects, copy }: { projects?: typeof V2_PRO
 
       <SignalWorkHero projects={projects} copy={copy} />
 
-      {/* Toggle + content */}
-      <section className="relative z-[2] px-8 pb-32">
+      <section className="relative z-[2] px-4 sm:px-6 md:px-8 pb-20 md:pb-32">
         <div className="max-w-6xl mx-auto">
-          <div className="flex justify-end mb-12">
-            <ViewToggle
-              mode={view}
-              onToggle={() => setView(view === "a" ? "b" : "a")}
-              labelA="List"
-              labelB="Grid"
-            />
-          </div>
+          {/* Toolbar: tabs left + view toggle right */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.5, duration: 0.6 }}
+            className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8 md:mb-12 gap-3"
+          >
+            {/* Tab switcher */}
+            <div
+              className="flex items-center gap-1 px-1 py-0.5 rounded-full"
+              style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.06)" }}
+            >
+              <button
+                onClick={() => setTab("projects")}
+                className="px-3 py-1.5 rounded-full transition-all duration-300"
+                style={{
+                  fontFamily: "monospace",
+                  fontSize: "11px",
+                  letterSpacing: "0.15em",
+                  textTransform: "uppercase" as const,
+                  color: tab === "projects" ? "#0A0A0A" : "rgba(255,255,255,0.5)",
+                  background: tab === "projects" ? "#E2B93B" : "transparent",
+                }}
+              >
+                Projects
+              </button>
+              <button
+                onClick={() => setTab("code")}
+                className="px-3 py-1.5 rounded-full transition-all duration-300"
+                style={{
+                  fontFamily: "monospace",
+                  fontSize: "11px",
+                  letterSpacing: "0.15em",
+                  textTransform: "uppercase" as const,
+                  color: tab === "code" ? "#0A0A0A" : "rgba(255,255,255,0.5)",
+                  background: tab === "code" ? "#E2B93B" : "transparent",
+                }}
+              >
+                Code
+              </button>
+            </div>
+
+            {/* View toggle — only on Projects tab */}
+            {tab === "projects" && (
+              <ViewToggle
+                mode={view}
+                onToggle={() => setView(view === "a" ? "b" : "a")}
+                labelA="Grid"
+                labelB="List"
+              />
+            )}
+          </motion.div>
 
           <AnimatePresence mode="wait">
             <motion.div
-              key={view}
+              key={tab === "projects" ? `projects-${view}` : "code"}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.4 }}
             >
-              {view === "a" ? <WorkListView projects={projects} /> : <WorkGridView projects={projects} />}
+              {tab === "projects" ? (
+                view === "a" ? <WorkGridView projects={projects} /> : <WorkListView projects={projects} />
+              ) : (
+                <CodeSnippetsView />
+              )}
             </motion.div>
           </AnimatePresence>
         </div>
@@ -558,7 +764,7 @@ function SynthesisCraftHero({ copy, heroBackground }: { copy?: PageCopy; heroBac
           animate={{ opacity: 1 }}
           transition={{ delay: 1, duration: 0.8 }}
           className="mt-6 max-w-md"
-          style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "0.85rem", lineHeight: 1.7, fontWeight: 300, fontStyle: "italic", color: "rgba(255,255,255,0.25)" }}
+          style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "0.85rem", lineHeight: 1.7, fontWeight: 300, fontStyle: "italic", color: "rgba(255,255,255,0.55)" }}
         >
           The work between the work. Explorations, side frequencies, experiments in form.
         </motion.p>
@@ -614,14 +820,14 @@ function CraftListView({ craftItems }: { craftItems: CraftItem[] }) {
               <ScrambleText
                 text={item.title}
                 speed={20}
-                style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(1.2rem, 2vw, 1.8rem)", lineHeight: 1, letterSpacing: "-0.02em", textTransform: "uppercase", color: "rgba(255,255,255,0.6)" }}
+                style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(1.2rem, 2vw, 1.8rem)", lineHeight: 1, letterSpacing: "-0.02em", textTransform: "uppercase", color: "rgba(255,255,255,0.85)" }}
               />
             </div>
             <div className="md:col-span-2">
-              <span style={{ fontFamily: "monospace", fontSize: "9px", color: "rgba(255,255,255,0.15)" }}>[{item.category.toUpperCase()}]</span>
+              <span style={{ fontFamily: "monospace", fontSize: "11px", color: "rgba(255,255,255,0.5)" }}>[{item.category.toUpperCase()}]</span>
             </div>
             <div className="md:col-span-3">
-              <p style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "0.75rem", lineHeight: 1.5, fontWeight: 300, color: "rgba(255,255,255,0.2)" }}>
+              <p style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "0.8rem", lineHeight: 1.55, fontWeight: 300, color: "rgba(255,255,255,0.55)" }}>
                 {item.description}
               </p>
             </div>

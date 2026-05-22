@@ -7,10 +7,10 @@
       "items": [
         {
           "id": "c-01",
-          "title": "Typography Exploration",
-          "category": "Type",
-          "description": "Experimental lettering compositions pushing the boundaries of editorial design.",
-          "image": "https://images.unsplash.com/photo-1734543920075-59872330bec2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+          "title": "Luxury Apparels Poster",
+          "category": "Poster",
+          "description": "Social media visual exploration for a luxury brand",
+          "image": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1778180599/Instagram_post_-_10_acnzdh.png",
           "width": 1080,
           "height": 1620,
           "status": "published",
@@ -55,10 +55,10 @@
         },
         {
           "id": "c-05",
-          "title": "Component System",
+          "title": "Careeredge Dashrboard",
           "category": "UI",
-          "description": "Atomic design tokens and component libraries for personal and client projects.",
-          "image": "https://images.unsplash.com/photo-1672689956124-18666b4cdae4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+          "description": "Snippets of a dashboard from project careeredged",
+          "image": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1778180541/Parent_After_3_glhx1x.png",
           "width": 1920,
           "height": 1080,
           "status": "published",
