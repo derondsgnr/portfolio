@@ -165,7 +165,7 @@ function AboutCTA({ copy }: { copy?: PageCopy }) {
   const ctaSecondary = copy?.cta?.ctaSecondary ?? "SEND A MESSAGE";
   const subtext = copy?.cta?.subtext ?? "FREE 30-MINUTE DISCOVERY CALL";
   return (
-    <section className="relative z-[2] py-32 px-8 overflow-hidden">
+    <section className="relative z-[2] py-16 sm:py-24 md:py-32 px-6 sm:px-8 md:px-10 overflow-hidden">
       <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 60% 50% at 50% 40%, rgba(226,185,59,0.06) 0%, transparent 70%)" }} />
       <div className="max-w-4xl mx-auto text-center relative z-10">
         <span style={{ fontFamily: "monospace", fontSize: "9px", letterSpacing: "0.3em", color: "rgba(226,185,59,0.3)" }}>{label}</span>
@@ -184,7 +184,7 @@ function AboutCTA({ copy }: { copy?: PageCopy }) {
           <button
             onClick={withSound(() => open("book"))}
             onMouseEnter={onHover}
-            className="text-[11px] tracking-[0.2em] text-[#0A0A0A] bg-[#E2B93B] px-8 py-3.5 hover:bg-white transition-colors duration-300"
+            className="text-[11px] tracking-[0.2em] text-[#0A0A0A] bg-[#E2B93B] px-6 sm:px-8 py-3.5 hover:bg-white transition-colors duration-300 w-full sm:w-auto"
             style={{ fontFamily: "monospace" }}
           >
             {ctaPrimary}
@@ -192,7 +192,7 @@ function AboutCTA({ copy }: { copy?: PageCopy }) {
           <button
             onClick={withSound(() => open("message"))}
             onMouseEnter={onHover}
-            className="text-[11px] tracking-[0.2em] text-[#E2B93B] border border-[#E2B93B]/30 px-8 py-3.5 hover:bg-[#E2B93B]/10 transition-colors duration-300"
+            className="text-[11px] tracking-[0.2em] text-[#E2B93B] border border-[#E2B93B]/30 px-6 sm:px-8 py-3.5 hover:bg-[#E2B93B]/10 transition-colors duration-300 w-full sm:w-auto"
             style={{ fontFamily: "monospace" }}
           >
             {ctaSecondary}
@@ -212,7 +212,7 @@ function SynthesisFooter() {
   const socialLinks = global.socialLinks;
   const copyright = global.footerCopyright ?? `© ${new Date().getFullYear()} DERONDSGNR`;
   return (
-    <div className="relative z-[2] py-8 px-8">
+    <div className="relative z-[2] py-8 px-6 sm:px-8 md:px-10">
       <motion.div style={{ transform: "rotate(-1.5deg)" }}>
         <span style={{ fontFamily: "monospace", fontSize: "11px", letterSpacing: "0.15em", color: "rgba(255,255,255,0.4)", textTransform: "uppercase" }}>{copyright}</span>
       </motion.div>
@@ -649,7 +649,7 @@ export function SynthesisWorkPage({ projects, copy }: { projects?: typeof V2_PRO
 
       <SignalWorkHero projects={projects} copy={copy} />
 
-      <section className="relative z-[2] px-4 sm:px-6 md:px-8 pb-20 md:pb-32">
+      <section className="relative z-[2] px-6 sm:px-8 md:px-10 pb-20 md:pb-32">
         <div className="max-w-6xl mx-auto">
           {/* Toolbar: tabs left + view toggle right */}
           <motion.div
@@ -734,7 +734,7 @@ export function SynthesisWorkPage({ projects, copy }: { projects?: typeof V2_PRO
 function SynthesisCraftHero({ copy, heroBackground }: { copy?: PageCopy; heroBackground?: string }) {
   const label = copy?.hero?.label ?? "> EXPERIMENTS.MAP()";
   return (
-    <section className="relative z-[2] pt-32 pb-16 px-8 overflow-hidden">
+    <section className="relative z-[2] pt-24 pb-10 px-6 sm:px-8 md:px-10 md:pt-32 md:pb-16 overflow-hidden">
       {heroBackground && (
         <div
           className="absolute inset-0 pointer-events-none opacity-30"
@@ -1398,7 +1398,7 @@ export function SynthesisCraftPage({
 
       <SynthesisCraftHero copy={copy} heroBackground={media?.heroBackground} />
 
-      <section className="relative z-[2] px-8 pb-32">
+      <section className="relative z-[2] px-6 sm:px-8 md:px-10 pb-20 md:pb-32">
         <div className="max-w-6xl mx-auto">
           {/* ─── Inline toolbar: tabs left, view toggle right ─── */}
           <motion.div
@@ -1523,7 +1523,7 @@ export function SynthesisAboutPage({ copy }: { copy?: PageCopy } = {}) {
       <CipherBgLayer />
 
       {/* ── Signal-style hero ───────────────────────────────── */}
-      <section className="relative z-[2] pt-32 pb-24 px-8">
+      <section className="relative z-[2] pt-24 pb-16 px-6 sm:px-8 md:px-10 md:pt-32 md:pb-24">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -1580,8 +1580,8 @@ export function SynthesisAboutPage({ copy }: { copy?: PageCopy } = {}) {
       </section>
 
       {/* ── Cipher-style body ───────────────────────────────── */}
-      <section className="relative z-[2] py-16 px-8">
-        <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16">
+      <section className="relative z-[2] py-10 px-6 sm:px-8 md:px-10 md:py-16">
+        <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16">
           {/* Left — bio decodes */}
           <div>
             <span style={{ fontFamily: "monospace", fontSize: "10px", letterSpacing: "0.3em", color: "#E2B93B" }}>
@@ -1630,7 +1630,7 @@ export function SynthesisAboutPage({ copy }: { copy?: PageCopy } = {}) {
           {/* Right — stats, tools, values */}
           <div>
             {/* Scramble stats */}
-            <div className="grid grid-cols-3 gap-8 mb-12">
+            <div className="grid grid-cols-3 gap-4 md:gap-8 mb-10 md:mb-12">
               {V2_ABOUT.stats.map((stat) => (
                 <div key={stat.label} className="text-center">
                   <ScrambleText
@@ -1680,23 +1680,23 @@ export function SynthesisAboutPage({ copy }: { copy?: PageCopy } = {}) {
       </section>
 
       {/* Values — Cipher decode style */}
-      <section className="relative z-[2] py-24 px-8">
+      <section className="relative z-[2] py-16 md:py-24 px-6 sm:px-8 md:px-10">
         <div className="max-w-4xl mx-auto">
           <span style={{ fontFamily: "monospace", fontSize: "10px", letterSpacing: "0.3em", color: "#E2B93B" }}>[VALUES.DECRYPT()]</span>
           <div className="mt-8">
             {V2_ABOUT.values.map((v, i) => (
               <motion.div key={v.word} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.1, duration: 0.5 }}>
                 <div className="h-px" style={{ background: "rgba(255,255,255,0.03)" }} />
-                <div className="py-6 flex items-center justify-between">
-                  <div className="flex items-center gap-6">
-                    <span style={{ fontFamily: "monospace", fontSize: "10px", color: "rgba(255,255,255,0.15)", width: 30 }}>{String(i).padStart(2, "0")}</span>
+                <div className="py-5 md:py-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4">
+                  <div className="flex items-center gap-4 md:gap-6">
+                    <span style={{ fontFamily: "monospace", fontSize: "10px", color: "rgba(255,255,255,0.15)", width: 30, flexShrink: 0 }}>{String(i).padStart(2, "0")}</span>
                     <ScrambleText
                       text={v.word}
                       speed={30}
-                      style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(1.5rem, 3vw, 2.5rem)", lineHeight: 1, letterSpacing: "-0.02em", textTransform: "uppercase", color: i === 1 ? "#E2B93B" : "rgba(255,255,255,0.6)" }}
+                      style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(1.5rem, 6vw, 2.5rem)", lineHeight: 1, letterSpacing: "-0.02em", textTransform: "uppercase", color: i === 1 ? "#E2B93B" : "rgba(255,255,255,0.7)" }}
                     />
                   </div>
-                  <span style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "0.8rem", fontWeight: 300, color: "rgba(255,255,255,0.2)", maxWidth: "300px", textAlign: "right" }}>
+                  <span style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "0.82rem", fontWeight: 300, color: "rgba(255,255,255,0.45)", maxWidth: "300px", textAlign: "left" }} className="sm:text-right pl-[46px] sm:pl-0">
                     {v.desc}
                   </span>
                 </div>
