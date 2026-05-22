@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { saveGlobal } from "../../actions";
 import { AdminSaveFeedback } from "@/components/admin/admin-save-feedback";
+import { CloudinaryUploadField } from "@/components/admin/cloudinary-upload-field";
 import { SaveButton } from "@/design-system";
 import type { GlobalConfig, SocialLink } from "@/lib/content/global";
 
@@ -10,6 +11,7 @@ type Props = { initial: GlobalConfig };
 
 export function GlobalForm({ initial }: Props) {
   const [socialLinks, setSocialLinks] = useState<SocialLink[]>(initial.socialLinks);
+  const [profileImage, setProfileImage] = useState(initial.profileImage ?? "");
   const [status, setStatus] = useState<"idle" | "saving" | "ok" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
@@ -32,6 +34,7 @@ export function GlobalForm({ initial }: Props) {
       footerCopyright: (form.elements.namedItem("footerCopyright") as HTMLInputElement)?.value?.trim() ?? "",
       footerTagline: (form.elements.namedItem("footerTagline") as HTMLInputElement)?.value?.trim() ?? "",
       ctaButtonLabel: (form.elements.namedItem("ctaButtonLabel") as HTMLInputElement)?.value?.trim() ?? "",
+      profileImage: profileImage.trim(),
     };
 
     const result = await saveGlobal(data, "Update global");
@@ -60,6 +63,34 @@ export function GlobalForm({ initial }: Props) {
 
   return (
     <form onSubmit={handleSubmit} className="max-w-2xl space-y-8">
+      <div>
+        <h2 className="font-mono text-sm text-white/80 mb-4 uppercase tracking-wider">
+          Profile image (sidebar)
+        </h2>
+        <p className="font-mono text-[10px] text-white/40 mb-3 leading-relaxed">
+          Shows in the sidebar avatar. Square crop, min 200×200px. Leave blank to show the &quot;D&quot; initial.
+        </p>
+        {profileImage && (
+          <img
+            src={profileImage}
+            alt="Profile preview"
+            className="w-12 h-12 rounded-full object-cover border border-white/10 mb-3"
+          />
+        )}
+        <input
+          name="profileImage"
+          type="text"
+          value={profileImage}
+          onChange={(e) => setProfileImage(e.target.value)}
+          className={inputClass}
+          placeholder="https://res.cloudinary.com/... or paste URL"
+        />
+        <CloudinaryUploadField
+          onUploaded={(r) => setProfileImage(r.secure_url)}
+          busyNote="Uploading photo…"
+        />
+      </div>
+
       <div>
         <div className="flex items-center justify-between mb-4">
           <h2 className="font-mono text-sm text-white/80 uppercase tracking-wider">

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { saveContent } from "../../actions";
 import { AdminSaveFeedback } from "@/components/admin/admin-save-feedback";
+import { CloudinaryUploadField } from "@/components/admin/cloudinary-upload-field";
 import { ImageRatioHint } from "@/components/admin/image-system-guide";
 import { SaveButton } from "@/design-system";
 import type { SiteMeta } from "@/lib/content/site-meta";
@@ -10,6 +11,7 @@ import type { SiteMeta } from "@/lib/content/site-meta";
 type Props = { initial: SiteMeta };
 
 export function MetaForm({ initial }: Props) {
+  const [ogImage, setOgImage] = useState(initial.ogImage ?? "");
   const [status, setStatus] = useState<"idle" | "saving" | "ok" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
@@ -24,7 +26,7 @@ export function MetaForm({ initial }: Props) {
       description: (form.elements.namedItem("description") as HTMLTextAreaElement).value,
       siteName: (form.elements.namedItem("siteName") as HTMLInputElement).value,
       url: (form.elements.namedItem("url") as HTMLInputElement).value,
-      ogImage: (form.elements.namedItem("ogImage") as HTMLInputElement).value,
+      ogImage: ogImage,
       ogImageAlt: (form.elements.namedItem("ogImageAlt") as HTMLInputElement).value,
       twitterCard: (form.elements.namedItem("twitterCard") as HTMLInputElement).value,
       favicon: (form.elements.namedItem("favicon") as HTMLInputElement).value,
@@ -65,9 +67,25 @@ export function MetaForm({ initial }: Props) {
         <input id="url" name="url" type="url" defaultValue={initial.url} className={inputClass} placeholder="https://derondsgnr.com" />
       </div>
       <div>
-        <label htmlFor="ogImage" className={labelClass}>OG image (thumbnail for social)</label>
+        <label htmlFor="ogImage" className={labelClass}>OG image (link preview banner)</label>
         <ImageRatioHint role="social-preview" className="mb-2" />
-        <input id="ogImage" name="ogImage" type="text" defaultValue={initial.ogImage} className={inputClass} placeholder="/og.png or full URL" />
+        {ogImage && (
+          <img src={ogImage} alt="OG preview" className="w-full max-w-xs h-auto border border-white/10 mb-3 object-cover" style={{ aspectRatio: "1200/630" }} />
+        )}
+        <input
+          id="ogImage"
+          name="ogImage"
+          type="text"
+          value={ogImage}
+          onChange={(e) => setOgImage(e.target.value)}
+          className={inputClass}
+          placeholder="/og.png or full URL"
+        />
+        <CloudinaryUploadField
+          onUploaded={(r) => setOgImage(r.secure_url)}
+          busyNote="Uploading banner…"
+        />
+        <p className="font-mono text-[10px] text-white/35 mt-2">1200×630px recommended — this is the image shown when you share the link on Twitter, iMessage, Slack, etc.</p>
       </div>
       <div>
         <label htmlFor="ogImageAlt" className={labelClass}>OG image alt text</label>

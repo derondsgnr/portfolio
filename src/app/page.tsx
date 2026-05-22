@@ -1,25 +1,40 @@
 import { getProjects } from "@/lib/content/projects";
-import { getLandingContent } from "@/lib/content/landing";
-import { getPageConfig } from "@/lib/content/pages";
-import { getPageCopy } from "@/lib/content/copy";
-import { getBlogPosts } from "@/lib/content/blog";
-import { HomePage } from "@/components/pages/home-page";
+import { getTestimonials } from "@/lib/content/testimonials";
+import { getGlobal } from "@/lib/content/global";
+import { getCopy } from "@/lib/content/copy";
+import { getCraftItems } from "@/lib/content/craft";
+import { BLOG_POSTS } from "@/lib/data/blog-data";
+import { TransmissionVariation } from "@/components/v2/v2-transmission";
 
 export default async function Page() {
-  const [projects, landing, pageConfig, pageCopy, posts] = await Promise.all([
+  const [projects, testimonials, globalConfig, copy, craftItems] = await Promise.all([
     getProjects(),
-    getLandingContent(),
-    getPageConfig("homepage"),
-    getPageCopy("homepage"),
-    getBlogPosts(),
+    getTestimonials(),
+    getGlobal(),
+    getCopy(),
+    getCraftItems(),
   ]);
+
+  const posts = BLOG_POSTS.filter(
+    (p) => !p.status || p.status === "published"
+  )
+    .slice(0, 3)
+    .map((p) => ({
+      slug: p.slug,
+      title: p.meta.title,
+      date: p.meta.date,
+      category: p.meta.category,
+      readingTime: p.meta.readingTime ?? 5,
+    }));
+
   return (
-    <HomePage
+    <TransmissionVariation
       projects={projects}
-      landing={landing}
-      pageConfig={pageConfig}
-      pageCopy={pageCopy}
-      latestPosts={posts}
+      testimonials={testimonials}
+      posts={posts}
+      craftItems={craftItems}
+      global={globalConfig}
+      copy={copy}
     />
   );
 }

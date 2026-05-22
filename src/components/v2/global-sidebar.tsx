@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { siX, siGithub, siDribbble } from "simple-icons";
 import { useSiteConfig } from "@/contexts/site-config-context";
@@ -117,7 +118,7 @@ export function GlobalSidebar() {
             </span>
           </div>
 
-          {/* Profile initial + name */}
+          {/* Profile image + name */}
           <div className="flex items-center gap-3 mb-5">
             <div
               style={{
@@ -130,18 +131,30 @@ export function GlobalSidebar() {
                 alignItems: "center",
                 justifyContent: "center",
                 flexShrink: 0,
+                overflow: "hidden",
+                position: "relative",
               }}
             >
-              <span
-                style={{
-                  fontFamily: "'Anton', sans-serif",
-                  fontSize: "14px",
-                  color: "#E2B93B",
-                  letterSpacing: "0.04em",
-                }}
-              >
-                D
-              </span>
+              {g.profileImage ? (
+                <Image
+                  src={g.profileImage}
+                  alt="Deron"
+                  fill
+                  sizes="38px"
+                  style={{ objectFit: "cover" }}
+                />
+              ) : (
+                <span
+                  style={{
+                    fontFamily: "'Anton', sans-serif",
+                    fontSize: "14px",
+                    color: "#E2B93B",
+                    letterSpacing: "0.04em",
+                  }}
+                >
+                  D
+                </span>
+              )}
             </div>
             <div>
               <p

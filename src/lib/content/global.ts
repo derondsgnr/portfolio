@@ -10,6 +10,7 @@ export type GlobalConfig = {
   footerCopyright: string;
   footerTagline: string;
   ctaButtonLabel: string;
+  profileImage?: string;
 };
 
 const DEFAULT: GlobalConfig = {
@@ -21,6 +22,7 @@ const DEFAULT: GlobalConfig = {
   footerCopyright: "© 2025 DERONDSGNR",
   footerTagline: "Designed & built by hand",
   ctaButtonLabel: "Book a call",
+  profileImage: "",
 };
 
 export async function getGlobal(): Promise<GlobalConfig> {
@@ -34,6 +36,7 @@ export async function getGlobal(): Promise<GlobalConfig> {
       footerCopyright: parsed.footerCopyright ?? DEFAULT.footerCopyright,
       footerTagline: parsed.footerTagline ?? DEFAULT.footerTagline,
       ctaButtonLabel: parsed.ctaButtonLabel ?? DEFAULT.ctaButtonLabel,
+      profileImage: parsed.profileImage ?? "",
     };
   } catch {
     return DEFAULT;
