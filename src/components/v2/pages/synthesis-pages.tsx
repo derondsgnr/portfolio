@@ -24,7 +24,7 @@ import { YouTubeVideoFrame, toYouTubeEmbedUrl } from "../shared/youtube-video-fr
    About → Signal scan-reveal hero + Cipher body (SynthesisAboutPage)
 
    CRAFT PAGE — EXPLORATION VIEWER (Aristide-inspired)
-   ────────────────────────────────────────────────────
+   ────────────────────────────────────────────
    Desktop:
      - Full-screen overlay with 250px right sidebar (numbered list + thumbnails)
      - Scroll/wheel navigates between items (400ms debounced cooldown)
@@ -107,7 +107,7 @@ import { SignalGrid, ScanLines, CipherBgLayer } from "../shared/texture-layers";
 import { useSiteConfig } from "@/contexts/site-config-context";
 import { withSound, useSoundOnHover } from "@/hooks/useSound";
 
-/* ─── View Toggle Pill ───────────────────────────────────────── */
+/* ─── View Toggle Pill ──────────────────────────────────────────── */
 function ViewToggle({ mode, onToggle, labelA, labelB }: { mode: "a" | "b"; onToggle: () => void; labelA: string; labelB: string }) {
   const onHover = useSoundOnHover("hover");
   return (
@@ -206,7 +206,7 @@ function AboutCTA({ copy }: { copy?: PageCopy }) {
   );
 }
 
-/* ─── Fracture-style footer ──────────────────────────────────── */
+/* ─── Fracture-style footer ──────────────────────────────── */
 function SynthesisFooter() {
   const { global } = useSiteConfig();
   const socialLinks = global.socialLinks;
@@ -338,7 +338,6 @@ function WorkListView({ projects = V2_PROJECTS }: { projects?: typeof V2_PROJECT
                 className="overflow-hidden border-x border-white/[0.06] border-b border-white/[0.06]"
               >
                 <div className="flex h-full min-h-[280px] flex-col bg-[#0A0A0A]">
-                  {/* Media strip — typography never sits on photography */}
                   <div className="relative min-h-[160px] flex-[1.15] shrink-0">
                     <img
                       src={project.image}
@@ -381,7 +380,6 @@ function WorkListView({ projects = V2_PROJECTS }: { projects?: typeof V2_PROJECT
                     </div>
                   </div>
 
-                  {/* Description — page background only, directly under the image strip */}
                   <p
                     className="max-w-3xl px-6 py-5 pb-8 sm:px-8 sm:py-6 sm:pb-10"
                     style={{
@@ -418,10 +416,10 @@ function WorkGridView({ projects = V2_PROJECTS }: { projects?: typeof V2_PROJECT
           whileInView={{ opacity: 1, clipPath: "inset(0 0% 0 0)" }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: i * 0.15, ease: [0.77, 0, 0.175, 1] }}
-          className="group relative flex min-h-[400px] cursor-pointer flex-col overflow-hidden md:min-h-[420px]"
+          className="group relative flex min-h-[520px] cursor-pointer flex-col overflow-hidden md:min-h-[580px]"
           onClick={withSound(() => (project as any).slug && router.push(`/work/${(project as any).slug}`), "navigate")}
         >
-          <div className="relative min-h-[200px] flex-[1.2] shrink-0">
+          <div className="relative min-h-[340px] flex-[2.5] shrink-0">
             <img
               src={project.image}
               alt=""
@@ -479,8 +477,145 @@ function WorkGridView({ projects = V2_PROJECTS }: { projects?: typeof V2_PROJECT
   );
 }
 
+/* ─── Code Snippets ──────────────────────────────────────────── */
+type CodeSnippet = {
+  id: string;
+  title: string;
+  description: string;
+  tags: string[];
+  type: "component" | "hook" | "flow" | "animation";
+  previewUrl?: string;
+  githubUrl?: string;
+};
+
+const CODE_SNIPPETS: CodeSnippet[] = [
+  {
+    id: "cs-01",
+    title: "Scramble Text",
+    description: "Character-by-character random reveal. Scroll-triggered, configurable speed, sound-aware. Core signature interaction across the site.",
+    tags: ["React", "TypeScript", "Hooks"],
+    type: "hook",
+  },
+  {
+    id: "cs-02",
+    title: "Ghost Trail Cursor",
+    description: "Crosshair with spring physics + 7-dot ghost trail via requestAnimationFrame. Arms retract on hover, label tag on data-cursor-label elements.",
+    tags: ["React", "motion/react", "rAF"],
+    type: "animation",
+  },
+  {
+    id: "cs-03",
+    title: "Booking Drawer",
+    description: "Slide-over contact drawer with Cal.com embed, tab routing between Book / Message, and full reduced-motion support.",
+    tags: ["React", "Radix UI", "TypeScript"],
+    type: "component",
+  },
+  {
+    id: "cs-04",
+    title: "Exploration Viewer",
+    description: "Full-screen media viewer — wheel navigation, touch swipe, keyboard control, direction-aware transitions, focus trap, and ARIA live region.",
+    tags: ["React", "motion/react", "A11y"],
+    type: "flow",
+  },
+];
+
+function CodeSnippetsView() {
+  const [active, setActive] = useState<CodeSnippet | null>(null);
+
+  return (
+    <>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-1">
+        {CODE_SNIPPETS.map((snippet, i) => (
+          <motion.div
+            key={snippet.id}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: i * 0.1 }}
+            className="group relative flex flex-col gap-5 p-8 overflow-hidden"
+            style={{ background: "rgba(255,255,255,0.015)", border: "1px solid rgba(255,255,255,0.06)" }}
+          >
+            <div className="absolute top-0 left-0 right-0 h-px transition-all duration-500" style={{ background: "rgba(226,185,59,0)" }} onMouseEnter={(e) => ((e.currentTarget as HTMLDivElement).style.background = "rgba(226,185,59,0.4)")} onMouseLeave={(e) => ((e.currentTarget as HTMLDivElement).style.background = "rgba(226,185,59,0)")} />
+
+            <div className="flex items-start justify-between gap-4">
+              <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#E2B93B", letterSpacing: "0.15em" }}>[{snippet.id}]</span>
+              <span style={{ fontFamily: "monospace", fontSize: "8px", color: "rgba(255,255,255,0.2)", letterSpacing: "0.15em", textTransform: "uppercase", border: "1px solid rgba(255,255,255,0.06)", padding: "2px 8px" }}>
+                {snippet.type}
+              </span>
+            </div>
+
+            <span style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(1.4rem, 2.5vw, 2rem)", lineHeight: 1, letterSpacing: "-0.02em", textTransform: "uppercase", color: "rgba(255,255,255,0.85)" }}>
+              {snippet.title}
+            </span>
+
+            <p style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "0.82rem", lineHeight: 1.7, fontWeight: 300, color: "rgba(255,255,255,0.35)", flex: 1 }}>
+              {snippet.description}
+            </p>
+
+            <div className="flex flex-wrap gap-1.5">
+              {snippet.tags.map((tag) => (
+                <span key={tag} style={{ fontFamily: "monospace", fontSize: "8px", color: "rgba(255,255,255,0.22)", border: "1px solid rgba(255,255,255,0.06)", padding: "2px 8px", letterSpacing: "0.05em" }}>
+                  {tag}
+                </span>
+              ))}
+            </div>
+
+            {snippet.previewUrl && (
+              <button
+                onClick={() => setActive(snippet)}
+                className="self-start transition-colors duration-300 hover:bg-white"
+                style={{ fontFamily: "monospace", fontSize: "9px", letterSpacing: "0.15em", textTransform: "uppercase", color: "#0A0A0A", background: "#E2B93B", padding: "8px 20px" }}
+              >
+                Preview →
+              </button>
+            )}
+          </motion.div>
+        ))}
+      </div>
+
+      <p className="mt-16 text-center" style={{ fontFamily: "monospace", fontSize: "9px", color: "rgba(255,255,255,0.12)", letterSpacing: "0.15em" }}>
+        MORE COMPONENTS INCOMING — EACH ONE WILL BE INTERACTIVE
+      </p>
+
+      <AnimatePresence>
+        {active?.previewUrl && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex flex-col"
+            style={{ background: "#0A0A0A" }}
+          >
+            <div className="flex items-center justify-between px-6 py-4 border-b" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
+              <div className="flex items-center gap-4">
+                <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#E2B93B", letterSpacing: "0.15em" }}>[{active.id}]</span>
+                <span style={{ fontFamily: "'Anton', sans-serif", fontSize: "1.2rem", letterSpacing: "-0.02em", textTransform: "uppercase", color: "#f0f0f0" }}>{active.title}</span>
+              </div>
+              <button
+                onClick={() => setActive(null)}
+                className="w-8 h-8 flex items-center justify-center hover:border-[#E2B93B] transition-colors"
+                style={{ border: "1px solid rgba(255,255,255,0.15)" }}
+              >
+                <span style={{ fontFamily: "monospace", fontSize: "14px", color: "rgba(255,255,255,0.6)" }}>×</span>
+              </button>
+            </div>
+            <iframe
+              src={active.previewUrl}
+              className="flex-1 border-0"
+              title={active.title}
+              allow="accelerometer; camera; encrypted-media; geolocation; gyroscope; microphone; midi"
+              sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+}
+
 export function SynthesisWorkPage({ projects, copy }: { projects?: typeof V2_PROJECTS; copy?: PageCopy } = {}) {
-  const [view, setView] = useState<"a" | "b">("a");
+  const [view, setView] = useState<"a" | "b">("a"); // "a" = Grid (default), "b" = List
+  const [tab, setTab] = useState<"projects" | "code">("projects");
 
   return (
     <main className="relative bg-[#0A0A0A] min-h-screen">
@@ -490,27 +625,71 @@ export function SynthesisWorkPage({ projects, copy }: { projects?: typeof V2_PRO
 
       <SignalWorkHero projects={projects} copy={copy} />
 
-      {/* Toggle + content */}
       <section className="relative z-[2] px-8 pb-32">
         <div className="max-w-6xl mx-auto">
-          <div className="flex justify-end mb-12">
-            <ViewToggle
-              mode={view}
-              onToggle={() => setView(view === "a" ? "b" : "a")}
-              labelA="List"
-              labelB="Grid"
-            />
-          </div>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.5, duration: 0.6 }}
+            className="flex items-center justify-between mb-12 flex-wrap gap-4"
+          >
+            <div
+              className="flex items-center gap-1 px-1 py-0.5 rounded-full"
+              style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.06)" }}
+            >
+              <button
+                onClick={() => setTab("projects")}
+                className="px-3 py-1.5 rounded-full transition-all duration-300"
+                style={{
+                  fontFamily: "monospace",
+                  fontSize: "9px",
+                  letterSpacing: "0.15em",
+                  textTransform: "uppercase" as const,
+                  color: tab === "projects" ? "#0A0A0A" : "rgba(255,255,255,0.3)",
+                  background: tab === "projects" ? "#E2B93B" : "transparent",
+                }}
+              >
+                Projects
+              </button>
+              <button
+                onClick={() => setTab("code")}
+                className="px-3 py-1.5 rounded-full transition-all duration-300"
+                style={{
+                  fontFamily: "monospace",
+                  fontSize: "9px",
+                  letterSpacing: "0.15em",
+                  textTransform: "uppercase" as const,
+                  color: tab === "code" ? "#0A0A0A" : "rgba(255,255,255,0.3)",
+                  background: tab === "code" ? "#E2B93B" : "transparent",
+                }}
+              >
+                Code
+              </button>
+            </div>
+
+            {tab === "projects" && (
+              <ViewToggle
+                mode={view}
+                onToggle={() => setView(view === "a" ? "b" : "a")}
+                labelA="Grid"
+                labelB="List"
+              />
+            )}
+          </motion.div>
 
           <AnimatePresence mode="wait">
             <motion.div
-              key={view}
+              key={tab === "projects" ? `projects-${view}` : "code"}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.4 }}
             >
-              {view === "a" ? <WorkListView projects={projects} /> : <WorkGridView projects={projects} />}
+              {tab === "projects" ? (
+                view === "a" ? <WorkGridView projects={projects} /> : <WorkListView projects={projects} />
+              ) : (
+                <CodeSnippetsView />
+              )}
             </motion.div>
           </AnimatePresence>
         </div>
@@ -633,7 +812,7 @@ function CraftListView({ craftItems }: { craftItems: CraftItem[] }) {
   );
 }
 
-/* ─── Explorations masonry gallery ───────────────────────────── */
+/* ─── Explorations masonry gallery ────────────────────────────── */
 /* ─── Reduced motion hook (shared by gallery + viewer — do not remove) ── */
 function usePrefersReducedMotion() {
   const [reduced, setReduced] = useState(false);
@@ -647,7 +826,7 @@ function usePrefersReducedMotion() {
   return reduced;
 }
 
-/* ─── Gallery with open affordance ───────────────────────────── */
+/* ─── Gallery with open affordance ────────────────────────────── */
 function ExplorationsGallery({ explorations, onOpen }: { explorations: Exploration[]; onOpen: (index: number) => void }) {
   const reduced = usePrefersReducedMotion();
   if (explorations.length === 0) return null;
@@ -674,16 +853,13 @@ function ExplorationsGallery({ explorations, onOpen }: { explorations: Explorati
               className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
               style={{ filter: "grayscale(0.3)" }}
             />
-            {/* Scan overlay */}
             <div className="absolute inset-0 pointer-events-none" style={{ background: "repeating-linear-gradient(0deg, transparent 0px, transparent 3px, rgba(10,10,10,0.15) 3px, rgba(10,10,10,0.15) 4px)" }} />
-            {/* Video indicator */}
             {item.type === "video" && (
               <div className="absolute top-3 right-3 flex items-center gap-1.5 px-2 py-1" style={{ background: "rgba(0,0,0,0.6)", border: "1px solid rgba(226,185,59,0.3)" }}>
                 <div className="w-0 h-0" style={{ borderLeft: "5px solid #E2B93B", borderTop: "3px solid transparent", borderBottom: "3px solid transparent" }} />
                 <span style={{ fontFamily: "monospace", fontSize: "8px", color: "#E2B93B", letterSpacing: "0.1em" }}>MOTION</span>
               </div>
             )}
-            {/* Expand affordance icon — visible on hover */}
             <div
               className="absolute top-3 left-3 w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
               style={{ background: "rgba(0,0,0,0.5)", border: "1px solid rgba(226,185,59,0.25)" }}
@@ -692,14 +868,12 @@ function ExplorationsGallery({ explorations, onOpen }: { explorations: Explorati
                 <path d="M1 3.5V1h2.5M6.5 1H9v2.5M9 6.5V9H6.5M3.5 9H1V6.5" stroke="#E2B93B" strokeWidth="1" />
               </svg>
             </div>
-            {/* Hover overlay */}
             <div className="absolute inset-0 flex items-end p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ background: "linear-gradient(to top, rgba(10,10,10,0.9) 0%, transparent 60%)" }}>
               <div>
                 <span style={{ fontFamily: "monospace", fontSize: "8px", letterSpacing: "0.15em", color: "#E2B93B" }}>[{item.id.replace("ex-", "")}] {item.category.toUpperCase()}</span>
                 <span className="block mt-1" style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "0.8rem", color: "rgba(255,255,255,0.8)" }}>{item.title}</span>
               </div>
             </div>
-            {/* Focus ring */}
             <div className="absolute inset-0 pointer-events-none opacity-0 group-focus-visible:opacity-100 transition-opacity" style={{ boxShadow: "inset 0 0 0 2px #E2B93B" }} />
           </div>
         </motion.div>
@@ -708,7 +882,7 @@ function ExplorationsGallery({ explorations, onOpen }: { explorations: Explorati
   );
 }
 
-/* ─── Full-screen Aristide-style media viewer ────────────────── */
+/* ─── Full-screen Aristide-style media viewer ──────────────────────── */
 function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: { explorations: Exploration[]; activeIndex: number; onClose: () => void; onNavigate: (index: number) => void }) {
   const item = explorations[activeIndex];
   if (!item) return null;
@@ -731,14 +905,12 @@ function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: {
     if (activeIndex > 0) { setDirection(-1); onNavigate(activeIndex - 1); }
   }, [activeIndex, onNavigate]);
 
-  // Track direction for click navigation in sidebar
   useEffect(() => {
     if (activeIndex > prevIndex.current) setDirection(1);
     else if (activeIndex < prevIndex.current) setDirection(-1);
     prevIndex.current = activeIndex;
   }, [activeIndex]);
 
-  // Focus trap
   useEffect(() => {
     const el = viewerRef.current;
     if (!el) return;
@@ -759,7 +931,6 @@ function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: {
     return () => el.removeEventListener("keydown", handler);
   }, [showMobileList]);
 
-  // Keyboard nav
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if (e.key === "Escape") { showMobileList ? setShowMobileList(false) : onClose(); }
@@ -770,7 +941,6 @@ function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: {
     return () => window.removeEventListener("keydown", handler);
   }, [goNext, goPrev, onClose, showMobileList]);
 
-  // Scroll / wheel to navigate (debounced)
   useEffect(() => {
     const handler = (e: WheelEvent) => {
       const target = e.target as HTMLElement;
@@ -786,7 +956,6 @@ function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: {
     return () => window.removeEventListener("wheel", handler);
   }, [goNext, goPrev]);
 
-  // Touch swipe for mobile
   useEffect(() => {
     const onTouchStart = (e: TouchEvent) => {
       const target = e.target as HTMLElement;
@@ -811,13 +980,11 @@ function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: {
     };
   }, [goNext, goPrev]);
 
-  // Lock body scroll
   useEffect(() => {
     document.body.style.overflow = "hidden";
     return () => { document.body.style.overflow = ""; };
   }, []);
 
-  // Preload adjacent images
   useEffect(() => {
     const preload = (idx: number) => {
       if (idx >= 0 && idx < explorations.length) {
@@ -829,7 +996,6 @@ function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: {
     preload(activeIndex - 1);
   }, [activeIndex, explorations]);
 
-  // Scroll active item into view
   useEffect(() => {
     const el = listRef.current?.querySelector(`[data-index="${activeIndex}"]`);
     el?.scrollIntoView({ behavior: "smooth", block: "nearest" });
@@ -842,13 +1008,9 @@ function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: {
 
   useEffect(() => { setShowMobileList(false); }, [activeIndex]);
 
-  // Screen reader live region
   const srAnnounce = `${item.title}, ${item.category}, ${activeIndex + 1} of ${explorations.length}`;
-
-  // Progress fraction
   const progress = (activeIndex + 1) / explorations.length;
 
-  // Direction-aware media transitions
   const mediaVariants = reduced
     ? { initial: {}, animate: {}, exit: {} }
     : {
@@ -871,10 +1033,8 @@ function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: {
       className="fixed inset-0 z-[100] flex flex-col md:flex-row outline-none"
       style={{ background: "#0A0A0A" }}
     >
-      {/* SR live region */}
       <div className="sr-only" aria-live="polite" aria-atomic="true">{srAnnounce}</div>
 
-      {/* Progress bar — thin gold line at top */}
       <div className="absolute top-0 left-0 right-0 z-[115] h-[2px]" style={{ background: "rgba(255,255,255,0.03)" }}>
         <motion.div
           className="h-full"
@@ -885,12 +1045,9 @@ function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: {
         />
       </div>
 
-      {/* Signal grid bg */}
       <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px)", backgroundSize: "80px 80px" }} />
-      {/* Scan lines */}
       <div className="absolute inset-0 pointer-events-none" style={{ background: "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(226,185,59,0.008) 2px, rgba(226,185,59,0.008) 4px)" }} />
 
-      {/* ═══ MOBILE TOP BAR ═══ */}
       <div className="md:hidden relative z-[110] flex items-center justify-between px-4 py-3 flex-shrink-0" style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
         <button
           onClick={onClose}
@@ -916,7 +1073,6 @@ function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: {
         </button>
       </div>
 
-      {/* ═══ DESKTOP CLOSE ═══ */}
       <button
         onClick={onClose}
         aria-label="Close viewer (Escape)"
@@ -926,7 +1082,6 @@ function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: {
         <span style={{ fontFamily: "monospace", fontSize: "14px", color: "rgba(255,255,255,0.6)" }}>×</span>
       </button>
 
-      {/* Title bleed — desktop only */}
       <div className="hidden md:block absolute top-12 left-8 z-[1] pointer-events-none overflow-hidden" style={{ maxWidth: "60vw" }}>
         <motion.span
           key={item.title}
@@ -939,7 +1094,6 @@ function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: {
         </motion.span>
       </div>
 
-      {/* ═══ MAIN MEDIA ═══ */}
       <div className="flex-1 flex items-center justify-center p-4 md:p-16 relative z-[2] min-h-0">
         <AnimatePresence mode="wait" custom={direction}>
           <motion.div
@@ -980,7 +1134,6 @@ function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: {
           </motion.div>
         </AnimatePresence>
 
-        {/* Desktop scroll hint */}
         <motion.div
           initial={{ opacity: 0.8 }}
           animate={{ opacity: activeIndex === 0 ? 0.8 : 0 }}
@@ -991,7 +1144,6 @@ function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: {
           <motion.div animate={reduced ? {} : { y: [0, 6, 0] }} transition={{ repeat: Infinity, duration: 1.5 }} style={{ width: 1, height: 12, background: "rgba(226,185,59,0.4)" }} />
         </motion.div>
 
-        {/* Desktop metadata — improved contrast */}
         <motion.div
           key={`meta-${activeIndex}`}
           initial={reduced ? false : { opacity: 0, y: 10 }}
@@ -1005,7 +1157,6 @@ function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: {
         </motion.div>
       </div>
 
-      {/* ═══ MOBILE BOTTOM BAR ═══ */}
       <div className="md:hidden relative z-[110] flex-shrink-0" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
         <div className="px-4 py-3">
           <span className="block" style={{ fontFamily: "'Anton', sans-serif", fontSize: "1.2rem", lineHeight: 1, letterSpacing: "-0.02em", textTransform: "uppercase", color: "#f0f0f0" }}>{item.title}</span>
@@ -1037,7 +1188,6 @@ function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: {
         </div>
       </div>
 
-      {/* ═══ MOBILE FULL LIST (slide-up sheet) ═══ */}
       <AnimatePresence>
         {showMobileList && (
           <>
@@ -1094,7 +1244,6 @@ function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: {
         )}
       </AnimatePresence>
 
-      {/* ═══ DESKTOP RIGHT PANEL ═══ */}
       <nav
         className="hidden md:flex w-[250px] flex-col border-l"
         style={{ borderColor: "rgba(255,255,255,0.06)", background: "rgba(0,0,0,0.3)" }}
@@ -1194,14 +1343,12 @@ export function SynthesisCraftPage({
 
       <section className="relative z-[2] px-8 pb-32">
         <div className="max-w-6xl mx-auto">
-          {/* ─── Inline toolbar: tabs left, view toggle right ─── */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.5, duration: 0.6 }}
             className="flex items-center justify-between mb-12 flex-wrap gap-4"
           >
-            {/* Tab switcher */}
             <div
               className="flex items-center gap-1 px-1 py-0.5 rounded-full"
               style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.06)" }}
@@ -1236,7 +1383,6 @@ export function SynthesisCraftPage({
               </button>
             </div>
 
-            {/* View toggle — only on Projects tab */}
             {tab === "projects" && (
               <ViewToggle
                 mode={view}
@@ -1246,7 +1392,6 @@ export function SynthesisCraftPage({
               />
             )}
 
-            {/* Item count — only on Explorations tab */}
             {tab === "explorations" && (
               <span style={{ fontFamily: "monospace", fontSize: "9px", color: "rgba(255,255,255,0.15)", letterSpacing: "0.1em" }}>
                 {explorations.length} ARTIFACTS INDEXED
@@ -1254,7 +1399,6 @@ export function SynthesisCraftPage({
             )}
           </motion.div>
 
-          {/* ─── Tab content ─── */}
           <AnimatePresence mode="wait">
             {tab === "projects" ? (
               <motion.div
@@ -1283,7 +1427,6 @@ export function SynthesisCraftPage({
 
       <SynthesisFooter />
 
-      {/* Full-screen viewer overlay */}
       <AnimatePresence>
         {viewerIndex !== null && (
           <ExplorationViewer
@@ -1316,7 +1459,6 @@ export function SynthesisAboutPage({ copy }: { copy?: PageCopy } = {}) {
       <ScanLines />
       <CipherBgLayer />
 
-      {/* ── Signal-style hero ───────────────────────────────── */}
       <section className="relative z-[2] pt-32 pb-24 px-8">
         <motion.div
           initial={{ opacity: 0 }}
@@ -1347,7 +1489,6 @@ export function SynthesisAboutPage({ copy }: { copy?: PageCopy } = {}) {
           </span>
         </motion.div>
 
-        {/* Signal status bar */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -1373,10 +1514,8 @@ export function SynthesisAboutPage({ copy }: { copy?: PageCopy } = {}) {
         />
       </section>
 
-      {/* ── Cipher-style body ───────────────────────────────── */}
       <section className="relative z-[2] py-16 px-8">
         <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16">
-          {/* Left — bio decodes */}
           <div>
             <span style={{ fontFamily: "monospace", fontSize: "10px", letterSpacing: "0.3em", color: "#E2B93B" }}>
               [BIO.DECRYPT()]
@@ -1397,7 +1536,6 @@ export function SynthesisAboutPage({ copy }: { copy?: PageCopy } = {}) {
               </motion.div>
             ))}
 
-            {/* Social links — Cipher style */}
             <motion.div
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
@@ -1421,9 +1559,7 @@ export function SynthesisAboutPage({ copy }: { copy?: PageCopy } = {}) {
             </motion.div>
           </div>
 
-          {/* Right — stats, tools, values */}
           <div>
-            {/* Scramble stats */}
             <div className="grid grid-cols-3 gap-8 mb-12">
               {V2_ABOUT.stats.map((stat) => (
                 <div key={stat.label} className="text-center">
@@ -1439,7 +1575,6 @@ export function SynthesisAboutPage({ copy }: { copy?: PageCopy } = {}) {
               ))}
             </div>
 
-            {/* Tools */}
             <div className="mb-12">
               <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#E2B93B", letterSpacing: "0.15em" }}>[TOOLS.LIST()]</span>
               <div className="flex flex-wrap gap-2 mt-3">
@@ -1451,7 +1586,6 @@ export function SynthesisAboutPage({ copy }: { copy?: PageCopy } = {}) {
               </div>
             </div>
 
-            {/* Location detail */}
             <div className="mb-12 p-6" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.04)" }}>
               <div className="flex justify-between items-start mb-4">
                 <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#E2B93B", letterSpacing: "0.1em" }}>NODE_INFO</span>
@@ -1473,7 +1607,6 @@ export function SynthesisAboutPage({ copy }: { copy?: PageCopy } = {}) {
         </div>
       </section>
 
-      {/* Values — Cipher decode style */}
       <section className="relative z-[2] py-24 px-8">
         <div className="max-w-4xl mx-auto">
           <span style={{ fontFamily: "monospace", fontSize: "10px", letterSpacing: "0.3em", color: "#E2B93B" }}>[VALUES.DECRYPT()]</span>
@@ -1501,7 +1634,6 @@ export function SynthesisAboutPage({ copy }: { copy?: PageCopy } = {}) {
         </div>
       </section>
 
-      {/* Philosophy / CTA */}
       <AboutCTA copy={copy} />
 
       <SynthesisFooter />
