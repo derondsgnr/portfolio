@@ -1,4 +1,5 @@
 [
+  { "label": "Home", "path": "/" },
   { "label": "Work", "path": "/work" },
   { "label": "Craft", "path": "/craft" },
   { "label": "Writing", "path": "/blog" },
