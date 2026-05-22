@@ -165,7 +165,7 @@ function RelatedPosts({ posts }: { posts: BlogPost[] }) {
           MORE WRITING
         </span>
       </motion.div>
-      <div className="grid md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
         {posts.map((post, i) => (
           <motion.div
             key={post.slug}
@@ -381,7 +381,7 @@ export function BlogReader({
           className="absolute top-0 left-0 right-0 h-[2px] bg-[#E2B93B] z-50 origin-left"
           style={{ scaleX }}
         />
-        <div className="flex items-center justify-between px-5 md:px-10 py-3">
+        <div className="flex items-center justify-between px-6 md:px-10 py-3">
           <Link
             href="/blog"
             className="text-[10px] tracking-[0.15em] text-[#555] hover:text-[#E2B93B] transition-colors"
@@ -454,7 +454,7 @@ export function BlogReader({
           </motion.div>
         </div>
 
-        <div className="relative z-10 px-6 md:px-14 lg:px-20 -mt-4 md:-mt-6">
+        <div className="relative z-10 px-6 sm:px-8 md:px-10 lg:px-16 -mt-4 md:-mt-6">
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={heroInView ? { opacity: 1, y: 0 } : {}}
@@ -525,7 +525,7 @@ export function BlogReader({
         )}
       </div>
 
-      <div className="relative z-10 px-6 md:px-14 lg:px-20 pb-32">
+      <div className="relative z-10 px-6 sm:px-8 md:px-10 lg:px-16 pb-32">
         <AuthorBio />
         {series && (
           <SeriesNavFooter

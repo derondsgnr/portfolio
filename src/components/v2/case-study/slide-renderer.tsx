@@ -1,6 +1,4 @@
-import React, { useState, useEffect, useRef, useContext, createContext } from "react";
-
-const CinematicContext = createContext(false);
+import React, { useState, useEffect, useRef } from "react";
 import { motion, useInView, AnimatePresence } from "motion/react";
 import type { Slide, NarratorBlock } from "../../../types/case-study";
 import { DeviceMockup } from "./device-mockup";
@@ -66,8 +64,7 @@ function SlideLayout({
   narrator?: NarratorBlock;
   fullBleed?: boolean;
 }) {
-  const cinematic = useContext(CinematicContext);
-  if (!narrator || cinematic) {
+  if (!narrator) {
     return <>{children}</>;
   }
 
@@ -143,7 +140,7 @@ function CoverSlideComponent({ slide }: { slide: Extract<Slide, { type: "cover" 
   const inView = useInView(ref, { once: true, amount: 0.3 });
 
   return (
-    <div ref={ref} className="relative min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20">
+    <div ref={ref} className="relative min-h-screen flex flex-col justify-center px-6 sm:px-8 md:px-10 lg:px-16 py-20">
       {/* Background hero image */}
       {slide.heroImage && (
         <div className="absolute inset-0 z-0">
@@ -222,7 +219,7 @@ function NarrativeSlideComponent({ slide }: { slide: Extract<Slide, { type: "nar
   const inView = useInView(ref, { once: true, amount: 0.3 });
 
   return (
-    <div ref={ref} className="min-h-[70vh] flex items-center px-6 md:px-16 lg:px-24 py-20">
+    <div ref={ref} className="min-h-[70vh] flex items-center px-6 sm:px-8 md:px-10 lg:px-16 py-20">
       <SlideLayout narrator={slide.narrator}>
         <div className="max-w-3xl">
           {slide.headline && (
@@ -307,7 +304,7 @@ function SingleMockupSlideComponent({ slide }: { slide: Extract<Slide, { type: "
   const inView = useInView(ref, { once: true, amount: 0.2 });
 
   return (
-    <div ref={ref} className="min-h-[80vh] flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20">
+    <div ref={ref} className="min-h-[80vh] flex flex-col justify-center px-6 sm:px-8 md:px-10 lg:px-16 py-20">
       <SlideLayout narrator={slide.narrator}>
         <div>
           {slide.headline && (
@@ -373,7 +370,7 @@ function ComparisonSlideComponent({ slide }: { slide: Extract<Slide, { type: "co
   };
 
   return (
-    <div ref={ref} className="min-h-[80vh] flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20">
+    <div ref={ref} className="min-h-[80vh] flex flex-col justify-center px-6 sm:px-8 md:px-10 lg:px-16 py-20">
       <SlideLayout narrator={slide.narrator}>
         <div>
           {slide.headline && (
@@ -446,7 +443,7 @@ function InsightSlideComponent({ slide }: { slide: Extract<Slide, { type: "insig
   const inView = useInView(ref, { once: true, amount: 0.3 });
 
   return (
-    <div ref={ref} className="min-h-[70vh] flex items-center px-6 md:px-16 lg:px-24 py-20">
+    <div ref={ref} className="min-h-[70vh] flex items-center px-6 sm:px-8 md:px-10 lg:px-16 py-20">
       <SlideLayout narrator={slide.narrator}>
         <div className="max-w-3xl">
           <motion.div
@@ -499,7 +496,7 @@ function MetricSlideComponent({ slide }: { slide: Extract<Slide, { type: "metric
   const inView = useInView(ref, { once: true, amount: 0.3 });
 
   return (
-    <div ref={ref} className="min-h-[70vh] flex items-center px-6 md:px-16 lg:px-24 py-20">
+    <div ref={ref} className="min-h-[70vh] flex items-center px-6 sm:px-8 md:px-10 lg:px-16 py-20">
       <SlideLayout narrator={slide.narrator}>
         <div className="max-w-5xl w-full">
           {slide.headline && (
@@ -513,7 +510,7 @@ function MetricSlideComponent({ slide }: { slide: Extract<Slide, { type: "metric
             </motion.div>
           )}
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 lg:gap-10">
             {slide.metrics.map((metric, i) => (
               <motion.div
                 key={metric.label}
@@ -557,7 +554,7 @@ function QuoteSlideComponent({ slide }: { slide: Extract<Slide, { type: "quote" 
   const inView = useInView(ref, { once: true, amount: 0.3 });
 
   return (
-    <div ref={ref} className="min-h-[70vh] flex items-center justify-center px-6 md:px-16 lg:px-24 py-20">
+    <div ref={ref} className="min-h-[70vh] flex items-center justify-center px-6 sm:px-8 md:px-10 lg:px-16 py-20">
       <SlideLayout narrator={slide.narrator}>
         <div className="max-w-4xl text-center">
           <motion.div
@@ -595,7 +592,7 @@ function FlowSlideComponent({ slide }: { slide: Extract<Slide, { type: "flow" }>
   return (
     <div ref={ref} className="min-h-[70vh] flex flex-col justify-center py-20">
       {slide.headline && (
-        <div className="px-6 md:px-16 lg:px-24 mb-10">
+        <div className="px-6 sm:px-8 md:px-10 lg:px-16 mb-10">
           <ScrambleHeading text={slide.headline} className="text-2xl md:text-4xl" />
         </div>
       )}
@@ -616,7 +613,7 @@ function FlowSlideComponent({ slide }: { slide: Extract<Slide, { type: "flow" }>
         transition={{ duration: 0.6 }}
         className="overflow-x-auto scrollbar-hide"
       >
-        <div className="flex gap-4 md:gap-6 px-6 md:px-16 lg:px-24 pb-4" style={{ minWidth: "max-content" }}>
+        <div className="flex gap-4 md:gap-6 px-6 sm:px-8 md:px-10 lg:px-16 pb-4" style={{ minWidth: "max-content" }}>
           {slide.screens.map((screen, i) => (
             <motion.div
               key={i}
@@ -657,7 +654,7 @@ function EmbedSlideComponent({ slide }: { slide: Extract<Slide, { type: "embed" 
   }, []);
 
   return (
-    <div ref={ref} className="min-h-[80vh] flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20">
+    <div ref={ref} className="min-h-[80vh] flex flex-col justify-center px-6 sm:px-8 md:px-10 lg:px-16 py-20">
       <SlideLayout narrator={slide.narrator}>
         <div>
           {slide.headline && (
@@ -727,7 +724,7 @@ function VideoSlideComponent({ slide }: { slide: Extract<Slide, { type: "video" 
   const videoRef = useRef<HTMLVideoElement>(null);
 
   return (
-    <div ref={ref} className="min-h-[80vh] flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20">
+    <div ref={ref} className="min-h-[80vh] flex flex-col justify-center px-6 sm:px-8 md:px-10 lg:px-16 py-20">
       <SlideLayout narrator={slide.narrator}>
         <div>
           {slide.headline && (
@@ -797,7 +794,7 @@ function MockupGallerySlideComponent({ slide }: { slide: Extract<Slide, { type: 
   const [expandedIdx, setExpandedIdx] = useState<number | null>(null);
 
   return (
-    <div ref={ref} className="min-h-[70vh] flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20">
+    <div ref={ref} className="min-h-[70vh] flex flex-col justify-center px-6 sm:px-8 md:px-10 lg:px-16 py-20">
       <SlideLayout narrator={slide.narrator}>
         <div>
           {slide.headline && (
@@ -970,7 +967,7 @@ function ProcessSlideComponent({ slide }: { slide: Extract<Slide, { type: "proce
   const inView = useInView(ref, { once: true, amount: 0.2 });
 
   return (
-    <div ref={ref} className="min-h-[70vh] flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20">
+    <div ref={ref} className="min-h-[70vh] flex flex-col justify-center px-6 sm:px-8 md:px-10 lg:px-16 py-20">
       <SlideLayout narrator={slide.narrator}>
         <div>
           {slide.headline && (
@@ -1023,7 +1020,7 @@ function ProcessSlideComponent({ slide }: { slide: Extract<Slide, { type: "proce
    MAIN SLIDE RENDERER
    ═══════════════════════════════════════════════════════════════ */
 
-export function SlideRenderer({ slide, cinematic = false }: { slide: Slide; cinematic?: boolean }) {
+export function SlideRenderer({ slide }: { slide: Slide }) {
   const components: Record<Slide["type"], React.FC<{ slide: any }>> = {
     "cover": CoverSlideComponent,
     "narrative": NarrativeSlideComponent,
@@ -1043,11 +1040,7 @@ export function SlideRenderer({ slide, cinematic = false }: { slide: Slide; cine
   const Component = components[slide.type];
   if (!Component) return null;
 
-  return (
-    <CinematicContext.Provider value={cinematic}>
-      <Component slide={slide} />
-    </CinematicContext.Provider>
-  );
+  return <Component slide={slide} />;
 }
 
 export { ScrambleHeading, NarratorStrip, ScanLines };
