@@ -244,7 +244,7 @@ function SignalWorkHero({ projects = V2_PROJECTS, copy }: { projects?: typeof V2
   const activeLabel = copy?.hero?.activeLabel ?? "SIGNAL: ACTIVE";
 
   return (
-    <section className="relative z-[2] pt-32 pb-16 px-8">
+    <section className="relative z-[2] pt-24 pb-10 px-4 sm:px-6 md:pt-32 md:pb-16 md:px-8">
       <motion.div
         initial={{ opacity: 0, clipPath: "inset(0 100% 0 0)" }}
         animate={{ opacity: 1, clipPath: "inset(0 0% 0 0)" }}
@@ -311,7 +311,27 @@ function WorkListView({ projects = V2_PROJECTS }: { projects?: typeof V2_PROJECT
           onClick={withSound(() => (project as any).slug && router.push(`/work/${(project as any).slug}`), "navigate")}
         >
           <div className="h-px" style={{ background: "rgba(255,255,255,0.04)" }} />
-          <div className="py-10 flex items-baseline justify-between">
+
+          {/* Mobile layout — stacked */}
+          <div className="md:hidden py-6">
+            <div className="flex items-center justify-between mb-2">
+              <span style={{ fontFamily: "monospace", fontSize: "11px", letterSpacing: "0.2em", color: hoveredIdx === i ? "#E2B93B" : "rgba(255,255,255,0.5)" }}>
+                [{project.id}]
+              </span>
+              <span style={{ fontFamily: "monospace", fontSize: "11px", color: "rgba(255,255,255,0.45)" }}>
+                {project.year}
+              </span>
+            </div>
+            <span style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(2rem, 10vw, 3.5rem)", lineHeight: 1, letterSpacing: "-0.02em", textTransform: "uppercase", color: hoveredIdx === i ? "#E2B93B" : "rgba(255,255,255,0.85)", display: "block", marginBottom: "6px" }}>
+              <ScrambleText text={project.title} speed={20} />
+            </span>
+            <span style={{ fontFamily: "monospace", fontSize: "11px", letterSpacing: "0.12em", color: "rgba(255,255,255,0.45)", textTransform: "uppercase" }}>
+              {project.category}
+            </span>
+          </div>
+
+          {/* Desktop layout — horizontal */}
+          <div className="hidden md:flex py-10 items-baseline justify-between">
             <span style={{ fontFamily: "monospace", fontSize: "11px", letterSpacing: "0.2em", color: hoveredIdx === i ? "#E2B93B" : "rgba(255,255,255,0.5)", transition: "color 0.3s" }}>
               [{project.id}]
             </span>
@@ -418,10 +438,10 @@ function WorkGridView({ projects = V2_PROJECTS }: { projects?: typeof V2_PROJECT
           whileInView={{ opacity: 1, clipPath: "inset(0 0% 0 0)" }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: i * 0.15, ease: [0.77, 0, 0.175, 1] }}
-          className="group relative flex min-h-[520px] cursor-pointer flex-col overflow-hidden md:min-h-[580px]"
+          className="group relative flex min-h-[380px] cursor-pointer flex-col overflow-hidden sm:min-h-[460px] md:min-h-[560px]"
           onClick={withSound(() => (project as any).slug && router.push(`/work/${(project as any).slug}`), "navigate")}
         >
-          <div className="relative min-h-[340px] flex-[2.5] shrink-0">
+          <div className="relative min-h-[220px] sm:min-h-[280px] md:min-h-[340px] flex-[2.5] shrink-0">
             <img
               src={project.image}
               alt=""
@@ -534,7 +554,7 @@ function CodeSnippetsView() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: i * 0.1 }}
-            className="group relative flex flex-col gap-5 p-8 overflow-hidden"
+            className="group relative flex flex-col gap-4 p-5 sm:p-6 md:p-8 overflow-hidden"
             style={{ background: "rgba(255,255,255,0.015)", border: "1px solid rgba(255,255,255,0.06)" }}
           >
             {/* Hover accent line */}
@@ -547,7 +567,7 @@ function CodeSnippetsView() {
               </span>
             </div>
 
-            <span style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(1.4rem, 2.5vw, 2rem)", lineHeight: 1, letterSpacing: "-0.02em", textTransform: "uppercase", color: "rgba(255,255,255,0.85)" }}>
+            <span style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(1.5rem, 5vw, 2rem)", lineHeight: 1, letterSpacing: "-0.02em", textTransform: "uppercase", color: "rgba(255,255,255,0.85)" }}>
               {snippet.title}
             </span>
 
@@ -629,14 +649,14 @@ export function SynthesisWorkPage({ projects, copy }: { projects?: typeof V2_PRO
 
       <SignalWorkHero projects={projects} copy={copy} />
 
-      <section className="relative z-[2] px-8 pb-32">
+      <section className="relative z-[2] px-4 sm:px-6 md:px-8 pb-20 md:pb-32">
         <div className="max-w-6xl mx-auto">
           {/* Toolbar: tabs left + view toggle right */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.5, duration: 0.6 }}
-            className="flex items-center justify-between mb-12 flex-wrap gap-4"
+            className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8 md:mb-12 gap-3"
           >
             {/* Tab switcher */}
             <div
