@@ -123,59 +123,100 @@ const DefaultCategoryIcon = (
   </svg>
 );
 
-// ── Custom Cursor ─────────────────────────────────────────────────────────
+// ── Custom Cursor — Crosshair + Ghost Trail ───────────────────────────────
 
 function TransmissionCursor() {
+  const TRAIL = 7;
+  const positions = useRef(Array(TRAIL).fill({ x: -200, y: -200 }));
+  const [dots, setDots] = useState<{ x: number; y: number }[]>(Array(TRAIL).fill({ x: -200, y: -200 }));
   const [pos, setPos] = useState({ x: -200, y: -200 });
-  const [isHovered, setIsHovered] = useState(false);
+  const [hovered, setHovered] = useState(false);
   const [label, setLabel] = useState("");
 
   useEffect(() => {
+    let frame: number;
     const onMove = (e: MouseEvent) => {
-      setPos({ x: e.clientX, y: e.clientY });
-      const el = (e.target as HTMLElement).closest(
-        "a, button, [data-cursor]"
-      ) as HTMLElement | null;
-      if (el) {
-        setIsHovered(true);
-        setLabel(el.dataset.cursorLabel ?? "");
-      } else {
-        setIsHovered(false);
-        setLabel("");
-      }
+      const p = { x: e.clientX, y: e.clientY };
+      setPos(p);
+      positions.current = [p, ...positions.current.slice(0, TRAIL - 1)];
+      const el = (e.target as HTMLElement).closest("a, button, [data-cursor]") as HTMLElement | null;
+      setHovered(!!el);
+      setLabel(el?.dataset.cursorLabel ?? "");
+    };
+    const tick = () => {
+      setDots([...positions.current]);
+      frame = requestAnimationFrame(tick);
     };
     window.addEventListener("mousemove", onMove);
-    return () => window.removeEventListener("mousemove", onMove);
+    frame = requestAnimationFrame(tick);
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      cancelAnimationFrame(frame);
+    };
   }, []);
+
+  const arm = hovered ? 6 : 14;
+  const gap = hovered ? 5 : 3;
 
   return (
     <>
-      {/* Core dot */}
+      {/* Ghost trail dots */}
+      {dots.slice(1).map((p, i) => {
+        const size = Math.max(1.5, 5 - i * 0.65);
+        const opacity = (1 - (i + 1) / TRAIL) * 0.45;
+        return (
+          <div
+            key={i}
+            className="fixed top-0 left-0 pointer-events-none z-[9997]"
+            style={{
+              width: size,
+              height: size,
+              borderRadius: "50%",
+              background: "#E2B93B",
+              opacity,
+              transform: `translate(${p.x - size / 2}px, ${p.y - size / 2}px)`,
+            }}
+          />
+        );
+      })}
+
+      {/* Crosshair */}
       <motion.div
         className="fixed top-0 left-0 pointer-events-none z-[9999]"
-        animate={{ x: pos.x - 4, y: pos.y - 4 }}
-        transition={{ type: "spring", stiffness: 600, damping: 32, mass: 0.2 }}
-        style={{ width: 8, height: 8, borderRadius: "50%", background: "#E2B93B" }}
-      />
+        animate={{ x: pos.x, y: pos.y }}
+        transition={{ type: "spring", stiffness: 450, damping: 28, mass: 0.25 }}
+      >
+        {/* Center dot */}
+        <div style={{ position: "absolute", width: 3, height: 3, borderRadius: "50%", background: "#E2B93B", transform: "translate(-1.5px,-1.5px)" }} />
+        {/* Arms */}
+        {([
+          { top: -(arm + gap), left: -0.5, w: 1, h: arm },
+          { top: gap,          left: -0.5, w: 1, h: arm },
+          { top: -0.5, left: -(arm + gap), w: arm, h: 1 },
+          { top: -0.5, left: gap,          w: arm, h: 1 },
+        ] as { top: number; left: number; w: number; h: number }[]).map((s, i) => (
+          <motion.div
+            key={i}
+            animate={{ width: s.w, height: s.h, top: s.top, left: s.left }}
+            transition={{ type: "spring", stiffness: 320, damping: 22 }}
+            style={{ position: "absolute", background: "#E2B93B", opacity: 0.88 }}
+          />
+        ))}
+        {/* Hover bracket */}
+        <AnimatePresence>
+          {hovered && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.7 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.7 }}
+              transition={{ duration: 0.15 }}
+              style={{ position: "absolute", width: 24, height: 24, top: -12, left: -12, border: "1px solid rgba(226,185,59,0.5)", borderRadius: 2 }}
+            />
+          )}
+        </AnimatePresence>
+      </motion.div>
 
-      {/* Trailing ring */}
-      <motion.div
-        className="fixed top-0 left-0 pointer-events-none z-[9998]"
-        animate={{
-          x: pos.x - (isHovered ? 22 : 16),
-          y: pos.y - (isHovered ? 22 : 16),
-          width: isHovered ? 44 : 32,
-          height: isHovered ? 44 : 32,
-          opacity: isHovered ? 0.55 : 0.22,
-        }}
-        transition={{ type: "spring", stiffness: 180, damping: 24, mass: 0.6 }}
-        style={{
-          borderRadius: "50%",
-          border: "1px solid #E2B93B",
-        }}
-      />
-
-      {/* Cursor label */}
+      {/* Label */}
       <AnimatePresence>
         {label && (
           <motion.div
@@ -318,7 +359,7 @@ function TransmissionHero({ projects, heroCopy }: { projects: Project[]; heroCop
           {heroCopy.name ?? "Deron"}
         </motion.h1>
 
-        {/* Sub-copy — improved contrast */}
+        {/* Sub-copy */}
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -479,7 +520,6 @@ function TransmissionProjectRow({
         style={{ background: "#0D0D0D" }}
       >
         <div>
-          {/* Index + category with icon */}
           <div className="flex items-center gap-2 mb-5">
             <span
               style={{
@@ -609,7 +649,6 @@ function TransmissionAbout({ aboutCopy }: { aboutCopy: AboutCopy }) {
           alignItems: "start",
         }}
       >
-        {/* Left — heading + bio */}
         <div>
           <span
             style={{
@@ -680,7 +719,6 @@ function TransmissionAbout({ aboutCopy }: { aboutCopy: AboutCopy }) {
           </Link>
         </div>
 
-        {/* Right — stats grid */}
         <div style={{ paddingTop: 36 }}>
           {stats.map((stat, i) => (
             <motion.div
@@ -768,7 +806,6 @@ function TransmissionTestimonials({ testimonials }: { testimonials: TestimonialI
               borderLeft: i === 0 ? "2px solid #E2B93B" : "2px solid rgba(255,255,255,0.05)",
             }}
           >
-            {/* Open-quote mark */}
             <span
               style={{
                 fontFamily: "'Anton', sans-serif",
@@ -961,7 +998,6 @@ function TransmissionCraft({ items }: { items: CraftItem[] }) {
       className="px-14 py-20"
       style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}
     >
-      {/* Section header */}
       <div className="flex items-center justify-between mb-8">
         <span
           style={{
@@ -991,14 +1027,7 @@ function TransmissionCraft({ items }: { items: CraftItem[] }) {
         </Link>
       </div>
 
-      {/* Masonry-style grid — 4 cols, variable heights */}
-      <div
-        style={{
-          columns: "4",
-          columnGap: "6px",
-          gap: "6px",
-        }}
-      >
+      <div style={{ columns: "4", columnGap: "6px", gap: "6px" }}>
         {published.map((item, i) => (
           <CraftTile key={item.id} item={item} index={i} inView={inView} />
         ))}
@@ -1021,24 +1050,10 @@ function CraftTile({ item, index, inView }: { item: CraftItem; index: number; in
       onMouseLeave={() => setHovered(false)}
       data-cursor="true"
       data-cursor-label="VIEW"
-      style={{
-        breakInside: "avoid",
-        marginBottom: 6,
-        position: "relative",
-        cursor: "none",
-        overflow: "hidden",
-        background: "#111111",
-      }}
+      style={{ breakInside: "avoid", marginBottom: 6, position: "relative", cursor: "none", overflow: "hidden", background: "#111111" }}
     >
       <Link href="/craft" style={{ display: "block", position: "relative" }}>
-        {/* Media */}
-        <div
-          style={{
-            position: "relative",
-            paddingBottom: `${(1 / aspectRatio) * 100}%`,
-            overflow: "hidden",
-          }}
-        >
+        <div style={{ position: "relative", paddingBottom: `${(1 / aspectRatio) * 100}%`, overflow: "hidden" }}>
           {item.videoUrl ? (
             <video
               src={item.videoUrl}
@@ -1066,18 +1081,12 @@ function CraftTile({ item, index, inView }: { item: CraftItem; index: number; in
               />
             </motion.div>
           ) : (
-            <div
-              className="absolute inset-0 flex items-center justify-center"
-              style={{ background: "#1A1A1A" }}
-            >
-              <span style={{ fontFamily: "'Anton', sans-serif", fontSize: "24px", color: "rgba(255,255,255,0.06)" }}>
-                {item.category}
-              </span>
+            <div className="absolute inset-0 flex items-center justify-center" style={{ background: "#1A1A1A" }}>
+              <span style={{ fontFamily: "'Anton', sans-serif", fontSize: "24px", color: "rgba(255,255,255,0.06)" }}>{item.category}</span>
             </div>
           )}
         </div>
 
-        {/* Hover overlay — title + category */}
         <AnimatePresence>
           {hovered && (
             <motion.div
@@ -1088,29 +1097,8 @@ function CraftTile({ item, index, inView }: { item: CraftItem; index: number; in
               className="absolute inset-0 flex flex-col justify-end"
               style={{ padding: "12px", background: "linear-gradient(to top, rgba(10,10,10,0.85) 0%, transparent 60%)" }}
             >
-              <span
-                style={{
-                  fontFamily: "monospace",
-                  fontSize: "6.5px",
-                  letterSpacing: "0.18em",
-                  textTransform: "uppercase",
-                  color: "#E2B93B",
-                  display: "block",
-                  marginBottom: 3,
-                }}
-              >
-                {item.category}
-              </span>
-              <span
-                style={{
-                  fontFamily: "'Instrument Sans', sans-serif",
-                  fontSize: "11px",
-                  color: "#F0F0F0",
-                  lineHeight: 1.3,
-                }}
-              >
-                {item.title}
-              </span>
+              <span style={{ fontFamily: "monospace", fontSize: "6.5px", letterSpacing: "0.18em", textTransform: "uppercase", color: "#E2B93B", display: "block", marginBottom: 3 }}>{item.category}</span>
+              <span style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "11px", color: "#F0F0F0", lineHeight: 1.3 }}>{item.title}</span>
             </motion.div>
           )}
         </AnimatePresence>
@@ -1221,7 +1209,6 @@ export function TransmissionVariation({
       <main className="transmission-root" style={{ marginLeft: SIDEBAR_WIDTH }}>
         <TransmissionHero projects={projects} heroCopy={heroCopy} />
 
-        {/* Work section header */}
         <div
           className="px-14 pt-20 pb-10 flex items-center justify-between"
           style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}
@@ -1255,11 +1242,7 @@ export function TransmissionVariation({
         </div>
 
         {projects.slice(0, 5).map((project, i) => (
-          <TransmissionProjectRow
-            key={project.id}
-            project={project}
-            index={i}
-          />
+          <TransmissionProjectRow key={project.id} project={project} index={i} />
         ))}
 
         <TransmissionAbout aboutCopy={aboutCopy} />
