@@ -100,6 +100,18 @@
           "status": "published",
           "featured": false,
           "pinned": false
+        },
+        {
+          "id": "c-09",
+          "title": "Instagram Post",
+          "category": "Social",
+          "description": "",
+          "image": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1778180599/Instagram_post_-_10_acnzdh.png",
+          "width": 1080,
+          "height": 1080,
+          "status": "published",
+          "featured": false,
+          "pinned": false
         }
       ]
     }
