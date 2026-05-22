@@ -7,6 +7,7 @@ import type { GlobalConfig } from "@/lib/content/global";
 export type SiteConfig = {
   nav: NavItem[];
   global: GlobalConfig;
+  logo?: string;
 };
 
 const SiteConfigContext = createContext<SiteConfig | null>(null);
@@ -14,14 +15,16 @@ const SiteConfigContext = createContext<SiteConfig | null>(null);
 export function SiteConfigProvider({
   nav,
   global: globalConfig,
+  logo,
   children,
 }: {
   nav: NavItem[];
   global: GlobalConfig;
+  logo?: string;
   children: React.ReactNode;
 }) {
   return (
-    <SiteConfigContext.Provider value={{ nav, global: globalConfig }}>
+    <SiteConfigContext.Provider value={{ nav, global: globalConfig, logo }}>
       {children}
     </SiteConfigContext.Provider>
   );

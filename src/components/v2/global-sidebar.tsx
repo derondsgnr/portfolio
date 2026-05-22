@@ -22,7 +22,7 @@ function socialIconPath(label: string): string | null {
 export const SIDEBAR_WIDTH = 260;
 
 export function GlobalSidebar() {
-  const { nav, global: g } = useSiteConfig();
+  const { nav, global: g, logo } = useSiteConfig();
   const pathname = usePathname();
 
   return (
@@ -39,17 +39,25 @@ export function GlobalSidebar() {
         {/* Logo */}
         <div className="px-8 pt-8 pb-6">
           <Link href="/">
-            <span
-              style={{
-                fontFamily: "'Anton', sans-serif",
-                fontSize: "22px",
-                letterSpacing: "0.08em",
-                color: "#E2B93B",
-                textTransform: "uppercase",
-              }}
-            >
-              D/
-            </span>
+            {logo ? (
+              <img
+                src={logo}
+                alt="Logo"
+                style={{ height: 28, width: "auto", objectFit: "contain", display: "block" }}
+              />
+            ) : (
+              <span
+                style={{
+                  fontFamily: "'Anton', sans-serif",
+                  fontSize: "22px",
+                  letterSpacing: "0.08em",
+                  color: "#E2B93B",
+                  textTransform: "uppercase",
+                }}
+              >
+                D/
+              </span>
+            )}
           </Link>
         </div>
 

@@ -20,9 +20,10 @@ type ProvidersProps = {
   global?: GlobalConfig;
   sounds?: SoundsConfig;
   testimonials?: TestimonialItem[];
+  logo?: string;
 };
 
-export function Providers({ children, nav = [], global: globalConfig, sounds, testimonials = [] }: ProvidersProps) {
+export function Providers({ children, nav = [], global: globalConfig, sounds, testimonials = [], logo }: ProvidersProps) {
   useArmAudio();
   useEffect(() => {
     if (sounds && typeof window !== "undefined") {
@@ -47,7 +48,7 @@ export function Providers({ children, nav = [], global: globalConfig, sounds, te
   } as GlobalConfig;
 
   return (
-    <SiteConfigProvider nav={effectiveNav} global={effectiveGlobal}>
+    <SiteConfigProvider nav={effectiveNav} global={effectiveGlobal} logo={logo}>
     <TestimonialsProvider testimonials={testimonials}>
     <BookingProvider>
       <div className="relative min-h-screen text-white overflow-x-hidden" style={{ backgroundColor: "var(--color-background)" }}>

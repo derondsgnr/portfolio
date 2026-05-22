@@ -53,7 +53,11 @@ export async function generateMetadata(): Promise<Metadata> {
       description: meta.description,
       images: ogImage ? [ogImage] : undefined,
     },
-    icons: meta.favicon && meta.favicon !== "/favicon.ico" ? { icon: meta.favicon } : { icon: "/icon" },
+    icons: meta.favicon && meta.favicon !== "/favicon.ico"
+      ? { icon: meta.favicon }
+      : meta.logo
+        ? { icon: meta.logo }
+        : { icon: "/icon" },
   };
 }
 
@@ -124,7 +128,7 @@ export default async function RootLayout({
             }),
           }}
         />
-        <Providers nav={nav} global={global} sounds={sounds} testimonials={testimonials}>{children}</Providers>
+        <Providers nav={nav} global={global} sounds={sounds} testimonials={testimonials} logo={siteMeta.logo}>{children}</Providers>
         <AnalyticsScripts integrations={integrations} />
       </body>
     </html>
