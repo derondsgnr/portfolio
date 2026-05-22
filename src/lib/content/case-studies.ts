@@ -18,11 +18,33 @@ function normalizeCaseStudyStatus(
 /**
  * Admin often updates `meta.cover` first; the opening cover slide still reads `heroImage`.
  * When meta has a real asset URL and the slide uses a placeholder, show the uploaded image everywhere.
+ * If no cover slide exists in any act, one is injected at the start of the first act.
  */
 function hydrateCoverSlidesFromMetaCover(study: CaseStudy): CaseStudy {
   const metaCover =
     typeof study.meta?.cover === "string" ? study.meta.cover.trim() : "";
   if (!metaCover || isPlaceholderRemoteImage(metaCover)) return study;
+
+  const hasCoverSlide = study.acts.some((act) =>
+    act.slides.some((s) => s.type === "cover")
+  );
+
+  if (!hasCoverSlide && study.acts.length > 0) {
+    const injected = {
+      type: "cover" as const,
+      id: `${study.slug}-cover`,
+      headline: study.meta.title,
+      subtitle: study.meta.summary ?? "",
+      tags: study.meta.tags ?? [],
+      heroImage: metaCover,
+      device: "browser" as const,
+    };
+    const [first, ...rest] = study.acts;
+    return {
+      ...study,
+      acts: [{ ...first, slides: [injected, ...first.slides] }, ...rest],
+    };
+  }
 
   const acts = study.acts.map((act) => ({
     ...act,
