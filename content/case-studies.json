@@ -38,17 +38,16 @@
               "Multi-sided Platform"
             ],
             "heroImage": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1778162482/Cover_photo_behl7l.png",
-            "device": "browser",
-            "cinematicCaption": "Eight user types. One AI layer. One designer. One month to build the whole frontend."
+            "device": "browser"
           },
           {
             "type": "narrative",
             "id": "ce-brief",
             "headline": "The product was built. The experience wasn't.",
-            "body": "CareerEdge came through a referral. The backend was robust, the features extensive. The problem was everything the user actually touches — no hierarchy, no visual language, eight user types with no through-line.\n\nTwo decisions before I touched a screen: they needed a brand identity first (I referred a designer and we moodboarded together), and I fed Claude the team's PRD alongside my product skills to prototype navigation and onboarding directions in Figma Make. The prototypes were thinking tools, not deliverables. A way to feel whether a direction was right before committing to building it.",
+            "body": "CareerEdge came through a referral from a previous client. The backend was robust. The infrastructure was solid. The features were extensive. The problem was everything the user actually touches.\n\nWhen I got into the dashboard for the first time, it was overwhelming and disorienting. Nothing had hierarchy. Everything competed for attention. It looked like what it was — a product built for functionality, not for use.\n\nDuring our first calls I learned the full scope: eight user types, each with their own dashboard, their own features, their own goals. I asked for a PRD and they did not have one. I suggested they ask their coding agent to generate one from the existing codebase. What came back confirmed what I suspected — this was a genuinely robust system. The problem was that nobody had designed how people would actually use it.",
             "narrator": {
               "label": "THE CONSTRAINT",
-              "text": "The brief was complete: overhaul the UI across all eight user types. The constraint was firm — nothing could be removed. Every feature had to ship.",
+              "text": "The brief was complete: overhaul the UI and experience across all eight user types. The constraint was firm — nothing could be removed. Every feature had to ship.",
               "mood": "thinking"
             }
           },
@@ -58,8 +57,18 @@
             "headline": "Eight distinct user types. North of 33 features. One navigation system.",
             "insightLabel": "SCOPE",
             "insightText": "Job seekers, coaches, employers, parents, students, governments, NGOs, and guides — each with their own dashboard and feature set. The system was real. The story users could hold in their heads was not.",
-            "body": "Numbers like that describe load: every role multiplies mental models, navigation hooks, and permission edges. Without a spine, the product does not feel feature-rich. It feels like homework with no teacher. That is the gap my work targeted.",
-            "cinematicCaption": "33+ features across 8 user types — the brief was 'don't remove anything.'"
+            "body": "Numbers like that describe load: every role multiplies mental models, navigation hooks, and permission edges. Without a spine, the product does not feel feature-rich. It feels like homework with no teacher. That is the gap my work targeted."
+          },
+          {
+            "type": "narrative",
+            "id": "ce-first-moves",
+            "headline": "Before touching a single screen, I made two suggestions.",
+            "body": "First — they needed a brand identity. There was no visual language, no color system, no typography direction, no tone. Everything downstream would be guessing without it. I referred a brand designer I knew and we moodboarded together across several calls to sync on vision. He delivered colors, fonts, visual language, logo and brand assets. That gave me a foundation to build on.\n\nSecond — I fed Claude the generated PRD alongside my custom product skills covering business strategy, UX and product design. We went through ideas, research and brainstorming. I used Figma Make to prototype multiple flows and variations, targeting navigation and onboarding first. The prototypes were not deliverables — they were thinking tools. A way to feel whether a direction was right before committing to building it.",
+            "narrator": {
+              "label": "EARLY CATCH",
+              "text": "I logged into the parent dashboard and found that parents could not create their own career paths — only manage their children's. If a parent wanted to manage their own career, they needed a second account with a different email. That was a role architecture problem, not a UI problem. I flagged it.",
+              "mood": "pointing"
+            }
           },
           {
             "type": "single-mockup",
@@ -67,8 +76,7 @@
             "headline": "Brand identity — the foundation for everything downstream",
             "image": "https://placehold.co/1600x1000/0A0A0A/E2B93B/png?text=CareerEdge%20%C2%B7%20IMG-02%20brand%20identity",
             "device": "browser",
-            "caption": "IMG-02 — Add: brand system overview — color palette, typography scale, logo variants",
-            "cinematicCaption": "Brand first. Without a visual language, every downstream decision is a guess."
+            "caption": "IMG-02 — Add: brand system overview — color palette, typography scale, logo variants"
           }
         ]
       },
@@ -80,8 +88,7 @@
             "id": "ce-act-architecture",
             "actTitle": "Architecture",
             "actNumber": 2,
-            "subtitle": "Navigation that serves eight, and AI that reads the room",
-            "cinematicCaption": "Navigation that serves eight roles, and AI that reads the room."
+            "subtitle": "Navigation that serves eight, and AI that reads the room"
           },
           {
             "type": "narrative",
@@ -105,8 +112,7 @@
             "after": {
               "image": "https://placehold.co/1600x1000/0A0A0A/E2B93B/png?text=CareerEdge%20%C2%B7%20IMG-04%20nav%20after",
               "label": "Redesigned — 5 items per role + more"
-            },
-            "cinematicCaption": "From 33 items with equal weight to 5 per role, plus a more menu for the rest."
+            }
           },
           {
             "type": "flow",
@@ -133,8 +139,7 @@
               "label": "THREE LAYERS",
               "text": "Users who know where they are going use the sidebar. Users who need direction use Sophia. Users who want everything use the more menu. Same product, three interfaces for three different states of mind.",
               "mood": "pointing"
-            },
-            "cinematicCaption": "Sidebar for muscle memory. Sophia for guidance. More for power users. Same product, three interfaces for three states of mind."
+            }
           },
           {
             "type": "narrative",
@@ -153,8 +158,13 @@
             "headline": "Sophia on the career roadmap — knows your phase, knows your deadline",
             "image": "https://placehold.co/1600x1000/0A0A0A/E2B93B/png?text=CareerEdge%20%C2%B7%20IMG-08%20Sophia%20in%20context",
             "device": "browser",
-            "caption": "IMG-08 — Add: Sophia contextual strip on career roadmap — phase-aware guidance and next action",
-            "cinematicCaption": "Sophia on the career roadmap — phase-aware, deadline-aware, never generic."
+            "caption": "IMG-08 — Add: Sophia contextual strip on career roadmap — phase-aware guidance and next action"
+          },
+          {
+            "type": "narrative",
+            "id": "ce-sophia-complexity",
+            "headline": "The most complex part of the entire project",
+            "body": "Contextualising Sophia across eight user types and over 33 features meant accounting for edge cases at a scale I had not worked with before. Her tone needed to stay consistent. Her guided interactions needed to be specific to the surface. She needed to maintain user context across the product so she was not asking the same questions on different pages. And every interaction she initiates had to reduce friction — not add a step.\n\nThe team agreed on this direction from the start. The compromise was ensuring Sophia was an addition to the navigation, not a replacement. Users comfortable with AI can do almost everything through her. Users who are not can ignore her entirely and use the sidebar. Both paths lead to the same place."
           },
           {
             "type": "mockup-gallery",
@@ -176,8 +186,7 @@
                 "device": "browser",
                 "label": "IMG-11 — Coaching surface"
               }
-            ],
-            "cinematicCaption": "Same intelligence, different context — Sophia reads the surface, not just the user."
+            ]
           }
         ]
       },
@@ -189,8 +198,7 @@
             "id": "ce-act-build",
             "actTitle": "Build",
             "actNumber": 3,
-            "subtitle": "One designer. Eight dashboards. Six weeks. Built in code.",
-            "cinematicCaption": "One designer. Eight dashboards. Built entirely in code."
+            "subtitle": "One designer. Eight dashboards. Six weeks. Built in code."
           },
           {
             "type": "narrative",
@@ -209,8 +217,7 @@
             "headline": "Eight user types needed a color system, not a color palette",
             "insightLabel": "THE COLOR SYSTEM",
             "insightText": "Three tiers: role accent (one per user type), brand and semantic (cyan for Sophia and AI interactions, lime reserved exclusively for earned success moments), neutral gray for everything else. Every colored element had to earn its color.",
-            "body": "Without that system, eight user types worth of badges, icons, tags and avatars become visual chaos. The discipline was not aesthetic — it was architectural. Color became a signal, not decoration.",
-            "cinematicCaption": "Three-tier color system: role accent, semantic (cyan for AI, lime for wins), neutral for everything else."
+            "body": "Without that system, eight user types worth of badges, icons, tags and avatars become visual chaos. The discipline was not aesthetic — it was architectural. Color became a signal, not decoration."
           },
           {
             "type": "process",
@@ -232,17 +239,16 @@
                 "label": "IMG-14 — Verification standard",
                 "description": "Add: edge case screen, state documentation, or before/after showing quality bar"
               }
-            ],
-            "cinematicCaption": "Color system, navigation architecture, verification standard — the structural backbone of the build."
+            ]
           },
           {
             "type": "narrative",
             "id": "ce-hard-parts",
-            "headline": "What tested me — and what I built",
-            "body": "EdgePath and EdgeMap were the features the team was most particular about. We went back and forth and landed somewhere in between — some sub-features in Sophia, some surfaced directly. The political context around immigration and AI language required careful navigation across the entire platform copy.\n\nThe hardest part was holding the system in mind while making decisions at the component level. If Sophia's behaviour changed on one surface, it affected six others. That kind of systems thinking stretched me in ways I did not expect.\n\nBuilding the entire frontend alone, with AI, in a little over a month confirmed something I have been building toward: a designer who builds in code sees the system, not just the interface. The constraints are different. The tradeoffs are different. I could not have done this two years ago.",
+            "headline": "What actually tested me",
+            "body": "EdgePath and EdgeMap were the two features the team was most particular about. They wanted many sub-features visible and accessible directly from the surface. My recommendation was to embed those interactions into Sophia — let her prompt those actions contextually while the user was actively working. We went back and forth and landed somewhere in between.\n\nThe product is US-based and the founders' personal experiences are tied to immigration. Given the political climate, there were valid concerns around the language used — around immigration, race and AI. We had to navigate that carefully in all the copy across the platform.\n\nThe hardest part was holding the entire system in mind while making decisions at the component level. Every decision I made on one surface could affect another. If Sophia's behaviour changed on the coaching dashboard, I needed to think through what that meant for the student dashboard, the employer dashboard, the parent dashboard. That kind of systems thinking at this scale was something I had not done before. It stretched me in ways I did not expect.",
             "narrator": {
               "label": "WHAT STRETCHED ME",
-              "text": "Building the frontend meant understanding how the backend worked — data flow, role authentication, feature communication across the system. This deepened my understanding of backend architecture in a way pure design work never could.",
+              "text": "Building the frontend in code meant I needed to understand how the backend worked — not just the UI layer but how data flowed, how roles were authenticated, how features communicated across the system. This deepened my understanding of backend architecture in a way pure design work never could.",
               "mood": "thinking"
             }
           },
@@ -276,8 +282,7 @@
               "label": "FULL SCOPE",
               "text": "Entire frontend across all eight user types — redesigned and built in code. New navigation architecture. Sophia from chat button to contextual intelligence layer. 3-tier color system. Brand identity integrated end-to-end. Onboarding flows.",
               "mood": "neutral"
-            },
-            "cinematicCaption": "8 user types. 33+ features redesigned. Built in code. Zero Figma screens. Live at careeredged.com."
+            }
           },
           {
             "type": "embed",
@@ -286,8 +291,13 @@
             "embedUrl": "https://careeredged.com",
             "fallbackImage": "https://placehold.co/1600x1000/0A0A0A/E2B93B/png?text=CareerEdge%20%C2%B7%20IMG-15%20live%20product",
             "device": "browser",
-            "caption": "IMG-15 — Add: screenshot of live careeredged.com for mobile fallback",
-            "cinematicCaption": "Live at careeredged.com — full frontend across eight user types, built alone in a month."
+            "caption": "IMG-15 — Add: screenshot of live careeredged.com for mobile fallback"
+          },
+          {
+            "type": "narrative",
+            "id": "ce-learned",
+            "headline": "What I learned",
+            "body": "This was the most complex work I have done. It tested my ability to hold an entire system in mind while making decisions at the component level. It forced me to think about how Sophia's behaviour needed to stay consistent and contextual across eight user types and over 33 features. It deepened my understanding of backend architecture and how infrastructure decisions shape what is possible on the frontend.\n\nAnd it confirmed something I have been building toward: a designer who builds in code does not just see the interface. They see the system. The constraints are different. The tradeoffs are different. The conversations with engineering are different when you understand what is actually happening beneath the surface you are designing.\n\nI built this entire frontend alone, with AI, in a little over a month. Two years ago I could not have done that. The tools changed. I changed with them."
           }
         ]
       }
@@ -342,8 +352,7 @@
               "Mobile Design"
             ],
             "heroImage": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1779405022/Banner_gn0y5x.jpg",
-            "device": "phone",
-            "cinematicCaption": "Escrow and international payments designed from scratch — making online transactions feel safe."
+            "device": "phone"
           },
           {
             "type": "narrative",
@@ -361,8 +370,13 @@
             "id": "bridgepay-act2",
             "actTitle": "What I Designed",
             "actNumber": 2,
-            "subtitle": "End-to-end flows from sign-up to cross-border transfer",
-            "cinematicCaption": "End-to-end flows from sign-up to cross-border transfer."
+            "subtitle": "End-to-end flows from sign-up to cross-border transfer"
+          },
+          {
+            "type": "narrative",
+            "id": "bridgepay-flows",
+            "headline": "Designed flows",
+            "body": "Sign-up and onboarding flow · Escrow initiation for buyers and business owners · Escrow initiation for freelancers and sellers · Non-registered recipient flow · Status and confirmation screens for both parties · Ability to switch between \"Escrow\" and \"International Payments\" · Cross-border transfer flow with currency clarity."
           },
           {
             "type": "single-mockup",
@@ -370,8 +384,7 @@
             "headline": "Onboarding",
             "image": "https://placehold.co/1600x1000/0A0A0A/E2B93B/png?text=Bridgepay%20%C2%B7%20Sign%20up",
             "device": "phone",
-            "caption": "Placeholder — swap for shipped UI.",
-            "cinematicCaption": "Sign-up built around trust — clear steps, no jargon, no dead ends."
+            "caption": "Placeholder — swap for shipped UI."
           },
           {
             "type": "single-mockup",
@@ -379,8 +392,7 @@
             "headline": "Escrow initiation",
             "image": "https://placehold.co/1600x1000/0A0A0A/E2B93B/png?text=Bridgepay%20%C2%B7%20Escrow",
             "device": "phone",
-            "caption": "Placeholder — buyer / seller paths.",
-            "cinematicCaption": "Buyer and seller paths with transparent status — both sides know exactly where the money is."
+            "caption": "Placeholder — buyer / seller paths."
           },
           {
             "type": "single-mockup",
@@ -388,8 +400,7 @@
             "headline": "International payments",
             "image": "https://placehold.co/1600x1000/0A0A0A/E2B93B/png?text=Bridgepay%20%C2%B7%20FX%20transfer",
             "device": "phone",
-            "caption": "Placeholder — currency clarity & confirmation.",
-            "cinematicCaption": "Cross-border transfers with explicit currency clarity at every confirmation step."
+            "caption": "Placeholder — currency clarity & confirmation."
           }
         ]
       },
@@ -401,8 +412,7 @@
             "id": "bridgepay-act3",
             "actTitle": "Outcome",
             "actNumber": 3,
-            "subtitle": "Results and reflection",
-            "cinematicCaption": "The escrow product wasn't shipped — but the collaboration continued, and led to an LBS award."
+            "subtitle": "Results and reflection"
           },
           {
             "type": "narrative",
@@ -471,14 +481,19 @@
               "Web Design"
             ],
             "heroImage": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1779405775/rider_tsgr9d.jpg",
-            "device": "phone",
-            "cinematicCaption": "Rider and driver apps — two experiences, one transportation ecosystem built for Nigeria."
+            "device": "phone"
           },
           {
             "type": "narrative",
             "id": "urban-overview",
-            "headline": "The vision was there. The product wasn't.",
-            "body": "Urban is a transportation platform for interstate travel in Nigeria. The founder had a big vision — safer, kinder, more organised travel. But the apps reflected an engineering-first build: outdated UI, confusing flows, robotic copy, and a driver view split across three separate pages.\n\nTrip booking did not follow patterns Nigerians are familiar with. Important actions were hidden. There were no real safety features. The founder knew something was wrong — he just could not name it. The product was not doing justice to the vision, and he needed help."
+            "headline": "Overview",
+            "body": "Urban is a transportation platform built to improve how Nigerians travel across states. The founder had a big, long-term vision — something that would outlive him and genuinely make travel safer, kinder, and more organized for ordinary Nigerians. The product team before me was mostly engineers, and the apps reflected that. The design was outdated, the flows were confusing, and the experience didn't match the heart and ambition behind the idea."
+          },
+          {
+            "type": "narrative",
+            "id": "urban-problem",
+            "headline": "The problem (before redesign)",
+            "body": "The UI looked old and disconnected. The UX was confusing, with too many unnecessary screens. Trip booking didn't follow patterns Nigerians are familiar with. The copy felt robotic and unhelpful. Drivers had three separate pages just to understand their trips. Important actions were hidden. There were no real safety features. The navigation made simple tasks feel stressful. The founder knew something was wrong, but he couldn't fully name it. He just knew the product wasn't doing justice to his vision — and he needed help."
           }
         ]
       },
@@ -490,8 +505,7 @@
             "id": "urban-act2",
             "actTitle": "What I Did",
             "actNumber": 2,
-            "subtitle": "Rider app and driver app",
-            "cinematicCaption": "Rider app and driver app redesigned from the ground up."
+            "subtitle": "Rider app and driver app"
           },
           {
             "type": "narrative",
@@ -505,8 +519,7 @@
             "headline": "Rider · home & booking",
             "image": "https://placehold.co/1600x1000/0A0A0A/E2B93B/png?text=Urban%20%C2%B7%20Rider%20home",
             "device": "phone",
-            "caption": "Placeholder screen — swap for production UI.",
-            "cinematicCaption": "Redesigned home and booking — familiar patterns from Bolt and Uber, adapted for interstate travel."
+            "caption": "Placeholder screen — swap for production UI."
           },
           {
             "type": "single-mockup",
@@ -514,8 +527,7 @@
             "headline": "Rider · bottom sheet",
             "image": "https://placehold.co/1600x1000/0A0A0A/E2B93B/png?text=Urban%20%C2%B7%20Requirements%20sheet",
             "device": "phone",
-            "caption": "Placeholder — travel requirements & payment clarity.",
-            "cinematicCaption": "Bottom sheet with travel requirements and payment status — everything you need before you board."
+            "caption": "Placeholder — travel requirements & payment clarity."
           },
           {
             "type": "narrative",
@@ -529,8 +541,7 @@
             "headline": "Driver · consolidated hub",
             "image": "https://placehold.co/1600x1000/0A0A0A/E2B93B/png?text=Urban%20%C2%B7%20Driver%20dashboard",
             "device": "phone",
-            "caption": "Placeholder — driver trips & safety affordances.",
-            "cinematicCaption": "Consolidated driver hub — two tabs instead of three pages, with SOS and a hidden wallet for real-world safety."
+            "caption": "Placeholder — driver trips & safety affordances."
           }
         ]
       },
@@ -542,14 +553,19 @@
             "id": "urban-act3",
             "actTitle": "The Result",
             "actNumber": 3,
-            "subtitle": "Apps easier to navigate, safer to use — and development faster from the component system",
-            "cinematicCaption": "Modern, trustworthy, and finally close to the founder's original vision."
+            "subtitle": "After the redesign"
           },
           {
             "type": "narrative",
             "id": "urban-result",
-            "headline": "A product that finally matched the vision",
-            "body": "The apps became much easier to navigate. Booking and trip flows became clearer. Drivers could manage work without confusion. The product looked modern and trustworthy, and development moved faster because of the component system I created. Most importantly, the product finally looked and felt like the vision the founder had in his mind.\n\nThis project reinforced how much I enjoy designing within tight constraints and improving a system without breaking what already works — and helping founders translate a genuine idea into something that feels human."
+            "headline": "Impact",
+            "body": "The apps became much easier to navigate. The booking and trip flow became clearer. Drivers could manage work without confusion. The product looked modern and trustworthy. Safety was taken seriously. Redundant screens were removed. Development became faster because of the components I created. Most importantly, the product finally started to look and feel like the vision the founder had in his mind."
+          },
+          {
+            "type": "narrative",
+            "id": "urban-reflection",
+            "headline": "Reflection",
+            "body": "This project taught me a lot about designing within tight constraints and improving a system without breaking what already worked. It also reminded me how much I enjoy helping founders translate their ideas into experiences that feel human and thoughtful."
           }
         ]
       }
@@ -602,8 +618,7 @@
               "Web Design"
             ],
             "heroImage": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1778180697/Dashboard_right_wydkae.jpg",
-            "device": "browser",
-            "cinematicCaption": "From a 200-page PRD to a structured MVP — clarity before screens."
+            "device": "browser"
           },
           {
             "type": "narrative",
@@ -621,8 +636,7 @@
             "id": "csp-act-what",
             "actTitle": "What I did",
             "actNumber": 2,
-            "subtitle": "Flows, PRD clarity, psychology",
-            "cinematicCaption": "Flows, PRD clarity, reduced onboarding friction, psychological UX."
+            "subtitle": "Flows, PRD clarity, psychology"
           },
           {
             "type": "narrative",
@@ -636,8 +650,7 @@
             "headline": "Onboarding direction",
             "image": "https://placehold.co/1600x1000/0A0A0A/E2B93B/png?text=Onboarding%20%C2%B7%20wire%20%2B%20UI",
             "device": "browser",
-            "caption": "Placeholder — replace with final screens from Figma.",
-            "cinematicCaption": "Onboarding reimagined with the IKEA Effect — users build something before they're asked to commit."
+            "caption": "Placeholder — replace with final screens from Figma."
           },
           {
             "type": "single-mockup",
@@ -645,8 +658,7 @@
             "headline": "Dashboard exploration",
             "image": "https://placehold.co/1600x1000/0A0A0A/E2B93B/png?text=Dashboard%20%C2%B7%20MVP%20shell",
             "device": "browser",
-            "caption": "Placeholder — founder-facing dashboard concepts.",
-            "cinematicCaption": "Dashboard MVP shell — premium-feeling, scope-right, aligned to the founder's brand values."
+            "caption": "Placeholder — founder-facing dashboard concepts."
           }
         ]
       },
@@ -658,14 +670,31 @@
             "id": "csp-act-result",
             "actTitle": "The Result",
             "actNumber": 3,
-            "subtitle": "Even without full development",
-            "cinematicCaption": "Foundation solid. Scope right. Direction clear."
+            "subtitle": "Even without full development"
           },
           {
             "type": "narrative",
             "id": "csp-result",
-            "headline": "Foundation solid. Scope right. Direction clear.",
-            "body": "The onboarding flow became significantly easier. The MVP became clearer and more realistic. The dashboard took shape in a way that matched the founder’s brand values. We removed friction from the user journey and the product began to feel intentional and premium.\n\nThe project didn’t complete because of circumstances — but the groundwork and design direction remain strong. This kind of work is where I function well: directly with a founder, large vision that needs refining, turning scope into something shippable."
+            "headline": "What we achieved",
+            "body": "The onboarding flow became significantly easier. The MVP became clearer and more realistic. The dashboard took shape in a way that matched his brand values. We removed friction from the user journey. The product began to feel intentional and premium. The foundation for V1 was finally solid — and the founder gained clarity he didn't have before. The project didn't complete because of circumstances — but the groundwork and design direction remain strong and usable."
+          }
+        ]
+      },
+      {
+        "title": "Reflection",
+        "slides": [
+          {
+            "type": "section-break",
+            "id": "csp-act-reflect",
+            "actTitle": "Reflection",
+            "actNumber": 4,
+            "subtitle": "PowerCS"
+          },
+          {
+            "type": "narrative",
+            "id": "csp-reflection",
+            "headline": "What I learned",
+            "body": "PowerCS reminded me of how much I enjoy working directly with founders — especially when their vision is big but the structure needs refining. Collaborating closely, simplifying the PRD, shaping the MVP, and using UX psychology to make onboarding feel lighter were all parts of the work that reinforced my strength in founder-facing product design. Even though the project paused, the work we did together made a difference and gave the founder the clarity and direction he needed at a critical point."
           }
         ]
       }
@@ -701,63 +730,13 @@
         "AI-Assisted",
         "Tax"
       ],
-      "cover": "https://images.unsplash.com/photo-1623593476737-0fc80f6be51d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+      "cover": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1779487297/Banner_uejnz9.png",
       "summary": "Dara turns bank and fintech alerts into filing signal: scan email, run Gemini, you classify into buckets, the system learns, then it aggregates toward what you owe and when. Extraction is still patchy by provider—I am not dressing that up. Long posts unpack prompts, tax content, and what broke in beta.",
       "color": "#E2B93B"
     },
     "template": "full-product",
     "liveDemoUrl": "https://mydara.co",
     "acts": [
-      {
-        "title": "Discovery",
-        "slides": [
-          {
-            "type": "cover",
-            "id": "dara-cover",
-            "headline": "From inbox noise to filing signal",
-            "subtitle": "Email alerts → Gemini → you verify → buckets improve over time → aggregation and tax guidance. Built while I leveled up on AI-assisted shipping; the write-ups unpack each layer.",
-            "tags": [
-              "Fintech",
-              "Tax",
-              "AI-Assisted Build"
-            ],
-            "heroImage": "https://images.unsplash.com/photo-1623593476737-0fc80f6be51d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-            "device": "browser",
-            "cinematicCaption": "Email alerts → Gemini → you verify → buckets learn → tax clarity. Built while levelling up on AI-assisted shipping."
-          },
-          {
-            "type": "narrative",
-            "id": "dara-context",
-            "headline": "Start with the real friction",
-            "body": "Personal income tax in Nigeria is strenuous, overcomplicated, and thin on public education. Fines are heavy. A huge pool of freelancers and self-employed people earn in naira and dollars and are meeting that system for the first time with almost no plain-language on-ramp.",
-            "annotation": "I'm building for self-employed people first. Grassroots scale is the vision, but the story has to work for one person's inbox before it works for millions.",
-            "narrator": {
-              "text": "This wasn't a brief from a client. It started with my own frustration and what I see around me. The product is how I'm learning to ship with AI—not a slide deck about AI.",
-              "label": "NOTE",
-              "mood": "thinking"
-            }
-          },
-          {
-            "type": "insight",
-            "id": "dara-insight-1",
-            "headline": "The wedge is what people already have",
-            "insightLabel": "PRODUCT CALL",
-            "insightText": "Debit and credit alerts already land in email from banks and fintech. The job is extraction → classification → aggregation, then tax guidance that respects state rules.",
-            "body": "If the pipeline lies, the dashboard is a dark theme on garbage. Extraction is uneven by bank and sender today. I state that on purpose so the story stays mechanical, not magical.",
-            "cinematicCaption": "The wedge is what already exists — debit and credit alerts in email. Extraction first, classification second, guidance third."
-          },
-          {
-            "type": "single-mockup",
-            "id": "dara-competitor",
-            "headline": "What most tax products assume",
-            "annotation": "They assume patience for jargon, dense tables, and accountant-first mental models. I'm designing for someone who needs to know what they owe, when, and how to pay—without treating them like they already passed a tax exam.",
-            "image": "https://images.unsplash.com/photo-1629963918958-1b62cfe3fe92?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-            "device": "browser",
-            "caption": "Placeholder stand-in for legacy / spreadsheet-heavy compliance UX — swap for labeled comparison when assets are ready.",
-            "cinematicCaption": "Accountant-first UX, jargon-heavy tables — what I designed against."
-          }
-        ]
-      },
       {
         "title": "Build",
         "slides": [
@@ -766,8 +745,7 @@
             "id": "dara-act2",
             "actTitle": "Build",
             "actNumber": 2,
-            "subtitle": "Pipeline, pivots, what ships today",
-            "cinematicCaption": "Pipeline, pivots, what ships today."
+            "subtitle": "Pipeline, pivots, what ships today"
           },
           {
             "type": "process",
@@ -799,14 +777,14 @@
               "text": "I work in Cursor and Claude with the real repo in mydara/. Figma is in the loop when the UI needs it. The stack and prompts will get their own posts—this case study is the spine.",
               "label": "PROCESS NOTE",
               "mood": "pointing"
-            },
-            "cinematicCaption": "Ingest → Gemini → you verify → aggregate → tax path. Extraction is still uneven by provider — that stays in the case study."
+            }
           },
           {
             "type": "narrative",
             "id": "dara-decisions",
             "headline": "Calls that shaped the product",
-            "body": "• Tax output: aggregate, estimate what you owe, when to pay, and how — with state-specific due dates and filing steps where content is locked.\n\n• Human-in-the-loop after Gemini so classification improves from real use, not vibes.\n\n• WhatsApp nudges were cut. Cost and implementation weight were not worth it for where the product is.\n\n• Pioneer / beta: people can register; welcome-email automation is not end-to-end yet. I am not pretending the growth layer is finished.\n\n• Sub-features and edge cases stay out of this flagship so the spine stays readable. They ship in follow-up posts."
+            "body": "• Tax output: aggregate, estimate what you owe, when to pay, and how to pay—with state-specific due dates and filing steps where content is locked.\n\n• Human-in-the-loop after Gemini so classification improves from real use, not vibes.\n\n• WhatsApp nudges were cut. Cost and implementation weight were not worth it for where the product is.\n\n• Pioneer / beta: people can register; welcome-email automation is not end-to-end yet. I am not pretending the growth layer is finished.\n\n• Sub-features and edge cases stay out of this flagship so the spine stays readable. They ship in follow-up posts.",
+            "annotation": "Distribution and monetization hook to the same data plane: widen ingestion to savings and investments, then goals and one view across providers. I keep that in the case study as direction—the series goes deep on each slice."
           },
           {
             "type": "single-mockup",
@@ -820,8 +798,24 @@
               "text": "Dark-first UI and plain language stayed non-negotiable. Money UIs fail when they feel like they're auditing the user instead of briefing them.",
               "label": "NOTE",
               "mood": "neutral"
-            },
-            "cinematicCaption": "The promise: money signal in, verified buckets, tax guidance out — plain language, not an audit."
+            }
+          },
+          {
+            "type": "mockup-gallery",
+            "id": "dara-screens",
+            "headline": "Surfaces to document next",
+            "mockups": [
+              {
+                "image": "https://images.unsplash.com/photo-1623593476737-0fc80f6be51d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+                "device": "browser",
+                "label": "Dashboard"
+              },
+              {
+                "image": "https://images.unsplash.com/photo-1642055509518-adafcad1d22e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+                "device": "browser",
+                "label": "Additional surface"
+              }
+            ]
           },
           {
             "type": "comparison",
@@ -835,8 +829,54 @@
               "image": "https://images.unsplash.com/photo-1623593476737-0fc80f6be51d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
               "label": "Inbox → verify → learn → clarity"
             },
+            "device": "browser"
+          }
+        ]
+      },
+      {
+        "title": "Discovery",
+        "slides": [
+          {
+            "type": "cover",
+            "id": "dara-cover",
+            "headline": "From inbox noise to filing signal",
+            "subtitle": "Email alerts → Gemini → you verify → buckets improve over time → aggregation and tax guidance. Built while I leveled up on AI-assisted shipping; the write-ups unpack each layer.",
+            "tags": [
+              "Fintech",
+              "Tax",
+              "AI-Assisted Build"
+            ],
+            "heroImage": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1778268299/Screenshot_2026-05-08_at_20.22.38_zruykd.png",
+            "device": "browser"
+          },
+          {
+            "type": "narrative",
+            "id": "dara-context",
+            "headline": "Start with the real friction",
+            "body": "Personal income tax in Nigeria is strenuous, overcomplicated, and thin on public education. Fines are heavy. A huge pool of freelancers and self-employed people earn in naira and dollars and are meeting that system for the first time with almost no plain-language on-ramp.",
+            "annotation": "I'm building for self-employed people first. Grassroots scale is the vision, but the story has to work for one person's inbox before it works for millions.",
+            "narrator": {
+              "text": "This wasn't a brief from a client. It started with my own frustration and what I see around me. The product is how I'm learning to ship with AI—not a slide deck about AI.",
+              "label": "NOTE",
+              "mood": "thinking"
+            }
+          },
+          {
+            "type": "insight",
+            "id": "dara-insight-1",
+            "headline": "The wedge is what people already have",
+            "insightLabel": "PRODUCT CALL",
+            "insightText": "Debit and credit alerts already land in email from banks and fintech. The job is extraction → classification → aggregation, then tax guidance that respects state rules.",
+            "body": "If the pipeline lies, the dashboard is a dark theme on garbage. Extraction is uneven by bank and sender today. I state that on purpose so the story stays mechanical, not magical."
+          },
+          {
+            "type": "single-mockup",
+            "id": "dara-competitor",
+            "headline": "What most tax products assume",
+            "annotation": "They assume patience for jargon, dense tables, and accountant-first mental models. I'm designing for someone who needs to know what they owe, when, and how to pay—without treating them like they already passed a tax exam.",
+            "image": "https://images.unsplash.com/photo-1629963918958-1b62cfe3fe92?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
             "device": "browser",
-            "cinematicCaption": "From spreadsheets and accountant-first tools to inbox → verify → learn → clarity."
+            "caption": "Placeholder stand-in for legacy / spreadsheet-heavy compliance UX — swap for labeled comparison when assets are ready."
           }
         ]
       },
@@ -848,8 +888,7 @@
             "id": "dara-act3",
             "actTitle": "Now",
             "actNumber": 3,
-            "subtitle": "Beta truth, not launch theatre",
-            "cinematicCaption": "Beta truth, not launch theatre."
+            "subtitle": "Beta truth, not launch theatre"
           },
           {
             "type": "metric",
@@ -881,8 +920,7 @@
               "text": "No inflated percentages on this slide. If I did not measure it rigorously, it does not get a vanity metric.",
               "label": "NOTE",
               "mood": "thinking"
-            },
-            "cinematicCaption": "10 beta users, state-level tax guidance, classification that improves with real inboxes — no vanity numbers."
+            }
           },
           {
             "type": "embed",
@@ -896,8 +934,7 @@
               "text": "Trust is often the bottleneck, not novelty: granting read access to mail feels existential until consent, revoke, and what we persist are plainly visible. Published policy pages carry the commitment; flagship copy only points people there honestly while extraction and classification still improve.",
               "label": "TRUST NOTE",
               "mood": "pointing"
-            },
-            "cinematicCaption": "Open beta at mydara.co — mail access after you authorize; revoke anytime."
+            }
           },
           {
             "type": "quote",
@@ -965,8 +1002,7 @@
               "One-Handed UX"
             ],
             "heroImage": "https://images.unsplash.com/photo-1594561177665-052b6b4b781a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-            "device": "phone",
-            "cinematicCaption": "A wellness app that works in the stairwell — 90 seconds, one hand, zero cognitive load."
+            "device": "phone"
           },
           {
             "type": "narrative",
@@ -990,8 +1026,7 @@
               "text": "I had participants send me voice memos instead of filling out forms. Way more honest data. One guy literally whispered 'I'm hiding in the stairwell' — that became our design target.",
               "label": "RESEARCH METHOD",
               "mood": "pointing"
-            },
-            "cinematicCaption": "Users need calm most in the 2-3 minutes between stressful events, not in a meditation room."
+            }
           },
           {
             "type": "quote",
@@ -1010,8 +1045,7 @@
             "id": "pulse-act2",
             "actTitle": "Design & Outcome",
             "actNumber": 2,
-            "subtitle": "Designing for one hand, one minute, one breath",
-            "cinematicCaption": "Designing for one hand, one minute, one breath."
+            "subtitle": "Designing for one hand, one minute, one breath"
           },
           {
             "type": "process",
@@ -1038,8 +1072,7 @@
               "text": "No Figma file for the first two weeks. Just voice memos, paper, and a lot of awkward stairwell testing. The founder thought I was procrastinating. I was prototyping in context.",
               "label": "PROCESS NOTE",
               "mood": "frustrated"
-            },
-            "cinematicCaption": "Voice memos to stairwell testing to haptics first — no Figma file for the first two weeks."
+            }
           },
           {
             "type": "flow",
@@ -1061,8 +1094,7 @@
                 "label": "Calm Confirmed",
                 "device": "phone"
               }
-            ],
-            "cinematicCaption": "Lock screen widget → breathing circle → calm confirmed. Three taps, 90 seconds."
+            ]
           },
           {
             "type": "single-mockup",
@@ -1076,8 +1108,7 @@
               "text": "We tested 14 different breathing visualizations. The simple expanding circle won because users could unfocus their eyes and still follow it. Every other version required attention they didn't have.",
               "label": "DESIGN DECISION",
               "mood": "celebrating"
-            },
-            "cinematicCaption": "One expanding circle, follows with unfocused eyes while walking. Zero choices required."
+            }
           },
           {
             "type": "mockup-gallery",
@@ -1099,8 +1130,7 @@
                 "device": "phone",
                 "label": "Weekly Reflection"
               }
-            ],
-            "cinematicCaption": "All phone, all one-handed — home, session complete, weekly reflection."
+            ]
           },
           {
             "type": "narrative",
@@ -1178,8 +1208,7 @@
               "Art Direction",
               "Cultural Design"
             ],
-            "heroImage": "https://images.unsplash.com/photo-1761778304143-4c89e7dd2457?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-            "cinematicCaption": "Globally legible. Distinctly West African when you look closer."
+            "heroImage": "https://images.unsplash.com/photo-1761778304143-4c89e7dd2457?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080"
           },
           {
             "type": "narrative",
@@ -1197,8 +1226,7 @@
             "id": "kora-insight",
             "headline": "The design principle",
             "insightLabel": "BRAND STRATEGY",
-            "insightText": "Sophisticated at distance, culturally specific up close. Like a kora that sounds like a harp until you listen carefully.",
-            "cinematicCaption": "Like a kora that sounds like a harp until you listen carefully — the design principle behind everything."
+            "insightText": "Sophisticated at distance, culturally specific up close. Like a kora that sounds like a harp until you listen carefully."
           }
         ]
       },
@@ -1210,8 +1238,7 @@
             "id": "kora-act2",
             "actTitle": "Craft",
             "actNumber": 2,
-            "subtitle": "From principle to presence",
-            "cinematicCaption": "From principle to presence — type, color, texture, photography."
+            "subtitle": "From principle to presence"
           },
           {
             "type": "process",
@@ -1243,8 +1270,7 @@
               "text": "The texture system was the breakthrough. I spent an entire day at a textile market in Lekki scanning fabrics. Those scans became the invisible DNA of every brand touchpoint.",
               "label": "PROCESS NOTE",
               "mood": "celebrating"
-            },
-            "cinematicCaption": "Rejected earth tones, found the brand in Lagos nightlife and hand-woven aso-oke scans."
+            }
           },
           {
             "type": "comparison",
@@ -1257,8 +1283,7 @@
             "after": {
               "image": "https://images.unsplash.com/photo-1761778304143-4c89e7dd2457?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
               "label": "Kora rebrand"
-            },
-            "cinematicCaption": "From generic to unmistakably Kora — same collective, entirely different presence."
+            }
           },
           {
             "type": "single-mockup",
@@ -1271,8 +1296,7 @@
               "text": "The website is deliberately slow to scroll. Not broken — intentional. Each section reveals itself with the same pace as unwrapping hand-dyed fabric. The medium IS the message.",
               "label": "INTERACTION DESIGN",
               "mood": "pointing"
-            },
-            "cinematicCaption": "Deliberately slow to scroll — each section reveals itself like unwrapping hand-dyed fabric."
+            }
           },
           {
             "type": "quote",
@@ -1340,8 +1364,7 @@
               "Trust Design"
             ],
             "heroImage": "https://images.unsplash.com/photo-1746171114403-f4c4877b1f04?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-            "device": "browser",
-            "cinematicCaption": "Trust is a design problem — the fix was removing reasons to doubt, not adding features."
+            "device": "browser"
           },
           {
             "type": "narrative",
@@ -1379,8 +1402,7 @@
               "text": "The biggest insight came from watching a user browse. She said: 'This feels like a scam website.' The product images were fine — but the typography, spacing, and color choices screamed 'amateur.' Trust is aesthetic before it's functional.",
               "label": "OBSERVATION",
               "mood": "thinking"
-            },
-            "cinematicCaption": "Heuristic audit, competitor mapping, 12 interviews — trust turned out to be aesthetic before it was functional."
+            }
           },
           {
             "type": "insight",
@@ -1388,8 +1410,7 @@
             "headline": "The trust equation",
             "insightLabel": "CORE FRAMEWORK",
             "insightText": "Trust = (Responsiveness + Specificity + Social Proof) - Uncertainty. Every design decision was scored against this equation.",
-            "body": "We mapped every screen against this framework. Any element that increased Uncertainty was removed or redesigned. Any element that increased the numerator was amplified.",
-            "cinematicCaption": "Trust = (Responsiveness + Specificity + Social Proof) − Uncertainty. Every decision scored against this."
+            "body": "We mapped every screen against this framework. Any element that increased Uncertainty was removed or redesigned. Any element that increased the numerator was amplified."
           }
         ]
       },
@@ -1401,15 +1422,14 @@
             "id": "soro-act2",
             "actTitle": "Redesign",
             "actNumber": 2,
-            "subtitle": "Rebuilding trust from the ground up",
-            "cinematicCaption": "Rebuilding trust from the ground up — five patterns, each targeting a specific barrier from user interviews."
+            "subtitle": "Rebuilding trust from the ground up"
           },
           {
             "type": "narrative",
             "id": "soro-approach",
-            "headline": "Five trust patterns — each targeting a specific barrier",
+            "headline": "Five trust-building patterns",
             "body": "1. Verified vendor badges — not self-reported, earned through 3 completed transactions.\n\n2. Photo quality gates — listings without clear photos were deprioritized in search.\n\n3. Response time indicators — 'Usually responds in 5 minutes' shown prominently.\n\n4. Price transparency — mandatory pricing with 'negotiable' tag if flexible.\n\n5. Buyer protection banner — visible on every listing page, not buried in FAQ.",
-            "annotation": "Every pattern came directly from a user interview finding, not a design preference."
+            "annotation": "Each pattern directly addressed a specific trust barrier from user interviews."
           },
           {
             "type": "comparison",
@@ -1428,8 +1448,7 @@
               "text": "The before listing had 4 trust signals. The after has 11. Same information density — just intentionally arranged to answer doubt before it forms.",
               "label": "DESIGN DETAIL",
               "mood": "pointing"
-            },
-            "cinematicCaption": "4 trust signals before, 11 after — same information density, arranged to answer doubt before it forms."
+            }
           },
           {
             "type": "single-mockup",
@@ -1438,8 +1457,7 @@
             "image": "https://images.unsplash.com/photo-1746171114403-f4c4877b1f04?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
             "device": "browser",
             "caption": "Redesigned homepage with trust-first hierarchy: verified vendors featured, buyer protection visible above the fold.",
-            "annotation": "The hero doesn't show products — it shows people. Real vendor photos. Because you trust faces, not SKUs.",
-            "cinematicCaption": "Trust-first hierarchy — verified vendors featured, buyer protection visible above the fold."
+            "annotation": "The hero doesn't show products — it shows people. Real vendor photos. Because you trust faces, not SKUs."
           },
           {
             "type": "flow",
@@ -1466,8 +1484,7 @@
                 "label": "Confirmation",
                 "device": "phone"
               }
-            ],
-            "cinematicCaption": "Browse → listing detail → cart with protection → confirmation. Four taps, trust visible at every step."
+            ]
           }
         ]
       },
@@ -1479,8 +1496,7 @@
             "id": "soro-act3",
             "actTitle": "Impact",
             "actNumber": 3,
-            "subtitle": "The numbers and the stories",
-            "cinematicCaption": "The numbers and the stories — six weeks after launch."
+            "subtitle": "The numbers and the stories"
           },
           {
             "type": "metric",
@@ -1512,8 +1528,7 @@
               "text": "The metric I'm proudest of is the support ticket drop. When nobody asks 'is this legit?', that means trust is built into the interface — not explained in an FAQ.",
               "label": "REFLECTION",
               "mood": "celebrating"
-            },
-            "cinematicCaption": "+156% cart completion, 4-min response time, 3× vendor growth, −72% 'is this legit?' support tickets."
+            }
           },
           {
             "type": "video",
@@ -1521,8 +1536,7 @@
             "headline": "Product walkthrough",
             "posterImage": "https://images.unsplash.com/photo-1746171114403-f4c4877b1f04?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
             "device": "browser",
-            "caption": "2-minute walkthrough of the redesigned marketplace experience.",
-            "cinematicCaption": "Full product walkthrough — from 'is this a scam?' to trusted local commerce."
+            "caption": "2-minute walkthrough of the redesigned marketplace experience."
           },
           {
             "type": "quote",
