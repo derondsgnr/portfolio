@@ -1,4 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext, createContext } from "react";
+
+const CinematicContext = createContext(false);
 import { motion, useInView, AnimatePresence } from "motion/react";
 import type { Slide, NarratorBlock } from "../../../types/case-study";
 import { DeviceMockup } from "./device-mockup";
@@ -64,7 +66,8 @@ function SlideLayout({
   narrator?: NarratorBlock;
   fullBleed?: boolean;
 }) {
-  if (!narrator) {
+  const cinematic = useContext(CinematicContext);
+  if (!narrator || cinematic) {
     return <>{children}</>;
   }
 
@@ -1020,7 +1023,7 @@ function ProcessSlideComponent({ slide }: { slide: Extract<Slide, { type: "proce
    MAIN SLIDE RENDERER
    ═══════════════════════════════════════════════════════════════ */
 
-export function SlideRenderer({ slide }: { slide: Slide }) {
+export function SlideRenderer({ slide, cinematic = false }: { slide: Slide; cinematic?: boolean }) {
   const components: Record<Slide["type"], React.FC<{ slide: any }>> = {
     "cover": CoverSlideComponent,
     "narrative": NarrativeSlideComponent,
@@ -1040,7 +1043,11 @@ export function SlideRenderer({ slide }: { slide: Slide }) {
   const Component = components[slide.type];
   if (!Component) return null;
 
-  return <Component slide={slide} />;
+  return (
+    <CinematicContext.Provider value={cinematic}>
+      <Component slide={slide} />
+    </CinematicContext.Provider>
+  );
 }
 
 export { ScrambleHeading, NarratorStrip, ScanLines };

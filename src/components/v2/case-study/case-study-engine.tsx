@@ -12,10 +12,10 @@ import { CinematicViewer } from "./cinematic-viewer";
  * =================
  * Orchestrates Reader and Cinematic modes.
  *
- * Default: Reader mode (continuous scroll)
- * User can switch to Cinematic mode via button.
+ * Default: Cinematic mode (visual-first, narrative slides filtered out)
+ * User can switch to Reader for the full story.
  *
- * UX: Cinematic X → /work (complete exit). "READER" → reader mode.
+ * UX: Cinematic X → /work (complete exit). "FULL STORY" → reader mode.
  *
  * TODO (Cursor):
  *   - Scroll-to-top on case study switch (when slug changes via onSwitchCaseStudy)
@@ -35,12 +35,12 @@ export function CaseStudyEngine({
   allCaseStudies = [],
   onSwitchCaseStudy,
 }: CaseStudyEngineProps) {
-  const [mode, setMode] = useState<"reader" | "cinematic">("reader");
+  const [mode, setMode] = useState<"reader" | "cinematic">("cinematic");
   const router = useRouter();
 
-  // Reset mode to reader and scroll to top when case study changes
+  // Reset to cinematic and scroll to top when case study changes
   useEffect(() => {
-    setMode("reader");
+    setMode("cinematic");
     window.scrollTo(0, 0);
   }, [caseStudy.slug]);
 

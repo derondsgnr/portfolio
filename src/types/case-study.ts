@@ -43,6 +43,7 @@ export interface CoverSlide {
   heroImage?: string;
   device?: DeviceType;
   narrator?: NarratorBlock;
+  cinematicCaption?: string;
 }
 
 export interface NarrativeSlide {
@@ -64,6 +65,7 @@ export interface SingleMockupSlide {
   device: DeviceType;
   caption?: string;
   narrator?: NarratorBlock;
+  cinematicCaption?: string;
 }
 
 export interface ComparisonSlide {
@@ -74,6 +76,7 @@ export interface ComparisonSlide {
   after: { image: string; label: string };
   device?: DeviceType;
   narrator?: NarratorBlock;
+  cinematicCaption?: string;
 }
 
 export interface InsightSlide {
@@ -85,6 +88,7 @@ export interface InsightSlide {
   insightText: string;
   image?: string;
   narrator?: NarratorBlock;
+  cinematicCaption?: string;
 }
 
 export interface MetricSlide {
@@ -94,6 +98,7 @@ export interface MetricSlide {
   metrics: { label: string; value: string; delta?: string }[];
   image?: string;
   narrator?: NarratorBlock;
+  cinematicCaption?: string;
 }
 
 export interface QuoteSlide {
@@ -103,6 +108,7 @@ export interface QuoteSlide {
   attribution: string;
   role?: string;
   narrator?: NarratorBlock;
+  cinematicCaption?: string;
 }
 
 export interface FlowSlide {
@@ -111,6 +117,7 @@ export interface FlowSlide {
   headline?: string;
   screens: { image: string; label?: string; device?: DeviceType }[];
   narrator?: NarratorBlock;
+  cinematicCaption?: string;
 }
 
 export interface EmbedSlide {
@@ -122,6 +129,7 @@ export interface EmbedSlide {
   device?: DeviceType;
   caption?: string;
   narrator?: NarratorBlock;
+  cinematicCaption?: string;
 }
 
 export interface VideoSlide {
@@ -133,6 +141,7 @@ export interface VideoSlide {
   device?: DeviceType;
   caption?: string;
   narrator?: NarratorBlock;
+  cinematicCaption?: string;
 }
 
 export interface MockupGallerySlide {
@@ -141,6 +150,7 @@ export interface MockupGallerySlide {
   headline?: string;
   mockups: { image: string; device: DeviceType; label?: string }[];
   narrator?: NarratorBlock;
+  cinematicCaption?: string;
 }
 
 export interface SectionBreakSlide {
@@ -149,6 +159,7 @@ export interface SectionBreakSlide {
   actTitle: string;
   actNumber: number;
   subtitle?: string;
+  cinematicCaption?: string;
 }
 
 export interface ProcessSlide {
@@ -161,6 +172,7 @@ export interface ProcessSlide {
     description?: string;
   }[];
   narrator?: NarratorBlock;
+  cinematicCaption?: string;
 }
 
 /** Union of all slide types */

@@ -1,7 +1,16 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import type { CaseStudy, Slide } from "../../../types/case-study";
 import { SlideRenderer, ScrambleHeading } from "./slide-renderer";
+
+const VISUAL_SLIDE_TYPES = new Set([
+  "cover", "single-mockup", "comparison", "insight", "metric",
+  "quote", "flow", "embed", "video", "mockup-gallery", "section-break", "process",
+]);
+
+function getCinematicCaption(slide: Slide): string | undefined {
+  return "cinematicCaption" in slide ? (slide as any).cinematicCaption : undefined;
+}
 
 /**
  * CINEMATIC VIEWER — Full-viewport slide-by-slide mode
@@ -32,7 +41,23 @@ export function CinematicViewer({
   onSwitchCaseStudy,
   startSlideIndex = 0,
 }: CinematicViewerProps) {
-  const allSlides = caseStudy.acts.flatMap((act) => act.slides);
+  // Only visual slide types — narrative slides are excluded in cinematic mode
+  const allSlides: Slide[] = useMemo(
+    () => caseStudy.acts.flatMap((act) => act.slides).filter((s) => VISUAL_SLIDE_TYPES.has(s.type)),
+    [caseStudy]
+  );
+
+  // Map each slide id → act index for sidebar grouping
+  const slideActMap = useMemo(() => {
+    const map = new Map<string, number>();
+    caseStudy.acts.forEach((act, ai) => {
+      act.slides.forEach((slide) => {
+        if (VISUAL_SLIDE_TYPES.has(slide.type)) map.set(slide.id, ai);
+      });
+    });
+    return map;
+  }, [caseStudy]);
+
   const [currentIndex, setCurrentIndex] = useState(startSlideIndex);
   const [direction, setDirection] = useState<1 | -1>(1);
   const [showSidebar, setShowSidebar] = useState(false);
@@ -42,19 +67,7 @@ export function CinematicViewer({
 
   const currentSlide = allSlides[currentIndex];
   const progress = ((currentIndex + 1) / allSlides.length) * 100;
-
-  // Find which act this slide belongs to
-  let slideCounter = 0;
-  let currentAct = 0;
-  for (let a = 0; a < caseStudy.acts.length; a++) {
-    for (let s = 0; s < caseStudy.acts[a].slides.length; s++) {
-      if (slideCounter === currentIndex) {
-        currentAct = a;
-        break;
-      }
-      slideCounter++;
-    }
-  }
+  const currentAct = slideActMap.get(currentSlide?.id ?? "") ?? 0;
 
   // Close handler: X goes to /work if available, otherwise falls back to reader
   const handleClose = useCallback(() => {
@@ -197,13 +210,13 @@ export function CinematicViewer({
           >
             &times;
           </button>
-          {/* Reader mode toggle */}
+          {/* Switch to full reader */}
           <button
             onClick={onExit}
             className="text-[10px] tracking-[0.15em] text-[#555] hover:text-[#E2B93B] transition-colors border border-[#222] hover:border-[#E2B93B]/30 px-2 py-1"
             style={{ fontFamily: "monospace" }}
           >
-            READER
+            FULL STORY
           </button>
           <span className="text-[10px] tracking-[0.2em] text-[#E2B93B] hidden md:block" style={{ fontFamily: "monospace" }}>
             {caseStudy.meta.title}
@@ -256,7 +269,29 @@ export function CinematicViewer({
               transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
               className="absolute inset-0 overflow-y-auto"
             >
-              <SlideRenderer slide={currentSlide} />
+              <SlideRenderer slide={currentSlide} cinematic />
+
+              {/* Bottom caption overlay */}
+              {getCinematicCaption(currentSlide) && (
+                <motion.div
+                  key={`caption-${currentSlide.id}`}
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.35, delay: 0.2 }}
+                  className="absolute bottom-0 left-0 right-0 px-6 pb-6 pt-16 pointer-events-none"
+                  style={{
+                    background: "linear-gradient(to top, rgba(10,10,10,0.92) 0%, rgba(10,10,10,0.4) 60%, transparent 100%)",
+                  }}
+                >
+                  <p
+                    className="text-[11px] text-[#F0F0F0]/75 leading-relaxed max-w-sm"
+                    style={{ fontFamily: "monospace", letterSpacing: "0.04em" }}
+                  >
+                    {getCinematicCaption(currentSlide)}
+                  </p>
+                </motion.div>
+              )}
             </motion.div>
           </AnimatePresence>
 
@@ -311,11 +346,8 @@ export function CinematicViewer({
                 className="h-full overflow-y-auto p-4 space-y-1"
               >
                 {caseStudy.acts.map((act, actIdx) => {
-                  let slideOffset = 0;
-                  for (let a = 0; a < actIdx; a++) {
-                    slideOffset += caseStudy.acts[a].slides.length;
-                  }
-
+                  const actSlides = allSlides.filter((s) => slideActMap.get(s.id) === actIdx);
+                  if (actSlides.length === 0) return null;
                   return (
                     <div key={actIdx}>
                       <span
@@ -324,13 +356,12 @@ export function CinematicViewer({
                       >
                         {act.title}
                       </span>
-                      {act.slides.map((slide, slideIdx) => {
-                        const globalIdx = slideOffset + slideIdx;
+                      {actSlides.map((slide) => {
+                        const globalIdx = allSlides.findIndex((s) => s.id === slide.id);
                         const isActive = globalIdx === currentIndex;
                         const label = "headline" in slide ? (slide as any).headline :
                                       "actTitle" in slide ? (slide as any).actTitle :
                                       `Slide ${globalIdx + 1}`;
-
                         return (
                           <button
                             key={slide.id}
@@ -421,23 +452,19 @@ export function CinematicViewer({
                 </div>
 
                 {caseStudy.acts.map((act, actIdx) => {
-                  let slideOffset = 0;
-                  for (let a = 0; a < actIdx; a++) {
-                    slideOffset += caseStudy.acts[a].slides.length;
-                  }
-
+                  const actSlides = allSlides.filter((s) => slideActMap.get(s.id) === actIdx);
+                  if (actSlides.length === 0) return null;
                   return (
                     <div key={actIdx} className="mb-3">
                       <span className="text-[9px] tracking-[0.2em] text-[#E2B93B] block mb-1 px-2" style={{ fontFamily: "monospace" }}>
                         {act.title}
                       </span>
-                      {act.slides.map((slide, slideIdx) => {
-                        const globalIdx = slideOffset + slideIdx;
+                      {actSlides.map((slide) => {
+                        const globalIdx = allSlides.findIndex((s) => s.id === slide.id);
                         const isActive = globalIdx === currentIndex;
                         const label = "headline" in slide ? (slide as any).headline :
                                       "actTitle" in slide ? (slide as any).actTitle :
                                       `Slide ${globalIdx + 1}`;
-
                         return (
                           <button
                             key={slide.id}
