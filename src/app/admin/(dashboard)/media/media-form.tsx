@@ -37,6 +37,16 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
   const [savingSection, setSavingSection] = useState<string | null>(null);
   const [feedbackTarget, setFeedbackTarget] = useState<"media" | "craft" | "explorations">("media");
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
+  const [expandedExplorations, setExpandedExplorations] = useState<Set<string>>(new Set());
+
+  function toggleExploration(key: string) {
+    setExpandedExplorations((prev) => {
+      const next = new Set(prev);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
+      return next;
+    });
+  }
   const savedSnapshotRef = useRef({
     media: initialMedia,
     craft: initialCraft,
@@ -709,36 +719,78 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
         </h2>
         <ImageFieldGuide role="craft-gallery" compact />
         <form onSubmit={handleSaveExplorations} className="space-y-4">
-          <div className="space-y-3">
-            {explorations.map((item, i) => (
-              <div
-                key={item.id}
-                className="flex flex-col sm:flex-row sm:items-center gap-2 p-3 border border-white/10 rounded"
-              >
-                <div className="flex-1 min-w-0">
-                  <span className="font-mono text-xs text-white/50 block truncate">
-                    [{item.id}] {item.title}
-                  </span>
-                  <ImageRatioHint role="craft-gallery" className="mt-2" />
-                  <input
-                    type="url"
-                    value={item.image}
-                    onChange={(e) => updateExplorationImage(i, e.target.value)}
-                    className={`${inputClass} mt-1`}
-                    placeholder="Image URL"
-                  />
-                  {item.type === "video" && (
-                    <input
-                      type="url"
-                      value={item.videoUrl ?? ""}
-                      onChange={(e) => updateExplorationVideoUrl(i, e.target.value)}
-                      className={`${inputClass} mt-2`}
-                      placeholder="YouTube URL (optional)"
-                    />
+          <div className="space-y-1">
+            {explorations.map((item, i) => {
+              const isExpanded = expandedExplorations.has(item.id);
+              return (
+                <div
+                  key={item.id}
+                  className="rounded border border-white/[0.08] bg-[#0f0f0f] overflow-hidden"
+                >
+                  <button
+                    type="button"
+                    onClick={() => toggleExploration(item.id)}
+                    className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-white/[0.025] transition-colors text-left"
+                  >
+                    <div className="w-9 h-9 flex-shrink-0 bg-white/[0.04] border border-white/[0.07] overflow-hidden">
+                      {item.image ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img src={item.image} alt="" className="w-full h-full object-cover" />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center">
+                          <span className="font-mono text-[7px] text-white/20 tracking-wider">IMG</span>
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-mono text-xs text-white/80 truncate">{item.title}</p>
+                    </div>
+                    <span className="font-mono text-[10px] text-white/30 tracking-wider shrink-0 hidden sm:block">
+                      {item.category}
+                    </span>
+                    <span className="font-mono text-[9px] uppercase tracking-wider px-1.5 py-0.5 shrink-0 text-white/30 bg-white/[0.04]">
+                      {item.type}
+                    </span>
+                    <svg
+                      className={`w-3 h-3 text-white/25 flex-shrink-0 transition-transform duration-150 ${isExpanded ? "rotate-180" : ""}`}
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+                  {isExpanded && (
+                    <div className="border-t border-white/[0.07] p-3 space-y-3">
+                      <ImageRatioHint role="craft-gallery" />
+                      <div>
+                        <label className={labelClass}>Image URL</label>
+                        <input
+                          type="url"
+                          value={item.image}
+                          onChange={(e) => updateExplorationImage(i, e.target.value)}
+                          className={inputClass}
+                          placeholder="https://…"
+                        />
+                      </div>
+                      {item.type === "video" && (
+                        <div>
+                          <label className={labelClass}>Video URL (optional)</label>
+                          <input
+                            type="url"
+                            value={item.videoUrl ?? ""}
+                            onChange={(e) => updateExplorationVideoUrl(i, e.target.value)}
+                            className={inputClass}
+                            placeholder="YouTube URL…"
+                          />
+                        </div>
+                      )}
+                    </div>
                   )}
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
           <button
             type="submit"
