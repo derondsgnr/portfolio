@@ -36,6 +36,7 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [savingSection, setSavingSection] = useState<string | null>(null);
   const [feedbackTarget, setFeedbackTarget] = useState<"media" | "craft" | "explorations">("media");
+  const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
   const savedSnapshotRef = useRef({
     media: initialMedia,
     craft: initialCraft,
@@ -207,8 +208,9 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
   }
 
   function addCraftItem(si: number) {
+    const newId = `c-${Date.now()}`;
     const draft: CraftItem = {
-      id: `c-${Date.now()}`,
+      id: newId,
       title: "New piece",
       category: "Visual",
       description: "",
@@ -224,6 +226,16 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
         return { ...s, items: [...s.items, normalizeCraftItem(draft)] };
       });
       return { sections };
+    });
+    setExpandedItems((prev) => new Set([...prev, `${si}-${newId}`]));
+  }
+
+  function toggleCraftItem(key: string) {
+    setExpandedItems((prev) => {
+      const next = new Set(prev);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
+      return next;
     });
   }
 
@@ -472,158 +484,212 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
                   Remove section
                 </button>
               </div>
-              <div className="flex justify-end mb-3">
-                <button
-                  type="button"
-                  onClick={() => addCraftItem(si)}
-                  className="font-mono text-[10px] uppercase tracking-wider text-[#E2B93B]/90 hover:text-[#E2B93B]"
-                >
-                  + Add item
-                </button>
-              </div>
-              <div className="border-t border-white/[0.07] pt-4 space-y-4">
-                {section.items.map((item, ii) => (
-                  <div
-                    key={`${si}-${item.id}-${ii}`}
-                    className="rounded border border-white/[0.08] p-3 bg-[#0f0f0f]"
-                  >
-                    <div className="grid gap-3 sm:grid-cols-2 mb-3">
-                      <div>
-                        <label className={labelClass}>Item id</label>
-                        <input
-                          type="text"
-                          value={item.id}
-                          onChange={(e) => updateCraftItemId(si, ii, e.target.value)}
-                          className={inputClass}
-                        />
-                      </div>
-                      <div>
-                        <label className={labelClass}>Category</label>
-                        <input
-                          type="text"
-                          value={item.category}
-                          onChange={(e) => updateCraftText(si, ii, "category", e.target.value)}
-                          className={inputClass}
-                          placeholder="e.g. Poster"
-                        />
-                      </div>
-                      <div className="sm:col-span-2">
-                        <label className={labelClass}>Title</label>
-                        <input
-                          type="text"
-                          value={item.title}
-                          onChange={(e) => updateCraftText(si, ii, "title", e.target.value)}
-                          className={inputClass}
-                        />
-                      </div>
-                      <div className="sm:col-span-2">
-                        <label className={labelClass}>Description</label>
-                        <textarea
-                          value={item.description}
-                          onChange={(e) => updateCraftText(si, ii, "description", e.target.value)}
-                          className={`${inputClass} min-h-[72px]`}
-                          rows={3}
-                        />
-                      </div>
-                    </div>
-                    <ImageRatioHint role="craft-gallery" className="mb-2" />
-                    <label className={labelClass}>Still / poster image URL</label>
-                    <input
-                      type="url"
-                      value={item.image}
-                      onChange={(e) => updateCraftImage(si, ii, e.target.value)}
-                      className={inputClass}
-                      placeholder="https://…"
-                    />
-                    <CloudinaryUploadField
-                      onUploaded={(r) => applyCraftCloudinaryResult(si, ii, r)}
-                    />
-                    <div className="mt-3">
-                      <label className={labelClass}>Video URL (optional)</label>
-                      <input
-                        type="url"
-                        value={item.videoUrl ?? ""}
-                        onChange={(e) =>
-                          patchCraftItem(si, ii, {
-                            videoUrl: e.target.value.trim() ? e.target.value.trim() : undefined,
-                          })
-                        }
-                        className={inputClass}
-                        placeholder="YouTube / Vimeo / MP4…"
-                      />
-                    </div>
-                    <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-                      <div>
-                        <label className={labelClass}>Width px</label>
-                        <input
-                          type="number"
-                          min={1}
-                          value={item.width ?? ""}
-                          onChange={(e) => updateCraftDims(si, ii, "width", e.target.value)}
-                          className={inputClass}
-                          placeholder="e.g. 1200"
-                        />
-                      </div>
-                      <div>
-                        <label className={labelClass}>Height px</label>
-                        <input
-                          type="number"
-                          min={1}
-                          value={item.height ?? ""}
-                          onChange={(e) => updateCraftDims(si, ii, "height", e.target.value)}
-                          className={inputClass}
-                          placeholder="e.g. 1800"
-                        />
-                      </div>
-                    </div>
-                    <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
-                      <div className="flex flex-wrap items-center gap-3">
-                        <select
-                          value={item.status ?? "published"}
-                          onChange={(e) =>
-                            updateCraftMeta(si, ii, {
-                              status: e.target.value as CraftItem["status"],
-                            })
-                          }
-                          className="bg-[#111] border border-white/10 text-white/70 font-mono text-[11px] px-2 py-1"
-                        >
-                          <option value="published">Published</option>
-                          <option value="draft">Draft</option>
-                          <option value="archived">Archived</option>
-                        </select>
-                        <label className="font-mono text-[11px] text-white/55 inline-flex items-center gap-1.5">
-                          <input
-                            type="checkbox"
-                            checked={Boolean(item.featured)}
-                            onChange={(e) => updateCraftMeta(si, ii, { featured: e.target.checked })}
-                            className="h-3.5 w-3.5 accent-[#E2B93B]"
-                          />
-                          Featured
-                        </label>
-                        <label className="font-mono text-[11px] text-white/55 inline-flex items-center gap-1.5">
-                          <input
-                            type="checkbox"
-                            checked={Boolean(item.pinned)}
-                            onChange={(e) => updateCraftMeta(si, ii, { pinned: e.target.checked })}
-                            className="h-3.5 w-3.5 accent-[#E2B93B]"
-                          />
-                          Pinned
-                        </label>
-                      </div>
+              <div className="border-t border-white/[0.07] pt-3 space-y-1">
+                {section.items.length === 0 ? (
+                  <p className="font-mono text-[11px] text-white/35 py-2">No items in this section.</p>
+                ) : null}
+                {section.items.map((item, ii) => {
+                  const itemKey = `${si}-${item.id}`;
+                  const isExpanded = expandedItems.has(itemKey);
+                  const itemStatus = item.status ?? "published";
+                  return (
+                    <div
+                      key={`${si}-${item.id}-${ii}`}
+                      className="rounded border border-white/[0.08] bg-[#0f0f0f] overflow-hidden"
+                    >
+                      {/* Collapsed row */}
                       <button
                         type="button"
-                        onClick={() => removeCraftItem(si, ii)}
-                        className="font-mono text-[10px] uppercase tracking-wider text-red-400/85 hover:text-red-300"
+                        onClick={() => toggleCraftItem(itemKey)}
+                        className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-white/[0.025] transition-colors text-left"
                       >
-                        Remove item
+                        <div className="w-9 h-9 flex-shrink-0 bg-white/[0.04] border border-white/[0.07] overflow-hidden">
+                          {item.image ? (
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img src={item.image} alt="" className="w-full h-full object-cover" />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center">
+                              <span className="font-mono text-[7px] text-white/20 tracking-wider">IMG</span>
+                            </div>
+                          )}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="font-mono text-xs text-white/80 truncate">{item.title || "Untitled"}</p>
+                        </div>
+                        <span className="font-mono text-[10px] text-white/30 tracking-wider shrink-0 hidden sm:block">
+                          {item.category}
+                        </span>
+                        <span className={`font-mono text-[9px] uppercase tracking-wider px-1.5 py-0.5 shrink-0 ${
+                          itemStatus === "published"
+                            ? "text-[#E2B93B]/70 bg-[#E2B93B]/[0.07]"
+                            : itemStatus === "draft"
+                            ? "text-white/30 bg-white/[0.04]"
+                            : "text-red-400/60 bg-red-400/[0.07]"
+                        }`}>
+                          {itemStatus}
+                        </span>
+                        <svg
+                          className={`w-3 h-3 text-white/25 flex-shrink-0 transition-transform duration-150 ${isExpanded ? "rotate-180" : ""}`}
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={2}
+                        >
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                        </svg>
                       </button>
+
+                      {/* Expanded fields */}
+                      {isExpanded && (
+                        <div className="border-t border-white/[0.07] p-3 space-y-3">
+                          <div className="grid gap-3 sm:grid-cols-2">
+                            <div>
+                              <label className={labelClass}>Item id</label>
+                              <input
+                                type="text"
+                                value={item.id}
+                                onChange={(e) => updateCraftItemId(si, ii, e.target.value)}
+                                className={inputClass}
+                              />
+                            </div>
+                            <div>
+                              <label className={labelClass}>Category</label>
+                              <input
+                                type="text"
+                                value={item.category}
+                                onChange={(e) => updateCraftText(si, ii, "category", e.target.value)}
+                                className={inputClass}
+                                placeholder="e.g. Poster"
+                              />
+                            </div>
+                            <div className="sm:col-span-2">
+                              <label className={labelClass}>Title</label>
+                              <input
+                                type="text"
+                                value={item.title}
+                                onChange={(e) => updateCraftText(si, ii, "title", e.target.value)}
+                                className={inputClass}
+                              />
+                            </div>
+                            <div className="sm:col-span-2">
+                              <label className={labelClass}>Description</label>
+                              <textarea
+                                value={item.description}
+                                onChange={(e) => updateCraftText(si, ii, "description", e.target.value)}
+                                className={`${inputClass} min-h-[72px]`}
+                                rows={3}
+                              />
+                            </div>
+                          </div>
+                          <ImageRatioHint role="craft-gallery" className="mb-2" />
+                          <div>
+                            <label className={labelClass}>Still / poster image URL</label>
+                            <input
+                              type="url"
+                              value={item.image}
+                              onChange={(e) => updateCraftImage(si, ii, e.target.value)}
+                              className={inputClass}
+                              placeholder="https://…"
+                            />
+                          </div>
+                          <CloudinaryUploadField
+                            onUploaded={(r) => applyCraftCloudinaryResult(si, ii, r)}
+                          />
+                          <div>
+                            <label className={labelClass}>Video URL (optional)</label>
+                            <input
+                              type="url"
+                              value={item.videoUrl ?? ""}
+                              onChange={(e) =>
+                                patchCraftItem(si, ii, {
+                                  videoUrl: e.target.value.trim() ? e.target.value.trim() : undefined,
+                                })
+                              }
+                              className={inputClass}
+                              placeholder="YouTube / Vimeo / MP4…"
+                            />
+                          </div>
+                          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                            <div>
+                              <label className={labelClass}>Width px</label>
+                              <input
+                                type="number"
+                                min={1}
+                                value={item.width ?? ""}
+                                onChange={(e) => updateCraftDims(si, ii, "width", e.target.value)}
+                                className={inputClass}
+                                placeholder="e.g. 1200"
+                              />
+                            </div>
+                            <div>
+                              <label className={labelClass}>Height px</label>
+                              <input
+                                type="number"
+                                min={1}
+                                value={item.height ?? ""}
+                                onChange={(e) => updateCraftDims(si, ii, "height", e.target.value)}
+                                className={inputClass}
+                                placeholder="e.g. 1800"
+                              />
+                            </div>
+                          </div>
+                          <div className="flex flex-wrap items-center justify-between gap-3">
+                            <div className="flex flex-wrap items-center gap-3">
+                              <select
+                                value={item.status ?? "published"}
+                                onChange={(e) =>
+                                  updateCraftMeta(si, ii, {
+                                    status: e.target.value as CraftItem["status"],
+                                  })
+                                }
+                                className="bg-[#111] border border-white/10 text-white/70 font-mono text-[11px] px-2 py-1"
+                              >
+                                <option value="published">Published</option>
+                                <option value="draft">Draft</option>
+                                <option value="archived">Archived</option>
+                              </select>
+                              <label className="font-mono text-[11px] text-white/55 inline-flex items-center gap-1.5">
+                                <input
+                                  type="checkbox"
+                                  checked={Boolean(item.featured)}
+                                  onChange={(e) => updateCraftMeta(si, ii, { featured: e.target.checked })}
+                                  className="h-3.5 w-3.5 accent-[#E2B93B]"
+                                />
+                                Featured
+                              </label>
+                              <label className="font-mono text-[11px] text-white/55 inline-flex items-center gap-1.5">
+                                <input
+                                  type="checkbox"
+                                  checked={Boolean(item.pinned)}
+                                  onChange={(e) => updateCraftMeta(si, ii, { pinned: e.target.checked })}
+                                  className="h-3.5 w-3.5 accent-[#E2B93B]"
+                                />
+                                Pinned
+                              </label>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => removeCraftItem(si, ii)}
+                              className="font-mono text-[10px] uppercase tracking-wider text-red-400/85 hover:text-red-300"
+                            >
+                              Remove item
+                            </button>
+                          </div>
+                        </div>
+                      )}
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
+                <div className="pt-2">
+                  <button
+                    type="button"
+                    onClick={() => addCraftItem(si)}
+                    className="font-mono text-[10px] uppercase tracking-wider text-[#E2B93B]/90 hover:text-[#E2B93B]"
+                  >
+                    + Add item
+                  </button>
+                </div>
               </div>
-              {section.items.length === 0 ? (
-                <p className="font-mono text-[11px] text-white/35">No items in this section.</p>
-              ) : null}
             </div>
           ))}
           <button
