@@ -373,6 +373,20 @@ function SlideForm({
           <NarratorEditor narrator={(slide as { narrator?: { text: string; label?: string; mood?: string } }).narrator} onChange={(n) => set("narrator", n)} />
         </>
       )}
+
+      {/* ─ Cinematic caption (all visual slides) ─ */}
+      {slide.type !== "narrative" && (
+        <div className="border-t border-white/[0.06] pt-5">
+          <FormField label="Cinematic caption" hint="One sentence shown as a bottom overlay in the visual-first view. Leave blank for no caption.">
+            <input
+              className={adminCx.input}
+              value={(slide as any).cinematicCaption ?? ""}
+              onChange={(e) => set("cinematicCaption", e.target.value || undefined)}
+              placeholder="Brief visual context for this slide…"
+            />
+          </FormField>
+        </div>
+      )}
     </div>
   );
 }
