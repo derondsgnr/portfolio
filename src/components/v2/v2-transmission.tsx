@@ -24,7 +24,7 @@ function isVideoUrl(url: string) {
   return /\.(mp4|webm|ogg)(\?.*)?$/i.test(url);
 }
 
-// ── Types ─────────────────────────────────────────────────────────────────
+// ── Types ─────────────────────────────────────────────────────────────────────────
 
 type BlogMeta = {
   slug: string;
@@ -123,7 +123,7 @@ const DefaultCategoryIcon = (
   </svg>
 );
 
-// ── Custom Cursor — Crosshair + Ghost Trail ───────────────────────────────
+// ── Custom Cursor — Crosshair + Ghost Trail ───────────────────────────────────────────
 
 function TransmissionCursor() {
   const TRAIL = 7;
@@ -247,7 +247,7 @@ function TransmissionCursor() {
   );
 }
 
-// ── Hero ──────────────────────────────────────────────────────────────────
+// ── Hero ───────────────────────────────────────────────────────────────────────────
 
 function TransmissionHero({ projects, heroCopy }: { projects: Project[]; heroCopy: HeroCopy }) {
   const [ctxIdx, setCtxIdx] = useState(0);
@@ -312,7 +312,7 @@ function TransmissionHero({ projects, heroCopy }: { projects: Project[]; heroCop
       )}
 
       {/* Hero copy — bottom left */}
-      <div className="relative h-full flex flex-col justify-end px-14 pb-16">
+      <div className="relative h-full flex flex-col justify-end px-6 pb-10 md:px-10 md:pb-16">
         {/* Context line with icon */}
         <div className="mb-5">
           <AnimatePresence mode="wait">
@@ -359,7 +359,7 @@ function TransmissionHero({ projects, heroCopy }: { projects: Project[]; heroCop
           {heroCopy.name ?? "Deron"}
         </motion.h1>
 
-        {/* Sub-copy */}
+        {/* Sub-copy — improved contrast */}
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -447,7 +447,7 @@ function TransmissionHero({ projects, heroCopy }: { projects: Project[]; heroCop
   );
 }
 
-// ── Project Row ───────────────────────────────────────────────────────────
+// ── Project Row ───────────────────────────────────────────────────────────────────
 
 function TransmissionProjectRow({
   project,
@@ -516,10 +516,11 @@ function TransmissionProjectRow({
 
       {/* Metadata column */}
       <div
-        className="flex flex-col justify-between px-12 py-10"
+        className="flex flex-col justify-between px-6 py-8 md:px-10 md:py-10"
         style={{ background: "#0D0D0D" }}
       >
         <div>
+          {/* Index + category with icon */}
           <div className="flex items-center gap-2 mb-5">
             <span
               style={{
@@ -616,7 +617,7 @@ function TransmissionProjectRow({
   );
 }
 
-// ── About Strip ───────────────────────────────────────────────────────────
+// ── About Strip ─────────────────────────────────────────────────────────────────
 
 const ABOUT_STATS_FALLBACK = [
   { label: "Mode", value: "Remote" },
@@ -641,7 +642,7 @@ function TransmissionAbout({ aboutCopy }: { aboutCopy: AboutCopy }) {
       style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}
     >
       <div
-        className="px-14 pt-20 pb-16"
+        className="px-6 pt-16 pb-12 sm:px-8 md:px-10 md:pt-20 md:pb-16"
         style={{
           display: "grid",
           gridTemplateColumns: "1fr 1fr",
@@ -649,6 +650,7 @@ function TransmissionAbout({ aboutCopy }: { aboutCopy: AboutCopy }) {
           alignItems: "start",
         }}
       >
+        {/* Left — heading + bio */}
         <div>
           <span
             style={{
@@ -719,6 +721,7 @@ function TransmissionAbout({ aboutCopy }: { aboutCopy: AboutCopy }) {
           </Link>
         </div>
 
+        {/* Right — stats grid */}
         <div style={{ paddingTop: 36 }}>
           {stats.map((stat, i) => (
             <motion.div
@@ -764,7 +767,7 @@ function TransmissionAbout({ aboutCopy }: { aboutCopy: AboutCopy }) {
   );
 }
 
-// ── Testimonials ──────────────────────────────────────────────────────────
+// ── Testimonials ──────────────────────────────────────────────────────────────
 
 function TransmissionTestimonials({ testimonials }: { testimonials: TestimonialItem[] }) {
   const ref = useRef<HTMLElement>(null);
@@ -776,7 +779,7 @@ function TransmissionTestimonials({ testimonials }: { testimonials: TestimonialI
       initial={{ opacity: 0, y: 28 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
-      className="px-14 py-20"
+      className="px-6 py-14 sm:px-8 md:px-10 md:py-20"
       style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}
     >
       <span
@@ -806,6 +809,7 @@ function TransmissionTestimonials({ testimonials }: { testimonials: TestimonialI
               borderLeft: i === 0 ? "2px solid #E2B93B" : "2px solid rgba(255,255,255,0.05)",
             }}
           >
+            {/* Open-quote mark */}
             <span
               style={{
                 fontFamily: "'Anton', sans-serif",
@@ -866,7 +870,7 @@ function TransmissionTestimonials({ testimonials }: { testimonials: TestimonialI
   );
 }
 
-// ── Writing Preview ───────────────────────────────────────────────────────
+// ── Writing Preview ─────────────────────────────────────────────────────────────
 
 function TransmissionWriting({ posts }: { posts: BlogMeta[] }) {
   const ref = useRef<HTMLElement>(null);
@@ -878,7 +882,7 @@ function TransmissionWriting({ posts }: { posts: BlogMeta[] }) {
       initial={{ opacity: 0, y: 28 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
-      className="px-14 py-20"
+      className="px-6 py-14 sm:px-8 md:px-10 md:py-20"
       style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}
     >
       <div className="flex items-center justify-between mb-8">
@@ -982,7 +986,7 @@ function TransmissionWriting({ posts }: { posts: BlogMeta[] }) {
   );
 }
 
-// ── Craft ─────────────────────────────────────────────────────────────────
+// ── Craft ───────────────────────────────────────────────────────────────────────
 
 function TransmissionCraft({ items }: { items: CraftItem[] }) {
   const ref = useRef<HTMLElement>(null);
@@ -995,9 +999,10 @@ function TransmissionCraft({ items }: { items: CraftItem[] }) {
       initial={{ opacity: 0, y: 28 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
-      className="px-14 py-20"
+      className="px-6 py-14 sm:px-8 md:px-10 md:py-20"
       style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}
     >
+      {/* Section header */}
       <div className="flex items-center justify-between mb-8">
         <span
           style={{
@@ -1027,7 +1032,14 @@ function TransmissionCraft({ items }: { items: CraftItem[] }) {
         </Link>
       </div>
 
-      <div style={{ columns: "4", columnGap: "6px", gap: "6px" }}>
+      {/* Masonry-style grid — 4 cols, variable heights */}
+      <div
+        style={{
+          columns: "4",
+          columnGap: "6px",
+          gap: "6px",
+        }}
+      >
         {published.map((item, i) => (
           <CraftTile key={item.id} item={item} index={i} inView={inView} />
         ))}
@@ -1050,10 +1062,24 @@ function CraftTile({ item, index, inView }: { item: CraftItem; index: number; in
       onMouseLeave={() => setHovered(false)}
       data-cursor="true"
       data-cursor-label="VIEW"
-      style={{ breakInside: "avoid", marginBottom: 6, position: "relative", cursor: "none", overflow: "hidden", background: "#111111" }}
+      style={{
+        breakInside: "avoid",
+        marginBottom: 6,
+        position: "relative",
+        cursor: "none",
+        overflow: "hidden",
+        background: "#111111",
+      }}
     >
       <Link href="/craft" style={{ display: "block", position: "relative" }}>
-        <div style={{ position: "relative", paddingBottom: `${(1 / aspectRatio) * 100}%`, overflow: "hidden" }}>
+        {/* Media */}
+        <div
+          style={{
+            position: "relative",
+            paddingBottom: `${(1 / aspectRatio) * 100}%`,
+            overflow: "hidden",
+          }}
+        >
           {item.videoUrl ? (
             <video
               src={item.videoUrl}
@@ -1081,12 +1107,18 @@ function CraftTile({ item, index, inView }: { item: CraftItem; index: number; in
               />
             </motion.div>
           ) : (
-            <div className="absolute inset-0 flex items-center justify-center" style={{ background: "#1A1A1A" }}>
-              <span style={{ fontFamily: "'Anton', sans-serif", fontSize: "24px", color: "rgba(255,255,255,0.06)" }}>{item.category}</span>
+            <div
+              className="absolute inset-0 flex items-center justify-center"
+              style={{ background: "#1A1A1A" }}
+            >
+              <span style={{ fontFamily: "'Anton', sans-serif", fontSize: "24px", color: "rgba(255,255,255,0.06)" }}>
+                {item.category}
+              </span>
             </div>
           )}
         </div>
 
+        {/* Hover overlay — title + category */}
         <AnimatePresence>
           {hovered && (
             <motion.div
@@ -1097,8 +1129,29 @@ function CraftTile({ item, index, inView }: { item: CraftItem; index: number; in
               className="absolute inset-0 flex flex-col justify-end"
               style={{ padding: "12px", background: "linear-gradient(to top, rgba(10,10,10,0.85) 0%, transparent 60%)" }}
             >
-              <span style={{ fontFamily: "monospace", fontSize: "6.5px", letterSpacing: "0.18em", textTransform: "uppercase", color: "#E2B93B", display: "block", marginBottom: 3 }}>{item.category}</span>
-              <span style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "11px", color: "#F0F0F0", lineHeight: 1.3 }}>{item.title}</span>
+              <span
+                style={{
+                  fontFamily: "monospace",
+                  fontSize: "6.5px",
+                  letterSpacing: "0.18em",
+                  textTransform: "uppercase",
+                  color: "#E2B93B",
+                  display: "block",
+                  marginBottom: 3,
+                }}
+              >
+                {item.category}
+              </span>
+              <span
+                style={{
+                  fontFamily: "'Instrument Sans', sans-serif",
+                  fontSize: "11px",
+                  color: "#F0F0F0",
+                  lineHeight: 1.3,
+                }}
+              >
+                {item.title}
+              </span>
             </motion.div>
           )}
         </AnimatePresence>
@@ -1107,7 +1160,7 @@ function CraftTile({ item, index, inView }: { item: CraftItem; index: number; in
   );
 }
 
-// ── CTA ───────────────────────────────────────────────────────────────────
+// ── CTA ─────────────────────────────────────────────────────────────────────────
 
 function TransmissionCTA({ ctaCopy, ctaLabel }: { ctaCopy: CtaCopy; ctaLabel: string }) {
   const ref = useRef<HTMLElement>(null);
@@ -1120,7 +1173,7 @@ function TransmissionCTA({ ctaCopy, ctaLabel }: { ctaCopy: CtaCopy; ctaLabel: st
       initial={{ opacity: 0, y: 28 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
-      className="px-14 py-32"
+      className="px-6 py-20 sm:px-8 md:px-10 md:py-32"
       style={{ borderTop: "1px solid rgba(255,255,255,0.055)" }}
     >
       <span
@@ -1175,7 +1228,7 @@ function TransmissionCTA({ ctaCopy, ctaLabel }: { ctaCopy: CtaCopy; ctaLabel: st
   );
 }
 
-// ── Root Export ───────────────────────────────────────────────────────────
+// ── Root Export ─────────────────────────────────────────────────────────────────
 
 export function TransmissionVariation({
   projects,
@@ -1209,8 +1262,9 @@ export function TransmissionVariation({
       <main className="transmission-root" style={{ marginLeft: SIDEBAR_WIDTH }}>
         <TransmissionHero projects={projects} heroCopy={heroCopy} />
 
+        {/* Work section header */}
         <div
-          className="px-14 pt-20 pb-10 flex items-center justify-between"
+          className="px-6 pt-14 pb-8 sm:px-8 md:px-10 md:pt-20 md:pb-10 flex items-center justify-between"
           style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}
         >
           <span
@@ -1242,7 +1296,11 @@ export function TransmissionVariation({
         </div>
 
         {projects.slice(0, 5).map((project, i) => (
-          <TransmissionProjectRow key={project.id} project={project} index={i} />
+          <TransmissionProjectRow
+            key={project.id}
+            project={project}
+            index={i}
+          />
         ))}
 
         <TransmissionAbout aboutCopy={aboutCopy} />
