@@ -738,53 +738,6 @@
     "liveDemoUrl": "https://mydara.co",
     "acts": [
       {
-        "title": "Discovery",
-        "slides": [
-          {
-            "type": "cover",
-            "id": "dara-cover",
-            "headline": "From inbox noise to filing signal",
-            "subtitle": "Email alerts → Gemini → you verify → buckets improve over time → aggregation and tax guidance. Built while I leveled up on AI-assisted shipping; the write-ups unpack each layer.",
-            "tags": [
-              "Fintech",
-              "Tax",
-              "AI-Assisted Build"
-            ],
-            "heroImage": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1778268299/Screenshot_2026-05-08_at_20.22.38_zruykd.png",
-            "device": "browser"
-          },
-          {
-            "type": "narrative",
-            "id": "dara-context",
-            "headline": "Start with the real friction",
-            "body": "Personal income tax in Nigeria is strenuous, overcomplicated, and thin on public education. Fines are heavy. A huge pool of freelancers and self-employed people earn in naira and dollars and are meeting that system for the first time with almost no plain-language on-ramp.",
-            "annotation": "I'm building for self-employed people first. Grassroots scale is the vision, but the story has to work for one person's inbox before it works for millions.",
-            "narrator": {
-              "text": "This wasn't a brief from a client. It started with my own frustration and what I see around me. The product is how I'm learning to ship with AI—not a slide deck about AI.",
-              "label": "NOTE",
-              "mood": "thinking"
-            }
-          },
-          {
-            "type": "insight",
-            "id": "dara-insight-1",
-            "headline": "The wedge is what people already have",
-            "insightLabel": "PRODUCT CALL",
-            "insightText": "Debit and credit alerts already land in email from banks and fintech. The job is extraction → classification → aggregation, then tax guidance that respects state rules.",
-            "body": "If the pipeline lies, the dashboard is a dark theme on garbage. Extraction is uneven by bank and sender today. I state that on purpose so the story stays mechanical, not magical."
-          },
-          {
-            "type": "single-mockup",
-            "id": "dara-competitor",
-            "headline": "What most tax products assume",
-            "annotation": "They assume patience for jargon, dense tables, and accountant-first mental models. I'm designing for someone who needs to know what they owe, when, and how to pay—without treating them like they already passed a tax exam.",
-            "image": "https://images.unsplash.com/photo-1629963918958-1b62cfe3fe92?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-            "device": "browser",
-            "caption": "Placeholder stand-in for legacy / spreadsheet-heavy compliance UX — swap for labeled comparison when assets are ready."
-          }
-        ]
-      },
-      {
         "title": "Build",
         "slides": [
           {
@@ -877,6 +830,53 @@
               "label": "Inbox → verify → learn → clarity"
             },
             "device": "browser"
+          }
+        ]
+      },
+      {
+        "title": "Discovery",
+        "slides": [
+          {
+            "type": "cover",
+            "id": "dara-cover",
+            "headline": "From inbox noise to filing signal",
+            "subtitle": "Email alerts → Gemini → you verify → buckets improve over time → aggregation and tax guidance. Built while I leveled up on AI-assisted shipping; the write-ups unpack each layer.",
+            "tags": [
+              "Fintech",
+              "Tax",
+              "AI-Assisted Build"
+            ],
+            "heroImage": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1778268299/Screenshot_2026-05-08_at_20.22.38_zruykd.png",
+            "device": "browser"
+          },
+          {
+            "type": "narrative",
+            "id": "dara-context",
+            "headline": "Start with the real friction",
+            "body": "Personal income tax in Nigeria is strenuous, overcomplicated, and thin on public education. Fines are heavy. A huge pool of freelancers and self-employed people earn in naira and dollars and are meeting that system for the first time with almost no plain-language on-ramp.",
+            "annotation": "I'm building for self-employed people first. Grassroots scale is the vision, but the story has to work for one person's inbox before it works for millions.",
+            "narrator": {
+              "text": "This wasn't a brief from a client. It started with my own frustration and what I see around me. The product is how I'm learning to ship with AI—not a slide deck about AI.",
+              "label": "NOTE",
+              "mood": "thinking"
+            }
+          },
+          {
+            "type": "insight",
+            "id": "dara-insight-1",
+            "headline": "The wedge is what people already have",
+            "insightLabel": "PRODUCT CALL",
+            "insightText": "Debit and credit alerts already land in email from banks and fintech. The job is extraction → classification → aggregation, then tax guidance that respects state rules.",
+            "body": "If the pipeline lies, the dashboard is a dark theme on garbage. Extraction is uneven by bank and sender today. I state that on purpose so the story stays mechanical, not magical."
+          },
+          {
+            "type": "single-mockup",
+            "id": "dara-competitor",
+            "headline": "What most tax products assume",
+            "annotation": "They assume patience for jargon, dense tables, and accountant-first mental models. I'm designing for someone who needs to know what they owe, when, and how to pay—without treating them like they already passed a tax exam.",
+            "image": "https://images.unsplash.com/photo-1629963918958-1b62cfe3fe92?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+            "device": "browser",
+            "caption": "Placeholder stand-in for legacy / spreadsheet-heavy compliance UX — swap for labeled comparison when assets are ready."
           }
         ]
       },
