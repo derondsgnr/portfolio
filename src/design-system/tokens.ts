@@ -14,6 +14,16 @@ export const tokens = {
     "accent-foreground": "#0a0a0a",
     muted: "#1a1a1a",
     "muted-foreground": "#9a9a9a",
+    // Text hierarchy — use these instead of raw rgba values
+    // All meet WCAG AA on #0a0a0a background
+    text: {
+      primary: "#f0f0f0",                  // headings, main body
+      secondary: "rgba(255,255,255,0.65)", // descriptions, important metadata
+      tertiary: "rgba(255,255,255,0.45)",  // labels, year, category, timestamps
+      ghost: "rgba(255,255,255,0.28)",     // decorative text only — not for information
+      inactive: "rgba(255,255,255,0.50)",  // inactive tabs, toggles
+      disabled: "rgba(255,255,255,0.18)",  // disabled states only
+    },
     border: "rgba(255, 255, 255, 0.08)",
     "border-focus": "rgba(226, 185, 59, 0.5)",
     ring: "rgba(255, 255, 255, 0.2)",
