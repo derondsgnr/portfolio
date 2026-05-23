@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import Script from "next/script";
 import { usePathname } from "next/navigation";
 import { siX, siGithub, siDribbble } from "simple-icons";
 import { useSiteConfig } from "@/contexts/site-config-context";
@@ -187,6 +188,21 @@ export function GlobalSidebar() {
                 @derondsgnr
               </p>
             </div>
+          </div>
+
+          {/* Contra hire-me button */}
+          <div className="mb-5">
+            <div
+              className="contra-hire-me-button"
+              data-analyticsUserId="ea3ca719-fa5d-4897-8722-9b0dfb9f5f30"
+              data-theme="dark"
+              data-username="derondsgnr"
+            />
+            <Script
+              src="https://contra.com/static/embed/sdk.js"
+              strategy="lazyOnload"
+              charSet="utf-8"
+            />
           </div>
 
           {/* Social icons */}

@@ -33,6 +33,20 @@ export function Navbar() {
             derondsgnr
           </Link>
 
+          {/* Mobile CTA — top right, only on small screens */}
+          <button
+            onClick={withSound(() => open("book"))}
+            onMouseEnter={onHover}
+            className="md:hidden text-[0.7rem] uppercase tracking-[0.13em] px-4 py-1.5 border transition-all duration-300"
+            style={{
+              fontFamily: "var(--font-body)",
+              borderColor: "color-mix(in srgb, var(--color-accent) 40%, transparent)",
+              color: "var(--color-accent)",
+            }}
+          >
+            {ctaLabel}
+          </button>
+
           {/* Desktop nav links */}
           <ul className="hidden md:flex items-center gap-8">
             {nav.map((item) => {
@@ -153,25 +167,6 @@ export function Navbar() {
             );
           })}
 
-          {/* CTA — always last */}
-          <button
-            onClick={withSound(() => open("book"))}
-            className="flex-1 flex items-center justify-center py-4 px-1"
-            aria-label={ctaLabel}
-          >
-            <span
-              style={{
-                fontFamily: "monospace",
-                fontSize: "9px",
-                letterSpacing: "0.10em",
-                textTransform: "uppercase",
-                color: "#E2B93B",
-                whiteSpace: "nowrap",
-              }}
-            >
-              {ctaLabel}
-            </span>
-          </button>
         </div>
       </motion.nav>
     </>

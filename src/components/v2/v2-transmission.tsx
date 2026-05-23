@@ -261,7 +261,7 @@ function TransmissionHero({ projects, heroCopy }: { projects: Project[]; heroCop
   const ctx = CONTEXT_LINES[ctxIdx];
 
   return (
-    <section className="relative" style={{ height: "100vh" }}>
+    <section className="relative" style={{ height: "100dvh", minHeight: "100svh" }}>
       {/* Full-bleed image or video */}
       <div className="absolute inset-0">
         {featured?.image && (
@@ -572,13 +572,14 @@ function TransmissionProjectRow({
               lineHeight: 1.65,
               color: "rgba(255,255,255,0.65)",
               maxWidth: 340,
+              marginBottom: 28,
             }}
           >
             {project.description}
           </p>
         </div>
 
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between" style={{ paddingTop: 20 }}>
           <span
             style={{
               fontFamily: "monospace",
@@ -985,6 +986,7 @@ function TransmissionCraft({ items }: { items: CraftItem[] }) {
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.08 });
   const published = items.filter((i) => !i.status || i.status === "published").slice(0, 8);
+  const [selected, setSelected] = useState<CraftItem | null>(null);
 
   return (
     <motion.section
@@ -1028,14 +1030,103 @@ function TransmissionCraft({ items }: { items: CraftItem[] }) {
       {/* Masonry-style grid — responsive columns */}
       <div className="columns-2 sm:columns-3 md:columns-4" style={{ columnGap: "6px" }}>
         {published.map((item, i) => (
-          <CraftTile key={item.id} item={item} index={i} inView={inView} />
+          <CraftTile key={item.id} item={item} index={i} inView={inView} onSelect={() => setSelected(item)} />
         ))}
       </div>
+
+      {/* Lightbox overlay */}
+      <AnimatePresence>
+        {selected && (
+          <motion.div
+            key="craft-lightbox"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            className="fixed inset-0 z-[200] flex items-center justify-center"
+            style={{ background: "rgba(10,10,10,0.96)", backdropFilter: "blur(8px)" }}
+            onClick={() => setSelected(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
+              className="relative flex flex-col items-center justify-center w-full h-full px-6 py-16 md:px-16"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Close */}
+              <button
+                onClick={() => setSelected(null)}
+                className="absolute top-6 right-6 flex items-center justify-center"
+                style={{
+                  width: 36, height: 36,
+                  border: "1px solid rgba(255,255,255,0.12)",
+                  color: "rgba(255,255,255,0.5)",
+                  fontFamily: "monospace", fontSize: "16px",
+                  transition: "all 0.2s",
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.color = "#F0F0F0"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.4)"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(255,255,255,0.5)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.12)"; }}
+                aria-label="Close"
+              >
+                ×
+              </button>
+
+              {/* Image */}
+              <div className="relative flex-1 w-full max-w-4xl flex items-center justify-center">
+                {selected.videoUrl ? (
+                  <video
+                    src={selected.videoUrl}
+                    autoPlay muted loop playsInline
+                    className="max-w-full max-h-[75vh] object-contain"
+                  />
+                ) : selected.image ? (
+                  <img
+                    src={selected.image}
+                    alt={selected.title}
+                    className="max-w-full max-h-[75vh] object-contain"
+                    style={{ boxShadow: "0 32px 80px rgba(0,0,0,0.6)" }}
+                  />
+                ) : null}
+              </div>
+
+              {/* Title at bottom */}
+              <div className="mt-6 text-center">
+                <span
+                  style={{
+                    fontFamily: "monospace",
+                    fontSize: "9px",
+                    letterSpacing: "0.2em",
+                    textTransform: "uppercase",
+                    color: "#E2B93B",
+                    display: "block",
+                    marginBottom: 6,
+                  }}
+                >
+                  {selected.category}
+                </span>
+                <span
+                  style={{
+                    fontFamily: "'Anton', sans-serif",
+                    fontSize: "clamp(1rem, 3vw, 1.6rem)",
+                    letterSpacing: "0.05em",
+                    textTransform: "uppercase",
+                    color: "#F0F0F0",
+                  }}
+                >
+                  {selected.title}
+                </span>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.section>
   );
 }
 
-function CraftTile({ item, index, inView }: { item: CraftItem; index: number; inView: boolean }) {
+function CraftTile({ item, index, inView, onSelect }: { item: CraftItem; index: number; inView: boolean; onSelect: () => void }) {
   const [hovered, setHovered] = useState(false);
   const aspectRatio =
     item.width && item.height ? item.width / item.height : index % 3 === 0 ? 0.75 : 1.33;
@@ -1048,7 +1139,8 @@ function CraftTile({ item, index, inView }: { item: CraftItem; index: number; in
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       data-cursor="true"
-      data-cursor-label="VIEW"
+      data-cursor-label="EXPAND"
+      onClick={onSelect}
       style={{
         breakInside: "avoid",
         marginBottom: 6,
@@ -1058,7 +1150,7 @@ function CraftTile({ item, index, inView }: { item: CraftItem; index: number; in
         background: "#111111",
       }}
     >
-      <Link href="/craft" style={{ display: "block", position: "relative" }}>
+      <div style={{ display: "block", position: "relative" }}>
         {/* Media */}
         <div
           style={{
@@ -1142,7 +1234,7 @@ function CraftTile({ item, index, inView }: { item: CraftItem; index: number; in
             </motion.div>
           )}
         </AnimatePresence>
-      </Link>
+      </div>
     </motion.div>
   );
 }
