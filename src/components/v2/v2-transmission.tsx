@@ -262,17 +262,22 @@ function TransmissionHero({ projects, heroCopy }: { projects: Project[]; heroCop
   useEffect(() => {
     let dotLottie: { destroy: () => void } | null = null;
     import("@lottiefiles/dotlottie-web").then(({ DotLottie }) => {
-      if (!canvasRef.current) return;
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      // Seed canvas dimensions before init so the first frame fills the hero
+      canvas.width  = canvas.clientWidth  || window.innerWidth;
+      canvas.height = canvas.clientHeight || window.innerHeight;
       // Self-host WASM — no CDN dependency
       DotLottie.setWasmUrl("/dotlottie-player.wasm");
       dotLottie = new DotLottie({
-        canvas: canvasRef.current,
+        canvas,
         src: "/animations/scene.lottie",
         loop: true,
         autoplay: true,
-        renderConfig: {
-          autoResize: true,
-        },
+        renderConfig: { autoResize: true },
+        // cover: scale to fill the whole canvas, crop the square animation edges
+        // as needed for widescreen viewports — same as CSS object-fit: cover
+        layout: { fit: "cover", align: [0.5, 0.5] },
       });
     });
     return () => { dotLottie?.destroy(); };
