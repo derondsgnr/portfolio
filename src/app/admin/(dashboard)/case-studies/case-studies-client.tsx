@@ -280,6 +280,15 @@ function StudyEditor({
                   <FormField label="Title">
                     <input className={adminCx.input} value={form.meta.title} onChange={(e) => setMeta("title", e.target.value)} />
                   </FormField>
+                  <FormField label="Slug (URL path)">
+                    <input
+                      className={adminCx.input}
+                      value={form.slug}
+                      onChange={(e) => setForm((f) => ({ ...f, slug: e.target.value.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "") }))}
+                      placeholder="e.g. bantu-events"
+                    />
+                    <p className="mt-1 text-[10px] font-['Instrument_Sans'] text-white/25">/work/{form.slug}</p>
+                  </FormField>
                   <FormField label="Client">
                     <input className={adminCx.input} value={form.meta.client} onChange={(e) => setMeta("client", e.target.value)} />
                   </FormField>

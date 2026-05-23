@@ -76,6 +76,43 @@ async function hydrateProjectImagesFromCaseStudies(
   }
 }
 
+/**
+ * For any published case study that doesn't already have a row in projects.json,
+ * synthesize a project tile so admin-created case studies appear in the work listing
+ * without requiring a manual projects.json edit.
+ */
+async function synthesizeProjectsFromCaseStudies(
+  existing: Project[],
+  visibility: { includeDrafts?: boolean; includeArchived?: boolean }
+): Promise<Project[]> {
+  try {
+    const studies = await getCaseStudies(visibility);
+    const existingSlugs = new Set(existing.map((p) => p.slug));
+    const synthetic: Project[] = [];
+    for (const cs of studies) {
+      if (existingSlugs.has(cs.slug)) continue;
+      const thumb = bestCaseStudyCoverThumb(cs);
+      synthetic.push(
+        normalizeProject({
+          id: cs.slug,
+          title: cs.meta.title,
+          category: cs.meta.tags?.[0] ?? "Design",
+          year: cs.meta.year,
+          description: cs.meta.summary ?? "",
+          image: thumb ?? "",
+          slug: cs.slug,
+          status: cs.status ?? "published",
+          featured: cs.featured ?? false,
+          pinned: cs.pinned ?? false,
+        })
+      );
+    }
+    return [...existing, ...synthetic];
+  } catch {
+    return existing;
+  }
+}
+
 /** Slugs with case studies hidden from the requested visibility (draft/archived filtered out). */
 async function suppressedCaseStudySlugsForTiles(options: {
   includeDrafts: boolean;
@@ -120,7 +157,8 @@ export async function getProjects(options?: {
       if (!includeDrafts && status === "draft") return false;
       return true;
     });
-    let hydrated = await hydrateProjectImagesFromCaseStudies(filtered, visibility);
+    const merged = await synthesizeProjectsFromCaseStudies(filtered, visibility);
+    let hydrated = await hydrateProjectImagesFromCaseStudies(merged, visibility);
     const hiddenCs = await suppressedCaseStudySlugsForTiles({
       includeDrafts,
       includeArchived,
