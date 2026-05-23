@@ -479,6 +479,37 @@ function WorkGridView({ projects = V2_PROJECTS }: { projects?: typeof V2_PROJECT
                 {project.year}
               </span>
             </div>
+            {/* Title overlay — bottom of image */}
+            <div className="absolute bottom-0 left-0 right-0 z-[1] px-5 pb-4 pt-10"
+              style={{ background: "linear-gradient(to top, rgba(0,0,0,0.72) 0%, transparent 100%)" }}>
+              <span
+                style={{
+                  fontFamily: "'Anton', sans-serif",
+                  fontSize: "clamp(1.1rem, 2.8vw, 1.6rem)",
+                  lineHeight: 1,
+                  letterSpacing: "0.03em",
+                  textTransform: "uppercase",
+                  color: "#F0F0F0",
+                  textShadow: "0 2px 8px rgba(0,0,0,0.7)",
+                  display: "block",
+                }}
+              >
+                {project.title}
+              </span>
+              <span
+                style={{
+                  fontFamily: "monospace",
+                  fontSize: "10px",
+                  letterSpacing: "0.14em",
+                  color: "rgba(255,255,255,0.5)",
+                  textTransform: "uppercase",
+                  display: "block",
+                  marginTop: "3px",
+                }}
+              >
+                {project.category}
+              </span>
+            </div>
           </div>
 
           <p

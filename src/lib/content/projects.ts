@@ -67,9 +67,11 @@ async function hydrateProjectImagesFromCaseStudies(
       if (url) coverBySlug.set(cs.slug, url);
     }
     return projects.map((p) => {
-      if (!isPlaceholderRemoteImage(p.image)) return p;
       const fromStudy = coverBySlug.get(p.slug);
-      return fromStudy ? { ...p, image: fromStudy } : p;
+      // Always prefer the case study cover so admin cover updates propagate
+      // to the work listing immediately. Fall back to projects.json image.
+      if (fromStudy) return { ...p, image: fromStudy };
+      return p;
     });
   } catch {
     return projects;
