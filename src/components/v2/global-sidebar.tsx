@@ -189,6 +189,38 @@ export function GlobalSidebar() {
             </div>
           </div>
 
+          {/* Contra hire-me link */}
+          <a
+            href="https://contra.com/derondsgnr"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 mb-5"
+            style={{
+              fontFamily: "monospace",
+              fontSize: "9px",
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+              color: "rgba(255,255,255,0.45)",
+              border: "1px solid rgba(255,255,255,0.1)",
+              padding: "7px 12px",
+              display: "inline-flex",
+              transition: "all 0.2s",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = "#E2B93B";
+              e.currentTarget.style.borderColor = "#E2B93B";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = "rgba(255,255,255,0.45)";
+              e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)";
+            }}
+          >
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/>
+            </svg>
+            Hire me on Contra
+          </a>
+
           {/* Social icons */}
           <div className="flex items-center gap-2">
             {g.socialLinks.map((s) => {

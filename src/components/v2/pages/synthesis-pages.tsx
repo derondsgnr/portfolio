@@ -656,7 +656,7 @@ export function SynthesisWorkPage({ projects, copy }: { projects?: typeof V2_PRO
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.5, duration: 0.6 }}
-            className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8 md:mb-12 gap-3"
+            className="flex flex-row items-center justify-between mb-8 md:mb-12 gap-3 flex-wrap"
           >
             {/* Tab switcher */}
             <div
@@ -1386,9 +1386,12 @@ export function SynthesisCraftPage({
   explorations?: Exploration[];
   media?: MediaConfig;
 }) {
-  const [tab, setTab] = useState<"projects" | "explorations">("projects");
   const [view, setView] = useState<"a" | "b">("a");
   const [viewerIndex, setViewerIndex] = useState<number | null>(null);
+
+  // Merge craft items + explorations into one unified set for the grid view
+  const allCraftItems = craftListItems;
+  const totalCount = allCraftItems.length + explorations.length;
 
   return (
     <main className="relative bg-[#0A0A0A] min-h-screen">
@@ -1400,90 +1403,55 @@ export function SynthesisCraftPage({
 
       <section className="relative z-[2] px-6 sm:px-8 md:px-10 pb-20 md:pb-32">
         <div className="max-w-6xl mx-auto">
-          {/* ─── Inline toolbar: tabs left, view toggle right ─── */}
+          {/* ─── Toolbar: item count left, view toggle right ─── */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.5, duration: 0.6 }}
-            className="flex items-center justify-between mb-12 flex-wrap gap-4"
+            className="flex items-center justify-between mb-12"
           >
-            {/* Tab switcher */}
-            <div
-              className="flex items-center gap-1 px-1 py-0.5 rounded-full"
-              style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.06)" }}
-            >
-              <button
-                onClick={() => setTab("projects")}
-                className="px-3 py-1.5 rounded-full transition-all duration-300"
-                style={{
-                  fontFamily: "monospace",
-                  fontSize: "9px",
-                  letterSpacing: "0.15em",
-                  textTransform: "uppercase" as const,
-                  color: tab === "projects" ? "#0A0A0A" : "rgba(255,255,255,0.3)",
-                  background: tab === "projects" ? "#E2B93B" : "transparent",
-                }}
-              >
-                Projects
-              </button>
-              <button
-                onClick={() => setTab("explorations")}
-                className="px-3 py-1.5 rounded-full transition-all duration-300"
-                style={{
-                  fontFamily: "monospace",
-                  fontSize: "9px",
-                  letterSpacing: "0.15em",
-                  textTransform: "uppercase" as const,
-                  color: tab === "explorations" ? "#0A0A0A" : "rgba(255,255,255,0.3)",
-                  background: tab === "explorations" ? "#E2B93B" : "transparent",
-                }}
-              >
-                Graphics & Motion
-              </button>
-            </div>
-
-            {/* View toggle — only on Projects tab */}
-            {tab === "projects" && (
-              <ViewToggle
-                mode={view}
-                onToggle={() => setView(view === "a" ? "b" : "a")}
-                labelA="Grid"
-                labelB="List"
-              />
-            )}
-
-            {/* Item count — only on Explorations tab */}
-            {tab === "explorations" && (
-              <span style={{ fontFamily: "monospace", fontSize: "9px", color: "rgba(255,255,255,0.15)", letterSpacing: "0.1em" }}>
-                {explorations.length} ARTIFACTS INDEXED
-              </span>
-            )}
+            <span style={{ fontFamily: "monospace", fontSize: "9px", color: "rgba(255,255,255,0.25)", letterSpacing: "0.14em" }}>
+              {totalCount} ARTIFACTS
+            </span>
+            <ViewToggle
+              mode={view}
+              onToggle={() => setView(view === "a" ? "b" : "a")}
+              labelA="Grid"
+              labelB="List"
+            />
           </motion.div>
 
-          {/* ─── Tab content ─── */}
+          {/* ─── Unified content ─── */}
           <AnimatePresence mode="wait">
-            {tab === "projects" ? (
-              <motion.div
-                key={`projects-${view}`}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.4 }}
-              >
-                {view === "a" ? <CraftProjectSections document={craftDocument} /> : <CraftListView craftItems={craftListItems} />}
-              </motion.div>
-            ) : (
-              <motion.div
-                key="explorations"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.4 }}
-              >
-                <ExplorationsGallery explorations={explorations} onOpen={(i) => setViewerIndex(i)} />
-              </motion.div>
-            )}
+            <motion.div
+              key={view}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.4 }}
+            >
+              {view === "a" ? (
+                <CraftProjectSections document={craftDocument} />
+              ) : (
+                <CraftListView craftItems={allCraftItems} />
+              )}
+            </motion.div>
           </AnimatePresence>
+
+          {/* Explorations sub-gallery if any exist */}
+          {explorations.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.5 }}
+              className="mt-16"
+            >
+              <span style={{ fontFamily: "monospace", fontSize: "9px", letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(255,255,255,0.25)", display: "block", marginBottom: 24 }}>
+                Motion
+              </span>
+              <ExplorationsGallery explorations={explorations} onOpen={(i) => setViewerIndex(i)} />
+            </motion.div>
+          )}
         </div>
       </section>
 

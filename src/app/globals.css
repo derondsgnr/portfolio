@@ -61,3 +61,13 @@
     position: relative;
   }
 }
+
+/* ── Contra embed — force square edges to match design system ── */
+.contra-hire-me-button {
+  border-radius: 0 !important;
+  overflow: hidden;
+}
+.contra-hire-me-button * {
+  border-radius: 0 !important;
+}
+
