@@ -252,7 +252,7 @@ function TransmissionCursor() {
 function TransmissionHero({ projects, heroCopy }: { projects: Project[]; heroCopy: HeroCopy }) {
   const [ctxIdx, setCtxIdx] = useState(0);
   const featured = projects[0];
-  const lottieRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const t = setInterval(() => setCtxIdx((i) => (i + 1) % CONTEXT_LINES.length), 2600);
@@ -260,19 +260,22 @@ function TransmissionHero({ projects, heroCopy }: { projects: Project[]; heroCop
   }, []);
 
   useEffect(() => {
-    let anim: { destroy: () => void } | null = null;
-    import("lottie-web").then((mod) => {
-      const lottie = mod.default;
-      if (!lottieRef.current) return;
-      anim = lottie.loadAnimation({
-        container: lottieRef.current,
-        renderer: "svg",
+    let dotLottie: { destroy: () => void } | null = null;
+    import("@lottiefiles/dotlottie-web").then(({ DotLottie }) => {
+      if (!canvasRef.current) return;
+      // Self-host WASM — no CDN dependency
+      DotLottie.setWasmUrl("/dotlottie-player.wasm");
+      dotLottie = new DotLottie({
+        canvas: canvasRef.current,
+        src: "/animations/scene.lottie",
         loop: true,
         autoplay: true,
-        path: "/animations/scene.json",
+        renderConfig: {
+          autoResize: true,
+        },
       });
     });
-    return () => { anim?.destroy(); };
+    return () => { dotLottie?.destroy(); };
   }, []);
 
   const ctx = CONTEXT_LINES[ctxIdx];
@@ -281,10 +284,10 @@ function TransmissionHero({ projects, heroCopy }: { projects: Project[]; heroCop
     <section className="relative" style={{ height: "100dvh", minHeight: "100svh" }}>
       {/* Full-bleed Lottie animation */}
       <div className="absolute inset-0">
-        <div
-          ref={lottieRef}
+        <canvas
+          ref={canvasRef}
           className="absolute inset-0 w-full h-full"
-          style={{ filter: "brightness(0.32)" }}
+          style={{ display: "block", filter: "brightness(0.32)" }}
           aria-hidden="true"
         />
         <div
