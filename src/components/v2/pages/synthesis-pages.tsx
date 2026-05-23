@@ -628,7 +628,7 @@ function CodeSnippetsView() {
               className="flex-1 border-0"
               title={active.title}
               allow="accelerometer; camera; encrypted-media; geolocation; gyroscope; microphone; midi"
-              sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
+              sandbox="allow-forms allow-modals allow-popups allow-presentation allow-scripts"
             />
           </motion.div>
         )}

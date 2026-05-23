@@ -13,8 +13,9 @@ export default async function LayoutBuilderPage() {
     "content/pages.json",
     getPagesConfig,
     (fallback, parsed): PagesConfig => {
-      const p = parsed as { homepage?: unknown; work?: unknown; about?: unknown };
+      const p = parsed as { homepageTemplate?: unknown; homepage?: unknown; work?: unknown; about?: unknown };
       return {
+        homepageTemplate: typeof p?.homepageTemplate === "string" ? p.homepageTemplate : fallback.homepageTemplate,
         homepage: isValidPageConfig(p?.homepage) ? p.homepage : fallback.homepage,
         work: isValidPageConfig(p?.work) ? p.work : fallback.work,
         about: isValidPageConfig(p?.about) ? p.about : fallback.about,

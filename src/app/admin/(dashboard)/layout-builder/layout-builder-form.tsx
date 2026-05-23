@@ -25,6 +25,11 @@ import { getSectionSchema } from "@/lib/section-schemas";
 import type { PageSectionConfig } from "@/lib/content/pages";
 import type { PagesConfig } from "@/lib/content/pages";
 
+const HOMEPAGE_TEMPLATES: { value: string; label: string; description: string }[] = [
+  { value: "transmission", label: "Transmission", description: "Sidebar + editorial layout with craft grid (current)" },
+  { value: "section-builder", label: "Section Builder", description: "Compose homepage from individual sections below" },
+];
+
 type PageKey = "homepage" | "work" | "about";
 
 const PAGE_LABELS: Record<PageKey, string> = {
@@ -33,7 +38,7 @@ const PAGE_LABELS: Record<PageKey, string> = {
   about: "About",
 };
 
-type Props = { initial: Pick<PagesConfig, "homepage" | "work" | "about"> };
+type Props = { initial: Pick<PagesConfig, "homepageTemplate" | "homepage" | "work" | "about"> };
 
 function OverrideForm({
   section,
@@ -275,6 +280,9 @@ function SectionPicker({
 
 export function LayoutBuilderForm({ initial }: Props) {
   const [activeTab, setActiveTab] = useState<PageKey>("homepage");
+  const [homepageTemplate, setHomepageTemplate] = useState(
+    initial.homepageTemplate ?? "section-builder"
+  );
   const [config, setConfig] = useState(() => ({
     homepage: { sections: initial.homepage?.sections ?? [] } as { sections: PageSectionConfig[] },
     work: { sections: initial.work?.sections ?? [] } as { sections: PageSectionConfig[] },
@@ -350,6 +358,7 @@ export function LayoutBuilderForm({ initial }: Props) {
     setStatus("saving");
     setErrorMsg(null);
     const data = {
+      homepageTemplate,
       homepage: config.homepage,
       work: config.work,
       about: config.about,
@@ -366,6 +375,38 @@ export function LayoutBuilderForm({ initial }: Props) {
 
   return (
     <div className="max-w-2xl space-y-6">
+      {/* Homepage template selector */}
+      <div className="space-y-2">
+        <p className="font-mono text-[10px] text-white/50 uppercase tracking-[0.12em]">Homepage template</p>
+        <div className="grid grid-cols-1 gap-2">
+          {HOMEPAGE_TEMPLATES.map((t) => (
+            <button
+              key={t.value}
+              onClick={() => setHomepageTemplate(t.value)}
+              className={`flex items-start gap-3 p-3 border text-left transition-colors ${
+                homepageTemplate === t.value
+                  ? "border-[#E2B93B]/60 bg-[#E2B93B]/5"
+                  : "border-white/10 hover:border-white/20"
+              }`}
+            >
+              <span
+                className={`mt-0.5 w-3 h-3 rounded-full border flex-shrink-0 ${
+                  homepageTemplate === t.value
+                    ? "border-[#E2B93B] bg-[#E2B93B]"
+                    : "border-white/30"
+                }`}
+              />
+              <span className="space-y-0.5">
+                <span className={`block font-mono text-xs ${homepageTemplate === t.value ? "text-[#E2B93B]" : "text-white"}`}>
+                  {t.label}
+                </span>
+                <span className="block font-mono text-[10px] text-white/40">{t.description}</span>
+              </span>
+            </button>
+          ))}
+        </div>
+      </div>
+
       <div className="flex gap-2 border-b border-white/10">
         {(Object.keys(PAGE_LABELS) as PageKey[]).map((key) => (
           <button

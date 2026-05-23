@@ -11,6 +11,7 @@ export type PageConfig = {
 };
 
 export type PagesConfig = {
+  homepageTemplate?: string;
   homepage?: PageConfig;
   work?: PageConfig;
   about?: PageConfig;
@@ -31,7 +32,9 @@ const DEFAULT_HOMEPAGE: PageConfig = {
   ],
 };
 
-export async function getPageConfig(page: keyof PagesConfig): Promise<PageConfig> {
+export type PageKey = "homepage" | "work" | "about" | "craft";
+
+export async function getPageConfig(page: PageKey): Promise<PageConfig> {
   try {
     const parsed = await readContentJson<PagesConfig>("pages.json");
     if (!parsed) throw new Error("missing pages config");
@@ -51,6 +54,7 @@ export async function getPagesConfig(): Promise<PagesConfig> {
     const parsed = await readContentJson<PagesConfig>("pages.json");
     if (!parsed) throw new Error("missing pages config");
     return {
+      homepageTemplate: parsed.homepageTemplate ?? "section-builder",
       homepage: parsed.homepage ?? DEFAULT_HOMEPAGE,
       work: parsed.work ?? { sections: [] },
       about: parsed.about ?? { sections: [] },
@@ -58,6 +62,7 @@ export async function getPagesConfig(): Promise<PagesConfig> {
     };
   } catch {
     return {
+      homepageTemplate: "section-builder",
       homepage: DEFAULT_HOMEPAGE,
       work: { sections: [] },
       about: { sections: [] },

@@ -168,7 +168,7 @@ export function Navbar() {
                 color: "#E2B93B",
               }}
             >
-              BOOK
+              {ctaLabel}
             </span>
           </button>
         </div>
