@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import Script from "next/script";
 import { motion, AnimatePresence, useInView } from "motion/react";
 import { ScrambleText } from "./shared/scramble-text";
 import { GlobalSidebar } from "./global-sidebar";
@@ -1284,25 +1285,41 @@ function TransmissionCTA({ ctaCopy, ctaLabel }: { ctaCopy: CtaCopy; ctaLabel: st
         {ctaCopy.headline ?? "I'm the designer you call when you need to ship something real."}
       </h2>
 
-      <Link
-        href="#contact"
-        data-cursor-label="BOOK"
-        style={{
-          fontFamily: "monospace",
-          fontSize: "9.5px",
-          letterSpacing: "0.18em",
-          textTransform: "uppercase",
-          color: "#0A0A0A",
-          background: "#E2B93B",
-          padding: "14px 32px",
-          display: "inline-block",
-          transition: "opacity 0.2s",
-        }}
-        onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.85")}
-        onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
-      >
-        {ctaLabel}
-      </Link>
+      <div className="flex flex-col sm:flex-row items-start gap-4">
+        <Link
+          href="#contact"
+          data-cursor-label="BOOK"
+          style={{
+            fontFamily: "monospace",
+            fontSize: "9.5px",
+            letterSpacing: "0.18em",
+            textTransform: "uppercase",
+            color: "#0A0A0A",
+            background: "#E2B93B",
+            padding: "14px 32px",
+            display: "inline-block",
+            transition: "opacity 0.2s",
+          }}
+          onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.85")}
+          onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
+        >
+          {ctaLabel}
+        </Link>
+
+        <div>
+          <div
+            className="contra-hire-me-button"
+            data-analyticsUserId="ea3ca719-fa5d-4897-8722-9b0dfb9f5f30"
+            data-theme="dark"
+            data-username="derondsgnr"
+          />
+          <Script
+            src="https://contra.com/static/embed/sdk.js"
+            strategy="lazyOnload"
+            charSet="utf-8"
+          />
+        </div>
+      </div>
     </motion.section>
   );
 }
