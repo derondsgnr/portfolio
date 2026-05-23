@@ -156,16 +156,17 @@ export function Navbar() {
           {/* CTA — always last */}
           <button
             onClick={withSound(() => open("book"))}
-            className="flex-1 flex items-center justify-center py-4"
+            className="flex-1 flex items-center justify-center py-4 px-1"
             aria-label={ctaLabel}
           >
             <span
               style={{
                 fontFamily: "monospace",
                 fontSize: "9px",
-                letterSpacing: "0.12em",
+                letterSpacing: "0.10em",
                 textTransform: "uppercase",
                 color: "#E2B93B",
+                whiteSpace: "nowrap",
               }}
             >
               {ctaLabel}
