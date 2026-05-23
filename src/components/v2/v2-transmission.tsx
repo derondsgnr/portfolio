@@ -252,40 +252,41 @@ function TransmissionCursor() {
 function TransmissionHero({ projects, heroCopy }: { projects: Project[]; heroCopy: HeroCopy }) {
   const [ctxIdx, setCtxIdx] = useState(0);
   const featured = projects[0];
+  const lottieRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const t = setInterval(() => setCtxIdx((i) => (i + 1) % CONTEXT_LINES.length), 2600);
     return () => clearInterval(t);
   }, []);
 
+  useEffect(() => {
+    let anim: { destroy: () => void } | null = null;
+    import("lottie-web").then((mod) => {
+      const lottie = mod.default;
+      if (!lottieRef.current) return;
+      anim = lottie.loadAnimation({
+        container: lottieRef.current,
+        renderer: "svg",
+        loop: true,
+        autoplay: true,
+        path: "/animations/scene.json",
+      });
+    });
+    return () => { anim?.destroy(); };
+  }, []);
+
   const ctx = CONTEXT_LINES[ctxIdx];
 
   return (
     <section className="relative" style={{ height: "100dvh", minHeight: "100svh" }}>
-      {/* Full-bleed image or video */}
+      {/* Full-bleed Lottie animation */}
       <div className="absolute inset-0">
-        {featured?.image && (
-          isVideoUrl(featured.image) ? (
-            <video
-              src={featured.image}
-              autoPlay
-              muted
-              loop
-              playsInline
-              className="absolute inset-0 w-full h-full object-cover"
-              style={{ filter: "brightness(0.32)" }}
-            />
-          ) : (
-            <Image
-              src={featured.image}
-              alt={featured.title}
-              fill
-              className="object-cover"
-              style={{ filter: "brightness(0.32)" }}
-              priority
-            />
-          )
-        )}
+        <div
+          ref={lottieRef}
+          className="absolute inset-0 w-full h-full"
+          style={{ filter: "brightness(0.32)" }}
+          aria-hidden="true"
+        />
         <div
           className="absolute inset-0"
           style={{
