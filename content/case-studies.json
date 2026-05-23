@@ -1,5 +1,22 @@
 [
   {
+    "slug": "new-study-1779548330033",
+    "status": "draft",
+    "featured": false,
+    "pinned": false,
+    "meta": {
+      "title": "Bantu - Event management ",
+      "client": "",
+      "year": "2026",
+      "tags": [],
+      "cover": "",
+      "summary": "In 9 weeks I took a chaotic, technically dense PRD with no designs and delivered a complete product design across two platforms for three user types. Full Figma file with every screen for web and mobile. A design system with components, tokens and patterns that holds across both platforms. A brand identity from the ground up: new logo mark, color palette, visual language. And a live website.",
+      "duration": "9 weeks"
+    },
+    "template": "visual-brand",
+    "acts": []
+  },
+  {
     "slug": "careeredge",
     "status": "published",
     "featured": true,
