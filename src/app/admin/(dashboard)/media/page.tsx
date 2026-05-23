@@ -1,13 +1,12 @@
 import { getContentWithGitHubOverlay } from "@/lib/admin/content-overlay";
 import { getMedia } from "@/lib/content/media";
 import { getCraftDocument, parseCraftDocumentFromUnknown, type CraftDocument } from "@/lib/content/craft";
-import { getExplorations } from "@/lib/content/explorations";
 import { MediaForm } from "./media-form";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminMediaPage() {
-  const [mediaInitial, craftInitial, explorationsInitial] = await Promise.all([
+  const [mediaInitial, craftInitial] = await Promise.all([
     getContentWithGitHubOverlay(
       "content/media.json",
       getMedia,
@@ -24,23 +23,17 @@ export default async function AdminMediaPage() {
       () => getCraftDocument({ includeDrafts: true, includeArchived: true }),
       (_local, parsed) => parseCraftDocumentFromUnknown(parsed)
     ),
-    getContentWithGitHubOverlay(
-      "content/explorations.json",
-      getExplorations,
-      (local, parsed) => (Array.isArray(parsed) ? parsed : local)
-    ),
   ]);
 
   return (
     <div>
       <h1 className="text-2xl font-mono text-white mb-2">Media</h1>
       <p className="text-white/50 font-mono text-sm mb-8">
-        Global assets, craft items, and explorations. Edit URLs and save to update the live site.
+        Global assets and craft items. Edit URLs and save to update the live site.
       </p>
       <MediaForm
         initialMedia={mediaInitial}
         initialCraft={craftInitial}
-        initialExplorations={explorationsInitial}
       />
     </div>
   );

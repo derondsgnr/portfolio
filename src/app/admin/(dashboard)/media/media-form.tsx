@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { saveMedia, saveCraftItems, saveExplorations } from "../../actions";
+import { saveMedia, saveCraftItems } from "../../actions";
 import { AdminSaveFeedback } from "@/components/admin/admin-save-feedback";
 import { ImageFieldGuide, ImageRatioHint } from "@/components/admin/image-system-guide";
 import { useAdminEditorShortcuts } from "@/hooks/useAdminEditorShortcuts";
@@ -14,48 +14,34 @@ import {
   type CraftItem,
   type CraftLayoutMode,
 } from "@/lib/content/craft-model";
-import type { Exploration } from "@/lib/content/explorations";
 import type { CloudinaryUploadResult } from "@/lib/admin/cloudinary-upload";
 import { CloudinaryUploadField } from "@/components/admin/cloudinary-upload-field";
 
 type Props = {
   initialMedia: MediaConfig;
   initialCraft: CraftDocument;
-  initialExplorations: Exploration[];
 };
 
 const inputClass =
   "w-full px-4 py-2 bg-[#111] border border-white/10 text-white placeholder:text-white/40 font-mono text-sm focus:outline-none focus:border-[#E2B93B]/50";
 const labelClass = "block font-mono text-xs text-white/60 mb-1";
 
-export function MediaForm({ initialMedia, initialCraft, initialExplorations }: Props) {
+export function MediaForm({ initialMedia, initialCraft }: Props) {
   const [media, setMedia] = useState(initialMedia);
   const [craft, setCraft] = useState(initialCraft);
-  const [explorations, setExplorations] = useState(initialExplorations);
   const [status, setStatus] = useState<"idle" | "saving" | "ok" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [savingSection, setSavingSection] = useState<string | null>(null);
-  const [feedbackTarget, setFeedbackTarget] = useState<"media" | "craft" | "explorations">("media");
+  const [feedbackTarget, setFeedbackTarget] = useState<"media" | "craft">("media");
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
-  const [expandedExplorations, setExpandedExplorations] = useState<Set<string>>(new Set());
 
-  function toggleExploration(key: string) {
-    setExpandedExplorations((prev) => {
-      const next = new Set(prev);
-      if (next.has(key)) next.delete(key);
-      else next.add(key);
-      return next;
-    });
-  }
   const savedSnapshotRef = useRef({
     media: initialMedia,
     craft: initialCraft,
-    explorations: initialExplorations,
   });
   const hasUnsavedChanges =
     JSON.stringify(media) !== JSON.stringify(savedSnapshotRef.current.media) ||
-    JSON.stringify(craft) !== JSON.stringify(savedSnapshotRef.current.craft) ||
-    JSON.stringify(explorations) !== JSON.stringify(savedSnapshotRef.current.explorations);
+    JSON.stringify(craft) !== JSON.stringify(savedSnapshotRef.current.craft);
   useUnsavedChangesGuard(
     hasUnsavedChanges,
     "You have unsaved media changes. Leave without saving?"
@@ -101,32 +87,12 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
     }
   }
 
-  async function persistExplorations() {
-    setFeedbackTarget("explorations");
-    setSavingSection("explorations");
-    setStatus("saving");
-    setErrorMsg(null);
-    const result = await saveExplorations(explorations, "Update explorations");
-    setSavingSection(null);
-    if (result.ok) {
-      savedSnapshotRef.current.explorations = explorations;
-      setStatus("ok");
-      setTimeout(() => setStatus("idle"), 2000);
-    } else {
-      setStatus("error");
-      setErrorMsg(result.error ?? null);
-    }
-  }
-
   async function saveDirtySections() {
     if (JSON.stringify(media) !== JSON.stringify(savedSnapshotRef.current.media)) {
       await persistMedia();
     }
     if (JSON.stringify(craft) !== JSON.stringify(savedSnapshotRef.current.craft)) {
       await persistCraft();
-    }
-    if (JSON.stringify(explorations) !== JSON.stringify(savedSnapshotRef.current.explorations)) {
-      await persistExplorations();
     }
   }
 
@@ -138,11 +104,6 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
   async function handleSaveCraft(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     await persistCraft();
-  }
-
-  async function handleSaveExplorations(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    await persistExplorations();
   }
 
   function updateCraftSectionLayout(si: number, layoutMode: CraftLayoutMode) {
@@ -218,9 +179,9 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
   }
 
   function addCraftItem(si: number) {
-    const newId = `c-${Date.now()}`;
+    const newItemIndex = craft.sections[si]?.items.length ?? 0;
     const draft: CraftItem = {
-      id: newId,
+      id: `c-${Date.now()}`,
       title: "New piece",
       category: "Visual",
       description: "",
@@ -237,7 +198,7 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
       });
       return { sections };
     });
-    setExpandedItems((prev) => new Set([...prev, `${si}-${newId}`]));
+    setExpandedItems((prev) => new Set([...prev, `${si}-${newItemIndex}`]));
   }
 
   function toggleCraftItem(key: string) {
@@ -313,22 +274,6 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
     }
   }
 
-  function updateExplorationImage(index: number, image: string) {
-    setExplorations((prev) => {
-      const next = [...prev];
-      if (next[index]) next[index] = { ...next[index], image };
-      return next;
-    });
-  }
-
-  function updateExplorationVideoUrl(index: number, videoUrl: string) {
-    setExplorations((prev) => {
-      const next = [...prev];
-      if (next[index]) next[index] = { ...next[index], videoUrl };
-      return next;
-    });
-  }
-
   const sectionBgKeys = Object.keys(media.sectionBackgrounds);
   const defaultSectionKeys = ["hero", "craft", "about"];
   const allSectionKeys = [...new Set([...defaultSectionKeys, ...sectionBgKeys])];
@@ -356,7 +301,7 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
           </li>
           <li>Upload your image files into that folder.</li>
           <li>Open an uploaded image and copy the Secure URL.</li>
-          <li>Paste the URL into the matching field in this page (Global assets, Craft, or Explorations).</li>
+          <li>Paste the URL into the matching field in this page (Global assets or Craft).</li>
           <li>Click the Save button for the section you edited.</li>
         </ol>
         <div className="space-y-2">
@@ -499,12 +444,12 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
                   <p className="font-mono text-[11px] text-white/35 py-2">No items in this section.</p>
                 ) : null}
                 {section.items.map((item, ii) => {
-                  const itemKey = `${si}-${item.id}`;
+                  const itemKey = `${si}-${ii}`;
                   const isExpanded = expandedItems.has(itemKey);
                   const itemStatus = item.status ?? "published";
                   return (
                     <div
-                      key={`${si}-${item.id}-${ii}`}
+                      key={`${si}-${ii}`}
                       className="rounded border border-white/[0.08] bg-[#0f0f0f] overflow-hidden"
                     >
                       {/* Collapsed row */}
@@ -712,112 +657,18 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
         </form>
       </section>
 
-      {/* Section 3: Explorations */}
-      <section className="space-y-4">
-        <h2 className="font-mono text-sm text-white/80 uppercase tracking-wider">
-          Explorations
-        </h2>
-        <ImageFieldGuide role="craft-gallery" compact />
-        <form onSubmit={handleSaveExplorations} className="space-y-4">
-          <div className="space-y-1">
-            {explorations.map((item, i) => {
-              const isExpanded = expandedExplorations.has(item.id);
-              return (
-                <div
-                  key={item.id}
-                  className="rounded border border-white/[0.08] bg-[#0f0f0f] overflow-hidden"
-                >
-                  <button
-                    type="button"
-                    onClick={() => toggleExploration(item.id)}
-                    className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-white/[0.025] transition-colors text-left"
-                  >
-                    <div className="w-9 h-9 flex-shrink-0 bg-white/[0.04] border border-white/[0.07] overflow-hidden">
-                      {item.image ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img src={item.image} alt="" className="w-full h-full object-cover" />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center">
-                          <span className="font-mono text-[7px] text-white/20 tracking-wider">IMG</span>
-                        </div>
-                      )}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="font-mono text-xs text-white/80 truncate">{item.title}</p>
-                    </div>
-                    <span className="font-mono text-[10px] text-white/30 tracking-wider shrink-0 hidden sm:block">
-                      {item.category}
-                    </span>
-                    <span className="font-mono text-[9px] uppercase tracking-wider px-1.5 py-0.5 shrink-0 text-white/30 bg-white/[0.04]">
-                      {item.type}
-                    </span>
-                    <svg
-                      className={`w-3 h-3 text-white/25 flex-shrink-0 transition-transform duration-150 ${isExpanded ? "rotate-180" : ""}`}
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </button>
-                  {isExpanded && (
-                    <div className="border-t border-white/[0.07] p-3 space-y-3">
-                      <ImageRatioHint role="craft-gallery" />
-                      <div>
-                        <label className={labelClass}>Image URL</label>
-                        <input
-                          type="url"
-                          value={item.image}
-                          onChange={(e) => updateExplorationImage(i, e.target.value)}
-                          className={inputClass}
-                          placeholder="https://…"
-                        />
-                      </div>
-                      {item.type === "video" && (
-                        <div>
-                          <label className={labelClass}>Video URL (optional)</label>
-                          <input
-                            type="url"
-                            value={item.videoUrl ?? ""}
-                            onChange={(e) => updateExplorationVideoUrl(i, e.target.value)}
-                            className={inputClass}
-                            placeholder="YouTube URL…"
-                          />
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-          <button
-            type="submit"
-            disabled={savingSection === "explorations"}
-            className="px-6 py-2 bg-[#E2B93B] text-[#0A0A0A] font-mono text-xs tracking-wider uppercase hover:bg-white transition-colors disabled:opacity-50"
-          >
-            {savingSection === "explorations" ? "Saving…" : "Save explorations"}
-          </button>
-        </form>
-      </section>
-
       <AdminSaveFeedback
         status={status}
         error={errorMsg}
         savingMessage={
           feedbackTarget === "craft"
             ? "Saving changes to content/craft.json..."
-            : feedbackTarget === "explorations"
-              ? "Saving changes to content/explorations.json..."
-              : "Saving changes to content/media.json..."
+            : "Saving changes to content/media.json..."
         }
         successMessage={
           feedbackTarget === "craft"
             ? "Saved to content/craft.json."
-            : feedbackTarget === "explorations"
-              ? "Saved to content/explorations.json."
-              : "Saved to content/media.json."
+            : "Saved to content/media.json."
         }
       />
     </div>
