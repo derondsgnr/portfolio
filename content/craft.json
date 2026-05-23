@@ -124,6 +124,18 @@
           "pinned": false,
           "width": 1400,
           "height": 920
+        },
+        {
+          "id": "v",
+          "title": "Car Details - Urban Ride Sharing Mobile",
+          "category": "Visual",
+          "description": "",
+          "image": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1779560423/Dribbble_shot_HD_-_1_mdwyfv.png",
+          "status": "published",
+          "featured": false,
+          "pinned": false,
+          "width": 800,
+          "height": 600
         }
       ]
     }
