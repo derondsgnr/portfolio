@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { getPageCopy } from "@/lib/content/copy";
 import { flattenedSortedCraftItems, getCraftDocument } from "@/lib/content/craft";
-import { getExplorations } from "@/lib/content/explorations";
 import { getMedia } from "@/lib/content/media";
 import { CraftPage } from "@/components/pages/craft-page";
 
@@ -10,10 +9,9 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-  const [copy, craftDocument, explorations, media] = await Promise.all([
+  const [copy, craftDocument, media] = await Promise.all([
     getPageCopy("craft"),
     getCraftDocument(),
-    getExplorations(),
     getMedia(),
   ]);
   const craftListItems = flattenedSortedCraftItems(craftDocument);
@@ -24,7 +22,6 @@ export default async function Page() {
         copy={copy}
         craftDocument={craftDocument}
         craftListItems={craftListItems}
-        explorations={explorations}
         media={media}
       />
     </>

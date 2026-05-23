@@ -24,6 +24,8 @@ export type CraftItem = {
   status?: "published" | "draft" | "archived";
   featured?: boolean;
   pinned?: boolean;
+  tools?: string[];
+  date?: string;
 };
 
 export type CraftSection = {

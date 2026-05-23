@@ -1,12 +1,11 @@
 "use client";
 
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { motion, AnimatePresence, useInView } from "motion/react";
 import { useRouter } from "next/navigation";
 import { V2_PROJECTS, V2_ABOUT } from "../v2-data";
 import type { CraftDocument, CraftItem } from "@/lib/content/craft-model";
 import { CraftProjectSections } from "../craft/craft-project-sections";
-import type { Exploration } from "@/lib/content/explorations";
 import type { MediaConfig } from "@/lib/content/media";
 import type { PageCopy } from "@/lib/content/copy";
 import { useBooking } from "../booking-context";
@@ -575,7 +574,7 @@ function SynthesisCraftHero({ copy, heroBackground }: { copy?: PageCopy; heroBac
 }
 
 /* Cipher-style list view — global index (sorted by pin / feature / title) */
-function CraftListView({ craftItems }: { craftItems: CraftItem[] }) {
+function CraftListView({ craftItems, onOpen }: { craftItems: CraftItem[]; onOpen?: (index: number) => void }) {
   if (craftItems.length === 0) return null;
   return (
     <div className="max-w-4xl mx-auto">
@@ -587,7 +586,13 @@ function CraftListView({ craftItems }: { craftItems: CraftItem[] }) {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: i * 0.08, duration: 0.5 }}
-            className="py-8 grid grid-cols-1 md:grid-cols-12 gap-6 items-center group cursor-pointer"
+            className="py-8 grid grid-cols-1 md:grid-cols-12 gap-6 items-center group"
+            onClick={() => onOpen?.(i)}
+            onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onOpen?.(i); } }}
+            tabIndex={onOpen ? 0 : undefined}
+            role={onOpen ? "button" : undefined}
+            aria-label={onOpen ? `View ${item.title}` : undefined}
+            style={{ cursor: onOpen ? "pointer" : "default" }}
           >
             <div
               className="md:col-span-2 overflow-hidden rounded-[0.625rem] border border-[rgba(255,255,255,0.08)]"
@@ -648,12 +653,12 @@ function usePrefersReducedMotion() {
 }
 
 /* ─── Gallery with open affordance ───────────────────────────── */
-function ExplorationsGallery({ explorations, onOpen }: { explorations: Exploration[]; onOpen: (index: number) => void }) {
+function ExplorationsGallery({ items, onOpen }: { items: CraftItem[]; onOpen: (index: number) => void }) {
   const reduced = usePrefersReducedMotion();
-  if (explorations.length === 0) return null;
+  if (items.length === 0) return null;
   return (
-    <div className="columns-2 md:columns-3 gap-3" role="list" aria-label="Graphics and motion explorations">
-      {explorations.map((item, i) => (
+    <div className="columns-2 md:columns-3 gap-3" role="list" aria-label="Craft explorations">
+      {items.map((item, i) => (
         <motion.div
           key={item.id}
           role="listitem"
@@ -665,7 +670,7 @@ function ExplorationsGallery({ explorations, onOpen }: { explorations: Explorati
           onClick={() => onOpen(i)}
           onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onOpen(i); } }}
           tabIndex={0}
-          aria-label={`${item.title} — ${item.category}${item.type === "video" ? " (motion)" : ""}. Press Enter to view.`}
+          aria-label={`${item.title} — ${item.category}${item.videoUrl ? " (motion)" : ""}. Press Enter to view.`}
         >
           <div className="relative overflow-hidden">
             <img
@@ -677,7 +682,7 @@ function ExplorationsGallery({ explorations, onOpen }: { explorations: Explorati
             {/* Scan overlay */}
             <div className="absolute inset-0 pointer-events-none" style={{ background: "repeating-linear-gradient(0deg, transparent 0px, transparent 3px, rgba(10,10,10,0.15) 3px, rgba(10,10,10,0.15) 4px)" }} />
             {/* Video indicator */}
-            {item.type === "video" && (
+            {item.videoUrl && (
               <div className="absolute top-3 right-3 flex items-center gap-1.5 px-2 py-1" style={{ background: "rgba(0,0,0,0.6)", border: "1px solid rgba(226,185,59,0.3)" }}>
                 <div className="w-0 h-0" style={{ borderLeft: "5px solid #E2B93B", borderTop: "3px solid transparent", borderBottom: "3px solid transparent" }} />
                 <span style={{ fontFamily: "monospace", fontSize: "8px", color: "#E2B93B", letterSpacing: "0.1em" }}>MOTION</span>
@@ -695,7 +700,7 @@ function ExplorationsGallery({ explorations, onOpen }: { explorations: Explorati
             {/* Hover overlay */}
             <div className="absolute inset-0 flex items-end p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ background: "linear-gradient(to top, rgba(10,10,10,0.9) 0%, transparent 60%)" }}>
               <div>
-                <span style={{ fontFamily: "monospace", fontSize: "8px", letterSpacing: "0.15em", color: "#E2B93B" }}>[{item.id.replace("ex-", "")}] {item.category.toUpperCase()}</span>
+                <span style={{ fontFamily: "monospace", fontSize: "8px", letterSpacing: "0.15em", color: "#E2B93B" }}>[{item.id.replace("c-", "")}] {item.category.toUpperCase()}</span>
                 <span className="block mt-1" style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "0.8rem", color: "rgba(255,255,255,0.8)" }}>{item.title}</span>
               </div>
             </div>
@@ -709,10 +714,11 @@ function ExplorationsGallery({ explorations, onOpen }: { explorations: Explorati
 }
 
 /* ─── Full-screen Aristide-style media viewer ────────────────── */
-function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: { explorations: Exploration[]; activeIndex: number; onClose: () => void; onNavigate: (index: number) => void }) {
-  const item = explorations[activeIndex];
+function ExplorationViewer({ items, activeIndex, onClose, onNavigate }: { items: CraftItem[]; activeIndex: number; onClose: () => void; onNavigate: (index: number) => void }) {
+  const item = items[activeIndex];
   if (!item) return null;
-  const youtubeEmbedUrl = item.type === "video" ? toYouTubeEmbedUrl(item.videoUrl) : null;
+  const youtubeEmbedUrl = item.videoUrl ? toYouTubeEmbedUrl(item.videoUrl) : null;
+  const isDirectVideo = !youtubeEmbedUrl && !!item.videoUrl;
   const listRef = useRef<HTMLDivElement>(null);
   const mobileThumbRef = useRef<HTMLDivElement>(null);
   const viewerRef = useRef<HTMLDivElement>(null);
@@ -724,8 +730,8 @@ function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: {
   const reduced = usePrefersReducedMotion();
 
   const goNext = useCallback(() => {
-    if (activeIndex < explorations.length - 1) { setDirection(1); onNavigate(activeIndex + 1); }
-  }, [activeIndex, explorations.length, onNavigate]);
+    if (activeIndex < items.length - 1) { setDirection(1); onNavigate(activeIndex + 1); }
+  }, [activeIndex, items.length, onNavigate]);
 
   const goPrev = useCallback(() => {
     if (activeIndex > 0) { setDirection(-1); onNavigate(activeIndex - 1); }
@@ -820,14 +826,14 @@ function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: {
   // Preload adjacent images
   useEffect(() => {
     const preload = (idx: number) => {
-      if (idx >= 0 && idx < explorations.length) {
+      if (idx >= 0 && idx < items.length) {
         const img = new Image();
-        img.src = explorations[idx].image;
+        img.src = items[idx].image;
       }
     };
     preload(activeIndex + 1);
     preload(activeIndex - 1);
-  }, [activeIndex, explorations]);
+  }, [activeIndex, items]);
 
   // Scroll active item into view
   useEffect(() => {
@@ -843,10 +849,10 @@ function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: {
   useEffect(() => { setShowMobileList(false); }, [activeIndex]);
 
   // Screen reader live region
-  const srAnnounce = `${item.title}, ${item.category}, ${activeIndex + 1} of ${explorations.length}`;
+  const srAnnounce = `${item.title}, ${item.category}, ${activeIndex + 1} of ${items.length}`;
 
   // Progress fraction
-  const progress = (activeIndex + 1) / explorations.length;
+  const progress = (activeIndex + 1) / items.length;
 
   // Direction-aware media transitions
   const mediaVariants = reduced
@@ -902,7 +908,7 @@ function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: {
         </button>
         <div className="px-3 py-1 rounded-full" style={{ background: "rgba(226,185,59,0.1)", border: "1px solid rgba(226,185,59,0.2)" }}>
           <span style={{ fontFamily: "monospace", fontSize: "10px", color: "#E2B93B", letterSpacing: "0.15em" }}>
-            {String(activeIndex + 1).padStart(2, "0")}/{String(explorations.length).padStart(2, "0")}
+            {String(activeIndex + 1).padStart(2, "0")}/{String(items.length).padStart(2, "0")}
           </span>
         </div>
         <button
@@ -959,22 +965,24 @@ function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: {
                   className="w-full h-full border-0"
                 />
               </div>
+            ) : isDirectVideo ? (
+              <video
+                src={item.videoUrl}
+                poster={item.image || undefined}
+                controls
+                playsInline
+                className="max-w-full max-h-[60vh] md:max-h-[75vh]"
+                style={{ background: "#000" }}
+              />
             ) : (
               <>
                 <img
                   src={item.image}
                   alt={`${item.title} — ${item.category} exploration`}
                   className="max-w-full max-h-[60vh] md:max-h-[75vh] object-contain"
-                  style={{ filter: item.type === "video" ? "none" : "grayscale(0.15)" }}
+                  style={{ filter: "grayscale(0.15)" }}
                 />
                 <div className="absolute inset-0 pointer-events-none" style={{ background: "repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(10,10,10,0.08) 3px, rgba(10,10,10,0.08) 4px)" }} />
-                {item.type === "video" && (
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <div className="w-12 h-12 md:w-16 md:h-16 flex items-center justify-center rounded-full" style={{ background: "rgba(0,0,0,0.6)", border: "1px solid rgba(226,185,59,0.4)" }}>
-                      <div className="w-0 h-0 ml-1" style={{ borderLeft: "10px solid #E2B93B", borderTop: "6px solid transparent", borderBottom: "6px solid transparent" }} />
-                    </div>
-                  </div>
-                )}
               </>
             )}
           </motion.div>
@@ -1000,7 +1008,7 @@ function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: {
           className="hidden md:flex absolute bottom-8 left-16 right-[280px] items-center gap-8"
         >
           <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#E2B93B", letterSpacing: "0.15em" }}>[{item.category.toUpperCase()}]</span>
-          <span className="inline-flex items-center gap-2" style={{ fontFamily: "monospace", fontSize: "9px", color: "rgba(255,255,255,0.4)", letterSpacing: "0.1em" }}>TOOLS: <ToolBadges tools={item.tools} size={12} className="text-[#888]" /></span>
+          <span className="inline-flex items-center gap-2" style={{ fontFamily: "monospace", fontSize: "9px", color: "rgba(255,255,255,0.4)", letterSpacing: "0.1em" }}>TOOLS: <ToolBadges tools={item.tools ?? []} size={12} className="text-[#888]" /></span>
           <span style={{ fontFamily: "monospace", fontSize: "9px", color: "rgba(255,255,255,0.3)", letterSpacing: "0.1em" }}>{item.date}</span>
         </motion.div>
       </div>
@@ -1012,13 +1020,13 @@ function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: {
           <div className="flex items-center gap-4 mt-2">
             <span style={{ fontFamily: "monospace", fontSize: "8px", color: "#E2B93B", letterSpacing: "0.15em" }}>[{item.category.toUpperCase()}]</span>
             <span className="inline-flex items-center gap-1.5" style={{ fontFamily: "monospace", fontSize: "8px", color: "rgba(255,255,255,0.35)", letterSpacing: "0.1em" }}>
-            <ToolBadges tools={item.tools} size={10} />
+            <ToolBadges tools={item.tools ?? []} size={10} />
           </span>
             <span style={{ fontFamily: "monospace", fontSize: "8px", color: "rgba(255,255,255,0.25)" }}>{item.date}</span>
           </div>
         </div>
         <div ref={mobileThumbRef} data-thumb-strip className="flex gap-1.5 px-4 pb-3 overflow-x-auto" style={{ scrollbarWidth: "none" }}>
-          {explorations.map((exp, i) => (
+          {items.map((exp, i) => (
             <button
               key={exp.id}
               data-thumb={i}
@@ -1063,9 +1071,9 @@ function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: {
                 <div className="w-10 h-0.5 rounded-full" style={{ background: "rgba(255,255,255,0.2)" }} />
               </div>
               <div className="px-4 pb-2">
-                <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#E2B93B", letterSpacing: "0.2em" }}>ARCHIVE [{String(activeIndex + 1).padStart(2, "0")}/{String(explorations.length).padStart(2, "0")}]</span>
+                <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#E2B93B", letterSpacing: "0.2em" }}>ARCHIVE [{String(activeIndex + 1).padStart(2, "0")}/{String(items.length).padStart(2, "0")}]</span>
               </div>
-              {explorations.map((exp, i) => (
+              {items.map((exp, i) => (
                 <div
                   key={exp.id}
                   role="option"
@@ -1083,7 +1091,7 @@ function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: {
                     </span>
                     <span className="block mt-0.5" style={{ fontFamily: "monospace", fontSize: "8px", color: i === activeIndex ? "rgba(226,185,59,0.5)" : "rgba(255,255,255,0.15)", letterSpacing: "0.1em" }}>{exp.category}</span>
                   </div>
-                  {exp.type === "video" && (
+                  {exp.videoUrl && (
                     <div className="w-0 h-0 flex-shrink-0" style={{ borderLeft: "4px solid rgba(226,185,59,0.4)", borderTop: "2.5px solid transparent", borderBottom: "2.5px solid transparent" }} />
                   )}
                 </div>
@@ -1103,13 +1111,13 @@ function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: {
         <div className="px-4 py-5 border-b" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
           <ScrambleText
             key={activeIndex}
-            text={`ARCHIVE [${String(activeIndex + 1).padStart(2, "0")}/${String(explorations.length).padStart(2, "0")}]`}
+            text={`ARCHIVE [${String(activeIndex + 1).padStart(2, "0")}/${String(items.length).padStart(2, "0")}]`}
             speed={25}
             style={{ fontFamily: "monospace", fontSize: "9px", color: "#E2B93B", letterSpacing: "0.2em" }}
           />
         </div>
-        <div ref={listRef} data-sidebar-list className="flex-1 overflow-y-auto" style={{ scrollbarWidth: "none" }} role="listbox" aria-label="Exploration items">
-          {explorations.map((exp, i) => (
+        <div ref={listRef} data-sidebar-list className="flex-1 overflow-y-auto" style={{ scrollbarWidth: "none" }} role="listbox" aria-label="Craft items">
+          {items.map((exp, i) => (
             <div
               key={exp.id}
               data-index={i}
@@ -1136,7 +1144,7 @@ function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: {
                 </span>
                 <span className="block mt-0.5 transition-colors duration-200" style={{ fontFamily: "monospace", fontSize: "8px", color: i === activeIndex ? "rgba(226,185,59,0.5)" : "rgba(255,255,255,0.15)", letterSpacing: "0.1em" }}>{exp.category}</span>
               </div>
-              {exp.type === "video" && (
+              {exp.videoUrl && (
                 <div className="w-0 h-0 flex-shrink-0" style={{ borderLeft: "4px solid rgba(226,185,59,0.4)", borderTop: "2.5px solid transparent", borderBottom: "2.5px solid transparent" }} />
               )}
             </div>
@@ -1154,10 +1162,10 @@ function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: {
           </button>
           <button
             onClick={goNext}
-            disabled={activeIndex === explorations.length - 1}
+            disabled={activeIndex === items.length - 1}
             aria-label="Next item"
             className="flex-1 py-2 cursor-pointer transition-all duration-200 hover:border-[#E2B93B] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#E2B93B] disabled:hover:border-[rgba(255,255,255,0.08)]"
-            style={{ border: "1px solid rgba(255,255,255,0.08)", fontFamily: "monospace", fontSize: "9px", color: activeIndex === explorations.length - 1 ? "rgba(255,255,255,0.1)" : "rgba(255,255,255,0.4)", letterSpacing: "0.1em", background: "transparent" }}
+            style={{ border: "1px solid rgba(255,255,255,0.08)", fontFamily: "monospace", fontSize: "9px", color: activeIndex === items.length - 1 ? "rgba(255,255,255,0.1)" : "rgba(255,255,255,0.4)", letterSpacing: "0.1em", background: "transparent" }}
           >
             NEXT →
           </button>
@@ -1171,18 +1179,26 @@ export function SynthesisCraftPage({
   copy,
   craftDocument,
   craftListItems = [],
-  explorations = [],
   media,
 }: {
   copy?: PageCopy;
   craftDocument: CraftDocument;
   craftListItems?: CraftItem[];
-  explorations?: Exploration[];
   media?: MediaConfig;
 }) {
-  const [tab, setTab] = useState<"projects" | "explorations">("projects");
   const [view, setView] = useState<"a" | "b">("a");
   const [viewerIndex, setViewerIndex] = useState<number | null>(null);
+
+  const allItems = useMemo(() => craftDocument.sections.flatMap((s) => s.items), [craftDocument]);
+  const listItems = craftListItems.length > 0 ? craftListItems : allItems;
+
+  const handleOpen = useCallback(
+    (item: CraftItem) => {
+      const idx = allItems.findIndex((x) => x.id === item.id);
+      if (idx >= 0) setViewerIndex(idx);
+    },
+    [allItems]
+  );
 
   return (
     <main className="relative bg-[#0A0A0A] min-h-screen">
@@ -1194,89 +1210,45 @@ export function SynthesisCraftPage({
 
       <section className="relative z-[2] px-8 pb-32">
         <div className="max-w-6xl mx-auto">
-          {/* ─── Inline toolbar: tabs left, view toggle right ─── */}
+          {/* ─── Toolbar: view toggle + artifact count ─── */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.5, duration: 0.6 }}
             className="flex items-center justify-between mb-12 flex-wrap gap-4"
           >
-            {/* Tab switcher */}
-            <div
-              className="flex items-center gap-1 px-1 py-0.5 rounded-full"
-              style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.06)" }}
-            >
-              <button
-                onClick={() => setTab("projects")}
-                className="px-3 py-1.5 rounded-full transition-all duration-300"
-                style={{
-                  fontFamily: "monospace",
-                  fontSize: "9px",
-                  letterSpacing: "0.15em",
-                  textTransform: "uppercase" as const,
-                  color: tab === "projects" ? "#0A0A0A" : "rgba(255,255,255,0.3)",
-                  background: tab === "projects" ? "#E2B93B" : "transparent",
-                }}
-              >
-                Projects
-              </button>
-              <button
-                onClick={() => setTab("explorations")}
-                className="px-3 py-1.5 rounded-full transition-all duration-300"
-                style={{
-                  fontFamily: "monospace",
-                  fontSize: "9px",
-                  letterSpacing: "0.15em",
-                  textTransform: "uppercase" as const,
-                  color: tab === "explorations" ? "#0A0A0A" : "rgba(255,255,255,0.3)",
-                  background: tab === "explorations" ? "#E2B93B" : "transparent",
-                }}
-              >
-                Graphics & Motion
-              </button>
-            </div>
-
-            {/* View toggle — only on Projects tab */}
-            {tab === "projects" && (
-              <ViewToggle
-                mode={view}
-                onToggle={() => setView(view === "a" ? "b" : "a")}
-                labelA="Grid"
-                labelB="List"
-              />
-            )}
-
-            {/* Item count — only on Explorations tab */}
-            {tab === "explorations" && (
-              <span style={{ fontFamily: "monospace", fontSize: "9px", color: "rgba(255,255,255,0.15)", letterSpacing: "0.1em" }}>
-                {explorations.length} ARTIFACTS INDEXED
-              </span>
-            )}
+            <ViewToggle
+              mode={view}
+              onToggle={() => setView(view === "a" ? "b" : "a")}
+              labelA="Grid"
+              labelB="List"
+            />
+            <span style={{ fontFamily: "monospace", fontSize: "9px", color: "rgba(255,255,255,0.15)", letterSpacing: "0.1em" }}>
+              {allItems.length} ARTIFACTS INDEXED
+            </span>
           </motion.div>
 
-          {/* ─── Tab content ─── */}
+          {/* ─── View content ─── */}
           <AnimatePresence mode="wait">
-            {tab === "projects" ? (
-              <motion.div
-                key={`projects-${view}`}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.4 }}
-              >
-                {view === "a" ? <CraftProjectSections document={craftDocument} /> : <CraftListView craftItems={craftListItems} />}
-              </motion.div>
-            ) : (
-              <motion.div
-                key="explorations"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.4 }}
-              >
-                <ExplorationsGallery explorations={explorations} onOpen={(i) => setViewerIndex(i)} />
-              </motion.div>
-            )}
+            <motion.div
+              key={view}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.4 }}
+            >
+              {view === "a" ? (
+                <CraftProjectSections document={craftDocument} onOpen={handleOpen} />
+              ) : (
+                <CraftListView
+                  craftItems={listItems}
+                  onOpen={(i) => {
+                    const item = listItems[i];
+                    if (item) handleOpen(item);
+                  }}
+                />
+              )}
+            </motion.div>
           </AnimatePresence>
         </div>
       </section>
@@ -1287,7 +1259,7 @@ export function SynthesisCraftPage({
       <AnimatePresence>
         {viewerIndex !== null && (
           <ExplorationViewer
-            explorations={explorations}
+            items={allItems}
             activeIndex={viewerIndex}
             onClose={() => setViewerIndex(null)}
             onNavigate={(i) => setViewerIndex(i)}

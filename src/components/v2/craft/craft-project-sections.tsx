@@ -54,7 +54,7 @@ function CraftMasonryMedia({ item }: { item: CraftItem }) {
   return <CraftImageIntrinsic item={item} />;
 }
 
-function EditorialCoverSection({ section }: { section: CraftSection }) {
+function EditorialCoverSection({ section, onOpen }: { section: CraftSection; onOpen?: (item: CraftItem) => void }) {
   const { items } = section;
   if (items.length === 0) return null;
   return (
@@ -80,6 +80,11 @@ function EditorialCoverSection({ section }: { section: CraftSection }) {
             transition={{ duration: 0.8, delay: 0.05, ease: EASE }}
             className="mb-16 group"
             style={{ marginLeft: p.ml, width: p.w }}
+            onClick={() => onOpen?.(item)}
+            onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onOpen?.(item); } }}
+            tabIndex={onOpen ? 0 : undefined}
+            role={onOpen ? "button" : undefined}
+            aria-label={onOpen ? `View ${item.title}` : undefined}
           >
             <div
               className="overflow-hidden relative border border-[rgba(255,255,255,0.08)] rounded-[0.625rem]"
@@ -165,7 +170,7 @@ function EditorialCoverSection({ section }: { section: CraftSection }) {
   );
 }
 
-function MasonrySection({ section, cols }: { section: CraftSection; cols: 2 | 3 }) {
+function MasonrySection({ section, cols, onOpen }: { section: CraftSection; cols: 2 | 3; onOpen?: (item: CraftItem) => void }) {
   const { items } = section;
   if (items.length === 0) return null;
   const colClass = cols === 2 ? "columns-1 md:columns-2" : "columns-1 md:columns-2 lg:columns-3";
@@ -179,7 +184,13 @@ function MasonrySection({ section, cols }: { section: CraftSection; cols: 2 | 3 
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.55, ease: EASE }}
-            className="mb-2.5 break-inside-avoid"
+            className="mb-2.5 break-inside-avoid group"
+            onClick={() => onOpen?.(item)}
+            onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onOpen?.(item); } }}
+            tabIndex={onOpen ? 0 : undefined}
+            role={onOpen ? "button" : undefined}
+            aria-label={onOpen ? `View ${item.title}` : undefined}
+            style={{ cursor: onOpen ? "pointer" : undefined }}
           >
             <div className="border border-[rgba(255,255,255,0.08)] rounded-[0.625rem] overflow-hidden bg-[#0a0a0a]">
               <CraftMasonryMedia item={item} />
@@ -223,7 +234,7 @@ function MasonrySection({ section, cols }: { section: CraftSection; cols: 2 | 3 
   );
 }
 
-function ListSection({ section }: { section: CraftSection }) {
+function ListSection({ section, onOpen }: { section: CraftSection; onOpen?: (item: CraftItem) => void }) {
   const { items } = section;
   if (items.length === 0) return null;
   return (
@@ -241,6 +252,12 @@ function ListSection({ section }: { section: CraftSection }) {
               viewport={{ once: true }}
               transition={{ delay: i * 0.06, duration: 0.5 }}
               className="py-8 grid grid-cols-1 md:grid-cols-12 gap-6 items-center group"
+              onClick={() => onOpen?.(item)}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onOpen?.(item); } }}
+              tabIndex={onOpen ? 0 : undefined}
+              role={onOpen ? "button" : undefined}
+              aria-label={onOpen ? `View ${item.title}` : undefined}
+              style={{ cursor: onOpen ? "pointer" : undefined }}
             >
               <div className="md:col-span-2 overflow-hidden border border-[rgba(255,255,255,0.08)] rounded-[0.625rem]" style={{ aspectRatio: ratio }}>
                 {isPlayableVideoUrl(item.videoUrl) ? (
@@ -328,22 +345,22 @@ function SectionHeading({ section }: { section: CraftSection }) {
   );
 }
 
-function renderSection(segment: CraftSection) {
+function renderSection(segment: CraftSection, onOpen?: (item: CraftItem) => void) {
   const mode = segment.layoutMode;
   switch (mode) {
     case "masonry-2":
-      return <MasonrySection section={segment} cols={2} />;
+      return <MasonrySection section={segment} cols={2} onOpen={onOpen} />;
     case "masonry-3":
-      return <MasonrySection section={segment} cols={3} />;
+      return <MasonrySection section={segment} cols={3} onOpen={onOpen} />;
     case "editorial-cover":
-      return <EditorialCoverSection section={segment} />;
+      return <EditorialCoverSection section={segment} onOpen={onOpen} />;
     case "list":
-      return <ListSection section={segment} />;
+      return <ListSection section={segment} onOpen={onOpen} />;
   }
 }
 
-/** Grid / masonry body for Craft Projects tab — one document, many sections, each layoutMode. */
-export function CraftProjectSections({ document: doc }: { document: CraftDocument }) {
+/** Grid / masonry body for Craft — one document, many sections, each layoutMode. */
+export function CraftProjectSections({ document: doc, onOpen }: { document: CraftDocument; onOpen?: (item: CraftItem) => void }) {
   if (!doc.sections.length) return null;
   const visible = doc.sections.filter((s) => s.items.length > 0);
   if (!visible.length) return null;
