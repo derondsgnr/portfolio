@@ -66,7 +66,7 @@
           "pinned": false
         },
         {
-          "id": "c-06",
+          "id": "-06",
           "title": "Filter  - Card UI component",
           "category": "UI",
           "description": "",
@@ -81,7 +81,7 @@
           "id": "c-07",
           "title": "House Review Listings Web",
           "category": "UI",
-          "description": "A platform that let's nigerian's review houses and landlords",
+          "description": "A platform that let's nigerians review houses and landlords",
           "image": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1779488402/search_mockup_iwzpi8.png",
           "width": 1920,
           "height": 1280,
@@ -90,13 +90,13 @@
           "pinned": false
         },
         {
-          "id": "c-08",
-          "title": "3D Interface Concepts",
-          "category": "3D",
-          "description": "Spatial UI explorations imagining the next dimension of digital interfaces.",
-          "image": "https://images.unsplash.com/photo-1633356122544-f134324a6cee?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-          "width": 1200,
-          "height": 1500,
+          "id": "Exp-08",
+          "title": "House Review Listings Web & Mobile",
+          "category": "UI",
+          "description": "A platform that let's nigerians review houses and landlords",
+          "image": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1779488786/search_mockup_v2_xcpiui.png",
+          "width": 1926,
+          "height": 1558,
           "status": "published",
           "featured": false,
           "pinned": false
