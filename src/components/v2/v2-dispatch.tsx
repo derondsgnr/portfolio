@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence, useInView } from "motion/react";
 import { ScrambleText } from "./shared/scramble-text";
+import { Navbar } from "@/components/navbar";
 import type { Project } from "@/lib/content/projects";
 
 /* ═══════════════════════════════════════════════════════════════
@@ -535,6 +536,7 @@ export function DispatchVariation({ projects }: { projects: Project[] }) {
       <style>{`@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }`}</style>
 
       <DispatchSidebar active="Home" />
+      <div className="lg:hidden"><Navbar /></div>
 
       {/* Main content offset by sidebar */}
       <main className="lg:ml-[260px]">

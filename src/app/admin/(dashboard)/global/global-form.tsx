@@ -68,7 +68,7 @@ export function GlobalForm({ initial }: Props) {
           Profile image (sidebar)
         </h2>
         <p className="font-mono text-[10px] text-white/40 mb-3 leading-relaxed">
-          Shows in the sidebar avatar. Square crop, min 200×200px. Leave blank to show the &quot;D&quot; initial.
+          Shows in the sidebar avatar. Square crop, min 200×200px. Leave blank to show the "D" initial.
         </p>
         {profileImage && (
           <img
