@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import Script from "next/script";
 import { motion, AnimatePresence, useInView } from "motion/react";
 import { ScrambleText } from "./shared/scramble-text";
 import { GlobalSidebar } from "./global-sidebar";
@@ -1306,19 +1305,32 @@ function TransmissionCTA({ ctaCopy, ctaLabel }: { ctaCopy: CtaCopy; ctaLabel: st
           {ctaLabel}
         </Link>
 
-        <div>
-          <div
-            className="contra-hire-me-button"
-            data-analyticsUserId="ea3ca719-fa5d-4897-8722-9b0dfb9f5f30"
-            data-theme="dark"
-            data-username="derondsgnr"
-          />
-          <Script
-            src="https://contra.com/static/embed/sdk.js"
-            strategy="lazyOnload"
-            charSet="utf-8"
-          />
-        </div>
+        <a
+          href="https://contra.com/derondsgnr"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            fontFamily: "monospace",
+            fontSize: "9.5px",
+            letterSpacing: "0.18em",
+            textTransform: "uppercase",
+            color: "rgba(255,255,255,0.7)",
+            border: "1px solid rgba(255,255,255,0.2)",
+            padding: "14px 32px",
+            display: "inline-block",
+            transition: "all 0.2s",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.color = "#E2B93B";
+            e.currentTarget.style.borderColor = "#E2B93B";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.color = "rgba(255,255,255,0.7)";
+            e.currentTarget.style.borderColor = "rgba(255,255,255,0.2)";
+          }}
+        >
+          Hire me on Contra →
+        </a>
       </div>
     </motion.section>
   );
