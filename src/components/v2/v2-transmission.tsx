@@ -471,16 +471,14 @@ function TransmissionProjectRow({
       onMouseLeave={() => setHovered(false)}
       data-cursor="true"
       data-cursor-label="VIEW"
+      className="grid grid-cols-1 md:grid-cols-2"
       style={{
-        display: "grid",
-        gridTemplateColumns: "1fr 1fr",
         borderTop: "1px solid rgba(255,255,255,0.05)",
-        minHeight: 400,
         cursor: "none",
       }}
     >
       {/* Image column */}
-      <div className="relative overflow-hidden" style={{ minHeight: 400 }}>
+      <div className="relative overflow-hidden" style={{ minHeight: 260 }}>
         {project.image ? (
           <motion.div
             className="absolute inset-0"
@@ -525,10 +523,10 @@ function TransmissionProjectRow({
             <span
               style={{
                 fontFamily: "monospace",
-                fontSize: "7.5px",
+                fontSize: "11px",
                 letterSpacing: "0.16em",
                 textTransform: "uppercase",
-                color: "rgba(255,255,255,0.18)",
+                color: "rgba(255,255,255,0.45)",
               }}
             >
               {String(index + 1).padStart(2, "0")}
@@ -572,7 +570,7 @@ function TransmissionProjectRow({
               fontFamily: "'Instrument Sans', sans-serif",
               fontSize: "13px",
               lineHeight: 1.65,
-              color: "rgba(255,255,255,0.48)",
+              color: "rgba(255,255,255,0.65)",
               maxWidth: 340,
             }}
           >
@@ -584,10 +582,10 @@ function TransmissionProjectRow({
           <span
             style={{
               fontFamily: "monospace",
-              fontSize: "8px",
+              fontSize: "11px",
               letterSpacing: "0.14em",
               textTransform: "uppercase",
-              color: "rgba(255,255,255,0.16)",
+              color: "rgba(255,255,255,0.45)",
             }}
           >
             {project.year}
@@ -597,7 +595,7 @@ function TransmissionProjectRow({
             data-cursor-label="CASE STUDY"
             style={{
               fontFamily: "monospace",
-              fontSize: "8.5px",
+              fontSize: "11px",
               letterSpacing: "0.16em",
               textTransform: "uppercase",
               color: "#E2B93B",
@@ -642,23 +640,18 @@ function TransmissionAbout({ aboutCopy }: { aboutCopy: AboutCopy }) {
       style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}
     >
       <div
-        className="px-6 pt-16 pb-12 sm:px-8 md:px-10 md:pt-20 md:pb-16"
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          gap: "64px",
-          alignItems: "start",
-        }}
+        className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 px-6 pt-16 pb-12 sm:px-8 md:px-10 md:pt-20 md:pb-16"
+        style={{ alignItems: "start" }}
       >
         {/* Left — heading + bio */}
         <div>
           <span
             style={{
               fontFamily: "monospace",
-              fontSize: "7.5px",
+              fontSize: "11px",
               letterSpacing: "0.22em",
               textTransform: "uppercase",
-              color: "rgba(255,255,255,0.2)",
+              color: "rgba(255,255,255,0.45)",
               display: "block",
               marginBottom: 20,
             }}
@@ -741,10 +734,10 @@ function TransmissionAbout({ aboutCopy }: { aboutCopy: AboutCopy }) {
               <span
                 style={{
                   fontFamily: "monospace",
-                  fontSize: "8px",
+                  fontSize: "11px",
                   letterSpacing: "0.2em",
                   textTransform: "uppercase",
-                  color: "rgba(255,255,255,0.28)",
+                  color: "rgba(255,255,255,0.45)",
                 }}
               >
                 {stat.label}
@@ -785,10 +778,10 @@ function TransmissionTestimonials({ testimonials }: { testimonials: TestimonialI
       <span
         style={{
           fontFamily: "monospace",
-          fontSize: "7.5px",
+          fontSize: "11px",
           letterSpacing: "0.22em",
           textTransform: "uppercase",
-          color: "rgba(255,255,255,0.2)",
+          color: "rgba(255,255,255,0.45)",
           display: "block",
           marginBottom: 24,
         }}
@@ -796,7 +789,7 @@ function TransmissionTestimonials({ testimonials }: { testimonials: TestimonialI
         Testimonials
       </span>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 1 }}>
+      <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: 1 }}>
         {testimonials.slice(0, 2).map((t, i) => (
           <motion.div
             key={t.id}
@@ -889,10 +882,10 @@ function TransmissionWriting({ posts }: { posts: BlogMeta[] }) {
         <span
           style={{
             fontFamily: "monospace",
-            fontSize: "7.5px",
+            fontSize: "11px",
             letterSpacing: "0.22em",
             textTransform: "uppercase",
-            color: "rgba(255,255,255,0.2)",
+            color: "rgba(255,255,255,0.45)",
           }}
         >
           Writing
@@ -901,10 +894,10 @@ function TransmissionWriting({ posts }: { posts: BlogMeta[] }) {
           href="/blog"
           style={{
             fontFamily: "monospace",
-            fontSize: "7.5px",
+            fontSize: "11px",
             letterSpacing: "0.16em",
             textTransform: "uppercase",
-            color: "rgba(255,255,255,0.28)",
+            color: "rgba(255,255,255,0.45)",
             transition: "color 0.2s",
           }}
           onMouseEnter={(e) => (e.currentTarget.style.color = "#E2B93B")}
@@ -970,9 +963,9 @@ function TransmissionWriting({ posts }: { posts: BlogMeta[] }) {
               <span
                 style={{
                   fontFamily: "monospace",
-                  fontSize: "7.5px",
+                  fontSize: "11px",
                   letterSpacing: "0.12em",
-                  color: "rgba(255,255,255,0.18)",
+                  color: "rgba(255,255,255,0.45)",
                   flexShrink: 0,
                 }}
               >
@@ -1007,10 +1000,10 @@ function TransmissionCraft({ items }: { items: CraftItem[] }) {
         <span
           style={{
             fontFamily: "monospace",
-            fontSize: "7.5px",
+            fontSize: "11px",
             letterSpacing: "0.22em",
             textTransform: "uppercase",
-            color: "rgba(255,255,255,0.2)",
+            color: "rgba(255,255,255,0.45)",
           }}
         >
           Craft
@@ -1019,10 +1012,10 @@ function TransmissionCraft({ items }: { items: CraftItem[] }) {
           href="/craft"
           style={{
             fontFamily: "monospace",
-            fontSize: "7.5px",
+            fontSize: "11px",
             letterSpacing: "0.16em",
             textTransform: "uppercase",
-            color: "rgba(255,255,255,0.28)",
+            color: "rgba(255,255,255,0.45)",
             transition: "color 0.2s",
           }}
           onMouseEnter={(e) => (e.currentTarget.style.color = "#E2B93B")}
@@ -1032,14 +1025,8 @@ function TransmissionCraft({ items }: { items: CraftItem[] }) {
         </Link>
       </div>
 
-      {/* Masonry-style grid — 4 cols, variable heights */}
-      <div
-        style={{
-          columns: "4",
-          columnGap: "6px",
-          gap: "6px",
-        }}
-      >
+      {/* Masonry-style grid — responsive columns */}
+      <div className="columns-2 sm:columns-3 md:columns-4" style={{ columnGap: "6px" }}>
         {published.map((item, i) => (
           <CraftTile key={item.id} item={item} index={i} inView={inView} />
         ))}
