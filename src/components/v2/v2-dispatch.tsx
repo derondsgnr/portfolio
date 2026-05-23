@@ -38,7 +38,7 @@ const SOCIALS = [
 function DispatchSidebar({ active }: { active: string }) {
   return (
     <aside
-      className="fixed top-0 left-0 h-screen flex flex-col z-40"
+      className="hidden lg:flex flex-col fixed top-0 left-0 h-screen z-40"
       style={{
         width: 260,
         background: "#0A0A0A",
@@ -537,7 +537,7 @@ export function DispatchVariation({ projects }: { projects: Project[] }) {
       <DispatchSidebar active="Home" />
 
       {/* Main content offset by sidebar */}
-      <main style={{ marginLeft: 260 }}>
+      <main className="lg:ml-[260px]">
         <DispatchHero projects={projects} />
 
         {/* Work label */}

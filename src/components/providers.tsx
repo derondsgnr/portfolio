@@ -3,7 +3,8 @@
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
-import { GlobalSidebar, SIDEBAR_WIDTH } from "./v2/global-sidebar";
+import { GlobalSidebar } from "./v2/global-sidebar";
+import { Navbar } from "./navbar";
 import { BookingProvider } from "./v2/booking-context";
 import { BookingDrawer } from "./v2/booking-drawer";
 import { SiteConfigProvider } from "@/contexts/site-config-context";
@@ -53,6 +54,7 @@ export function Providers({ children, nav = [], global: globalConfig, sounds, te
     <BookingProvider>
       <div className="relative min-h-screen text-white overflow-x-hidden" style={{ backgroundColor: "var(--color-background)" }}>
         {showSidebar && <GlobalSidebar />}
+        {!isAdmin && !isPreview && <Navbar />}
         <AnimatePresence mode="wait">
           <motion.div
             key={pathname ?? "root"}
@@ -60,7 +62,7 @@ export function Providers({ children, nav = [], global: globalConfig, sounds, te
             animate={{ opacity: 1 }}
             exit={isAdmin ? { opacity: 1 } : { opacity: 0 }}
             transition={{ duration: isAdmin ? 0 : 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
-            style={showSidebar ? { marginLeft: SIDEBAR_WIDTH } : undefined}
+            className={showSidebar ? "lg:ml-[260px]" : ""}
           >
             {children}
           </motion.div>

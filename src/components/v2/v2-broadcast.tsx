@@ -116,7 +116,7 @@ function BroadcastLeft({
 }) {
   return (
     <div
-      className="fixed top-0 left-0 h-screen flex flex-col"
+      className="hidden lg:flex flex-col fixed top-0 left-0 h-screen"
       style={{
         width: "42vw",
         paddingTop: 52,
@@ -541,7 +541,7 @@ export function BroadcastVariation({ projects }: { projects: Project[] }) {
   }, []);
 
   return (
-    <div style={{ background: "#0A0A0A", height: "100vh", overflow: "hidden" }}>
+    <div className="bg-[#0A0A0A] min-h-screen lg:h-screen lg:overflow-hidden">
       <style>{`@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }`}</style>
 
       <BroadcastTopBar />
@@ -550,8 +550,8 @@ export function BroadcastVariation({ projects }: { projects: Project[] }) {
       {/* Right scrollable pane */}
       <div
         data-broadcast-right=""
-        className="fixed right-0 top-0 h-screen overflow-y-scroll"
-        style={{ width: "58vw", paddingTop: 52 }}
+        className="w-full lg:w-[58vw] lg:fixed lg:right-0 lg:top-0 lg:h-screen lg:overflow-y-scroll"
+        style={{ paddingTop: 52 }}
         onScroll={(e) => {
           const el = e.currentTarget;
           setScrollProgress(el.scrollTop / (el.scrollHeight - el.clientHeight) || 0);

@@ -477,7 +477,7 @@ export function IndexVariation({ projects }: { projects: Project[] }) {
     <div style={{ background: "#0A0A0A", minHeight: "100vh" }}>
       <IndexTopBar />
 
-      <div className="grid" style={{ gridTemplateColumns: "1fr 420px" }}>
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_420px]">
         {/* Left: scrollable content */}
         <div>
           <IndexHeader />
@@ -485,8 +485,8 @@ export function IndexVariation({ projects }: { projects: Project[] }) {
           <IndexCTA />
         </div>
 
-        {/* Right: sticky image panel */}
-        <div style={{ borderLeft: "1px solid rgba(255,255,255,0.05)" }}>
+        {/* Right: sticky image panel — desktop only */}
+        <div className="hidden lg:block" style={{ borderLeft: "1px solid rgba(255,255,255,0.05)" }}>
           <IndexImagePanel project={hoveredProject} />
         </div>
       </div>

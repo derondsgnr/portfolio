@@ -21,7 +21,7 @@ export function Navbar() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8, delay: 0.2 }}
-        className="fixed top-0 left-0 right-0 z-50 pointer-events-none"
+        className="lg:hidden fixed top-0 left-0 right-0 z-50 pointer-events-none"
       >
         <nav className="flex items-center justify-between px-6 md:px-10 py-5 pointer-events-auto">
           {/* Logo */}

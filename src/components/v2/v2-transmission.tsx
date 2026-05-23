@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence, useInView } from "motion/react";
 import { ScrambleText } from "./shared/scramble-text";
-import { GlobalSidebar, SIDEBAR_WIDTH } from "./global-sidebar";
+import { GlobalSidebar } from "./global-sidebar";
 import type { Project } from "@/lib/content/projects";
 import type { TestimonialItem } from "@/lib/content/testimonials";
 import type { CraftItem } from "@/lib/content/craft";
@@ -1259,7 +1259,7 @@ export function TransmissionVariation({
       <TransmissionCursor />
       <GlobalSidebar />
 
-      <main className="transmission-root" style={{ marginLeft: SIDEBAR_WIDTH }}>
+      <main className="transmission-root lg:ml-[260px]">
         <TransmissionHero projects={projects} heroCopy={heroCopy} />
 
         {/* Work section header */}
