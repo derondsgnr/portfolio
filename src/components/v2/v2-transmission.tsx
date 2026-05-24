@@ -252,7 +252,7 @@ function TransmissionCursor() {
 function TransmissionHero({ projects, heroCopy }: { projects: Project[]; heroCopy: HeroCopy }) {
   const [ctxIdx, setCtxIdx] = useState(0);
   const featured = projects[0];
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const lottieRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const t = setInterval(() => setCtxIdx((i) => (i + 1) % CONTEXT_LINES.length), 2600);
@@ -260,27 +260,35 @@ function TransmissionHero({ projects, heroCopy }: { projects: Project[]; heroCop
   }, []);
 
   useEffect(() => {
-    let dotLottie: { destroy: () => void } | null = null;
-    import("@lottiefiles/dotlottie-web").then(({ DotLottie }) => {
-      const canvas = canvasRef.current;
-      if (!canvas) return;
-      // Seed canvas dimensions before init so the first frame fills the hero
-      canvas.width  = canvas.clientWidth  || window.innerWidth;
-      canvas.height = canvas.clientHeight || window.innerHeight;
-      // Self-host WASM — no CDN dependency
-      DotLottie.setWasmUrl("/dotlottie-player.wasm");
-      dotLottie = new DotLottie({
-        canvas,
-        src: "/animations/scene.lottie",
+    let anim: { destroy: () => void } | null = null;
+    let cancelled = false;
+
+    Promise.all([
+      import("lottie-web"),
+      fetch("/animations/scene_full.json").then((r) => r.json()),
+    ]).then(([mod, animData]) => {
+      if (cancelled || !lottieRef.current) return;
+      anim = mod.default.loadAnimation({
+        container: lottieRef.current,
+        renderer: "svg",
         loop: true,
         autoplay: true,
-        renderConfig: { autoResize: true },
-        // cover: scale to fill the whole canvas, crop the square animation edges
-        // as needed for widescreen viewports — same as CSS object-fit: cover
-        layout: { fit: "cover", align: [0.5, 0.5] },
+        // animationData = inline JSON: images are base64 data URIs (u:'', p:'data:...')
+        // lottie-web resolves them as '' + '' + 'data:...' = valid — no path issues.
+        animationData: animData,
+        rendererSettings: {
+          // xMidYMid slice = SVG equivalent of CSS object-fit: cover
+          // scales the 1080×1080 animation to fill any viewport, cropping edges
+          preserveAspectRatio: "xMidYMid slice",
+          progressiveLoad: true,
+        },
       });
     });
-    return () => { dotLottie?.destroy(); };
+
+    return () => {
+      cancelled = true;
+      anim?.destroy();
+    };
   }, []);
 
   const ctx = CONTEXT_LINES[ctxIdx];
@@ -288,11 +296,11 @@ function TransmissionHero({ projects, heroCopy }: { projects: Project[]; heroCop
   return (
     <section className="relative" style={{ height: "100dvh", minHeight: "100svh" }}>
       {/* Full-bleed Lottie animation */}
-      <div className="absolute inset-0">
-        <canvas
-          ref={canvasRef}
+      <div className="absolute inset-0 overflow-hidden">
+        <div
+          ref={lottieRef}
           className="absolute inset-0 w-full h-full"
-          style={{ display: "block", filter: "brightness(0.32)" }}
+          style={{ filter: "brightness(0.32)" }}
           aria-hidden="true"
         />
         <div
