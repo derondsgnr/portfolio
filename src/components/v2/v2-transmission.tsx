@@ -261,18 +261,34 @@ function TransmissionHero({ projects, heroCopy }: { projects: Project[]; heroCop
 
   useEffect(() => {
     let anim: { destroy: () => void } | null = null;
-    import("lottie-web").then((mod) => {
-      const lottie = mod.default;
-      if (!lottieRef.current) return;
-      anim = lottie.loadAnimation({
+    let cancelled = false;
+
+    Promise.all([
+      import("lottie-web"),
+      fetch("/animations/scene_full.json").then((r) => r.json()),
+    ]).then(([mod, animData]) => {
+      if (cancelled || !lottieRef.current) return;
+      anim = mod.default.loadAnimation({
         container: lottieRef.current,
         renderer: "svg",
         loop: true,
         autoplay: true,
-        path: "/animations/scene.json",
+        // animationData = inline JSON: images are base64 data URIs (u:'', p:'data:...')
+        // lottie-web resolves them as '' + '' + 'data:...' = valid — no path issues.
+        animationData: animData,
+        rendererSettings: {
+          // xMidYMid slice = SVG equivalent of CSS object-fit: cover
+          // scales the 1080×1080 animation to fill any viewport, cropping edges
+          preserveAspectRatio: "xMidYMid slice",
+          progressiveLoad: true,
+        },
       });
     });
-    return () => { anim?.destroy(); };
+
+    return () => {
+      cancelled = true;
+      anim?.destroy();
+    };
   }, []);
 
   const ctx = CONTEXT_LINES[ctxIdx];
@@ -280,7 +296,7 @@ function TransmissionHero({ projects, heroCopy }: { projects: Project[]; heroCop
   return (
     <section className="relative" style={{ height: "100dvh", minHeight: "100svh" }}>
       {/* Full-bleed Lottie animation */}
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 overflow-hidden">
         <div
           ref={lottieRef}
           className="absolute inset-0 w-full h-full"
