@@ -300,33 +300,28 @@ function TransmissionHero({ projects, heroCopy }: { projects: Project[]; heroCop
         <div
           ref={lottieRef}
           className="absolute inset-0 w-full h-full"
-          style={{ filter: "brightness(0.32)" }}
+          style={{
+            filter: "brightness(0.55)",
+            // Isolate SVG repaints from the scroll compositor so the
+            // lottie rAF loop doesn't cause scroll jank on the main thread
+            contain: "layout style paint",
+            willChange: "transform",
+          }}
           aria-hidden="true"
         />
+        {/* Text-aware gradient: only darkens where content lives.
+            Bottom strip → solid (protects name + CTAs).
+            Mid → fades quickly. Top → near-transparent (animation breathes). */}
         <div
           className="absolute inset-0"
           style={{
-            background:
-              "linear-gradient(135deg, rgba(10,10,10,0.94) 0%, rgba(10,10,10,0.2) 55%, rgba(10,10,10,0.78) 100%)",
+            background: [
+              "linear-gradient(to top, rgba(10,10,10,0.92) 0%, rgba(10,10,10,0.7) 22%, rgba(10,10,10,0.28) 48%, rgba(10,10,10,0) 72%)",
+              "linear-gradient(to right, rgba(10,10,10,0.45) 0%, rgba(10,10,10,0) 38%)",
+            ].join(", "),
           }}
         />
       </div>
-
-      {/* Featured label — top right */}
-      {featured && (
-        <div
-          className="absolute top-7 right-8"
-          style={{
-            fontFamily: "monospace",
-            fontSize: "7.5px",
-            letterSpacing: "0.18em",
-            textTransform: "uppercase",
-            color: "rgba(255,255,255,0.18)",
-          }}
-        >
-          Featured → {featured.title}
-        </div>
-      )}
 
       {/* Hero copy — bottom left */}
       <div className="relative h-full flex flex-col justify-end px-6 pb-10 md:px-10 md:pb-16">

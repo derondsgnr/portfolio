@@ -38,6 +38,11 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
   const [feedbackTarget, setFeedbackTarget] = useState<"media" | "craft" | "explorations">("media");
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
   const [expandedExplorations, setExpandedExplorations] = useState<Set<string>>(new Set());
+  const [explorationToolsRaw, setExplorationToolsRaw] = useState<Record<string, string>>(() =>
+    Object.fromEntries(
+      initialExplorations.map((e) => [e.id, (e.tools ?? []).join(", ")])
+    )
+  );
 
   function toggleExploration(key: string) {
     setExpandedExplorations((prev) => {
@@ -313,20 +318,55 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
     }
   }
 
-  function updateExplorationImage(index: number, image: string) {
-    setExplorations((prev) => {
-      const next = [...prev];
-      if (next[index]) next[index] = { ...next[index], image };
+  function updateExplorationField(id: string, updates: Partial<Exploration>) {
+    setExplorations((prev) => prev.map((e) => (e.id === id ? { ...e, ...updates } : e)));
+  }
+
+  function updateExplorationToolsRaw(id: string, raw: string) {
+    setExplorationToolsRaw((prev) => ({ ...prev, [id]: raw }));
+    const tools = raw.split(",").map((t) => t.trim()).filter(Boolean);
+    setExplorations((prev) => prev.map((e) => (e.id === id ? { ...e, tools } : e)));
+  }
+
+  function addExploration() {
+    const newId = `ex-${String(Date.now()).slice(-5)}`;
+    const newEx: Exploration = {
+      id: newId,
+      title: "New exploration",
+      category: "Visual",
+      type: "image",
+      image: "",
+      tools: [],
+      date: new Date().getFullYear().toString(),
+    };
+    setExplorations((prev) => [...prev, newEx]);
+    setExplorationToolsRaw((prev) => ({ ...prev, [newId]: "" }));
+    setExpandedExplorations((prev) => new Set([...prev, newId]));
+  }
+
+  function removeExploration(id: string) {
+    setExplorations((prev) => prev.filter((e) => e.id !== id));
+    setExplorationToolsRaw((prev) => {
+      const next = { ...prev };
+      delete next[id];
       return next;
     });
   }
 
-  function updateExplorationVideoUrl(index: number, videoUrl: string) {
-    setExplorations((prev) => {
-      const next = [...prev];
-      if (next[index]) next[index] = { ...next[index], videoUrl };
-      return next;
-    });
+  function applyExplorationCloudinaryResult(id: string, r: CloudinaryUploadResult) {
+    if (r.resource_type === "video") {
+      updateExplorationField(id, {
+        type: "video",
+        ...(r.secure_url ? { videoUrl: r.secure_url } : {}),
+        ...(r.thumbnail_url ? { image: r.thumbnail_url } : {}),
+      });
+    } else {
+      updateExplorationField(id, {
+        type: "image",
+        image: r.secure_url,
+        videoUrl: undefined,
+      });
+    }
   }
 
   const sectionBgKeys = Object.keys(media.sectionBackgrounds);
@@ -714,19 +754,36 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
 
       {/* Section 3: Explorations */}
       <section className="space-y-4">
-        <h2 className="font-mono text-sm text-white/80 uppercase tracking-wider">
-          Explorations
-        </h2>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h2 className="font-mono text-sm text-white/80 uppercase tracking-wider">
+            Explorations
+          </h2>
+          <button
+            type="button"
+            onClick={addExploration}
+            className="px-4 py-1.5 border border-[#E2B93B]/40 font-mono text-[10px] uppercase tracking-[0.12em] text-[#E2B93B] hover:bg-[#E2B93B]/10 transition-colors"
+          >
+            Add exploration
+          </button>
+        </div>
+        <p className="font-mono text-xs text-white/50 leading-relaxed max-w-2xl">
+          Motion and visual experiments shown in the Craft page gallery. Supports image and video types.
+        </p>
         <ImageFieldGuide role="craft-gallery" compact />
         <form onSubmit={handleSaveExplorations} className="space-y-4">
           <div className="space-y-1">
-            {explorations.map((item, i) => {
+            {explorations.length === 0 && (
+              <p className="font-mono text-[11px] text-white/35 py-2">No explorations yet — add one above.</p>
+            )}
+            {explorations.map((item) => {
               const isExpanded = expandedExplorations.has(item.id);
+              const toolsRaw = explorationToolsRaw[item.id] ?? (item.tools ?? []).join(", ");
               return (
                 <div
                   key={item.id}
                   className="rounded border border-white/[0.08] bg-[#0f0f0f] overflow-hidden"
                 >
+                  {/* Collapsed row */}
                   <button
                     type="button"
                     onClick={() => toggleExploration(item.id)}
@@ -743,7 +800,7 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
                       )}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="font-mono text-xs text-white/80 truncate">{item.title}</p>
+                      <p className="font-mono text-xs text-white/80 truncate">{item.title || "Untitled"}</p>
                     </div>
                     <span className="font-mono text-[10px] text-white/30 tracking-wider shrink-0 hidden sm:block">
                       {item.category}
@@ -761,31 +818,129 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
                       <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
                     </svg>
                   </button>
+
+                  {/* Expanded fields */}
                   {isExpanded && (
                     <div className="border-t border-white/[0.07] p-3 space-y-3">
-                      <ImageRatioHint role="craft-gallery" />
+                      <div className="grid gap-3 sm:grid-cols-2">
+                        <div>
+                          <label className={labelClass}>Title</label>
+                          <input
+                            type="text"
+                            value={item.title}
+                            onChange={(e) => updateExplorationField(item.id, { title: e.target.value })}
+                            className={inputClass}
+                            placeholder="Void Gradient 001"
+                          />
+                        </div>
+                        <div>
+                          <label className={labelClass}>Category / Tag</label>
+                          <input
+                            type="text"
+                            value={item.category}
+                            onChange={(e) => updateExplorationField(item.id, { category: e.target.value })}
+                            className={inputClass}
+                            placeholder="Graphics, Motion, Brand…"
+                          />
+                        </div>
+                        <div>
+                          <label className={labelClass}>Type</label>
+                          <select
+                            value={item.type}
+                            onChange={(e) =>
+                              updateExplorationField(item.id, { type: e.target.value as "image" | "video" })
+                            }
+                            className={inputClass}
+                          >
+                            <option value="image">Image</option>
+                            <option value="video">Video</option>
+                          </select>
+                        </div>
+                        <div>
+                          <label className={labelClass}>Year</label>
+                          <input
+                            type="text"
+                            value={item.date}
+                            onChange={(e) => updateExplorationField(item.id, { date: e.target.value })}
+                            className={inputClass}
+                            placeholder="2025"
+                          />
+                        </div>
+                      </div>
+                      <ImageRatioHint role="craft-gallery" className="mb-2" />
                       <div>
                         <label className={labelClass}>Image URL</label>
                         <input
                           type="url"
                           value={item.image}
-                          onChange={(e) => updateExplorationImage(i, e.target.value)}
+                          onChange={(e) => updateExplorationField(item.id, { image: e.target.value })}
                           className={inputClass}
-                          placeholder="https://…"
+                          placeholder="https://res.cloudinary.com/…"
                         />
+                        {item.image && (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={item.image}
+                            alt="Preview"
+                            className="mt-2 max-h-28 object-contain border border-white/10"
+                            onError={(e) => (e.currentTarget.style.display = "none")}
+                          />
+                        )}
                       </div>
+                      <CloudinaryUploadField
+                        onUploaded={(r) => applyExplorationCloudinaryResult(item.id, r)}
+                      />
                       {item.type === "video" && (
                         <div>
-                          <label className={labelClass}>Video URL (optional)</label>
+                          <label className={labelClass}>Video URL</label>
                           <input
                             type="url"
                             value={item.videoUrl ?? ""}
-                            onChange={(e) => updateExplorationVideoUrl(i, e.target.value)}
+                            onChange={(e) =>
+                              updateExplorationField(item.id, {
+                                videoUrl: e.target.value.trim() ? e.target.value.trim() : undefined,
+                              })
+                            }
                             className={inputClass}
-                            placeholder="YouTube URL…"
+                            placeholder="https://res.cloudinary.com/…/video/…"
                           />
                         </div>
                       )}
+                      <div>
+                        <label className={labelClass}>Tools (comma-separated)</label>
+                        <input
+                          type="text"
+                          value={toolsRaw}
+                          onChange={(e) => updateExplorationToolsRaw(item.id, e.target.value)}
+                          className={inputClass}
+                          placeholder="Figma, After Effects, Cinema 4D"
+                        />
+                        {toolsRaw && (
+                          <div className="mt-1 flex flex-wrap gap-1">
+                            {toolsRaw
+                              .split(",")
+                              .map((t) => t.trim())
+                              .filter(Boolean)
+                              .map((t) => (
+                                <span
+                                  key={t}
+                                  className="font-mono text-[9px] uppercase tracking-[0.12em] text-[#E2B93B]/80 border border-[#E2B93B]/20 px-2 py-0.5"
+                                >
+                                  {t}
+                                </span>
+                              ))}
+                          </div>
+                        )}
+                      </div>
+                      <div className="flex items-center justify-end pt-1">
+                        <button
+                          type="button"
+                          onClick={() => removeExploration(item.id)}
+                          className="font-mono text-[10px] uppercase tracking-wider text-red-400/85 hover:text-red-300"
+                        >
+                          Remove exploration
+                        </button>
+                      </div>
                     </div>
                   )}
                 </div>
