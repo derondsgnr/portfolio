@@ -323,22 +323,6 @@ function TransmissionHero({ projects, heroCopy }: { projects: Project[]; heroCop
         />
       </div>
 
-      {/* Featured label — top right */}
-      {featured && (
-        <div
-          className="absolute top-7 right-8"
-          style={{
-            fontFamily: "monospace",
-            fontSize: "7.5px",
-            letterSpacing: "0.18em",
-            textTransform: "uppercase",
-            color: "rgba(255,255,255,0.18)",
-          }}
-        >
-          Featured → {featured.title}
-        </div>
-      )}
-
       {/* Hero copy — bottom left */}
       <div className="relative h-full flex flex-col justify-end px-6 pb-10 md:px-10 md:pb-16">
         {/* Context line with icon */}
