@@ -60,6 +60,24 @@
             "body": "Numbers like that describe load: every role multiplies mental models, navigation hooks, and permission edges. Without a spine, the product does not feel feature-rich. It feels like homework with no teacher. That is the gap my work targeted."
           },
           {
+            "type": "mockup-gallery",
+            "id": "slide-1779715977653-5",
+            "mockups": [
+              {
+                "image": "https://res.cloudinary.com/da6wyupbv/image/upload/v1779716201/Screenshot_2026-03-11_at_22.07.36_mpb6gy.png",
+                "device": "none"
+              },
+              {
+                "image": "https://res.cloudinary.com/da6wyupbv/image/upload/v1779716220/Screenshot_2026-03-11_at_22.10.26_yjsnno.png",
+                "device": "none"
+              },
+              {
+                "image": "https://res.cloudinary.com/da6wyupbv/image/upload/v1779716237/Screenshot_2026-03-11_at_22.15.58_kotclu.png",
+                "device": "none"
+              }
+            ]
+          },
+          {
             "type": "narrative",
             "id": "ce-first-moves",
             "headline": "Before touching a single screen, I made two suggestions.",
