@@ -74,9 +74,9 @@
             "type": "single-mockup",
             "id": "ce-brand",
             "headline": "Brand identity — the foundation for everything downstream",
-            "image": "https://placehold.co/1600x1000/0A0A0A/E2B93B/png?text=CareerEdge%20%C2%B7%20IMG-02%20brand%20identity",
-            "device": "browser",
-            "caption": "IMG-02 — Add: brand system overview — color palette, typography scale, logo variants"
+            "image": "https://res.cloudinary.com/da6wyupbv/image/upload/v1779715815/46_-_Applications_rimtot.png",
+            "device": "none",
+            "caption": "Applications"
           }
         ]
       },
