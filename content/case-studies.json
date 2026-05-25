@@ -289,9 +289,8 @@
             "id": "ce-live",
             "headline": "Live at careeredged.com",
             "embedUrl": "https://careeredged.com",
-            "fallbackImage": "https://placehold.co/1600x1000/0A0A0A/E2B93B/png?text=CareerEdge%20%C2%B7%20IMG-15%20live%20product",
-            "device": "browser",
-            "caption": "IMG-15 — Add: screenshot of live careeredged.com for mobile fallback"
+            "fallbackImage": "https://res.cloudinary.com/da6wyupbv/image/upload/v1779715277/Screenshot_2026-05-25_at_14.20.42_fsoeww.png",
+            "device": "browser"
           },
           {
             "type": "narrative",
