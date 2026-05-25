@@ -106,11 +106,11 @@
             "id": "ce-nav-compare",
             "headline": "Navigation — before and after",
             "before": {
-              "image": "https://placehold.co/1600x1000/0A0A0A/E2B93B/png?text=CareerEdge%20%C2%B7%20IMG-03%20nav%20before",
+              "image": "https://res.cloudinary.com/da6wyupbv/image/upload/v1779714699/Screenshot_2026-03-11_at_22.09.13_ftfmdr.png",
               "label": "Original — 33 features, equal weight"
             },
             "after": {
-              "image": "https://placehold.co/1600x1000/0A0A0A/E2B93B/png?text=CareerEdge%20%C2%B7%20IMG-04%20nav%20after",
+              "image": "https://res.cloudinary.com/da6wyupbv/image/upload/v1779714945/Careeredgde-sophia_ea29sp.png",
               "label": "Redesigned — 5 items per role + more"
             }
           },
