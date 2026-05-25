@@ -17,7 +17,7 @@ import {
   BookOpen, Zap, Palette, Image, Volume2, Search,
   Link2, Layout, ArrowUpRight, RotateCcw, Trash2,
   TrendingUp, FileText, Clock, MessageSquare, Bookmark, Mail,
-  Rocket, CalendarClock, Users, Send, Bot, Brain, Crop,
+  Rocket, CalendarClock, Users, Send, Bot, Brain, Crop, Sparkles,
 } from "lucide-react";
 
 const SECTIONS = [
@@ -25,10 +25,11 @@ const SECTIONS = [
   { key: "case-studies",   label: "Case Studies",   path: "/admin/case-studies",   index: 3,  icon: FileText,       group: "content",  desc: "Acts, slides, outcomes" },
   { key: "testimonials",   label: "Testimonials",   path: "/admin/testimonials",   index: 4,  icon: MessageSquare,  group: "content",  desc: "Homepage quotes, avatars, logos" },
   { key: "blog",           label: "Blog",           path: "/admin/blog",           index: 5,  icon: BookOpen,       group: "content",  desc: "Write & publish posts" },
-  { key: "now",            label: "Now",            path: "/admin/now",            index: 6,  icon: Zap,            group: "content",  desc: "Status + activity log" },
-  { key: "contacts",       label: "Contacts",       path: "/admin/contacts",       index: 7,  icon: Mail,           group: "content",  desc: "Contact form submissions" },
-  { key: "comments",       label: "Comments",       path: "/admin/comments",       index: 8,  icon: MessageSquare,  group: "content",  desc: "Moderate reader comments" },
-  { key: "bookmarks",      label: "Bookmarks",      path: "/admin/bookmarks",      index: 9,  icon: Bookmark,       group: "content",  desc: "Media inspiration board" },
+  { key: "explorations",   label: "Explorations",   path: "/admin/explorations",   index: 6,  icon: Sparkles,       group: "content",  desc: "Motion + visual experiments" },
+  { key: "now",            label: "Now",            path: "/admin/now",            index: 7,  icon: Zap,            group: "content",  desc: "Status + activity log" },
+  { key: "contacts",       label: "Contacts",       path: "/admin/contacts",       index: 8,  icon: Mail,           group: "content",  desc: "Contact form submissions" },
+  { key: "comments",       label: "Comments",       path: "/admin/comments",       index: 9,  icon: MessageSquare,  group: "content",  desc: "Moderate reader comments" },
+  { key: "bookmarks",      label: "Bookmarks",      path: "/admin/bookmarks",      index: 10, icon: Bookmark,       group: "content",  desc: "Media inspiration board" },
   { key: "theme",          label: "Theme",          path: "/admin/theme",          index: 10, icon: Palette,        group: "style",    desc: "Fonts, colors, spacing" },
   { key: "media",          label: "Media",          path: "/admin/media",          index: 11, icon: Image,          group: "style",    desc: "Images + backgrounds" },
   { key: "image-system",   label: "Image System",   path: "/admin/image-system",   index: 12, icon: Crop,           group: "style",    desc: "Ratios, crops, upload rules" },

@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "motion/react";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import type { CraftDocument, CraftItem, CraftSection } from "@/lib/content/craft-model";
 import { ScrambleText } from "../shared/scramble-text";
 
@@ -14,47 +15,202 @@ function isPlayableVideoUrl(url: string | undefined): boolean {
   return false;
 }
 
-function CraftImageIntrinsic({ item }: { item: CraftItem }) {
-  const w = item.width;
-  const h = item.height;
-  const hasDims = typeof w === "number" && typeof h === "number" && w > 0 && h > 0;
-  if (!item.image?.trim()) {
-    return (
-      <div className="w-full min-h-[120px] bg-[#111] flex items-center justify-center">
-        <span className="font-mono text-[9px] text-white/25 uppercase tracking-wider">No still</span>
-      </div>
-    );
-  }
+// ── Shared lightbox ──────────────────────────────────────────────────────────
+
+function CraftLightbox({
+  item,
+  onClose,
+}: {
+  item: CraftItem;
+  onClose: () => void;
+}) {
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [onClose]);
+
   return (
-    <img
-      src={item.image}
-      alt={item.title}
-      width={hasDims ? w : undefined}
-      height={hasDims ? h : undefined}
-      className="w-full h-auto block align-middle"
-      decoding="async"
-      loading="lazy"
-    />
+    <motion.div
+      key="craft-lightbox"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.22 }}
+      className="fixed inset-0 z-[200] flex items-center justify-center"
+      style={{
+        background: "rgba(10,10,10,0.96)",
+        backdropFilter: "blur(10px)",
+        pointerEvents: "auto",
+      }}
+      onClick={onClose}
+    >
+      <motion.div
+        initial={{ scale: 0.96, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.96, opacity: 0 }}
+        transition={{ duration: 0.28, ease: EASE }}
+        className="relative flex flex-col items-center justify-center w-full h-full px-6 py-16 md:px-16"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Close */}
+        <button
+          onClick={onClose}
+          className="absolute top-6 right-6 flex items-center justify-center transition-all duration-200"
+          style={{
+            width: 36, height: 36,
+            border: "1px solid rgba(255,255,255,0.12)",
+            color: "rgba(255,255,255,0.5)",
+            fontFamily: "monospace", fontSize: "18px",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.color = "#F0F0F0";
+            e.currentTarget.style.borderColor = "rgba(255,255,255,0.4)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.color = "rgba(255,255,255,0.5)";
+            e.currentTarget.style.borderColor = "rgba(255,255,255,0.12)";
+          }}
+          aria-label="Close"
+        >
+          ×
+        </button>
+
+        {/* Media */}
+        <div className="relative flex-1 w-full max-w-5xl flex items-center justify-center">
+          {isPlayableVideoUrl(item.videoUrl) ? (
+            <video
+              src={item.videoUrl}
+              autoPlay muted loop playsInline
+              className="max-w-full max-h-[75vh] object-contain"
+              style={{ boxShadow: "0 32px 80px rgba(0,0,0,0.7)" }}
+            />
+          ) : item.image?.trim() ? (
+            <img
+              src={item.image}
+              alt={item.title}
+              className="max-w-full max-h-[75vh] object-contain"
+              style={{ boxShadow: "0 32px 80px rgba(0,0,0,0.7)" }}
+            />
+          ) : null}
+        </div>
+
+        {/* Label */}
+        <div className="mt-6 text-center">
+          <span
+            style={{
+              fontFamily: "monospace",
+              fontSize: "9px",
+              letterSpacing: "0.2em",
+              textTransform: "uppercase",
+              color: "#E2B93B",
+              display: "block",
+              marginBottom: 6,
+            }}
+          >
+            {item.category}
+          </span>
+          <span
+            style={{
+              fontFamily: "'Anton', sans-serif",
+              fontSize: "clamp(1rem, 3vw, 1.6rem)",
+              letterSpacing: "0.05em",
+              textTransform: "uppercase",
+              color: "#F0F0F0",
+            }}
+          >
+            {item.title}
+          </span>
+          {item.description?.trim() ? (
+            <p
+              className="mt-3 max-w-lg mx-auto"
+              style={{
+                fontFamily: "'Instrument Sans', sans-serif",
+                fontSize: "13px",
+                color: "rgba(255,255,255,0.45)",
+                lineHeight: 1.6,
+              }}
+            >
+              {item.description}
+            </p>
+          ) : null}
+        </div>
+      </motion.div>
+    </motion.div>
   );
 }
 
-function CraftMasonryMedia({ item }: { item: CraftItem }) {
-  if (isPlayableVideoUrl(item.videoUrl)) {
-    return (
-      <video
-        src={item.videoUrl}
-        poster={item.image || undefined}
-        controls
-        playsInline
-        preload="metadata"
-        className="w-full h-auto block align-middle bg-black"
-      />
-    );
-  }
-  return <CraftImageIntrinsic item={item} />;
+// ── Clickable media wrappers ─────────────────────────────────────────────────
+
+function ClickableMedia({
+  item,
+  onSelect,
+  className,
+  style,
+}: {
+  item: CraftItem;
+  onSelect: (item: CraftItem) => void;
+  className?: string;
+  style?: React.CSSProperties;
+}) {
+  return (
+    <div
+      onClick={() => onSelect(item)}
+      className={`cursor-pointer group/media ${className ?? ""}`}
+      style={style}
+      title={item.title}
+    >
+      {isPlayableVideoUrl(item.videoUrl) ? (
+        <video
+          src={item.videoUrl}
+          poster={item.image || undefined}
+          playsInline
+          preload="metadata"
+          className="w-full h-full object-cover transition-transform duration-500 group-hover/media:scale-105"
+        />
+      ) : item.image?.trim() ? (
+        <img
+          src={item.image}
+          alt={item.title}
+          className="w-full h-full object-cover transition-transform duration-500 group-hover/media:scale-105"
+          decoding="async"
+          loading="lazy"
+        />
+      ) : (
+        <div className="w-full h-full bg-[#111] flex items-center justify-center">
+          <span className="font-mono text-[9px] text-white/25 uppercase tracking-wider">No image</span>
+        </div>
+      )}
+      {/* Expand hint on hover */}
+      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover/media:opacity-100 transition-opacity duration-200 pointer-events-none">
+        <span
+          style={{
+            fontFamily: "monospace",
+            fontSize: "8px",
+            letterSpacing: "0.2em",
+            textTransform: "uppercase",
+            color: "rgba(255,255,255,0.7)",
+            background: "rgba(10,10,10,0.6)",
+            padding: "5px 10px",
+            backdropFilter: "blur(4px)",
+          }}
+        >
+          EXPAND
+        </span>
+      </div>
+    </div>
+  );
 }
 
-function EditorialCoverSection({ section }: { section: CraftSection }) {
+// ── Section components ───────────────────────────────────────────────────────
+
+function EditorialCoverSection({
+  section,
+  onSelect,
+}: {
+  section: CraftSection;
+  onSelect: (item: CraftItem) => void;
+}) {
   const { items } = section;
   if (items.length === 0) return null;
   return (
@@ -85,31 +241,12 @@ function EditorialCoverSection({ section }: { section: CraftSection }) {
               className="overflow-hidden relative border border-[rgba(255,255,255,0.08)] rounded-[0.625rem]"
               style={{ aspectRatio: p.aspect.replace("/", " / ") }}
             >
-              {isPlayableVideoUrl(item.videoUrl) ? (
-                <video
-                  src={item.videoUrl}
-                  poster={item.image || undefined}
-                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  style={{ filter: "grayscale(0.35)" }}
-                  controls
-                  playsInline
-                  preload="metadata"
-                />
-              ) : item.image?.trim() ? (
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  width={item.width ?? 900}
-                  height={item.height ?? 600}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  style={{ filter: "grayscale(0.35)" }}
-                  decoding="async"
-                />
-              ) : (
-                <div className="absolute inset-0 flex items-center justify-center bg-[#111] font-mono text-[9px] text-white/25 uppercase tracking-wider">
-                  No still
-                </div>
-              )}
+              <ClickableMedia
+                item={item}
+                onSelect={onSelect}
+                className="absolute inset-0"
+                style={{ filter: "grayscale(0.35)" }}
+              />
               <div
                 className="pointer-events-none absolute inset-0"
                 style={{
@@ -117,7 +254,7 @@ function EditorialCoverSection({ section }: { section: CraftSection }) {
                     "repeating-linear-gradient(0deg, transparent 0px, transparent 3px, rgba(10,10,10,0.2) 3px, rgba(10,10,10,0.2) 4px)",
                 }}
               />
-              <div className="absolute top-4 left-4">
+              <div className="absolute top-4 left-4 pointer-events-none">
                 <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#E2B93B", letterSpacing: "0.1em" }}>
                   EXP_{item.id.replace("c-", "")}
                 </span>
@@ -165,7 +302,15 @@ function EditorialCoverSection({ section }: { section: CraftSection }) {
   );
 }
 
-function MasonrySection({ section, cols }: { section: CraftSection; cols: 2 | 3 }) {
+function MasonrySection({
+  section,
+  cols,
+  onSelect,
+}: {
+  section: CraftSection;
+  cols: 2 | 3;
+  onSelect: (item: CraftItem) => void;
+}) {
   const { items } = section;
   if (items.length === 0) return null;
   const colClass = cols === 2 ? "columns-1 md:columns-2" : "columns-1 md:columns-2 lg:columns-3";
@@ -182,7 +327,47 @@ function MasonrySection({ section, cols }: { section: CraftSection; cols: 2 | 3 
             className="mb-2.5 break-inside-avoid"
           >
             <div className="border border-[rgba(255,255,255,0.08)] rounded-[0.625rem] overflow-hidden bg-[#0a0a0a]">
-              <CraftMasonryMedia item={item} />
+              <div
+                className="relative overflow-hidden cursor-pointer"
+                onClick={() => onSelect(item)}
+                title={item.title}
+              >
+                {isPlayableVideoUrl(item.videoUrl) ? (
+                  <video
+                    src={item.videoUrl}
+                    poster={item.image || undefined}
+                    playsInline
+                    preload="metadata"
+                    className="w-full h-auto block align-middle"
+                  />
+                ) : item.image?.trim() ? (
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="w-full h-auto block align-middle transition-transform duration-500 hover:scale-105"
+                    decoding="async"
+                    loading="lazy"
+                  />
+                ) : (
+                  <div className="w-full min-h-[120px] bg-[#111] flex items-center justify-center">
+                    <span className="font-mono text-[9px] text-white/25 uppercase tracking-wider">No still</span>
+                  </div>
+                )}
+                {/* Expand hint */}
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+                  <span
+                    style={{
+                      fontFamily: "monospace", fontSize: "8px",
+                      letterSpacing: "0.2em", textTransform: "uppercase",
+                      color: "rgba(255,255,255,0.7)",
+                      background: "rgba(10,10,10,0.6)",
+                      padding: "5px 10px", backdropFilter: "blur(4px)",
+                    }}
+                  >
+                    EXPAND
+                  </span>
+                </div>
+              </div>
               <div className="px-3 py-2 flex flex-col gap-1 border-t border-[rgba(255,255,255,0.06)] sm:flex-row sm:items-start sm:justify-between sm:gap-2">
                 <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
                   <span
@@ -223,7 +408,13 @@ function MasonrySection({ section, cols }: { section: CraftSection; cols: 2 | 3 
   );
 }
 
-function ListSection({ section }: { section: CraftSection }) {
+function ListSection({
+  section,
+  onSelect,
+}: {
+  section: CraftSection;
+  onSelect: (item: CraftItem) => void;
+}) {
   const { items } = section;
   if (items.length === 0) return null;
   return (
@@ -240,18 +431,19 @@ function ListSection({ section }: { section: CraftSection }) {
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.06, duration: 0.5 }}
-              className="py-8 grid grid-cols-1 md:grid-cols-12 gap-6 items-center group"
+              className="py-8 grid grid-cols-1 md:grid-cols-12 gap-6 items-center group cursor-pointer"
+              onClick={() => onSelect(item)}
             >
-              <div className="md:col-span-2 overflow-hidden border border-[rgba(255,255,255,0.08)] rounded-[0.625rem]" style={{ aspectRatio: ratio }}>
+              <div
+                className="md:col-span-2 overflow-hidden border border-[rgba(255,255,255,0.08)] rounded-[0.625rem] relative"
+                style={{ aspectRatio: ratio }}
+              >
                 {isPlayableVideoUrl(item.videoUrl) ? (
                   <video
                     src={item.videoUrl}
                     poster={item.image || undefined}
-                    width={w ?? undefined}
-                    height={h ?? undefined}
-                    className="w-full h-full object-cover transition-all duration-500 group-hover:grayscale-0"
+                    className="w-full h-full object-cover transition-all duration-500 group-hover:scale-105"
                     style={{ filter: "grayscale(1) brightness(0.5)" }}
-                    controls
                     playsInline
                     preload="metadata"
                   />
@@ -259,40 +451,35 @@ function ListSection({ section }: { section: CraftSection }) {
                   <img
                     src={item.image}
                     alt={item.title}
-                    width={w ?? undefined}
-                    height={h ?? undefined}
-                    className="w-full h-full object-cover transition-all duration-500 group-hover:grayscale-0"
+                    className="w-full h-full object-cover transition-all duration-500 group-hover:grayscale-0 group-hover:scale-105"
                     style={{ filter: "grayscale(1) brightness(0.5)" }}
+                    decoding="async"
+                    loading="lazy"
                   />
                 ) : (
-                  <div className="flex h-full min-h-[100px] w-full items-center justify-center bg-[#111] font-mono text-[9px] text-white/25">
-                    Add still or video
+                  <div className="absolute inset-0 bg-[#111] flex items-center justify-center">
+                    <span className="font-mono text-[8px] text-white/20 uppercase">No img</span>
                   </div>
                 )}
               </div>
-              <div className="md:col-span-1">
-                <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#E2B93B" }}>
-                  [{item.id.replace("c-", "")}]
+              <div className="md:col-span-2">
+                <span style={{ fontFamily: "monospace", fontSize: "9px", color: "rgba(255,255,255,0.15)" }}>
+                  [{item.category.toUpperCase()}]
                 </span>
               </div>
-              <div className="md:col-span-4">
+              <div className="md:col-span-5">
                 <ScrambleText
                   text={item.title}
-                  speed={20}
+                  className="group-hover:text-white/80 transition-colors"
                   style={{
                     fontFamily: "'Anton', sans-serif",
-                    fontSize: "clamp(1.2rem, 2vw, 1.8rem)",
+                    fontSize: "clamp(1rem, 2vw, 1.4rem)",
                     lineHeight: 1,
                     letterSpacing: "-0.02em",
                     textTransform: "uppercase",
                     color: "rgba(255,255,255,0.6)",
                   }}
                 />
-              </div>
-              <div className="md:col-span-2">
-                <span style={{ fontFamily: "monospace", fontSize: "9px", color: "rgba(255,255,255,0.15)" }}>
-                  [{item.category.toUpperCase()}]
-                </span>
               </div>
               <div className="md:col-span-3">
                 <p
@@ -328,34 +515,45 @@ function SectionHeading({ section }: { section: CraftSection }) {
   );
 }
 
-function renderSection(segment: CraftSection) {
-  const mode = segment.layoutMode;
-  switch (mode) {
-    case "masonry-2":
-      return <MasonrySection section={segment} cols={2} />;
-    case "masonry-3":
-      return <MasonrySection section={segment} cols={3} />;
-    case "editorial-cover":
-      return <EditorialCoverSection section={segment} />;
-    case "list":
-      return <ListSection section={segment} />;
-  }
-}
-
 /** Grid / masonry body for Craft Projects tab — one document, many sections, each layoutMode. */
 export function CraftProjectSections({ document: doc }: { document: CraftDocument }) {
+  const [selected, setSelected] = useState<CraftItem | null>(null);
+
   if (!doc.sections.length) return null;
   const visible = doc.sections.filter((s) => s.items.length > 0);
   if (!visible.length) return null;
 
+  function renderSection(segment: CraftSection) {
+    const mode = segment.layoutMode;
+    switch (mode) {
+      case "masonry-2":
+        return <MasonrySection section={segment} cols={2} onSelect={setSelected} />;
+      case "masonry-3":
+        return <MasonrySection section={segment} cols={3} onSelect={setSelected} />;
+      case "editorial-cover":
+        return <EditorialCoverSection section={segment} onSelect={setSelected} />;
+      case "list":
+        return <ListSection section={segment} onSelect={setSelected} />;
+    }
+  }
+
   return (
-    <div className="space-y-20 pb-8">
-      {visible.map((section) => (
-        <div key={section.id}>
-          <SectionHeading section={section} />
-          {renderSection(section)}
-        </div>
-      ))}
-    </div>
+    <>
+      <div className="space-y-20 pb-8">
+        {visible.map((section) => (
+          <div key={section.id}>
+            <SectionHeading section={section} />
+            {renderSection(section)}
+          </div>
+        ))}
+      </div>
+
+      {/* Shared lightbox */}
+      <AnimatePresence>
+        {selected && (
+          <CraftLightbox item={selected} onClose={() => setSelected(null)} />
+        )}
+      </AnimatePresence>
+    </>
   );
 }
