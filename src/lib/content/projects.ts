@@ -30,6 +30,7 @@ export type Project = {
   status?: "published" | "draft" | "archived";
   featured: boolean;
   pinned: boolean;
+  projectType?: "case-study" | "personal";
 };
 
 function normalizeProject(project: Project): Project {
@@ -62,16 +63,20 @@ async function hydrateProjectImagesFromCaseStudies(
   try {
     const studies = await getCaseStudies(visibility);
     const coverBySlug = new Map<string, string>();
+    const projectTypeBySlug = new Map<string, CaseStudy["projectType"]>();
     for (const cs of studies) {
       const url = bestCaseStudyCoverThumb(cs);
       if (url) coverBySlug.set(cs.slug, url);
+      if (cs.projectType !== undefined) projectTypeBySlug.set(cs.slug, cs.projectType);
     }
     return projects.map((p) => {
+      const updates: Partial<Project> = {};
       const fromStudy = coverBySlug.get(p.slug);
-      // Always prefer the case study cover so admin cover updates propagate
-      // to the work listing immediately. Fall back to projects.json image.
-      if (fromStudy) return { ...p, image: fromStudy };
-      return p;
+      // Always prefer the case study cover so admin cover updates propagate immediately.
+      if (fromStudy) updates.image = fromStudy;
+      const pt = projectTypeBySlug.get(p.slug);
+      if (pt !== undefined) updates.projectType = pt;
+      return Object.keys(updates).length > 0 ? { ...p, ...updates } : p;
     });
   } catch {
     return projects;
@@ -106,6 +111,7 @@ async function synthesizeProjectsFromCaseStudies(
           status: cs.status ?? "published",
           featured: cs.featured ?? false,
           pinned: cs.pinned ?? false,
+          projectType: cs.projectType,
         })
       );
     }

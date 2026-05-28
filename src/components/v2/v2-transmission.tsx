@@ -6,6 +6,7 @@ import Image from "next/image";
 import { motion, AnimatePresence, useInView } from "motion/react";
 import { ScrambleText } from "./shared/scramble-text";
 import { GlobalSidebar } from "./global-sidebar";
+import { PersonalProjectsGrid } from "./personal-projects-grid";
 import type { Project } from "@/lib/content/projects";
 import type { TestimonialItem } from "@/lib/content/testimonials";
 import type { CraftItem } from "@/lib/content/craft";
@@ -1369,6 +1370,9 @@ export function TransmissionVariation({
   const aboutCopy = copy.homepage?.about ?? {};
   const ctaCopy = copy.homepage?.cta ?? {};
 
+  const caseStudyProjects = projects.filter((p) => !p.projectType || p.projectType === "case-study");
+  const personalProjects = projects.filter((p) => p.projectType === "personal");
+
   return (
     <div style={{ background: "#0A0A0A", minHeight: "100vh", cursor: "none" }}>
       <style>{`
@@ -1415,13 +1419,22 @@ export function TransmissionVariation({
           </Link>
         </div>
 
-        {projects.slice(0, 5).map((project, i) => (
+        {caseStudyProjects.slice(0, 5).map((project, i) => (
           <TransmissionProjectRow
             key={project.id}
             project={project}
             index={i}
           />
         ))}
+
+        {personalProjects.length > 0 && (
+          <div
+            className="px-6 sm:px-8 md:px-10 py-14 md:py-20"
+            style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}
+          >
+            <PersonalProjectsGrid projects={personalProjects} />
+          </div>
+        )}
 
         <TransmissionAbout aboutCopy={aboutCopy} />
         <TransmissionCraft items={craftItems} />

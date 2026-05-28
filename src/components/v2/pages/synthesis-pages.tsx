@@ -12,6 +12,8 @@ import type { PageCopy } from "@/lib/content/copy";
 import { useBooking } from "../booking-context";
 import { ToolBadge, ToolBadges } from "@/components/tool-badge";
 import { YouTubeVideoFrame, toYouTubeEmbedUrl } from "../shared/youtube-video-frame";
+import { PersonalProjectsGrid } from "../personal-projects-grid";
+import type { Project } from "@/lib/content/projects";
 
 /* ═══════════════════════════════════════════════════════════════
    SYNTHESIS PAGES — Best-of mashup inner pages
@@ -672,6 +674,10 @@ export function SynthesisWorkPage({ projects, copy }: { projects?: typeof V2_PRO
   const [view, setView] = useState<"a" | "b">("a"); // "a" = Grid (default), "b" = List
   const [tab, setTab] = useState<"projects" | "code">("projects");
 
+  const allProjects = (projects ?? V2_PROJECTS) as unknown as Project[];
+  const personalProjects = allProjects.filter((p) => p.projectType === "personal");
+  const caseStudyProjects = allProjects.filter((p) => !p.projectType || p.projectType === "case-study");
+
   return (
     <main className="relative bg-[#0A0A0A] min-h-screen">
       <SignalGrid />
@@ -744,7 +750,27 @@ export function SynthesisWorkPage({ projects, copy }: { projects?: typeof V2_PRO
               transition={{ duration: 0.4 }}
             >
               {tab === "projects" ? (
-                view === "a" ? <WorkGridView projects={projects} /> : <WorkListView projects={projects} />
+                <>
+                  {personalProjects.length > 0 && (
+                    <>
+                      <PersonalProjectsGrid projects={personalProjects} />
+                      <div
+                        className="my-10"
+                        style={{ height: "1px", background: "rgba(255,255,255,0.04)" }}
+                      />
+                      <div className="mb-8">
+                        <span style={{ fontFamily: "monospace", fontSize: "9px", letterSpacing: "0.22em", textTransform: "uppercase", color: "rgba(255,255,255,0.18)" }}>
+                          Case Studies
+                        </span>
+                      </div>
+                    </>
+                  )}
+                  {view === "a" ? (
+                    <WorkGridView projects={caseStudyProjects as typeof V2_PROJECTS} />
+                  ) : (
+                    <WorkListView projects={caseStudyProjects as typeof V2_PROJECTS} />
+                  )}
+                </>
               ) : (
                 <CodeSnippetsView />
               )}
