@@ -342,16 +342,22 @@
     "featured": true,
     "pinned": false,
     "meta": {
-      "title": "Bantu - Event management ",
+      "title": "Bantu: mapping the chaos of nigerian's event management ",
       "client": "",
       "year": "2026",
-      "tags": [],
+      "tags": [
+        "EventTech",
+        "Event management",
+        "Saas",
+        "B2B"
+      ],
       "cover": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1779549944/bantu_sbmcs2.png",
-      "summary": "In 9 weeks I took a chaotic, technically dense PRD with no designs and delivered a complete product design across two platforms for three user types. Full Figma file with every screen for web and mobile. A design system with components, tokens and patterns that holds across both platforms. A brand identity from the ground up: new logo mark, color palette, visual language. And a live website.",
+      "summary": "In 9 weeks I took a chaotic, technically dense PRD with no designs and delivered a complete product design across two platforms for three user types. Full Figma file with every screen for web and mobile. A design system with components, tokens and patterns that holds across both platforms, and a live website.",
       "duration": "9 weeks"
     },
     "template": "visual-brand",
-    "acts": []
+    "acts": [],
+    "liveDemoUrl": "https://bantuevents.com"
   },
   {
     "slug": "bridgepay",
