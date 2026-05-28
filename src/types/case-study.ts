@@ -226,4 +226,7 @@ export interface CaseStudy {
   };
   /** Live demo URL — shown as persistent floating button */
   liveDemoUrl?: string;
+  /** Controls which section this appears in. "personal" shows in the Personal Projects grid.
+   *  Defaults to "case-study" if omitted. */
+  projectType?: "case-study" | "personal";
 }

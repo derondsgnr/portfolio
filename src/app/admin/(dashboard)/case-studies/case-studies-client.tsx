@@ -65,6 +65,7 @@ function StudyListItem({
             {study.meta.year} · {study.acts.length} acts · {slideCount} slides
             {study.pinned && <span className="ml-1.5 text-[#E2B93B]/60">PINNED</span>}
             {study.featured && <span className="ml-1.5 text-[#E2B93B]/45">FEATURED</span>}
+            {study.projectType === "personal" && <span className="ml-1.5 text-white/40">PERSONAL</span>}
             {study.status === "draft" && <span className="ml-1.5 text-white/30">DRAFT</span>}
             {study.status === "archived" && <span className="ml-1.5 text-white/20">ARCHIVED</span>}
             <span className="ml-1.5 text-white/15 opacity-0 transition-opacity group-hover:opacity-100">OPEN</span>
@@ -234,6 +235,17 @@ function StudyEditor({
           ) : null}
         </div>
         <div className="flex items-center gap-2">
+          <select
+            value={form.projectType ?? "case-study"}
+            onChange={(e) =>
+              setForm((f) => ({ ...f, projectType: e.target.value as CaseStudy["projectType"] }))
+            }
+            className="text-[10px] font-['Instrument_Sans'] tracking-wider bg-white/[0.03] border border-white/[0.08] text-white/40 px-2 py-1.5 focus:outline-none cursor-pointer"
+            title="Controls which section this project appears in"
+          >
+            <option value="case-study" style={{ background: "#0A0A0A" }}>Case Study</option>
+            <option value="personal" style={{ background: "#0A0A0A" }}>Personal Project</option>
+          </select>
           <select
             value={form.status ?? "published"}
             onChange={(e) =>
