@@ -378,19 +378,10 @@
           {
             "type": "narrative",
             "id": "slide-1779984327314-0",
-            "body": "Bantu started with a problem I already understood too well: a scattered event market that still runs on old mental models.\n\nPeople in this space do not want a product that feels like a foreign system forced onto them. They already understand tables, seats, vendors, locations, and ticketing. The real work was not inventing a new behavior. It was turning a messy market into something more legible without making it feel unfamiliar.",
+            "body": "Bantu started with a problem I already understood too well: a scattered event market that still runs on old mental models.\n\nPeople in this space do not want a product that feels like a foreign system forced onto them. They already understand tables, seats, vendors, locations, and ticketing. The real work was not inventing a new behavior. It was turning a messy market into something more legible without making it feel unfamiliar.\n\nThat was the brief at first glance. In practice, the brief was messy. The PRD came in loose, contradictory in places, and full of assumptions that had not been pressure-tested yet. So I did not start by polishing screens. I started by trying to understand what the product actually needed to do for the people using it.",
             "headline": "Mapping the chaos of Nigerian event management"
-          },
-          {
-            "type": "narrative",
-            "id": "slide-1779997929938-2",
-            "body": "That was the brief at first glance. In practice, the brief was messy. The PRD came in loose, contradictory in places, and full of assumptions that had not been pressure-tested yet. So I did not start by polishing screens. I started by trying to understand what the product actually needed to do for the people using it."
           }
         ]
-      },
-      {
-        "title": "Act 2",
-        "slides": []
       }
     ],
     "liveDemoUrl": "https://bantuevents.com"
