@@ -10,13 +10,19 @@ export type Exploration = {
   videoUrl?: string;
   tools: string[];
   date: string;
+  description?: string;
+  status?: "published" | "draft" | "archived";
+  width?: number;
+  height?: number;
 };
 
 export async function getExplorations(): Promise<Exploration[]> {
   try {
     const parsed = await readContentJson<unknown>("explorations.json");
     if (!Array.isArray(parsed)) return DEFAULT_EXPLORATIONS;
-    return parsed as Exploration[];
+    return (parsed as Exploration[]).filter(
+      (e) => !e.status || e.status === "published"
+    );
   } catch {
     return DEFAULT_EXPLORATIONS;
   }

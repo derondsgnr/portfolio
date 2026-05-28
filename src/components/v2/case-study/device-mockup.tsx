@@ -52,7 +52,7 @@ function PhoneMockup({ children, className = "" }: { children: React.ReactNode; 
 
 function BrowserMockup({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return (
-    <div className={`inline-flex flex-col w-full ${className}`}>
+    <div className={`flex flex-col w-full ${className}`}>
       <div
         className="relative rounded-xl border border-[#2a2a2a] bg-[#111] overflow-hidden shadow-2xl"
         style={{

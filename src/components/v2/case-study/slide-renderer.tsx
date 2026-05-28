@@ -325,7 +325,7 @@ function SingleMockupSlideComponent({ slide }: { slide: Extract<Slide, { type: "
             initial={{ opacity: 0, y: 40, scale: 0.95 }}
             animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="relative max-w-4xl"
+            className={`relative ${slide.device === "browser" ? "max-w-6xl w-full" : "max-w-4xl"}`}
           >
             <DeviceMockup device={slide.device}>
               <CaseStudyImage src={slide.image} alt={slide.headline || "Screen mockup"} className="w-full h-auto" wrapperClassName="w-full" />
@@ -675,7 +675,7 @@ function EmbedSlideComponent({ slide }: { slide: Extract<Slide, { type: "embed" 
             initial={{ opacity: 0, y: 40 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="max-w-5xl"
+            className="max-w-6xl w-full"
           >
             {isMobile ? (
               /* Mobile: fallback image + link */
@@ -811,44 +811,61 @@ function MockupGallerySlideComponent({ slide }: { slide: Extract<Slide, { type: 
             </motion.div>
           )}
 
-          <div className="flex flex-wrap items-end justify-center gap-8 md:gap-12">
-            {slide.mockups.map((mockup, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 40 }}
-                animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.7, delay: 0.15 * i }}
-                className={`flex flex-col items-center cursor-pointer group ${
-                  mockup.device === "phone" ? "w-[180px] md:w-[220px]" :
-                  mockup.device === "watch" ? "w-[120px] md:w-[150px]" :
-                  "w-full max-w-[600px]"
-                }`}
-                onClick={() => setExpandedIdx(i)}
-              >
-                <div className="relative">
-                  <DeviceMockup device={mockup.device}>
-                    <CaseStudyImage src={mockup.image} alt={mockup.label || `Mockup ${i + 1}`} className="w-full h-auto" wrapperClassName="w-full" />
-                  </DeviceMockup>
-                  {/* Expand affordance — always visible on mobile, hover on desktop */}
-                  <div className="absolute inset-0 flex items-end justify-center pb-6 md:items-center md:pb-0 opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-                    <div className="bg-[#0A0A0A]/80 backdrop-blur-sm border border-[#E2B93B]/40 px-3 py-1.5 flex items-center gap-2">
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#E2B93B" strokeWidth="2">
-                        <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
-                      </svg>
-                      <span className="text-[8px] md:text-[9px] tracking-[0.15em] text-[#E2B93B]" style={{ fontFamily: "monospace" }}>
-                        TAP TO EXPAND
-                      </span>
+          {/* Swipe hint for mobile */}
+          <div className="px-6 md:hidden mb-4 flex items-center gap-2">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E2B93B" strokeWidth="1.5" className="opacity-60">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+            <span className="text-[9px] tracking-[0.15em] text-[#E2B93B]/60" style={{ fontFamily: "monospace" }}>
+              SWIPE TO EXPLORE
+            </span>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={inView ? { opacity: 1 } : {}}
+            transition={{ duration: 0.6 }}
+            className="overflow-x-auto scrollbar-hide"
+          >
+            <div className="flex gap-6 md:gap-8 px-6 sm:px-8 md:px-10 lg:px-16 pb-4 items-end" style={{ minWidth: "max-content" }}>
+              {slide.mockups.map((mockup, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: 40 }}
+                  animate={inView ? { opacity: 1, x: 0 } : {}}
+                  transition={{ duration: 0.6, delay: 0.1 * i }}
+                  className={`flex-shrink-0 flex flex-col items-center cursor-pointer group ${
+                    mockup.device === "phone" ? "w-[180px] md:w-[220px]" :
+                    mockup.device === "watch" ? "w-[120px] md:w-[150px]" :
+                    "w-[320px] md:w-[500px]"
+                  }`}
+                  onClick={() => setExpandedIdx(i)}
+                >
+                  <div className="relative w-full">
+                    <DeviceMockup device={mockup.device}>
+                      <CaseStudyImage src={mockup.image} alt={mockup.label || `Mockup ${i + 1}`} className="w-full h-auto" wrapperClassName="w-full" />
+                    </DeviceMockup>
+                    {/* Expand affordance */}
+                    <div className="absolute inset-0 flex items-end justify-center pb-6 md:items-center md:pb-0 opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                      <div className="bg-[#0A0A0A]/80 backdrop-blur-sm border border-[#E2B93B]/40 px-3 py-1.5 flex items-center gap-2">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#E2B93B" strokeWidth="2">
+                          <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+                        </svg>
+                        <span className="text-[8px] md:text-[9px] tracking-[0.15em] text-[#E2B93B]" style={{ fontFamily: "monospace" }}>
+                          TAP TO EXPAND
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
-                {mockup.label && (
-                  <p className="text-[10px] text-[#666] mt-3 tracking-[0.1em]" style={{ fontFamily: "monospace" }}>
-                    {mockup.label}
-                  </p>
-                )}
-              </motion.div>
-            ))}
-          </div>
+                  {mockup.label && (
+                    <p className="text-[10px] text-[#666] mt-3 tracking-[0.1em]" style={{ fontFamily: "monospace" }}>
+                      {mockup.label}
+                    </p>
+                  )}
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
         </div>
       </SlideLayout>
 

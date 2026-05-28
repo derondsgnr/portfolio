@@ -808,6 +808,16 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
                     <span className="font-mono text-[9px] uppercase tracking-wider px-1.5 py-0.5 shrink-0 text-white/30 bg-white/[0.04]">
                       {item.type}
                     </span>
+                    {(() => {
+                      const s = item.status ?? "published";
+                      return (
+                        <span className={`font-mono text-[9px] uppercase tracking-wider px-1.5 py-0.5 shrink-0 ${
+                          s === "published" ? "text-[#E2B93B]/70 bg-[#E2B93B]/[0.07]"
+                          : s === "draft" ? "text-white/30 bg-white/[0.04]"
+                          : "text-red-400/60 bg-red-400/[0.07]"
+                        }`}>{s}</span>
+                      );
+                    })()}
                     <svg
                       className={`w-3 h-3 text-white/25 flex-shrink-0 transition-transform duration-150 ${isExpanded ? "rotate-180" : ""}`}
                       fill="none"
@@ -823,6 +833,44 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
                   {isExpanded && (
                     <div className="border-t border-white/[0.07] p-3 space-y-3">
                       <div className="grid gap-3 sm:grid-cols-2">
+                        <div>
+                          <label className={labelClass}>Item id</label>
+                          <input
+                            type="text"
+                            value={item.id}
+                            onChange={(e) => {
+                              const newId = e.target.value;
+                              setExplorations((prev) => prev.map((ex) => ex.id === item.id ? { ...ex, id: newId } : ex));
+                              setExplorationToolsRaw((prev) => {
+                                const raw = prev[item.id] ?? "";
+                                const next = { ...prev };
+                                delete next[item.id];
+                                return { ...next, [newId]: raw };
+                              });
+                              setExpandedExplorations((prev) => {
+                                const next = new Set(prev);
+                                next.delete(item.id);
+                                next.add(newId);
+                                return next;
+                              });
+                            }}
+                            className={inputClass}
+                          />
+                        </div>
+                        <div>
+                          <label className={labelClass}>Status</label>
+                          <select
+                            value={item.status ?? "published"}
+                            onChange={(e) =>
+                              updateExplorationField(item.id, { status: e.target.value as Exploration["status"] })
+                            }
+                            className={inputClass}
+                          >
+                            <option value="published">Published</option>
+                            <option value="draft">Draft</option>
+                            <option value="archived">Archived</option>
+                          </select>
+                        </div>
                         <div>
                           <label className={labelClass}>Title</label>
                           <input
@@ -864,6 +912,48 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
                             onChange={(e) => updateExplorationField(item.id, { date: e.target.value })}
                             className={inputClass}
                             placeholder="2025"
+                          />
+                        </div>
+                        <div className="sm:col-span-2">
+                          <label className={labelClass}>Description</label>
+                          <textarea
+                            value={item.description ?? ""}
+                            onChange={(e) => updateExplorationField(item.id, { description: e.target.value })}
+                            className={`${inputClass} min-h-[72px]`}
+                            rows={3}
+                            placeholder="Short note about this piece (shown in lightbox)"
+                          />
+                        </div>
+                      </div>
+                      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                        <div>
+                          <label className={labelClass}>Width px</label>
+                          <input
+                            type="number"
+                            min={1}
+                            value={item.width ?? ""}
+                            onChange={(e) => {
+                              const v = e.target.value.trim();
+                              const n = v === "" ? undefined : Math.round(Number(v));
+                              updateExplorationField(item.id, { width: Number.isFinite(n) && n! > 0 ? n : undefined });
+                            }}
+                            className={inputClass}
+                            placeholder="e.g. 1080"
+                          />
+                        </div>
+                        <div>
+                          <label className={labelClass}>Height px</label>
+                          <input
+                            type="number"
+                            min={1}
+                            value={item.height ?? ""}
+                            onChange={(e) => {
+                              const v = e.target.value.trim();
+                              const n = v === "" ? undefined : Math.round(Number(v));
+                              updateExplorationField(item.id, { height: Number.isFinite(n) && n! > 0 ? n : undefined });
+                            }}
+                            className={inputClass}
+                            placeholder="e.g. 1350"
                           />
                         </div>
                       </div>
