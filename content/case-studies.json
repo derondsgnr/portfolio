@@ -362,6 +362,20 @@
         "title": "Act 1",
         "slides": [
           {
+            "type": "cover",
+            "id": "bantu-cover",
+            "headline": "Bantu: mapping the chaos of nigerian's event management ",
+            "subtitle": "i designed an all-in-one platform to handle the chaos of nigerian event logistics by reconciling a messy prd into a system that actually works. i designed the unified dashboard that powers the entire web and mobile experience for vendors and guests",
+            "tags": [
+              "EventTech",
+              "Event management",
+              "Saas",
+              "B2B"
+            ],
+            "heroImage": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1779549944/bantu_sbmcs2.png",
+            "device": "browser"
+          },
+          {
             "type": "narrative",
             "id": "slide-1779984327314-0",
             "body": ""
@@ -1023,6 +1037,7 @@
     },
     "status": "published",
     "featured": false,
-    "pinned": false
+    "pinned": false,
+    "projectType": "personal"
   }
 ]
