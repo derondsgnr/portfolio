@@ -352,11 +352,23 @@
         "B2B"
       ],
       "cover": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1779549944/bantu_sbmcs2.png",
-      "summary": "In 9 weeks I took a chaotic, technically dense PRD with no designs and delivered a complete product design across two platforms for three user types. Full Figma file with every screen for web and mobile. A design system with components, tokens and patterns that holds across both platforms, and a live website.",
-      "duration": "9 weeks"
+      "summary": "i designed an all-in-one platform to handle the chaos of nigerian event logistics by reconciling a messy prd into a system that actually works. i designed the unified dashboard that powers the entire web and mobile experience for vendors and guests",
+      "duration": "9 weeks",
+      "role": "Product Designer"
     },
     "template": "visual-brand",
-    "acts": [],
+    "acts": [
+      {
+        "title": "Act 1",
+        "slides": [
+          {
+            "type": "narrative",
+            "id": "slide-1779984327314-0",
+            "body": ""
+          }
+        ]
+      }
+    ],
     "liveDemoUrl": "https://bantuevents.com"
   },
   {
