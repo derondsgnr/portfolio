@@ -14,6 +14,7 @@ import { motion, AnimatePresence } from "motion/react";
 import type { Slide } from "@/types/case-study";
 import { adminCx, FormField } from "./admin-primitives";
 import { ImageFieldGuide } from "./image-system-guide";
+import { RichTextEditor } from "./rich-text-editor";
 import { openOnKeyboard } from "@/lib/admin/interaction";
 import {
   ChevronUp, ChevronDown, Trash2, Plus, X,
@@ -174,7 +175,9 @@ function SlideForm({
       {slide.type === "narrative" && (
         <>
           <FormField label="Headline (optional)"><input className={adminCx.input} value={slide.headline ?? ""} onChange={(e) => set("headline", e.target.value || undefined)} placeholder="Bold opener (leave blank to skip)" /></FormField>
-          <FormField label="Body *"><textarea className={adminCx.textarea} rows={6} value={slide.body} onChange={(e) => set("body", e.target.value)} placeholder="Write the narrative…" /></FormField>
+          <FormField label="Body *">
+            <RichTextEditor value={slide.body} onChange={(html) => set("body", html)} placeholder="Write the narrative…" minHeight={180} />
+          </FormField>
           <FormField label="Annotation (side note)"><input className={adminCx.input} value={slide.annotation ?? ""} onChange={(e) => set("annotation", e.target.value || undefined)} placeholder="Margin annotation text" /></FormField>
           <NarratorEditor narrator={(slide as { narrator?: { text: string; label?: string; mood?: string } }).narrator} onChange={(n) => set("narrator", n)} />
         </>
@@ -192,7 +195,9 @@ function SlideForm({
       {/* ─ Quote ─ */}
       {slide.type === "quote" && (
         <>
-          <FormField label="Quote *"><textarea className={adminCx.textarea} rows={4} value={slide.quote} onChange={(e) => set("quote", e.target.value)} placeholder="The quote…" /></FormField>
+          <FormField label="Quote *">
+            <RichTextEditor value={slide.quote} onChange={(html) => set("quote", html)} placeholder="The quote…" minHeight={120} />
+          </FormField>
           <div className="grid grid-cols-2 gap-3">
             <FormField label="Attribution"><input className={adminCx.input} value={slide.attribution} onChange={(e) => set("attribution", e.target.value)} placeholder="Name or source" /></FormField>
             <FormField label="Role / Context"><input className={adminCx.input} value={slide.role ?? ""} onChange={(e) => set("role", e.target.value || undefined)} placeholder="Head of Design at XYZ" /></FormField>
@@ -205,7 +210,9 @@ function SlideForm({
       {slide.type === "insight" && (
         <>
           <FormField label="Headline *"><input className={adminCx.input} value={slide.headline} onChange={(e) => set("headline", e.target.value)} /></FormField>
-          <FormField label="Body"><textarea className={adminCx.textarea} rows={3} value={slide.body ?? ""} onChange={(e) => set("body", e.target.value || undefined)} /></FormField>
+          <FormField label="Body">
+            <RichTextEditor value={slide.body ?? ""} onChange={(html) => set("body", html || undefined)} placeholder="Supporting detail…" minHeight={120} />
+          </FormField>
           <div className="grid grid-cols-2 gap-3">
             <FormField label="Insight Label"><input className={adminCx.input} value={slide.insightLabel} onChange={(e) => set("insightLabel", e.target.value)} placeholder="THE KEY INSIGHT" /></FormField>
             <FormField label="Insight Text"><input className={adminCx.input} value={slide.insightText} onChange={(e) => set("insightText", e.target.value)} /></FormField>

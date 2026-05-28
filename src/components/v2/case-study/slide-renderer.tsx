@@ -3,6 +3,28 @@ import { motion, useInView, AnimatePresence } from "motion/react";
 import type { Slide, NarratorBlock } from "../../../types/case-study";
 import { DeviceMockup } from "./device-mockup";
 import { useScrambleText } from "../shared/scramble-text";
+import parseHtml from "html-react-parser";
+
+/** Renders rich-text HTML produced by the editor, or falls back to plain-text paragraph splitting. */
+function RichBody({ text, className = "", style }: { text: string; className?: string; style?: React.CSSProperties }) {
+  const isHtml = text.trimStart().startsWith("<");
+  if (isHtml) {
+    return (
+      <div className={`rte-body ${className}`} style={style}>
+        {parseHtml(text)}
+      </div>
+    );
+  }
+  return (
+    <>
+      {text.split("\n\n").map((paragraph, i) => (
+        <p key={i} className={className} style={style}>
+          {paragraph}
+        </p>
+      ))}
+    </>
+  );
+}
 
 const CinematicContext = createContext(false);
 
@@ -241,15 +263,11 @@ function NarrativeSlideComponent({ slide }: { slide: Extract<Slide, { type: "nar
             transition={{ duration: 0.6, delay: 0.3 }}
             className="space-y-4"
           >
-            {slide.body.split("\n\n").map((paragraph, i) => (
-              <p
-                key={i}
-                className="text-[#aaa]"
-                style={{ fontFamily: "'Instrument Sans', sans-serif", lineHeight: 1.8 }}
-              >
-                {paragraph}
-              </p>
-            ))}
+            <RichBody
+              text={slide.body}
+              className="text-[#aaa]"
+              style={{ fontFamily: "'Instrument Sans', sans-serif", lineHeight: 1.8 }}
+            />
           </motion.div>
 
           {slide.annotation && (
@@ -458,15 +476,15 @@ function InsightSlideComponent({ slide }: { slide: Extract<Slide, { type: "insig
           </motion.div>
 
           {slide.body && (
-            <motion.p
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-[#aaa] mb-10"
               style={{ fontFamily: "'Instrument Sans', sans-serif", lineHeight: 1.8 }}
             >
-              {slide.body}
-            </motion.p>
+              <RichBody text={slide.body} className="text-[#aaa]" style={{ fontFamily: "'Instrument Sans', sans-serif", lineHeight: 1.8 }} />
+            </motion.div>
           )}
 
           {/* Insight card */}
@@ -566,12 +584,12 @@ function QuoteSlideComponent({ slide }: { slide: Extract<Slide, { type: "quote" 
             transition={{ duration: 0.8 }}
           >
             <div className="text-[#E2B93B] text-6xl mb-6" style={{ fontFamily: "serif" }}>&ldquo;</div>
-            <p
+            <div
               className="text-2xl md:text-4xl text-white mb-8"
               style={{ fontFamily: "'Instrument Sans', sans-serif", lineHeight: 1.4, fontStyle: "italic" }}
             >
-              {slide.quote}
-            </p>
+              <RichBody text={slide.quote} className="text-2xl md:text-4xl text-white" style={{ fontFamily: "'Instrument Sans', sans-serif", lineHeight: 1.4, fontStyle: "italic" }} />
+            </div>
             <div className="flex flex-col items-center gap-1">
               <span className="text-[#E2B93B] text-sm">{slide.attribution}</span>
               {slide.role && (
