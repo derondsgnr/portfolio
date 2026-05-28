@@ -359,7 +359,7 @@
     "template": "visual-brand",
     "acts": [
       {
-        "title": "Act 1",
+        "title": "",
         "slides": [
           {
             "type": "cover",
@@ -387,6 +387,10 @@
             "body": "That was the brief at first glance. In practice, the brief was messy. The PRD came in loose, contradictory in places, and full of assumptions that had not been pressure-tested yet. So I did not start by polishing screens. I started by trying to understand what the product actually needed to do for the people using it."
           }
         ]
+      },
+      {
+        "title": "Act 2",
+        "slides": []
       }
     ],
     "liveDemoUrl": "https://bantuevents.com"
