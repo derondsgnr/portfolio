@@ -51,7 +51,7 @@ const active = (on: boolean) =>
     ? "border-[#E2B93B] text-[#E2B93B] bg-[#E2B93B]/10"
     : "border-transparent text-white/40 hover:text-white/70 hover:border-white/20";
 
-function Toolbar({ editor }: { editor: Editor | null }) {
+function Toolbar({ editor, compact = false }: { editor: Editor | null; compact?: boolean }) {
   if (!editor) return null;
 
   const currentFontSize =
@@ -82,48 +82,51 @@ function Toolbar({ editor }: { editor: Editor | null }) {
 
       <div className="w-px h-4 mx-1" style={{ background: "rgba(255,255,255,0.1)" }} />
 
-      {/* Headings */}
-      {([1, 2, 3] as const).map((level) => (
-        <button
-          key={level}
-          type="button"
-          title={`Heading ${level}`}
-          className={`${TOOL_BTN} ${active(editor.isActive("heading", { level }))}`}
-          onMouseDown={(e) => { e.preventDefault(); editor.chain().focus().toggleHeading({ level }).run(); }}
-        >
-          H{level}
-        </button>
-      ))}
-      <button
-        type="button"
-        title="Paragraph"
-        className={`${TOOL_BTN} ${active(!editor.isActive("heading") && !editor.isActive("bulletList") && !editor.isActive("orderedList"))}`}
-        onMouseDown={(e) => { e.preventDefault(); editor.chain().focus().setParagraph().run(); }}
-      >
-        P
-      </button>
+      {/* Headings + lists — hidden in compact mode */}
+      {!compact && (
+        <>
+          {([1, 2, 3] as const).map((level) => (
+            <button
+              key={level}
+              type="button"
+              title={`Heading ${level}`}
+              className={`${TOOL_BTN} ${active(editor.isActive("heading", { level }))}`}
+              onMouseDown={(e) => { e.preventDefault(); editor.chain().focus().toggleHeading({ level }).run(); }}
+            >
+              H{level}
+            </button>
+          ))}
+          <button
+            type="button"
+            title="Paragraph"
+            className={`${TOOL_BTN} ${active(!editor.isActive("heading") && !editor.isActive("bulletList") && !editor.isActive("orderedList"))}`}
+            onMouseDown={(e) => { e.preventDefault(); editor.chain().focus().setParagraph().run(); }}
+          >
+            P
+          </button>
 
-      <div className="w-px h-4 mx-1" style={{ background: "rgba(255,255,255,0.1)" }} />
+          <div className="w-px h-4 mx-1" style={{ background: "rgba(255,255,255,0.1)" }} />
 
-      {/* Lists */}
-      <button
-        type="button"
-        title="Bullet list"
-        className={`${TOOL_BTN} ${active(editor.isActive("bulletList"))}`}
-        onMouseDown={(e) => { e.preventDefault(); editor.chain().focus().toggleBulletList().run(); }}
-      >
-        UL
-      </button>
-      <button
-        type="button"
-        title="Ordered list"
-        className={`${TOOL_BTN} ${active(editor.isActive("orderedList"))}`}
-        onMouseDown={(e) => { e.preventDefault(); editor.chain().focus().toggleOrderedList().run(); }}
-      >
-        OL
-      </button>
+          <button
+            type="button"
+            title="Bullet list"
+            className={`${TOOL_BTN} ${active(editor.isActive("bulletList"))}`}
+            onMouseDown={(e) => { e.preventDefault(); editor.chain().focus().toggleBulletList().run(); }}
+          >
+            UL
+          </button>
+          <button
+            type="button"
+            title="Ordered list"
+            className={`${TOOL_BTN} ${active(editor.isActive("orderedList"))}`}
+            onMouseDown={(e) => { e.preventDefault(); editor.chain().focus().toggleOrderedList().run(); }}
+          >
+            OL
+          </button>
 
-      <div className="w-px h-4 mx-1" style={{ background: "rgba(255,255,255,0.1)" }} />
+          <div className="w-px h-4 mx-1" style={{ background: "rgba(255,255,255,0.1)" }} />
+        </>
+      )}
 
       {/* Alignment */}
       {(["left", "center", "right"] as const).map((align) => (
@@ -177,13 +180,16 @@ export function RichTextEditor({
   value,
   onChange,
   placeholder = "Write here…",
-  minHeight = 160,
+  minHeight,
+  compact = false,
 }: {
   value: string;
   onChange: (html: string) => void;
   placeholder?: string;
   minHeight?: number;
+  compact?: boolean;
 }) {
+  const resolvedMinHeight = minHeight ?? (compact ? 48 : 160);
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -197,8 +203,8 @@ export function RichTextEditor({
     },
     editorProps: {
       attributes: {
-        class: "prose-rte outline-none",
-        style: `min-height:${minHeight}px; padding:12px 14px;`,
+        class: `prose-rte outline-none${compact ? " prose-rte-compact" : ""}`,
+        style: `min-height:${resolvedMinHeight}px; padding:${compact ? "8px 12px" : "12px 14px"};`,
         "data-placeholder": placeholder,
       },
     },
@@ -218,7 +224,7 @@ export function RichTextEditor({
       className="overflow-hidden"
       style={{ border: "1px solid rgba(255,255,255,0.08)", background: "#0d0d0d" }}
     >
-      <Toolbar editor={editor} />
+      <Toolbar editor={editor} compact={compact} />
       <EditorContent editor={editor} />
     </div>
   );

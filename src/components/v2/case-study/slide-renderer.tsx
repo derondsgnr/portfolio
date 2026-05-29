@@ -27,6 +27,18 @@ function RichBody({ text, className = "", style }: { text: string; className?: s
   );
 }
 
+/**
+ * Inline-safe rich text for short fields (subtitle, caption, annotation).
+ * Renders an HTML value with formatting (paragraphs collapse to inline via .rte-inline);
+ * for plain text it returns the raw string so it can sit inside any element.
+ */
+function RichInline({ text }: { text: string }) {
+  if (text.trimStart().startsWith("<")) {
+    return <span className="rte-inline">{parseHtml(text)}</span>;
+  }
+  return <>{text}</>;
+}
+
 const CinematicContext = createContext(false);
 
 /* ─── Synthesis DNA helpers ──────────────────────────────────── */
@@ -34,10 +46,12 @@ const CinematicContext = createContext(false);
 function ScrambleHeading({ text, className = "" }: { text: string; className?: string }) {
   const ref = useRef<HTMLHeadingElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.5 });
-  const display = useScrambleText(text, inView, 25);
+  const isHtml = text.trimStart().startsWith("<");
+  // Scramble char-by-char only works on plain text; render rich-text headings formatted (no scramble).
+  const display = useScrambleText(isHtml ? "" : text, inView && !isHtml, 25);
   return (
     <h2 ref={ref} className={`text-white ${className}`} style={{ letterSpacing: "-0.02em" }}>
-      {display}
+      {isHtml ? <span className="rte-body">{parseHtml(text)}</span> : display}
     </h2>
   );
 }
@@ -218,7 +232,7 @@ function CoverSlideComponent({ slide }: { slide: Extract<Slide, { type: "cover" 
             className="mt-6 text-[#888] max-w-2xl"
             style={{ fontFamily: "'Instrument Sans', sans-serif", lineHeight: 1.7 }}
           >
-            {slide.subtitle}
+            <RichInline text={slide.subtitle} />
           </motion.p>
         )}
 
@@ -279,7 +293,7 @@ function NarrativeSlideComponent({ slide }: { slide: Extract<Slide, { type: "nar
               className="mt-8 border-l-2 border-[#E2B93B]/50 pl-4"
             >
               <p className="text-[#E2B93B]/80 text-sm" style={{ fontFamily: "monospace" }}>
-                {slide.annotation}
+                <RichInline text={slide.annotation} />
               </p>
             </motion.div>
           )}
@@ -360,7 +374,7 @@ function SingleMockupSlideComponent({ slide }: { slide: Extract<Slide, { type: "
               >
                 <div className="w-2 h-2 bg-[#E2B93B] rounded-full mb-2" />
                 <p className="text-xs text-[#999]" style={{ fontFamily: "monospace", lineHeight: 1.6 }}>
-                  {slide.annotation}
+                  <RichInline text={slide.annotation} />
                 </p>
               </motion.div>
             )}
@@ -368,7 +382,7 @@ function SingleMockupSlideComponent({ slide }: { slide: Extract<Slide, { type: "
 
           {slide.caption && (
             <p className="text-[10px] text-[#555] mt-4 tracking-[0.1em]" style={{ fontFamily: "monospace" }}>
-              {slide.caption}
+              <RichInline text={slide.caption} />
             </p>
           )}
         </div>
@@ -729,7 +743,7 @@ function EmbedSlideComponent({ slide }: { slide: Extract<Slide, { type: "embed" 
 
           {slide.caption && (
             <p className="text-[10px] text-[#555] mt-4 tracking-[0.1em]" style={{ fontFamily: "monospace" }}>
-              {slide.caption}
+              <RichInline text={slide.caption} />
             </p>
           )}
         </div>
@@ -800,7 +814,7 @@ function VideoSlideComponent({ slide }: { slide: Extract<Slide, { type: "video" 
 
           {slide.caption && (
             <p className="text-[10px] text-[#555] mt-4 tracking-[0.1em]" style={{ fontFamily: "monospace" }}>
-              {slide.caption}
+              <RichInline text={slide.caption} />
             </p>
           )}
         </div>
@@ -992,7 +1006,7 @@ function SectionBreakSlideComponent({ slide }: { slide: Extract<Slide, { type: "
         <ScrambleHeading text={slide.actTitle} className="text-4xl md:text-6xl" />
         {slide.subtitle && (
           <p className="text-[#666] mt-4 text-sm" style={{ fontFamily: "monospace" }}>
-            {slide.subtitle}
+            <RichInline text={slide.subtitle} />
           </p>
         )}
       </motion.div>
@@ -1095,7 +1109,7 @@ function LottieSlideComponent({ slide }: { slide: Extract<Slide, { type: "lottie
               className="mt-4 text-center"
               style={{ fontFamily: "monospace", fontSize: "11px", letterSpacing: "0.12em", color: "rgba(255,255,255,0.35)", textTransform: "uppercase" }}
             >
-              {slide.caption}
+              <RichInline text={slide.caption} />
             </motion.p>
           )}
         </div>
