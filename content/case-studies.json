@@ -413,6 +413,12 @@
             "body": "<p>One of the biggest product decisions was around ticketing and seating. Some events needed bulk tables. Some needed individual seats. Those are not the same thing, and I did not want the interface to pretend they were. The mapping had to reflect how events are actually sold and managed. So I designed the logic around that distinction instead of flattening it into one generic ticket type.</p>"
           },
           {
+            "type": "single-mockup",
+            "id": "slide-1780064636614-11",
+            "image": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1780064370/bantu_One_jdfluz.png",
+            "device": "browser"
+          },
+          {
             "type": "process",
             "id": "slide-1780015672562-7",
             "artifacts": [
