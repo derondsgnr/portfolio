@@ -395,6 +395,16 @@
             "type": "narrative",
             "id": "slide-1780014687601-3",
             "body": "<p>I used Claude to help me think through the strategy, then built a custom questionnaire around Jobs To Be Done so I could pull the real use cases out of the noise. I wanted to know what people were hiring the product to do, not just what features they could name if you asked them quickly. I sent that questionnaire to a friend who has handled events in Nigeria so I could get grounded feedback from someone who actually knows how the work feels on the ground.</p><p>That part mattered because Bantu was not a one-flow product. It had to hold multiple realities at once: event organizers, seating arrangements, ticket sales, vendor tracking, and on-the-ground logistics. If I got the structure wrong, everything else would look nice and still fail.</p>"
+          },
+          {
+            "type": "process",
+            "id": "slide-1780015299972-4",
+            "artifacts": [
+              {
+                "image": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1780015279/One_tfdq9n.png",
+                "label": ""
+              }
+            ]
           }
         ]
       }
