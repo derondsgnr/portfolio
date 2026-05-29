@@ -17,6 +17,8 @@ export type CraftItem = {
   image: string;
   /** Optional motion embed or MP4/WebM URL (YouTube/Vimeo paste here too). */
   videoUrl?: string;
+  /** URL to a hosted Lottie .json animation file. */
+  lottieUrl?: string;
   /** Source pixel width — use for masonry + CLS reserve (optional legacy). */
   width?: number;
   /** Must pair with width for aspect reserve. */
@@ -51,5 +53,7 @@ export function normalizeCraftItem(item: CraftItem): CraftItem {
         : undefined,
     videoUrl:
       typeof item.videoUrl === "string" && item.videoUrl.trim() !== "" ? item.videoUrl.trim() : undefined,
+    lottieUrl:
+      typeof item.lottieUrl === "string" && item.lottieUrl.trim() !== "" ? item.lottieUrl.trim() : undefined,
   };
 }

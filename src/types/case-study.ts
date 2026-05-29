@@ -175,6 +175,17 @@ export interface ProcessSlide {
   cinematicCaption?: string;
 }
 
+export interface LottieSlide {
+  type: "lottie";
+  id: string;
+  headline?: string;
+  lottieUrl: string;
+  caption?: string;
+  loop?: boolean;
+  narrator?: NarratorBlock;
+  cinematicCaption?: string;
+}
+
 /** Union of all slide types */
 export type Slide =
   | CoverSlide
@@ -189,7 +200,8 @@ export type Slide =
   | VideoSlide
   | MockupGallerySlide
   | SectionBreakSlide
-  | ProcessSlide;
+  | ProcessSlide
+  | LottieSlide;
 
 /* ─── Act / Chapter ──────────────────────────────────────────── */
 export interface Act {

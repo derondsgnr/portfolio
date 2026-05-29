@@ -13,6 +13,7 @@ import { useBooking } from "../booking-context";
 import { ToolBadge, ToolBadges } from "@/components/tool-badge";
 import { YouTubeVideoFrame, toYouTubeEmbedUrl } from "../shared/youtube-video-frame";
 import { PersonalProjectsGrid } from "../personal-projects-grid";
+import { LottiePlayer } from "../shared/lottie-player";
 import type { Project } from "@/lib/content/projects";
 
 /* ═══════════════════════════════════════════════════════════════
@@ -928,7 +929,7 @@ function ExplorationsGallery({ explorations, onOpen }: { explorations: Explorati
           onClick={() => onOpen(i)}
           onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onOpen(i); } }}
           tabIndex={0}
-          aria-label={`${item.title} — ${item.category}${item.type === "video" ? " (motion)" : ""}. Press Enter to view.`}
+          aria-label={`${item.title} — ${item.category}${item.type === "video" ? " (motion)" : item.type === "lottie" ? " (animation)" : ""}. Press Enter to view.`}
         >
           <div className="relative overflow-hidden">
             <img
@@ -939,11 +940,17 @@ function ExplorationsGallery({ explorations, onOpen }: { explorations: Explorati
             />
             {/* Scan overlay */}
             <div className="absolute inset-0 pointer-events-none" style={{ background: "repeating-linear-gradient(0deg, transparent 0px, transparent 3px, rgba(10,10,10,0.15) 3px, rgba(10,10,10,0.15) 4px)" }} />
-            {/* Video indicator */}
+            {/* Type indicator */}
             {item.type === "video" && (
               <div className="absolute top-3 right-3 flex items-center gap-1.5 px-2 py-1" style={{ background: "rgba(0,0,0,0.6)", border: "1px solid rgba(226,185,59,0.3)" }}>
                 <div className="w-0 h-0" style={{ borderLeft: "5px solid #E2B93B", borderTop: "3px solid transparent", borderBottom: "3px solid transparent" }} />
                 <span style={{ fontFamily: "monospace", fontSize: "8px", color: "#E2B93B", letterSpacing: "0.1em" }}>MOTION</span>
+              </div>
+            )}
+            {item.type === "lottie" && (
+              <div className="absolute top-3 right-3 flex items-center gap-1.5 px-2 py-1" style={{ background: "rgba(0,0,0,0.6)", border: "1px solid rgba(226,185,59,0.3)" }}>
+                <div className="w-2 h-2 rounded-full" style={{ background: "#E2B93B", animation: "pulse 1.4s ease-in-out infinite" }} />
+                <span style={{ fontFamily: "monospace", fontSize: "8px", color: "#E2B93B", letterSpacing: "0.1em" }}>LOTTIE</span>
               </div>
             )}
             {/* Expand affordance icon — visible on hover */}
@@ -1214,7 +1221,9 @@ function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: {
             className="relative flex items-center justify-center"
             style={{ maxWidth: "100%", maxHeight: "100%" }}
           >
-            {youtubeEmbedUrl ? (
+            {item.type === "lottie" && item.lottieUrl ? (
+              <LottiePlayer src={item.lottieUrl} loop className="w-[min(92vw,700px)] max-w-full" />
+            ) : youtubeEmbedUrl ? (
               <div className="w-[min(92vw,1100px)] max-w-full aspect-video">
                 <YouTubeVideoFrame
                   url={item.videoUrl}
@@ -1349,6 +1358,9 @@ function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: {
                   {exp.type === "video" && (
                     <div className="w-0 h-0 flex-shrink-0" style={{ borderLeft: "4px solid rgba(226,185,59,0.4)", borderTop: "2.5px solid transparent", borderBottom: "2.5px solid transparent" }} />
                   )}
+                  {exp.type === "lottie" && (
+                    <span style={{ fontFamily: "monospace", fontSize: "8px", color: "rgba(226,185,59,0.4)", letterSpacing: "0.08em" }}>✦</span>
+                  )}
                 </div>
               ))}
               <div className="h-8" />
@@ -1401,6 +1413,9 @@ function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: {
               </div>
               {exp.type === "video" && (
                 <div className="w-0 h-0 flex-shrink-0" style={{ borderLeft: "4px solid rgba(226,185,59,0.4)", borderTop: "2.5px solid transparent", borderBottom: "2.5px solid transparent" }} />
+              )}
+              {exp.type === "lottie" && (
+                <span style={{ fontFamily: "monospace", fontSize: "8px", color: "rgba(226,185,59,0.4)", letterSpacing: "0.08em" }}>✦</span>
               )}
             </div>
           ))}

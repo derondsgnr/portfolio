@@ -3,6 +3,7 @@ import { motion, useInView, AnimatePresence } from "motion/react";
 import type { Slide, NarratorBlock } from "../../../types/case-study";
 import { DeviceMockup } from "./device-mockup";
 import { useScrambleText } from "../shared/scramble-text";
+import { LottiePlayer } from "../shared/lottie-player";
 import parseHtml from "html-react-parser";
 
 /** Renders rich-text HTML produced by the editor, or falls back to plain-text paragraph splitting. */
@@ -1054,6 +1055,55 @@ function ProcessSlideComponent({ slide }: { slide: Extract<Slide, { type: "proce
   );
 }
 
+/* ─── LOTTIE ─────────────────────────────────────────────────── */
+function LottieSlideComponent({ slide }: { slide: Extract<Slide, { type: "lottie" }> }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, amount: 0.3 });
+
+  return (
+    <div ref={ref} className="min-h-[70vh] flex items-center px-6 sm:px-8 md:px-10 lg:px-16 py-20">
+      <SlideLayout narrator={slide.narrator}>
+        <div className="max-w-5xl w-full">
+          {slide.headline && (
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.7 }}
+            >
+              <ScrambleHeading text={slide.headline} className="text-3xl md:text-5xl mb-8" />
+            </motion.div>
+          )}
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.98 }}
+            animate={inView ? { opacity: 1, scale: 1 } : {}}
+            transition={{ duration: 0.6, delay: slide.headline ? 0.3 : 0 }}
+            className="w-full"
+          >
+            <LottiePlayer
+              src={slide.lottieUrl}
+              loop={slide.loop ?? true}
+              className="w-full"
+            />
+          </motion.div>
+
+          {slide.caption && (
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={inView ? { opacity: 1 } : {}}
+              transition={{ duration: 0.5, delay: 0.5 }}
+              className="mt-4 text-center"
+              style={{ fontFamily: "monospace", fontSize: "11px", letterSpacing: "0.12em", color: "rgba(255,255,255,0.35)", textTransform: "uppercase" }}
+            >
+              {slide.caption}
+            </motion.p>
+          )}
+        </div>
+      </SlideLayout>
+    </div>
+  );
+}
+
 /* ═══════════════════════════════════════════════════════════════
    MAIN SLIDE RENDERER
    ═══════════════════════════════════════════════════════════════ */
@@ -1073,6 +1123,7 @@ export function SlideRenderer({ slide, cinematic = false }: { slide: Slide; cine
     "mockup-gallery": MockupGallerySlideComponent,
     "section-break": SectionBreakSlideComponent,
     "process": ProcessSlideComponent,
+    "lottie": LottieSlideComponent,
   };
 
   const Component = components[slide.type];

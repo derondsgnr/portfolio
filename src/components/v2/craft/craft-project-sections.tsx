@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import type { CraftDocument, CraftItem, CraftSection } from "@/lib/content/craft-model";
 import { ScrambleText } from "../shared/scramble-text";
+import { LottiePlayer } from "../shared/lottie-player";
 
 const EASE = [0.25, 0.46, 0.45, 0.94] as const;
 
@@ -78,7 +79,9 @@ function CraftLightbox({
 
         {/* Media */}
         <div className="relative flex-1 w-full max-w-5xl flex items-center justify-center">
-          {isPlayableVideoUrl(item.videoUrl) ? (
+          {item.lottieUrl ? (
+            <LottiePlayer src={item.lottieUrl} loop className="w-full max-h-[75vh]" style={{ boxShadow: "0 32px 80px rgba(0,0,0,0.7)" }} />
+          ) : isPlayableVideoUrl(item.videoUrl) ? (
             <video
               src={item.videoUrl}
               autoPlay muted loop playsInline
@@ -160,7 +163,9 @@ function ClickableMedia({
       style={style}
       title={item.title}
     >
-      {isPlayableVideoUrl(item.videoUrl) ? (
+      {item.lottieUrl ? (
+        <LottiePlayer src={item.lottieUrl} loop className="w-full h-full" />
+      ) : isPlayableVideoUrl(item.videoUrl) ? (
         <video
           src={item.videoUrl}
           poster={item.image || undefined}
@@ -332,7 +337,9 @@ function MasonrySection({
                 onClick={() => onSelect(item)}
                 title={item.title}
               >
-                {isPlayableVideoUrl(item.videoUrl) ? (
+                {item.lottieUrl ? (
+                  <LottiePlayer src={item.lottieUrl} loop className="w-full" />
+                ) : isPlayableVideoUrl(item.videoUrl) ? (
                   <video
                     src={item.videoUrl}
                     poster={item.image || undefined}
@@ -438,7 +445,9 @@ function ListSection({
                 className="md:col-span-2 overflow-hidden border border-[rgba(255,255,255,0.08)] rounded-[0.625rem] relative"
                 style={{ aspectRatio: ratio }}
               >
-                {isPlayableVideoUrl(item.videoUrl) ? (
+                {item.lottieUrl ? (
+                  <LottiePlayer src={item.lottieUrl} loop className="w-full h-full" />
+                ) : isPlayableVideoUrl(item.videoUrl) ? (
                   <video
                     src={item.videoUrl}
                     poster={item.image || undefined}

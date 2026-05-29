@@ -26,8 +26,12 @@ export async function uploadFileToCloudinary(file: File): Promise<CloudinaryUplo
   }
 
   const isVideo = file.type.startsWith("video/");
+  const isLottie =
+    file.name.toLowerCase().endsWith(".json") || file.name.toLowerCase().endsWith(".lottie");
   const endpoint = isVideo
     ? `https://api.cloudinary.com/v1_1/${cloud}/video/upload`
+    : isLottie
+    ? `https://api.cloudinary.com/v1_1/${cloud}/raw/upload`
     : `https://api.cloudinary.com/v1_1/${cloud}/image/upload`;
 
   const body = new FormData();

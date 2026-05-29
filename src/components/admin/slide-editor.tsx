@@ -19,8 +19,9 @@ import { openOnKeyboard } from "@/lib/admin/interaction";
 import {
   ChevronUp, ChevronDown, Trash2, Plus, X,
   FileText, Quote, BarChart2, Zap, Image, Layers,
-  ArrowLeftRight, Monitor, Video, AlignLeft, GitBranch, Layout, Type,
+  ArrowLeftRight, Monitor, Video, AlignLeft, GitBranch, Layout, Type, PlayCircle,
 } from "lucide-react";
+import { CloudinaryUploadField } from "./cloudinary-upload-field";
 
 // ─── Slide type metadata ───────────────────────────────────────────
 export const SLIDE_TYPES: {
@@ -42,6 +43,7 @@ export const SLIDE_TYPES: {
   { type: "video",          label: "Video",           icon: Video,        desc: "Video with poster" },
   { type: "embed",          label: "Embed",           icon: Monitor,      desc: "iFrame embed (Figma, etc.)" },
   { type: "process",        label: "Process",         icon: FileText,     desc: "Artifact / process documentation" },
+  { type: "lottie",         label: "Lottie",          icon: PlayCircle,   desc: "Lottie animation (.json)" },
 ];
 
 const DEVICE_OPTIONS = ["phone", "browser", "tablet", "watch", "none"] as const;
@@ -63,6 +65,7 @@ function slidePreview(slide: Slide): string {
     case "video":          return slide.headline ?? "Video";
     case "embed":          return slide.headline ?? slide.embedUrl.slice(0, 40);
     case "process":        return slide.headline ?? `${slide.artifacts.length} artifacts`;
+    case "lottie":         return slide.headline ?? "Lottie animation";
     default:               return "(slide)";
   }
 }
@@ -84,6 +87,7 @@ function defaultSlide(type: Slide["type"], index: number): Slide {
     case "video":          return { type, id, posterImage: "" };
     case "embed":          return { type, id, embedUrl: "", fallbackImage: "" };
     case "process":        return { type, id, artifacts: [] };
+    case "lottie":         return { type, id, lottieUrl: "", loop: true };
     default:               return { type: "narrative" as const, id, body: "" };
   }
 }
@@ -377,6 +381,33 @@ function SlideForm({
             ))}
             <button type="button" onClick={() => set("artifacts", [...slide.artifacts, { image: "", label: "" }])} className="text-[10px] font-['Instrument_Sans'] tracking-wider uppercase text-[#E2B93B]/50 hover:text-[#E2B93B] transition-colors flex items-center gap-1.5"><Plus size={10} /> Add artifact</button>
           </div>
+          <NarratorEditor narrator={(slide as { narrator?: { text: string; label?: string; mood?: string } }).narrator} onChange={(n) => set("narrator", n)} />
+        </>
+      )}
+
+      {/* ─ Lottie ─ */}
+      {slide.type === "lottie" && (
+        <>
+          <FormField label="Headline (optional)"><input className={adminCx.input} value={slide.headline ?? ""} onChange={(e) => set("headline", e.target.value || undefined)} placeholder="Animation title" /></FormField>
+          <FormField label="Lottie JSON URL *" hint="Upload a .json Lottie file via Cloudinary or paste the URL">
+            <input className={adminCx.input} value={slide.lottieUrl} onChange={(e) => set("lottieUrl", e.target.value)} placeholder="https://res.cloudinary.com/…/raw/upload/…" />
+            <div className="mt-2">
+              <CloudinaryUploadField
+                onUploaded={(r) => {
+                  if (r.resource_type === "raw" || r.secure_url.toLowerCase().endsWith(".json") || r.secure_url.toLowerCase().endsWith(".lottie")) {
+                    set("lottieUrl", r.secure_url);
+                  }
+                }}
+              />
+            </div>
+          </FormField>
+          <FormField label="Caption"><input className={adminCx.input} value={slide.caption ?? ""} onChange={(e) => set("caption", e.target.value || undefined)} placeholder="Caption shown below the animation" /></FormField>
+          <FormField label="Loop">
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" checked={slide.loop ?? true} onChange={(e) => set("loop", e.target.checked)} className="accent-[#E2B93B]" />
+              <span className={adminCx.label} style={{ marginBottom: 0 }}>Loop animation</span>
+            </label>
+          </FormField>
           <NarratorEditor narrator={(slide as { narrator?: { text: string; label?: string; mood?: string } }).narrator} onChange={(n) => set("narrator", n)} />
         </>
       )}
