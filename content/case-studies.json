@@ -382,16 +382,6 @@
             "headline": "Mapping the chaos of Nigerian event management"
           },
           {
-            "type": "process",
-            "id": "slide-1780014361352-2",
-            "artifacts": [
-              {
-                "image": "",
-                "label": ""
-              }
-            ]
-          },
-          {
             "type": "narrative",
             "id": "slide-1780014687601-3",
             "body": "<p>I used Claude to help me think through the strategy, then built a custom questionnaire around Jobs To Be Done so I could pull the real use cases out of the noise. I wanted to know what people were hiring the product to do, not just what features they could name if you asked them quickly. I sent that questionnaire to a friend who has handled events in Nigeria so I could get grounded feedback from someone who actually knows how the work feels on the ground.</p><p>That part mattered because Bantu was not a one-flow product. It had to hold multiple realities at once: event organizers, seating arrangements, ticket sales, vendor tracking, and on-the-ground logistics. If I got the structure wrong, everything else would look nice and still fail.</p>"
@@ -405,6 +395,12 @@
                 "label": ""
               }
             ]
+          },
+          {
+            "type": "video",
+            "id": "slide-1780015399791-4",
+            "posterImage": "",
+            "videoUrl": "https://res.cloudinary.com/da6wyupbv/video/upload/q_auto/f_auto/v1780014552/Work_tfisxn.mp4"
           }
         ]
       }
