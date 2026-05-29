@@ -382,6 +382,12 @@
             "headline": "Mapping the chaos of Nigerian event management"
           },
           {
+            "type": "video",
+            "id": "slide-1780015399791-4",
+            "posterImage": "",
+            "videoUrl": "https://res.cloudinary.com/da6wyupbv/video/upload/q_auto/f_auto/v1780014552/Work_tfisxn.mp4"
+          },
+          {
             "type": "narrative",
             "id": "slide-1780014687601-3",
             "body": "<p>I used Claude to help me think through the strategy, then built a custom questionnaire around Jobs To Be Done so I could pull the real use cases out of the noise. I wanted to know what people were hiring the product to do, not just what features they could name if you asked them quickly. I sent that questionnaire to a friend who has handled events in Nigeria so I could get grounded feedback from someone who actually knows how the work feels on the ground.</p><p>That part mattered because Bantu was not a one-flow product. It had to hold multiple realities at once: event organizers, seating arrangements, ticket sales, vendor tracking, and on-the-ground logistics. If I got the structure wrong, everything else would look nice and still fail.</p>"
@@ -397,10 +403,34 @@
             ]
           },
           {
-            "type": "video",
-            "id": "slide-1780015399791-4",
-            "posterImage": "",
-            "videoUrl": "https://res.cloudinary.com/da6wyupbv/video/upload/q_auto/f_auto/v1780014552/Work_tfisxn.mp4"
+            "type": "narrative",
+            "id": "slide-1780015582742-5",
+            "body": "<p>I also had my friend test the prototypes throughout the journey, not just at the end. I wanted to validate assumptions while the product was still moving, not after I had already locked in the wrong thing. That kept me honest. It let me see where the logic made sense, where it broke down, and where the experience was too optimistic about how people actually manage events.</p>"
+          },
+          {
+            "type": "narrative",
+            "id": "slide-1780015661095-6",
+            "body": "<p>One of the biggest product decisions was around ticketing and seating. Some events needed bulk tables. Some needed individual seats. Those are not the same thing, and I did not want the interface to pretend they were. The mapping had to reflect how events are actually sold and managed. So I designed the logic around that distinction instead of flattening it into one generic ticket type.</p>"
+          },
+          {
+            "type": "process",
+            "id": "slide-1780015672562-7",
+            "artifacts": []
+          },
+          {
+            "type": "narrative",
+            "id": "slide-1780015677212-8",
+            "body": "<p>The same thinking applied to vendor location tracking. In a market like this, location is not just a map detail. It is operational truth. If a vendor is assigned to a wrong zone, the whole event experience becomes harder to manage. So I treated vendor location tracking as part of the core system, not as an afterthought tucked into settings somewhere.</p>"
+          },
+          {
+            "type": "narrative",
+            "id": "slide-1780015780566-9",
+            "body": "<p>Visually, I made a deliberate choice to go vibrant.</p><p>That was not just me being attracted to color. It was a business decision.</p><p>Bantu needed to compete, and in a crowded event market, looking calm and neutral is not always a strength. If the product is trying to win attention in a space where people already associate energy, celebration, and momentum with the category, the visual language has to carry some of that confidence. So I pushed the palette toward something vibrant and more alive, while still keeping the interface usable.</p><p>I also worked differently on this project than I would have a few years ago. The workflow was more like: brief in, Claude for strategy, then Figma Make for designing in code. That let me move faster from thinking to structure to something tangible. I was not treating design as a static handoff artifact. I was using code-assisted design to test decisions quickly and stay close to the real product logic.</p><p>The timeline also forced honesty.</p>"
+          },
+          {
+            "type": "process",
+            "id": "slide-1780015796250-10",
+            "artifacts": []
           }
         ]
       }
