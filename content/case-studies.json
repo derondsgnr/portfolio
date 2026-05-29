@@ -378,8 +378,23 @@
           {
             "type": "narrative",
             "id": "slide-1779984327314-0",
-            "body": "Bantu started with a problem I already understood too well: a scattered event market that still runs on old mental models.\n\nPeople in this space do not want a product that feels like a foreign system forced onto them. They already understand tables, seats, vendors, locations, and ticketing. The real work was not inventing a new behavior. It was turning a messy market into something more legible without making it feel unfamiliar.\n\nThat was the brief at first glance. In practice, the brief was messy. The PRD came in loose, contradictory in places, and full of assumptions that had not been pressure-tested yet. So I did not start by polishing screens. I started by trying to understand what the product actually needed to do for the people using it.",
+            "body": "<p style=\"text-align: left;\">Bantu started with a problem I already understood too well: a scattered event market that still runs on old mental models. People in this space do not want a product that feels like a foreign system forced onto them. They already understand tables, seats, vendors, locations, and ticketing. The real work was not inventing a new behavior. It was turning a messy market into something more legible without making it feel unfamiliar. That was the brief at first glance. In practice, the brief was messy. The PRD came in loose, contradictory in places, and full of assumptions that had not been pressure-tested yet. So I did not start by polishing screens. I started by trying to understand what the product actually needed to do for the people using it.</p><p></p>",
             "headline": "Mapping the chaos of Nigerian event management"
+          },
+          {
+            "type": "process",
+            "id": "slide-1780014361352-2",
+            "artifacts": [
+              {
+                "image": "",
+                "label": ""
+              }
+            ]
+          },
+          {
+            "type": "narrative",
+            "id": "slide-1780014687601-3",
+            "body": "<p>I used Claude to help me think through the strategy, then built a custom questionnaire around Jobs To Be Done so I could pull the real use cases out of the noise. I wanted to know what people were hiring the product to do, not just what features they could name if you asked them quickly. I sent that questionnaire to a friend who has handled events in Nigeria so I could get grounded feedback from someone who actually knows how the work feels on the ground.</p><p>That part mattered because Bantu was not a one-flow product. It had to hold multiple realities at once: event organizers, seating arrangements, ticket sales, vendor tracking, and on-the-ground logistics. If I got the structure wrong, everything else would look nice and still fail.</p>"
           }
         ]
       }
