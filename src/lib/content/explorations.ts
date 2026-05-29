@@ -5,9 +5,10 @@ export type Exploration = {
   id: string;
   title: string;
   category: string;
-  type: "image" | "video";
+  type: "image" | "video" | "lottie";
   image: string;
   videoUrl?: string;
+  lottieUrl?: string;
   tools: string[];
   date: string;
   description?: string;

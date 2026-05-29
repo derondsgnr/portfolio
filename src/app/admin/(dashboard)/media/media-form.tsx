@@ -308,10 +308,13 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
         ...(r.thumbnail_url ? { image: r.thumbnail_url } : {}),
         ...(typeof r.width === "number" && typeof r.height === "number" ? { width: r.width, height: r.height } : {}),
       });
+    } else if (r.resource_type === "raw") {
+      patchCraftItem(si, ii, { lottieUrl: r.secure_url });
     } else {
       patchCraftItem(si, ii, {
         image: r.secure_url,
         videoUrl: undefined,
+        lottieUrl: undefined,
         width: r.width,
         height: r.height,
       });
@@ -360,11 +363,18 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
         ...(r.secure_url ? { videoUrl: r.secure_url } : {}),
         ...(r.thumbnail_url ? { image: r.thumbnail_url } : {}),
       });
+    } else if (r.resource_type === "raw") {
+      updateExplorationField(id, {
+        type: "lottie",
+        lottieUrl: r.secure_url,
+        videoUrl: undefined,
+      });
     } else {
       updateExplorationField(id, {
         type: "image",
         image: r.secure_url,
         videoUrl: undefined,
+        lottieUrl: undefined,
       });
     }
   }
@@ -659,6 +669,20 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
                               placeholder="YouTube / Vimeo / MP4…"
                             />
                           </div>
+                          <div>
+                            <label className={labelClass}>Lottie JSON URL (optional)</label>
+                            <input
+                              type="url"
+                              value={item.lottieUrl ?? ""}
+                              onChange={(e) =>
+                                patchCraftItem(si, ii, {
+                                  lottieUrl: e.target.value.trim() ? e.target.value.trim() : undefined,
+                                })
+                              }
+                              className={inputClass}
+                              placeholder="https://res.cloudinary.com/…/raw/…"
+                            />
+                          </div>
                           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
                             <div>
                               <label className={labelClass}>Width px</label>
@@ -896,12 +920,13 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
                           <select
                             value={item.type}
                             onChange={(e) =>
-                              updateExplorationField(item.id, { type: e.target.value as "image" | "video" })
+                              updateExplorationField(item.id, { type: e.target.value as "image" | "video" | "lottie" })
                             }
                             className={inputClass}
                           >
                             <option value="image">Image</option>
                             <option value="video">Video</option>
+                            <option value="lottie">Lottie</option>
                           </select>
                         </div>
                         <div>
@@ -993,6 +1018,22 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
                             }
                             className={inputClass}
                             placeholder="https://res.cloudinary.com/…/video/…"
+                          />
+                        </div>
+                      )}
+                      {item.type === "lottie" && (
+                        <div>
+                          <label className={labelClass}>Lottie JSON URL</label>
+                          <input
+                            type="url"
+                            value={item.lottieUrl ?? ""}
+                            onChange={(e) =>
+                              updateExplorationField(item.id, {
+                                lottieUrl: e.target.value.trim() ? e.target.value.trim() : undefined,
+                              })
+                            }
+                            className={inputClass}
+                            placeholder="https://res.cloudinary.com/…/raw/…"
                           />
                         </div>
                       )}
