@@ -28,21 +28,26 @@ interface CaseStudyEngineProps {
   caseStudy: CaseStudy;
   allCaseStudies?: CaseStudy[];
   onSwitchCaseStudy?: (slug: string) => void;
+  /** When false, Cinematic mode is unavailable and the study opens in Reader. */
+  cinematicEnabled?: boolean;
 }
 
 export function CaseStudyEngine({
   caseStudy,
   allCaseStudies = [],
   onSwitchCaseStudy,
+  cinematicEnabled = false,
 }: CaseStudyEngineProps) {
-  const [mode, setMode] = useState<"reader" | "cinematic">("cinematic");
+  const [mode, setMode] = useState<"reader" | "cinematic">(
+    cinematicEnabled ? "cinematic" : "reader"
+  );
   const router = useRouter();
 
-  // Reset to cinematic and scroll to top when case study changes
+  // Reset to the default mode and scroll to top when case study changes
   useEffect(() => {
-    setMode("cinematic");
+    setMode(cinematicEnabled ? "cinematic" : "reader");
     window.scrollTo(0, 0);
-  }, [caseStudy.slug]);
+  }, [caseStudy.slug, cinematicEnabled]);
 
   return (
     <div className="relative">
@@ -51,6 +56,7 @@ export function CaseStudyEngine({
         <ReaderView
           caseStudy={caseStudy}
           onSwitchToCinematic={() => setMode("cinematic")}
+          cinematicEnabled={cinematicEnabled}
           allCaseStudies={allCaseStudies}
           onSwitchCaseStudy={onSwitchCaseStudy}
         />

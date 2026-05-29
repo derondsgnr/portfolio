@@ -50,6 +50,7 @@ export function useSiteConfig(): SiteConfig {
         footerCopyright: "© 2025 DERONDSGNR",
         footerTagline: "Designed & built by hand",
         ctaButtonLabel: "Book a call",
+        cinematicEnabled: false,
       },
     };
   }

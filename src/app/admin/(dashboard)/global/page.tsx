@@ -9,7 +9,7 @@ export default async function AdminGlobalPage() {
     "content/global.json",
     getGlobal,
     (base, parsed): GlobalConfig => {
-      const p = parsed as { socialLinks?: unknown[]; footerCopyright?: string; footerTagline?: string; ctaButtonLabel?: string };
+      const p = parsed as { socialLinks?: unknown[]; footerCopyright?: string; footerTagline?: string; ctaButtonLabel?: string; profileImage?: string; cinematicEnabled?: boolean };
       const links: SocialLink[] = Array.isArray(p?.socialLinks)
         ? (p.socialLinks as SocialLink[])
         : base.socialLinks;
@@ -18,6 +18,8 @@ export default async function AdminGlobalPage() {
         footerCopyright: p?.footerCopyright ?? base.footerCopyright,
         footerTagline: p?.footerTagline ?? base.footerTagline,
         ctaButtonLabel: p?.ctaButtonLabel ?? base.ctaButtonLabel,
+        profileImage: p?.profileImage ?? base.profileImage,
+        cinematicEnabled: p?.cinematicEnabled ?? base.cinematicEnabled,
       };
     }
   );

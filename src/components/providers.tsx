@@ -46,6 +46,7 @@ export function Providers({ children, nav = [], global: globalConfig, sounds, te
     footerCopyright: "© 2025 DERONDSGNR",
     footerTagline: "Designed & built by hand",
     ctaButtonLabel: "Book a call",
+    cinematicEnabled: false,
   } as GlobalConfig;
 
   return (
