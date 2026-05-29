@@ -13,7 +13,7 @@
           "image": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1778180599/Instagram_post_-_10_acnzdh.png",
           "width": 1080,
           "height": 1620,
-          "status": "published",
+          "status": "draft",
           "featured": false,
           "pinned": false
         },
@@ -126,7 +126,7 @@
           "height": 920
         },
         {
-          "id": "v",
+          "id": "",
           "title": "Car Details - Urban Ride Sharing Mobile",
           "category": "Visual",
           "description": "",
@@ -136,6 +136,16 @@
           "pinned": false,
           "width": 800,
           "height": 600
+        },
+        {
+          "id": "c-1779708441358",
+          "title": "New piece",
+          "category": "Visual",
+          "description": "",
+          "image": "",
+          "status": "draft",
+          "featured": false,
+          "pinned": false
         }
       ]
     }
