@@ -43,15 +43,21 @@ const CinematicContext = createContext(false);
 
 /* ─── Synthesis DNA helpers ──────────────────────────────────── */
 
-function ScrambleHeading({ text, className = "" }: { text: string; className?: string }) {
+/**
+ * ScrambleHeading — the signature char-by-char reveal.
+ * Reserved for high-impact moments (cover, act breaks, outcome). Pass `scramble={false}`
+ * for body-level headlines: they render plainly with a clean fade from the parent motion.
+ * Scramble is also auto-disabled for rich-text (HTML) headings, which render formatted.
+ */
+function ScrambleHeading({ text, className = "", scramble = true }: { text: string; className?: string; scramble?: boolean }) {
   const ref = useRef<HTMLHeadingElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.5 });
   const isHtml = text.trimStart().startsWith("<");
-  // Scramble char-by-char only works on plain text; render rich-text headings formatted (no scramble).
-  const display = useScrambleText(isHtml ? "" : text, inView && !isHtml, 25);
+  const canScramble = scramble && !isHtml;
+  const display = useScrambleText(canScramble ? text : "", inView && canScramble, 25);
   return (
     <h2 ref={ref} className={`text-white ${className}`} style={{ letterSpacing: "-0.02em" }}>
-      {isHtml ? <span className="rte-body">{parseHtml(text)}</span> : display}
+      {isHtml ? <span className="rte-body">{parseHtml(text)}</span> : canScramble ? display : text}
     </h2>
   );
 }
@@ -228,7 +234,7 @@ function CoverSlideComponent({ slide }: { slide: Extract<Slide, { type: "cover" 
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.5 }}
+            transition={{ duration: 0.6, delay: 0.18 }}
             className="mt-6 text-[#888] max-w-2xl"
             style={{ fontFamily: "'Instrument Sans', sans-serif", lineHeight: 1.7 }}
           >
@@ -240,7 +246,7 @@ function CoverSlideComponent({ slide }: { slide: Extract<Slide, { type: "cover" 
         <motion.div
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.6, delay: 1 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
           className="mt-16 flex items-center gap-3"
         >
           <div className="w-px h-8 bg-[#E2B93B]/40" />
@@ -268,7 +274,7 @@ function NarrativeSlideComponent({ slide }: { slide: Extract<Slide, { type: "nar
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7 }}
             >
-              <ScrambleHeading text={slide.headline} className="text-3xl md:text-5xl mb-8" />
+              <ScrambleHeading text={slide.headline} className="text-3xl md:text-5xl mb-8" scramble={false} />
             </motion.div>
           )}
 
@@ -289,7 +295,7 @@ function NarrativeSlideComponent({ slide }: { slide: Extract<Slide, { type: "nar
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={inView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.6 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
               className="mt-8 border-l-2 border-[#E2B93B]/50 pl-4"
             >
               <p className="text-[#E2B93B]/80 text-sm" style={{ fontFamily: "monospace" }}>
@@ -302,7 +308,7 @@ function NarrativeSlideComponent({ slide }: { slide: Extract<Slide, { type: "nar
             <motion.div
               initial={{ opacity: 0 }}
               animate={inView ? { opacity: 1 } : {}}
-              transition={{ duration: 0.5, delay: 0.8 }}
+              transition={{ duration: 0.5, delay: 0.25 }}
               className="mt-10 pt-6"
               style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}
             >
@@ -350,7 +356,7 @@ function SingleMockupSlideComponent({ slide }: { slide: Extract<Slide, { type: "
               transition={{ duration: 0.7 }}
               className="mb-10"
             >
-              <ScrambleHeading text={slide.headline} className="text-2xl md:text-4xl" />
+              <ScrambleHeading text={slide.headline} className="text-2xl md:text-4xl" scramble={false} />
             </motion.div>
           )}
 
@@ -369,7 +375,7 @@ function SingleMockupSlideComponent({ slide }: { slide: Extract<Slide, { type: "
               <motion.div
                 initial={{ opacity: 0, x: 30 }}
                 animate={inView ? { opacity: 1, x: 0 } : {}}
-                transition={{ duration: 0.5, delay: 0.6 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
                 className="relative md:absolute md:-right-4 lg:-right-64 md:top-1/2 md:-translate-y-1/2 max-w-[240px] bg-[#111] border border-[#E2B93B]/20 p-4 mt-4 md:mt-0 z-20"
               >
                 <div className="w-2 h-2 bg-[#E2B93B] rounded-full mb-2" />
@@ -416,7 +422,7 @@ function ComparisonSlideComponent({ slide }: { slide: Extract<Slide, { type: "co
               transition={{ duration: 0.7 }}
               className="mb-10"
             >
-              <ScrambleHeading text={slide.headline} className="text-2xl md:text-4xl" />
+              <ScrambleHeading text={slide.headline} className="text-2xl md:text-4xl" scramble={false} />
             </motion.div>
           )}
 
@@ -487,7 +493,7 @@ function InsightSlideComponent({ slide }: { slide: Extract<Slide, { type: "insig
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7 }}
           >
-            <ScrambleHeading text={slide.headline} className="text-3xl md:text-5xl mb-10" />
+            <ScrambleHeading text={slide.headline} className="text-3xl md:text-5xl mb-10" scramble={false} />
           </motion.div>
 
           {slide.body && (
@@ -542,7 +548,7 @@ function MetricSlideComponent({ slide }: { slide: Extract<Slide, { type: "metric
               transition={{ duration: 0.7 }}
               className="mb-16"
             >
-              <ScrambleHeading text={slide.headline} className="text-3xl md:text-5xl" />
+              <ScrambleHeading text={slide.headline} className="text-3xl md:text-5xl" scramble={false} />
             </motion.div>
           )}
 
@@ -629,7 +635,7 @@ function FlowSlideComponent({ slide }: { slide: Extract<Slide, { type: "flow" }>
     <div ref={ref} className="min-h-[70vh] flex flex-col justify-center py-20">
       {slide.headline && (
         <div className="px-6 sm:px-8 md:px-10 lg:px-16 mb-10">
-          <ScrambleHeading text={slide.headline} className="text-2xl md:text-4xl" />
+          <ScrambleHeading text={slide.headline} className="text-2xl md:text-4xl" scramble={false} />
         </div>
       )}
 
@@ -700,7 +706,7 @@ function EmbedSlideComponent({ slide }: { slide: Extract<Slide, { type: "embed" 
               transition={{ duration: 0.7 }}
               className="mb-10"
             >
-              <ScrambleHeading text={slide.headline} className="text-2xl md:text-4xl" />
+              <ScrambleHeading text={slide.headline} className="text-2xl md:text-4xl" scramble={false} />
             </motion.div>
           )}
 
@@ -770,7 +776,7 @@ function VideoSlideComponent({ slide }: { slide: Extract<Slide, { type: "video" 
               transition={{ duration: 0.7 }}
               className="mb-10"
             >
-              <ScrambleHeading text={slide.headline} className="text-2xl md:text-4xl" />
+              <ScrambleHeading text={slide.headline} className="text-2xl md:text-4xl" scramble={false} />
             </motion.div>
           )}
 
@@ -840,7 +846,7 @@ function MockupGallerySlideComponent({ slide }: { slide: Extract<Slide, { type: 
               transition={{ duration: 0.7 }}
               className="mb-12"
             >
-              <ScrambleHeading text={slide.headline} className="text-2xl md:text-4xl" />
+              <ScrambleHeading text={slide.headline} className="text-2xl md:text-4xl" scramble={false} />
             </motion.div>
           )}
 
@@ -1030,7 +1036,7 @@ function ProcessSlideComponent({ slide }: { slide: Extract<Slide, { type: "proce
               transition={{ duration: 0.7 }}
               className="mb-12"
             >
-              <ScrambleHeading text={slide.headline} className="text-2xl md:text-4xl" />
+              <ScrambleHeading text={slide.headline} className="text-2xl md:text-4xl" scramble={false} />
             </motion.div>
           )}
 
@@ -1084,7 +1090,7 @@ function LottieSlideComponent({ slide }: { slide: Extract<Slide, { type: "lottie
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7 }}
             >
-              <ScrambleHeading text={slide.headline} className="text-3xl md:text-5xl mb-8" />
+              <ScrambleHeading text={slide.headline} className="text-3xl md:text-5xl mb-8" scramble={false} />
             </motion.div>
           )}
 
@@ -1105,7 +1111,7 @@ function LottieSlideComponent({ slide }: { slide: Extract<Slide, { type: "lottie
             <motion.p
               initial={{ opacity: 0 }}
               animate={inView ? { opacity: 1 } : {}}
-              transition={{ duration: 0.5, delay: 0.5 }}
+              transition={{ duration: 0.5, delay: 0.18 }}
               className="mt-4 text-center"
               style={{ fontFamily: "monospace", fontSize: "11px", letterSpacing: "0.12em", color: "rgba(255,255,255,0.35)", textTransform: "uppercase" }}
             >
