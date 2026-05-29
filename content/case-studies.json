@@ -424,13 +424,13 @@
           {
             "type": "narrative",
             "id": "slide-1780015780566-9",
-            "body": "<p>That was not just me being attracted to color. It was a business decision.</p><p>Bantu needed to compete, and in a crowded event market, looking calm and neutral is not always a strength. If the product is trying to win attention in a space where people already associate energy, celebration, and momentum with the category, the visual language has to carry some of that confidence. So I pushed the palette toward something vibrant and more alive, while still keeping the interface usable.</p><p>I also worked differently on this project than I would have a few years ago.</p><p><strong>The workflow was more like:</strong></p><ol><li><p>brief in,</p></li><li><p>Claude for strategy,</p></li><li><p>then Figma Make for designing in code.</p></li></ol><p>That let me move faster from thinking to structure to something tangible. I was not treating design as a static handoff artifact. I was using code-assisted design to test decisions quickly and stay close to the real product logic.</p><p>The timeline also forced honesty.</p>",
+            "body": "<p>That was not just me being attracted to color. It was a business decision.</p><p>Bantu needed to compete, and in a crowded event market, looking calm and neutral is not always a strength. If the product is trying to win attention in a space where people already associate energy, celebration, and momentum with the category, the visual language has to carry some of that confidence. So I pushed the palette toward something vibrant and more alive, while still keeping the interface usable.</p><p>I also worked differently on this project than I would have a few years ago.</p><p><strong>The workflow was more like:</strong></p><ol><li><p>brief in,</p></li><li><p>Claude for strategy,</p></li><li><p>then Figma Make for designing in code.</p></li></ol><p>That let me move faster from thinking to structure to something tangible. I was not treating design as a static handoff artifact. I was using code-assisted design to test decisions quickly and stay close to the real product logic.</p><p>The timeline also forced honesty.<br>What was scoped as <em>one month stretched to nine weeks</em>. That happens. Especially when the first version of the brief is incomplete and the product logic is more layered than it sounded at the start. I would rather a structure that can actually survive than rush it through and hand off a beautiful misunderstanding.</p>",
             "headline": "<p>Visually, I made a deliberate choice to go vibrant.</p>"
           },
           {
-            "type": "process",
-            "id": "slide-1780015796250-10",
-            "artifacts": []
+            "type": "mockup-gallery",
+            "id": "slide-1780066024038-10",
+            "mockups": []
           }
         ]
       }
