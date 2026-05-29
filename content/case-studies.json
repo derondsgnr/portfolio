@@ -1,5 +1,21 @@
 [
   {
+    "slug": "new-study-1780084178408",
+    "status": "draft",
+    "featured": false,
+    "pinned": false,
+    "meta": {
+      "title": "New Case Study",
+      "client": "",
+      "year": "2026",
+      "tags": [],
+      "cover": "",
+      "summary": ""
+    },
+    "template": "full-product",
+    "acts": []
+  },
+  {
     "slug": "careeredge",
     "status": "published",
     "featured": true,
