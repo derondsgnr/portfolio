@@ -188,6 +188,11 @@ export function AdminNowForm({ initial }: { initial: NowConfig }) {
         </FieldGroup>
 
         <FieldGroup legend="Recent Activity">
+          <p className="text-[10px] text-white/40 font-mono leading-relaxed mb-3">
+            The /now feed auto-pulls your recent GitHub activity (pushes, PRs, branches)
+            and the streak is computed from it. Entries you add here are merged in on top —
+            use them for non-GitHub work (design, writing, planning).
+          </p>
           <div className="flex justify-end mb-2">
             <button type="button" onClick={addActivity} className="flex items-center gap-1.5 text-[10px] font-['Instrument_Sans'] tracking-wider uppercase text-[#E2B93B]/60 hover:text-[#E2B93B] transition-colors">
               <Plus size={11} /> Add Entry
