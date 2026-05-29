@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { motion, AnimatePresence, useInView } from "motion/react";
 import { ScrambleText } from "./shared/scramble-text";
@@ -340,6 +341,7 @@ function DispatchProjectRow({ project, index }: { project: Project; index: numbe
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.2 });
   const [hovered, setHovered] = useState(false);
+  const router = useRouter();
 
   return (
     <motion.article
@@ -349,6 +351,7 @@ function DispatchProjectRow({ project, index }: { project: Project; index: numbe
       transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94], delay: index * 0.08 }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      onClick={() => router.push(`/work/${project.slug}`)}
       style={{
         display: "grid",
         gridTemplateColumns: "1fr 1fr",
