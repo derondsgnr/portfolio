@@ -415,7 +415,12 @@
           {
             "type": "process",
             "id": "slide-1780015672562-7",
-            "artifacts": []
+            "artifacts": [
+              {
+                "image": "",
+                "label": ""
+              }
+            ]
           },
           {
             "type": "narrative",
