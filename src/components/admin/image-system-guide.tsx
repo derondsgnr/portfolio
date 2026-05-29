@@ -9,6 +9,8 @@ import {
   type ImageRoleId,
   type ImageRoleSpec,
 } from "@/lib/admin/image-system";
+import { detectMediaUrlKind } from "@/lib/media-url";
+import { LottiePlayer } from "@/components/v2/shared/lottie-player";
 
 type ImageFit = "cover" | "contain";
 
@@ -93,6 +95,7 @@ function RatioPreview({
   const objectFit = aspect.ratio === "natural" ? "contain" : fit;
   const hasFailed = Boolean(imageUrl && failedUrl === imageUrl);
   const canPreview = Boolean(imageUrl && !hasFailed);
+  const kind = imageUrl ? detectMediaUrlKind(imageUrl) : "image";
 
   return (
     <div className="space-y-2">
@@ -100,7 +103,20 @@ function RatioPreview({
         className="relative overflow-hidden border border-white/[0.08] bg-white/[0.025]"
         style={{ aspectRatio }}
       >
-        {canPreview ? (
+        {canPreview && kind === "video" ? (
+          <video
+            src={imageUrl}
+            muted
+            loop
+            playsInline
+            autoPlay
+            className="h-full w-full"
+            style={{ objectFit, objectPosition: "center" }}
+            onError={() => setFailedUrl(imageUrl ?? null)}
+          />
+        ) : canPreview && kind === "lottie" ? (
+          <LottiePlayer src={imageUrl as string} loop className="h-full w-full" style={{ objectFit }} />
+        ) : canPreview ? (
           <img
             src={imageUrl}
             alt=""
@@ -136,7 +152,7 @@ function RatioPreview({
         ) : null}
         {hasFailed ? (
           <p className="mt-1 text-[9px] uppercase tracking-[0.12em] text-red-300/55 font-['Instrument_Sans']">
-            Image could not load
+            {kind === "video" ? "Video" : kind === "lottie" ? "Animation" : "Image"} could not load
           </p>
         ) : null}
       </div>

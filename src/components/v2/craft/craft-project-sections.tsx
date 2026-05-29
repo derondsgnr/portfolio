@@ -5,16 +5,9 @@ import { motion, AnimatePresence } from "motion/react";
 import type { CraftDocument, CraftItem, CraftSection } from "@/lib/content/craft-model";
 import { ScrambleText } from "../shared/scramble-text";
 import { LottiePlayer } from "../shared/lottie-player";
+import { isPlayableVideoUrl } from "@/lib/media-url";
 
 const EASE = [0.25, 0.46, 0.45, 0.94] as const;
-
-function isPlayableVideoUrl(url: string | undefined): boolean {
-  if (!url?.trim()) return false;
-  const u = url.trim();
-  if (/\.(mp4|webm|ogg)(\?|#|$)/i.test(u)) return true;
-  if (u.includes("res.cloudinary.com") && u.includes("/video/upload/")) return true;
-  return false;
-}
 
 // ── Shared lightbox ──────────────────────────────────────────────────────────
 

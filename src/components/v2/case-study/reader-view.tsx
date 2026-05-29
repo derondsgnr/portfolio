@@ -78,6 +78,15 @@ export function ReaderView({
   const allSlides = caseStudy.acts.flatMap((act) => act.slides);
   const hasMultipleActs = caseStudy.acts.length > 1;
 
+  // The meta header below already serves as the reader's cover (title, summary, tags
+  // + unique client/role/duration). Cover slides are a Cinematic-mode concern, so we
+  // skip them here to avoid repeating the same headline/subtitle/tags twice — but we
+  // lift the cover's hero image into the meta header to keep the visual.
+  const firstCover = allSlides.find((s) => s.type === "cover") as
+    | Extract<typeof allSlides[number], { type: "cover" }>
+    | undefined;
+  const heroImage = firstCover?.heroImage || caseStudy.meta.cover || "";
+
   return (
     <div ref={containerRef} className="relative min-h-screen bg-[#0A0A0A] pb-28 md:pb-24">
       {/* ─── Signal grid + scan lines (Synthesis DNA) ──── */}
@@ -272,6 +281,19 @@ export function ReaderView({
             ))}
           </div>
         </div>
+
+        {/* Hero visual (lifted from the cover slide; cover slide itself is skipped below) */}
+        {heroImage && (
+          <div className="max-w-6xl mt-10 relative overflow-hidden border border-[#1a1a1a]">
+            <img
+              src={heroImage}
+              alt={caseStudy.meta.title}
+              className="w-full h-auto block"
+              loading="eager"
+            />
+            <ScanLines />
+          </div>
+        )}
       </div>
 
       {/* ─── Slides (continuous scroll) ──────────────── */}
@@ -282,15 +304,17 @@ export function ReaderView({
             ref={(el) => { actRefs.current[actIndex] = el; }}
             className="relative"
           >
-            {act.slides.map((slide) => (
-              <div key={slide.id} className="relative">
-                <SlideRenderer slide={slide} />
-                {/* Divider between slides */}
-                <div className="mx-6 md:mx-16 lg:mx-24">
-                  <div className="h-px bg-gradient-to-r from-transparent via-[#1a1a1a] to-transparent" />
+            {act.slides
+              .filter((slide) => slide.type !== "cover")
+              .map((slide) => (
+                <div key={slide.id} className="relative">
+                  <SlideRenderer slide={slide} />
+                  {/* Divider between slides */}
+                  <div className="mx-6 md:mx-16 lg:mx-24">
+                    <div className="h-px bg-gradient-to-r from-transparent via-[#1a1a1a] to-transparent" />
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
           </div>
         ))}
       </div>

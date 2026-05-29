@@ -496,7 +496,7 @@ export function CinematicViewer({
       {/* ─── Aria live region ────────────────────────── */}
       <div className="sr-only" aria-live="polite">
         Slide {currentIndex + 1} of {allSlides.length}:
-        {"headline" in currentSlide ? ` ${(currentSlide as any).headline}` : ""}
+        {"headline" in currentSlide ? ` ${String((currentSlide as any).headline ?? "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim()}` : ""}
       </div>
     </div>
   );

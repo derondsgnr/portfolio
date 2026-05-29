@@ -90,6 +90,15 @@
   text-transform: uppercase;
 }
 
+/* ── Compact editor (headlines / captions): tighten paragraph spacing ── */
+.prose-rte-compact p { margin: 0; }
+.prose-rte-compact { font-size: 15px; line-height: 1.4; }
+
+/* ── Inline rich text (subtitle / caption / annotation): collapse block <p> to inline ── */
+.rte-inline p { display: inline; margin: 0; }
+.rte-inline h1, .rte-inline h2, .rte-inline h3 { display: inline; margin: 0; font-size: inherit; font-family: inherit; }
+.rte-inline strong { font-weight: 700; }
+
 /* ── Public rich text body (from RichBody in slide-renderer) ── */
 .rte-body p { margin: 0 0 0.75em; }
 .rte-body p:last-child { margin-bottom: 0; }

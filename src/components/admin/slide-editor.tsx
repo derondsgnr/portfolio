@@ -49,23 +49,29 @@ export const SLIDE_TYPES: {
 const DEVICE_OPTIONS = ["phone", "browser", "tablet", "watch", "none"] as const;
 const NARRATOR_MOODS = ["neutral", "thinking", "pointing", "celebrating", "frustrated"] as const;
 
+// Strip HTML tags for the plain-text navigator preview (headlines/bodies may be rich text now).
+function plain(s: string | undefined): string {
+  if (!s) return "";
+  return s.replace(/<[^>]+>/g, " ").replace(/&nbsp;/g, " ").replace(/\s+/g, " ").trim();
+}
+
 // ─── Slide preview label ───────────────────────────────────────────
 function slidePreview(slide: Slide): string {
   switch (slide.type) {
-    case "narrative":      return slide.headline ?? slide.body.slice(0, 50);
-    case "cover":          return slide.headline;
-    case "section-break":  return `${slide.actTitle}`;
-    case "quote":          return `"${slide.quote.slice(0, 40)}…"`;
-    case "insight":        return slide.headline;
-    case "metric":         return slide.headline ?? `${slide.metrics.length} metrics`;
-    case "single-mockup":  return slide.headline ?? "Mockup";
-    case "comparison":     return slide.headline ?? "Before / After";
-    case "mockup-gallery": return slide.headline ?? `${slide.mockups.length} screens`;
-    case "flow":           return slide.headline ?? `${slide.screens.length} screens`;
-    case "video":          return slide.headline ?? "Video";
-    case "embed":          return slide.headline ?? slide.embedUrl.slice(0, 40);
-    case "process":        return slide.headline ?? `${slide.artifacts.length} artifacts`;
-    case "lottie":         return slide.headline ?? "Lottie animation";
+    case "narrative":      return plain(slide.headline) || plain(slide.body).slice(0, 50);
+    case "cover":          return plain(slide.headline);
+    case "section-break":  return plain(slide.actTitle);
+    case "quote":          return `"${plain(slide.quote).slice(0, 40)}…"`;
+    case "insight":        return plain(slide.headline);
+    case "metric":         return plain(slide.headline) || `${slide.metrics.length} metrics`;
+    case "single-mockup":  return plain(slide.headline) || "Mockup";
+    case "comparison":     return plain(slide.headline) || "Before / After";
+    case "mockup-gallery": return plain(slide.headline) || `${slide.mockups.length} screens`;
+    case "flow":           return plain(slide.headline) || `${slide.screens.length} screens`;
+    case "video":          return plain(slide.headline) || "Video";
+    case "embed":          return plain(slide.headline) || slide.embedUrl.slice(0, 40);
+    case "process":        return plain(slide.headline) || `${slide.artifacts.length} artifacts`;
+    case "lottie":         return plain(slide.headline) || "Lottie animation";
     default:               return "(slide)";
   }
 }
@@ -149,6 +155,14 @@ function SlideForm({
     onChange({ ...slide, [key]: value } as Slide);
   }
 
+  // Rich text editors emit "<p></p>" for empty content — normalize that to "" / undefined.
+  function htmlOrEmpty(html: string): string {
+    return html.replace(/<p>\s*<\/p>/g, "").trim() === "" ? "" : html;
+  }
+  function htmlOrUndefined(html: string): string | undefined {
+    return htmlOrEmpty(html) || undefined;
+  }
+
   const hasNarrator = slide.type !== "section-break";
 
   return (
@@ -156,8 +170,8 @@ function SlideForm({
       {/* ─ Cover ─ */}
       {slide.type === "cover" && (
         <>
-          <FormField label="Headline"><input className={adminCx.input} value={slide.headline} onChange={(e) => set("headline", e.target.value)} placeholder="The big opening statement" /></FormField>
-          <FormField label="Subtitle"><textarea className={adminCx.textarea} rows={2} value={slide.subtitle ?? ""} onChange={(e) => set("subtitle", e.target.value)} /></FormField>
+          <FormField label="Headline"><RichTextEditor compact value={slide.headline} onChange={(html) => set("headline", htmlOrEmpty(html))} placeholder="The big opening statement" /></FormField>
+          <FormField label="Subtitle"><RichTextEditor compact value={slide.subtitle ?? ""} onChange={(html) => set("subtitle", htmlOrEmpty(html))} placeholder="Supporting subtitle" /></FormField>
           <FormField label="Hero Image URL">
             <input className={adminCx.input} value={slide.heroImage ?? ""} onChange={(e) => set("heroImage", e.target.value)} placeholder="https://..." />
             <ImageFieldGuide role="case-study-hero" imageUrl={slide.heroImage} compact className="mt-3" />
@@ -178,11 +192,11 @@ function SlideForm({
       {/* ─ Narrative ─ */}
       {slide.type === "narrative" && (
         <>
-          <FormField label="Headline (optional)"><input className={adminCx.input} value={slide.headline ?? ""} onChange={(e) => set("headline", e.target.value || undefined)} placeholder="Bold opener (leave blank to skip)" /></FormField>
+          <FormField label="Headline (optional)"><RichTextEditor compact value={slide.headline ?? ""} onChange={(html) => set("headline", htmlOrUndefined(html))} placeholder="Bold opener (leave blank to skip)" /></FormField>
           <FormField label="Body *">
             <RichTextEditor value={slide.body} onChange={(html) => set("body", html)} placeholder="Write the narrative…" minHeight={180} />
           </FormField>
-          <FormField label="Annotation (side note)"><input className={adminCx.input} value={slide.annotation ?? ""} onChange={(e) => set("annotation", e.target.value || undefined)} placeholder="Margin annotation text" /></FormField>
+          <FormField label="Annotation (side note)"><RichTextEditor compact value={slide.annotation ?? ""} onChange={(html) => set("annotation", htmlOrUndefined(html))} placeholder="Margin annotation text" /></FormField>
           <NarratorEditor narrator={(slide as { narrator?: { text: string; label?: string; mood?: string } }).narrator} onChange={(n) => set("narrator", n)} />
         </>
       )}
@@ -190,9 +204,9 @@ function SlideForm({
       {/* ─ Section Break ─ */}
       {slide.type === "section-break" && (
         <>
-          <FormField label="Act Title"><input className={adminCx.input} value={slide.actTitle} onChange={(e) => set("actTitle", e.target.value)} placeholder="The Discovery" /></FormField>
+          <FormField label="Act Title"><RichTextEditor compact value={slide.actTitle} onChange={(html) => set("actTitle", htmlOrEmpty(html))} placeholder="The Discovery" /></FormField>
           <FormField label="Act Number"><input type="number" className={adminCx.input} value={slide.actNumber} onChange={(e) => set("actNumber", parseInt(e.target.value) || 1)} min={1} /></FormField>
-          <FormField label="Subtitle"><input className={adminCx.input} value={slide.subtitle ?? ""} onChange={(e) => set("subtitle", e.target.value || undefined)} placeholder="Chapter subtitle" /></FormField>
+          <FormField label="Subtitle"><RichTextEditor compact value={slide.subtitle ?? ""} onChange={(html) => set("subtitle", htmlOrUndefined(html))} placeholder="Chapter subtitle" /></FormField>
         </>
       )}
 
@@ -213,7 +227,7 @@ function SlideForm({
       {/* ─ Insight ─ */}
       {slide.type === "insight" && (
         <>
-          <FormField label="Headline *"><input className={adminCx.input} value={slide.headline} onChange={(e) => set("headline", e.target.value)} /></FormField>
+          <FormField label="Headline *"><RichTextEditor compact value={slide.headline} onChange={(html) => set("headline", htmlOrEmpty(html))} placeholder="Insight headline" /></FormField>
           <FormField label="Body">
             <RichTextEditor value={slide.body ?? ""} onChange={(html) => set("body", html || undefined)} placeholder="Supporting detail…" minHeight={120} />
           </FormField>
@@ -232,7 +246,7 @@ function SlideForm({
       {/* ─ Metric ─ */}
       {slide.type === "metric" && (
         <>
-          <FormField label="Headline (optional)"><input className={adminCx.input} value={slide.headline ?? ""} onChange={(e) => set("headline", e.target.value || undefined)} /></FormField>
+          <FormField label="Headline (optional)"><RichTextEditor compact value={slide.headline ?? ""} onChange={(html) => set("headline", htmlOrUndefined(html))} placeholder="Optional headline" /></FormField>
           <div className="space-y-2">
             <label className={adminCx.label}>Metrics</label>
             {slide.metrics.map((m, i) => (
@@ -254,14 +268,14 @@ function SlideForm({
       {/* ─ Single Mockup ─ */}
       {slide.type === "single-mockup" && (
         <>
-          <FormField label="Headline"><input className={adminCx.input} value={slide.headline ?? ""} onChange={(e) => set("headline", e.target.value || undefined)} /></FormField>
+          <FormField label="Headline"><RichTextEditor compact value={slide.headline ?? ""} onChange={(html) => set("headline", htmlOrUndefined(html))} placeholder="Section headline" /></FormField>
           <FormField label="Image URL *">
             <input className={adminCx.input} value={slide.image} onChange={(e) => set("image", e.target.value)} placeholder="https://..." />
             <ImageFieldGuide role="case-study-screenshot" imageUrl={slide.image} compact className="mt-3" />
           </FormField>
           <div className="grid grid-cols-2 gap-3">
             <FormField label="Device Frame"><select className={adminCx.select} value={slide.device} onChange={(e) => set("device", e.target.value)}>{DEVICE_OPTIONS.map((d) => <option key={d} value={d} style={{ background: "#0A0A0A" }}>{d}</option>)}</select></FormField>
-            <FormField label="Caption"><input className={adminCx.input} value={slide.caption ?? ""} onChange={(e) => set("caption", e.target.value || undefined)} /></FormField>
+            <FormField label="Caption"><RichTextEditor compact value={slide.caption ?? ""} onChange={(html) => set("caption", htmlOrUndefined(html))} placeholder="Caption" /></FormField>
           </div>
           <NarratorEditor narrator={(slide as { narrator?: { text: string; label?: string; mood?: string } }).narrator} onChange={(n) => set("narrator", n)} />
         </>
@@ -270,7 +284,7 @@ function SlideForm({
       {/* ─ Comparison ─ */}
       {slide.type === "comparison" && (
         <>
-          <FormField label="Headline"><input className={adminCx.input} value={slide.headline ?? ""} onChange={(e) => set("headline", e.target.value || undefined)} /></FormField>
+          <FormField label="Headline"><RichTextEditor compact value={slide.headline ?? ""} onChange={(html) => set("headline", htmlOrUndefined(html))} placeholder="Section headline" /></FormField>
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <label className={adminCx.label}>Before</label>
@@ -291,7 +305,7 @@ function SlideForm({
       {/* ─ Mockup Gallery ─ */}
       {slide.type === "mockup-gallery" && (
         <>
-          <FormField label="Headline"><input className={adminCx.input} value={slide.headline ?? ""} onChange={(e) => set("headline", e.target.value || undefined)} /></FormField>
+          <FormField label="Headline"><RichTextEditor compact value={slide.headline ?? ""} onChange={(html) => set("headline", htmlOrUndefined(html))} placeholder="Section headline" /></FormField>
           <div className="space-y-2">
             <label className={adminCx.label}>Screens</label>
             <ImageFieldGuide role="case-study-screenshot" imageUrl={slide.mockups[0]?.image} compact className="mb-3" />
@@ -311,7 +325,7 @@ function SlideForm({
       {/* ─ Flow ─ */}
       {slide.type === "flow" && (
         <>
-          <FormField label="Headline"><input className={adminCx.input} value={slide.headline ?? ""} onChange={(e) => set("headline", e.target.value || undefined)} /></FormField>
+          <FormField label="Headline"><RichTextEditor compact value={slide.headline ?? ""} onChange={(html) => set("headline", htmlOrUndefined(html))} placeholder="Section headline" /></FormField>
           <div className="space-y-2">
             <label className={adminCx.label}>Screens</label>
             <ImageFieldGuide role="case-study-screenshot" imageUrl={slide.screens[0]?.image} compact className="mb-3" />
@@ -331,7 +345,7 @@ function SlideForm({
       {/* ─ Video ─ */}
       {slide.type === "video" && (
         <>
-          <FormField label="Headline"><input className={adminCx.input} value={slide.headline ?? ""} onChange={(e) => set("headline", e.target.value || undefined)} /></FormField>
+          <FormField label="Headline"><RichTextEditor compact value={slide.headline ?? ""} onChange={(html) => set("headline", htmlOrUndefined(html))} placeholder="Section headline" /></FormField>
           <FormField label="Video URL"><input className={adminCx.input} value={slide.videoUrl ?? ""} onChange={(e) => set("videoUrl", e.target.value || undefined)} placeholder="https://..." /></FormField>
           <FormField label="Poster Image *">
             <input className={adminCx.input} value={slide.posterImage} onChange={(e) => set("posterImage", e.target.value)} placeholder="Thumbnail image URL" />
@@ -339,7 +353,7 @@ function SlideForm({
           </FormField>
           <div className="grid grid-cols-2 gap-3">
             <FormField label="Device"><select className={adminCx.select} value={slide.device ?? "none"} onChange={(e) => set("device", e.target.value)}>{DEVICE_OPTIONS.map((d) => <option key={d} value={d} style={{ background: "#0A0A0A" }}>{d}</option>)}</select></FormField>
-            <FormField label="Caption"><input className={adminCx.input} value={slide.caption ?? ""} onChange={(e) => set("caption", e.target.value || undefined)} /></FormField>
+            <FormField label="Caption"><RichTextEditor compact value={slide.caption ?? ""} onChange={(html) => set("caption", htmlOrUndefined(html))} placeholder="Caption" /></FormField>
           </div>
           <NarratorEditor narrator={(slide as { narrator?: { text: string; label?: string; mood?: string } }).narrator} onChange={(n) => set("narrator", n)} />
         </>
@@ -348,7 +362,7 @@ function SlideForm({
       {/* ─ Embed ─ */}
       {slide.type === "embed" && (
         <>
-          <FormField label="Headline"><input className={adminCx.input} value={slide.headline ?? ""} onChange={(e) => set("headline", e.target.value || undefined)} /></FormField>
+          <FormField label="Headline"><RichTextEditor compact value={slide.headline ?? ""} onChange={(html) => set("headline", htmlOrUndefined(html))} placeholder="Section headline" /></FormField>
           <FormField label="Embed URL *" hint="Figma share link, CodeSandbox, etc."><input className={adminCx.input} value={slide.embedUrl} onChange={(e) => set("embedUrl", e.target.value)} placeholder="https://..." /></FormField>
           <FormField label="Fallback Image *">
             <input className={adminCx.input} value={slide.fallbackImage} onChange={(e) => set("fallbackImage", e.target.value)} placeholder="Shown when embed fails" />
@@ -356,7 +370,7 @@ function SlideForm({
           </FormField>
           <div className="grid grid-cols-2 gap-3">
             <FormField label="Device"><select className={adminCx.select} value={slide.device ?? "browser"} onChange={(e) => set("device", e.target.value)}>{DEVICE_OPTIONS.map((d) => <option key={d} value={d} style={{ background: "#0A0A0A" }}>{d}</option>)}</select></FormField>
-            <FormField label="Caption"><input className={adminCx.input} value={slide.caption ?? ""} onChange={(e) => set("caption", e.target.value || undefined)} /></FormField>
+            <FormField label="Caption"><RichTextEditor compact value={slide.caption ?? ""} onChange={(html) => set("caption", htmlOrUndefined(html))} placeholder="Caption" /></FormField>
           </div>
           <NarratorEditor narrator={(slide as { narrator?: { text: string; label?: string; mood?: string } }).narrator} onChange={(n) => set("narrator", n)} />
         </>
@@ -365,7 +379,7 @@ function SlideForm({
       {/* ─ Process ─ */}
       {slide.type === "process" && (
         <>
-          <FormField label="Headline"><input className={adminCx.input} value={slide.headline ?? ""} onChange={(e) => set("headline", e.target.value || undefined)} /></FormField>
+          <FormField label="Headline"><RichTextEditor compact value={slide.headline ?? ""} onChange={(html) => set("headline", htmlOrUndefined(html))} placeholder="Section headline" /></FormField>
           <div className="space-y-3">
             <label className={adminCx.label}>Artifacts</label>
             <ImageFieldGuide role="craft-gallery" imageUrl={slide.artifacts[0]?.image} compact className="mb-3" />
@@ -388,7 +402,7 @@ function SlideForm({
       {/* ─ Lottie ─ */}
       {slide.type === "lottie" && (
         <>
-          <FormField label="Headline (optional)"><input className={adminCx.input} value={slide.headline ?? ""} onChange={(e) => set("headline", e.target.value || undefined)} placeholder="Animation title" /></FormField>
+          <FormField label="Headline (optional)"><RichTextEditor compact value={slide.headline ?? ""} onChange={(html) => set("headline", htmlOrUndefined(html))} placeholder="Animation title" /></FormField>
           <FormField label="Lottie JSON URL *" hint="Upload a .json Lottie file via Cloudinary or paste the URL">
             <input className={adminCx.input} value={slide.lottieUrl} onChange={(e) => set("lottieUrl", e.target.value)} placeholder="https://res.cloudinary.com/…/raw/upload/…" />
             <div className="mt-2">
@@ -401,7 +415,7 @@ function SlideForm({
               />
             </div>
           </FormField>
-          <FormField label="Caption"><input className={adminCx.input} value={slide.caption ?? ""} onChange={(e) => set("caption", e.target.value || undefined)} placeholder="Caption shown below the animation" /></FormField>
+          <FormField label="Caption"><RichTextEditor compact value={slide.caption ?? ""} onChange={(html) => set("caption", htmlOrUndefined(html))} placeholder="Caption shown below the animation" /></FormField>
           <FormField label="Loop">
             <label className="flex items-center gap-2 cursor-pointer">
               <input type="checkbox" checked={slide.loop ?? true} onChange={(e) => set("loop", e.target.checked)} className="accent-[#E2B93B]" />
