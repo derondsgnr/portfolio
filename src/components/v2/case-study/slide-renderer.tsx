@@ -4,6 +4,7 @@ import type { Slide, NarratorBlock } from "../../../types/case-study";
 import { DeviceMockup } from "./device-mockup";
 import { useScrambleText } from "../shared/scramble-text";
 import { LottiePlayer } from "../shared/lottie-player";
+import { ImageLightbox } from "../shared/image-lightbox";
 import parseHtml from "html-react-parser";
 
 /** Renders rich-text HTML produced by the editor, or falls back to plain-text paragraph splitting. */
@@ -154,13 +155,19 @@ function CaseStudyImage({
   alt,
   className,
   wrapperClassName = "",
+  expandable = false,
+  caption,
 }: {
   src?: string;
   alt: string;
   className: string;
   wrapperClassName?: string;
+  expandable?: boolean;
+  caption?: string;
 }) {
+  const [open, setOpen] = useState(false);
   const showBadge = isFigmaPlaceholderAsset(src);
+  const canExpand = expandable && !!src?.trim();
   return (
     <div className={`relative ${wrapperClassName}`}>
       <img src={src} alt={alt} className={className} />
@@ -171,6 +178,29 @@ function CaseStudyImage({
         >
           PLACEHOLDER ASSET
         </span>
+      )}
+      {canExpand && (
+        <>
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              setOpen(true);
+            }}
+            aria-label={`Expand image${alt ? `: ${alt}` : ""}`}
+            className="group/expand absolute inset-0 z-10 flex cursor-zoom-in items-end justify-center pb-4 md:items-center md:pb-0"
+          >
+            <span className="flex items-center gap-2 border border-[#E2B93B]/40 bg-[#0A0A0A]/80 px-3 py-1.5 opacity-100 backdrop-blur-sm transition-opacity duration-300 md:opacity-0 md:group-hover/expand:opacity-100">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#E2B93B" strokeWidth="2">
+                <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+              </svg>
+              <span className="text-[8px] tracking-[0.15em] text-[#E2B93B] md:text-[9px]" style={{ fontFamily: "monospace" }}>
+                EXPAND
+              </span>
+            </span>
+          </button>
+          <ImageLightbox open={open} onClose={() => setOpen(false)} src={src} alt={alt} caption={caption} />
+        </>
       )}
     </div>
   );
@@ -367,7 +397,7 @@ function SingleMockupSlideComponent({ slide }: { slide: Extract<Slide, { type: "
             className={`relative ${slide.device === "browser" ? "max-w-6xl w-full" : "max-w-4xl"}`}
           >
             <DeviceMockup device={slide.device}>
-              <CaseStudyImage src={slide.image} alt={slide.headline || "Screen mockup"} className="w-full h-auto" wrapperClassName="w-full" />
+              <CaseStudyImage src={slide.image} alt={slide.headline || "Screen mockup"} className="w-full h-auto" wrapperClassName="w-full" expandable caption={slide.caption} />
             </DeviceMockup>
             <ScanLines />
 
@@ -667,7 +697,7 @@ function FlowSlideComponent({ slide }: { slide: Extract<Slide, { type: "flow" }>
               }`}
             >
               <DeviceMockup device={screen.device || "phone"}>
-                <CaseStudyImage src={screen.image} alt={screen.label || `Screen ${i + 1}`} className="w-full h-auto" wrapperClassName="w-full" />
+                <CaseStudyImage src={screen.image} alt={screen.label || `Screen ${i + 1}`} className="w-full h-auto" wrapperClassName="w-full" expandable caption={screen.label} />
               </DeviceMockup>
               {screen.label && (
                 <p className="text-[10px] text-[#666] mt-3 text-center tracking-[0.1em]" style={{ fontFamily: "monospace" }}>
@@ -720,7 +750,7 @@ function EmbedSlideComponent({ slide }: { slide: Extract<Slide, { type: "embed" 
               /* Mobile: fallback image + link */
               <div className="relative">
                 <DeviceMockup device={slide.device || "browser"}>
-                  <CaseStudyImage src={slide.fallbackImage} alt="Demo preview" className="w-full h-auto" wrapperClassName="w-full" />
+                  <CaseStudyImage src={slide.fallbackImage} alt="Demo preview" className="w-full h-auto" wrapperClassName="w-full" expandable />
                 </DeviceMockup>
                 <a
                   href={slide.embedUrl}
@@ -1078,7 +1108,7 @@ function ProcessSlideComponent({ slide }: { slide: Extract<Slide, { type: "proce
                 className="group relative bg-[#111] border border-[#1a1a1a] overflow-hidden hover:border-[#E2B93B]/20 transition-colors"
               >
                 <div className="relative aspect-[16/10] overflow-hidden">
-                  <CaseStudyImage src={artifact.image} alt={artifact.label} className="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity" wrapperClassName="w-full h-full" />
+                  <CaseStudyImage src={artifact.image} alt={artifact.label} className="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity" wrapperClassName="w-full h-full" expandable caption={artifact.description || artifact.label} />
                   <ScanLines />
                 </div>
                 <div className="p-4">

@@ -11,7 +11,7 @@ const EASE = [0.25, 0.46, 0.45, 0.94] as const;
 
 // ── Shared lightbox ──────────────────────────────────────────────────────────
 
-function CraftLightbox({
+export function CraftLightbox({
   item,
   onClose,
 }: {
