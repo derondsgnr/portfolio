@@ -414,8 +414,13 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
             Optional quality tip
           </p>
           <p className="font-mono text-xs text-white/60 leading-relaxed">
-            For faster pages, use Cloudinary optimization in your URL: add{" "}
-            <span className="text-white">f_auto,q_auto</span> in the transformation part of the link.
+            For faster pages, use Cloudinary optimization on <span className="text-white">image</span> URLs:
+            add <span className="text-white">f_auto,q_auto</span> in the transformation part of the link.
+          </p>
+          <p className="font-mono text-xs text-white/40 leading-relaxed">
+            Don&apos;t add <span className="text-white/70">f_auto,q_auto</span> to <span className="text-white/70">video</span> links —
+            it forces a transcode that can be blocked (403) so the video won&apos;t play. Paste the plain{" "}
+            <span className="text-white/70">/video/upload/…</span> URL.
           </p>
         </div>
       </section>

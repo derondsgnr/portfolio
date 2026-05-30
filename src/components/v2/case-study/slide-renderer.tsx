@@ -5,6 +5,7 @@ import { DeviceMockup } from "./device-mockup";
 import { useScrambleText } from "../shared/scramble-text";
 import { LottiePlayer } from "../shared/lottie-player";
 import { ImageLightbox } from "../shared/image-lightbox";
+import { normalizeCloudinaryVideoUrl } from "@/lib/media-url";
 import parseHtml from "html-react-parser";
 
 /** Renders rich-text HTML produced by the editor, or falls back to plain-text paragraph splitting. */
@@ -827,7 +828,7 @@ function VideoSlideComponent({ slide }: { slide: Extract<Slide, { type: "video" 
                 <div className="relative">
                   <video
                     ref={videoRef}
-                    src={slide.videoUrl}
+                    src={normalizeCloudinaryVideoUrl(slide.videoUrl)}
                     poster={slide.posterImage || undefined}
                     className="w-full h-auto"
                     autoPlay

@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "motion/react";
 import type { CraftDocument, CraftItem, CraftSection } from "@/lib/content/craft-model";
 import { ScrambleText } from "../shared/scramble-text";
 import { LottiePlayer } from "../shared/lottie-player";
-import { isPlayableVideoUrl } from "@/lib/media-url";
+import { isPlayableVideoUrl, normalizeCloudinaryVideoUrl } from "@/lib/media-url";
 
 const EASE = [0.25, 0.46, 0.45, 0.94] as const;
 
@@ -76,7 +76,7 @@ export function CraftLightbox({
             <LottiePlayer src={item.lottieUrl} loop className="w-full max-h-[75vh]" style={{ boxShadow: "0 32px 80px rgba(0,0,0,0.7)" }} />
           ) : isPlayableVideoUrl(item.videoUrl) ? (
             <video
-              src={item.videoUrl}
+              src={normalizeCloudinaryVideoUrl(item.videoUrl)}
               autoPlay muted loop playsInline
               className="max-w-full max-h-[75vh] object-contain"
               style={{ boxShadow: "0 32px 80px rgba(0,0,0,0.7)" }}
@@ -160,7 +160,7 @@ function ClickableMedia({
         <LottiePlayer src={item.lottieUrl} loop className="w-full h-full" />
       ) : isPlayableVideoUrl(item.videoUrl) ? (
         <video
-          src={item.videoUrl}
+          src={normalizeCloudinaryVideoUrl(item.videoUrl)}
           poster={item.image || undefined}
           playsInline
           preload="metadata"
@@ -334,7 +334,7 @@ function MasonrySection({
                   <LottiePlayer src={item.lottieUrl} loop className="w-full" />
                 ) : isPlayableVideoUrl(item.videoUrl) ? (
                   <video
-                    src={item.videoUrl}
+                    src={normalizeCloudinaryVideoUrl(item.videoUrl)}
                     poster={item.image || undefined}
                     playsInline
                     preload="metadata"
@@ -442,7 +442,7 @@ function ListSection({
                   <LottiePlayer src={item.lottieUrl} loop className="w-full h-full" />
                 ) : isPlayableVideoUrl(item.videoUrl) ? (
                   <video
-                    src={item.videoUrl}
+                    src={normalizeCloudinaryVideoUrl(item.videoUrl)}
                     poster={item.image || undefined}
                     className="w-full h-full object-cover transition-all duration-500 group-hover:scale-105"
                     style={{ filter: "grayscale(1) brightness(0.5)" }}
