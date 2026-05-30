@@ -346,7 +346,10 @@ function SlideForm({
       {slide.type === "video" && (
         <>
           <FormField label="Headline"><RichTextEditor compact value={slide.headline ?? ""} onChange={(html) => set("headline", htmlOrUndefined(html))} placeholder="Section headline" /></FormField>
-          <FormField label="Video URL"><input className={adminCx.input} value={slide.videoUrl ?? ""} onChange={(e) => set("videoUrl", e.target.value || undefined)} placeholder="https://..." /></FormField>
+          <FormField label="Video URL">
+            <input className={adminCx.input} value={slide.videoUrl ?? ""} onChange={(e) => set("videoUrl", e.target.value || undefined)} placeholder="YouTube, Vimeo, or Cloudinary /video/upload/… .mp4" />
+            <VideoUrlHint url={slide.videoUrl} />
+          </FormField>
           <FormField label="Poster Image *">
             <input className={adminCx.input} value={slide.posterImage} onChange={(e) => set("posterImage", e.target.value)} placeholder="Thumbnail image URL" />
             <ImageFieldGuide role="case-study-screenshot" imageUrl={slide.posterImage} compact className="mt-3" />

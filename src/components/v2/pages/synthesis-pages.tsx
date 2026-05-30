@@ -11,7 +11,8 @@ import type { MediaConfig } from "@/lib/content/media";
 import type { PageCopy } from "@/lib/content/copy";
 import { useBooking } from "../booking-context";
 import { ToolBadge, ToolBadges } from "@/components/tool-badge";
-import { YouTubeVideoFrame, toYouTubeEmbedUrl } from "../shared/youtube-video-frame";
+import { VideoEmbedFrame } from "../shared/youtube-video-frame";
+import { getVideoEmbedUrl } from "@/lib/media-url";
 import { PersonalProjectsGrid } from "../personal-projects-grid";
 import { LottiePlayer } from "../shared/lottie-player";
 import type { Project } from "@/lib/content/projects";
@@ -1242,7 +1243,7 @@ function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: {
               <LottiePlayer src={item.lottieUrl} loop className="w-[min(92vw,700px)] max-w-full" />
             ) : youtubeEmbedUrl ? (
               <div className="w-[min(92vw,1100px)] max-w-full aspect-video">
-                <YouTubeVideoFrame
+                <VideoEmbedFrame
                   url={item.videoUrl}
                   title={item.title}
                   className="w-full h-full border-0"

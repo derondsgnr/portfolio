@@ -1,61 +1,42 @@
 "use client";
 
-import React from "react";
+import { toYouTubeEmbedUrl, getVideoEmbedUrl } from "@/lib/media-url";
 
-function extractYouTubeVideoId(url: string): string | null {
-  try {
-    const parsed = new URL(url);
-    const host = parsed.hostname.replace(/^www\./, "");
+// Re-exported for existing callers (Explorations) that import from here.
+export { toYouTubeEmbedUrl };
 
-    if (host === "youtu.be") {
-      const id = parsed.pathname.split("/").filter(Boolean)[0];
-      return id ?? null;
-    }
-
-    if (host === "youtube.com" || host === "m.youtube.com" || host === "music.youtube.com") {
-      if (parsed.pathname === "/watch") {
-        return parsed.searchParams.get("v");
-      }
-
-      const segments = parsed.pathname.split("/").filter(Boolean);
-      if (segments[0] === "embed" || segments[0] === "shorts" || segments[0] === "live") {
-        return segments[1] ?? null;
-      }
-    }
-  } catch {
-    return null;
-  }
-
-  return null;
-}
-
-export function toYouTubeEmbedUrl(url?: string | null): string | null {
-  if (!url) return null;
-  const id = extractYouTubeVideoId(url);
-  if (!id) return null;
-  return `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&playsinline=1&rel=0&modestbranding=1`;
-}
-
-export function YouTubeVideoFrame({
-  url,
-  title,
-  className,
-}: {
+interface VideoEmbedFrameProps {
+  /** Raw provider URL (YouTube watch/youtu.be/Shorts or Vimeo). */
   url?: string | null;
-  title: string;
+  title?: string;
   className?: string;
-}) {
-  const embedUrl = toYouTubeEmbedUrl(url);
-  if (!embedUrl) return null;
+}
 
+/** Iframe for a hosted-provider video (YouTube or Vimeo). Renders nothing if the
+ *  URL isn't a recognized provider link. */
+export function VideoEmbedFrame({ url, title, className }: VideoEmbedFrameProps) {
+  const src = getVideoEmbedUrl(url);
+  if (!src) return null;
   return (
     <iframe
-      src={embedUrl}
-      title={`${title} video preview`}
+      src={src}
+      title={title ?? "Embedded video"}
       className={className}
-      allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+      loading="lazy"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
       referrerPolicy="strict-origin-when-cross-origin"
       allowFullScreen
     />
   );
+}
+
+interface YouTubeVideoFrameProps {
+  url?: string | null;
+  title?: string;
+  className?: string;
+}
+
+/** Back-compat wrapper used by the Explorations viewer. */
+export function YouTubeVideoFrame({ url, title, className }: YouTubeVideoFrameProps) {
+  return <VideoEmbedFrame url={url} title={title ?? "YouTube video"} className={className} />;
 }

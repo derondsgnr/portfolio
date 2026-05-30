@@ -5,7 +5,8 @@ import { motion, AnimatePresence } from "motion/react";
 import type { CraftDocument, CraftItem, CraftSection } from "@/lib/content/craft-model";
 import { ScrambleText } from "../shared/scramble-text";
 import { LottiePlayer } from "../shared/lottie-player";
-import { isPlayableVideoUrl, normalizeCloudinaryVideoUrl } from "@/lib/media-url";
+import { VideoEmbedFrame } from "../shared/youtube-video-frame";
+import { isPlayableVideoUrl, normalizeCloudinaryVideoUrl, getVideoEmbedUrl } from "@/lib/media-url";
 
 const EASE = [0.25, 0.46, 0.45, 0.94] as const;
 
@@ -74,6 +75,10 @@ export function CraftLightbox({
         <div className="relative flex-1 w-full max-w-5xl flex items-center justify-center">
           {item.lottieUrl ? (
             <LottiePlayer src={item.lottieUrl} loop className="w-full max-h-[75vh]" style={{ boxShadow: "0 32px 80px rgba(0,0,0,0.7)" }} />
+          ) : getVideoEmbedUrl(item.videoUrl) ? (
+            <div className="relative w-full max-w-4xl aspect-video" style={{ boxShadow: "0 32px 80px rgba(0,0,0,0.7)" }}>
+              <VideoEmbedFrame url={item.videoUrl!} title={item.title} className="absolute inset-0 w-full h-full border-0" />
+            </div>
           ) : isPlayableVideoUrl(item.videoUrl) ? (
             <video
               src={normalizeCloudinaryVideoUrl(item.videoUrl)}
