@@ -18,6 +18,12 @@ import {
   Tag, Layers, X,
 } from "lucide-react";
 
+function slugify(value: string): string {
+  return value.toLowerCase().trim().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "").replace(/-+/g, "-");
+}
+
+const DEFAULT_SLUG_RE = /^new-study-\d+$/;
+
 const TEMPLATES = ["full-product", "feature-dive", "visual-brand", "teardown"] as const;
 const TEMPLATE_DESCS: Record<string, string> = {
   "full-product":  "Research to shipping, 15–30 slides",
@@ -172,6 +178,10 @@ function StudyEditor({
   const [form, setForm] = useState<CaseStudy>(study);
   const [tagInput, setTagInput] = useState("");
   const [metaOpen, setMetaOpen] = useState(false);
+  // While the slug is still the auto-generated default (and the user hasn't
+  // hand-edited it), keep deriving it from the title so new studies get a real
+  // URL without a manual step. A hand-edited slug is never overwritten.
+  const [slugTouched, setSlugTouched] = useState(!DEFAULT_SLUG_RE.test(study.slug));
   const hasUnsavedChanges = JSON.stringify(form) !== JSON.stringify(study);
   const confirmIfUnsaved = useUnsavedChangesGuard(
     hasUnsavedChanges,
@@ -185,10 +195,22 @@ function StudyEditor({
     saveEnabled: !isSaving,
   });
 
-  useEffect(() => { setForm(study); }, [study]);
+  useEffect(() => {
+    setForm(study);
+    setSlugTouched(!DEFAULT_SLUG_RE.test(study.slug));
+  }, [study]);
 
   function setMeta(key: string, value: unknown) {
     setForm((f) => ({ ...f, meta: { ...f.meta, [key]: value } }));
+  }
+
+  function setTitle(value: string) {
+    setForm((f) => ({
+      ...f,
+      meta: { ...f.meta, title: value },
+      // Auto-fill the slug from the title until the user takes over the slug field.
+      slug: slugTouched ? f.slug : slugify(value),
+    }));
   }
 
   function updateAct(index: number, updated: Act) {
@@ -290,13 +312,16 @@ function StudyEditor({
               >
                 <div className="px-6 pb-6 grid grid-cols-1 lg:grid-cols-2 gap-5">
                   <FormField label="Title">
-                    <input className={adminCx.input} value={form.meta.title} onChange={(e) => setMeta("title", e.target.value)} />
+                    <input className={adminCx.input} value={form.meta.title} onChange={(e) => setTitle(e.target.value)} />
                   </FormField>
                   <FormField label="Slug (URL path)">
                     <input
                       className={adminCx.input}
                       value={form.slug}
-                      onChange={(e) => setForm((f) => ({ ...f, slug: e.target.value.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "") }))}
+                      onChange={(e) => {
+                        setSlugTouched(true);
+                        setForm((f) => ({ ...f, slug: slugify(e.target.value) }));
+                      }}
                       placeholder="e.g. bantu-events"
                     />
                     <p className="mt-1 text-[10px] font-['Instrument_Sans'] text-white/25">/work/{form.slug}</p>
@@ -482,9 +507,23 @@ export function CaseStudiesClient({ initialStudies }: { initialStudies: CaseStud
   }
 
   async function save(study: CaseStudy) {
-    setSavingSlug(study.slug);
+    // Match on the slug the study is *currently* stored under (activeSlug), not
+    // study.slug — the form may carry a freshly-edited slug, and matching on the
+    // new value would find nothing and silently drop the edit.
+    const originalSlug = activeSlug ?? study.slug;
+    const trimmedSlug = study.slug.trim();
+    if (!trimmedSlug) {
+      setSaveError("Slug can't be empty — it's the /work/ URL path.");
+      return;
+    }
+    if (trimmedSlug !== originalSlug && studies.some((s) => s.slug === trimmedSlug)) {
+      setSaveError(`Slug "${trimmedSlug}" is already used by another case study.`);
+      return;
+    }
+
+    setSavingSlug(originalSlug);
     setSaveError(null);
-    const updated = studies.map((s) => s.slug === study.slug ? study : s);
+    const updated = studies.map((s) => s.slug === originalSlug ? study : s);
     const result = await saveCaseStudies(updated, `Updated case study: ${study.meta.title}`);
     if (result.ok) {
       setStudies(updated);
