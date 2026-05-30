@@ -433,6 +433,7 @@ export function CaseStudiesClient({ initialStudies }: { initialStudies: CaseStud
   const [activeSlug, setActiveSlug] = useState<string | null>(null);
   const [savingSlug, setSavingSlug] = useState<string | null>(null);
   const [lastSaved, setLastSaved] = useState<string | null>(null);
+  const [saveError, setSaveError] = useState<string | null>(null);
   const [listPage, setListPage] = useState(1);
   const LIST_PAGE_SIZE = 20;
 
@@ -477,10 +478,12 @@ export function CaseStudiesClient({ initialStudies }: { initialStudies: CaseStud
   function closeStudyEditor() {
     window.history.replaceState(null, "", "/admin/case-studies");
     setActiveSlug(null);
+    setSaveError(null);
   }
 
   async function save(study: CaseStudy) {
     setSavingSlug(study.slug);
+    setSaveError(null);
     const updated = studies.map((s) => s.slug === study.slug ? study : s);
     const result = await saveCaseStudies(updated, `Updated case study: ${study.meta.title}`);
     if (result.ok) {
@@ -488,13 +491,19 @@ export function CaseStudiesClient({ initialStudies }: { initialStudies: CaseStud
       pushHistory("case-studies", "Case Studies", `Saved: ${study.meta.title}`, updated);
       openStudy(study);
       setLastSaved(new Date().toLocaleTimeString());
+    } else {
+      setSaveError(result.error ?? "Save failed. Your changes were not stored.");
     }
     setSavingSlug(null);
   }
 
   async function updateAndPersist(nextStudies: CaseStudy[], label: string) {
+    setSaveError(null);
     const result = await saveCaseStudies(nextStudies, label);
-    if (!result.ok) return;
+    if (!result.ok) {
+      setSaveError(result.error ?? "Save failed. Your changes were not stored.");
+      return;
+    }
     setStudies(nextStudies);
     pushHistory("case-studies", "Case Studies", label, nextStudies);
     setLastSaved(new Date().toLocaleTimeString());
@@ -610,7 +619,13 @@ export function CaseStudiesClient({ initialStudies }: { initialStudies: CaseStud
             </button>
             <span className="text-white/10">/</span>
             <span className="text-[10px] font-['Instrument_Sans'] text-white/30 truncate">{activeStudy.meta.title}</span>
-            {lastSaved && <span className="text-[9px] text-white/15 font-['Instrument_Sans'] ml-auto">Saved {lastSaved}</span>}
+            {saveError ? (
+              <span className="ml-auto flex items-center gap-1.5 text-[9px] font-['Instrument_Sans'] text-[#D4183D]" role="alert" title={saveError}>
+                <X size={11} /> <span className="max-w-[320px] truncate">{saveError}</span>
+              </span>
+            ) : lastSaved ? (
+              <span className="text-[9px] text-white/15 font-['Instrument_Sans'] ml-auto">Saved {lastSaved}</span>
+            ) : null}
           </div>
           <div className="flex-1 min-h-0 overflow-hidden">
             <StudyEditor study={activeStudy} onSave={save} onClose={closeStudyEditor} isSaving={savingSlug === activeStudy.slug} />
