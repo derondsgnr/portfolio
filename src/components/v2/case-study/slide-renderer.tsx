@@ -816,24 +816,37 @@ function VideoSlideComponent({ slide }: { slide: Extract<Slide, { type: "video" 
             transition={{ duration: 0.8, delay: 0.2 }}
             className="relative max-w-4xl cursor-pointer"
             onClick={() => {
-              if (videoRef.current) {
-                if (isPlaying) videoRef.current.pause();
-                else videoRef.current.play();
-                setIsPlaying(!isPlaying);
-              }
+              const v = videoRef.current;
+              if (!v) return;
+              if (v.paused) v.play();
+              else v.pause();
             }}
           >
             <DeviceMockup device={slide.device || "none"}>
               {slide.videoUrl ? (
-                <video
-                  ref={videoRef}
-                  src={slide.videoUrl}
-                  poster={slide.posterImage}
-                  className="w-full h-auto"
-                  loop
-                  muted
-                  playsInline
-                />
+                <div className="relative">
+                  <video
+                    ref={videoRef}
+                    src={slide.videoUrl}
+                    poster={slide.posterImage || undefined}
+                    className="w-full h-auto"
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    preload="metadata"
+                    onPlay={() => setIsPlaying(true)}
+                    onPause={() => setIsPlaying(false)}
+                  />
+                  {/* Play affordance — shown only when paused (e.g. autoplay blocked). */}
+                  {!isPlaying && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/30 pointer-events-none">
+                      <div className="w-16 h-16 rounded-full border-2 border-[#E2B93B] flex items-center justify-center">
+                        <div className="w-0 h-0 border-l-[12px] border-l-[#E2B93B] border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent ml-1" />
+                      </div>
+                    </div>
+                  )}
+                </div>
               ) : (
                 <div className="relative">
                   <CaseStudyImage src={slide.posterImage} alt={slide.headline || "Video"} className="w-full h-auto" wrapperClassName="w-full" />
