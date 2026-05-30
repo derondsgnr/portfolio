@@ -22,6 +22,7 @@ import {
   ArrowLeftRight, Monitor, Video, AlignLeft, GitBranch, Layout, Type, PlayCircle,
 } from "lucide-react";
 import { CloudinaryUploadField } from "./cloudinary-upload-field";
+import { VideoUrlHint } from "./video-url-hint";
 
 // ─── Slide type metadata ───────────────────────────────────────────
 export const SLIDE_TYPES: {

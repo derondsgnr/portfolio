@@ -1000,7 +1000,7 @@ function ExplorationsGallery({ explorations, onOpen }: { explorations: Explorati
 function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: { explorations: Exploration[]; activeIndex: number; onClose: () => void; onNavigate: (index: number) => void }) {
   const item = explorations[activeIndex];
   if (!item) return null;
-  const youtubeEmbedUrl = item.type === "video" ? toYouTubeEmbedUrl(item.videoUrl) : null;
+  const youtubeEmbedUrl = item.type === "video" ? getVideoEmbedUrl(item.videoUrl) : null;
   const listRef = useRef<HTMLDivElement>(null);
   const mobileThumbRef = useRef<HTMLDivElement>(null);
   const viewerRef = useRef<HTMLDivElement>(null);

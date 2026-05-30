@@ -17,6 +17,7 @@ import {
 import type { Exploration } from "@/lib/content/explorations";
 import type { CloudinaryUploadResult } from "@/lib/admin/cloudinary-upload";
 import { CloudinaryUploadField } from "@/components/admin/cloudinary-upload-field";
+import { VideoUrlHint } from "@/components/admin/video-url-hint";
 
 type Props = {
   initialMedia: MediaConfig;
@@ -673,6 +674,7 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
                               className={inputClass}
                               placeholder="YouTube / Vimeo / MP4…"
                             />
+                            <VideoUrlHint url={item.videoUrl} />
                           </div>
                           <div>
                             <label className={labelClass}>Lottie JSON URL (optional)</label>
@@ -1022,8 +1024,9 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
                               })
                             }
                             className={inputClass}
-                            placeholder="https://res.cloudinary.com/…/video/…"
+                            placeholder="YouTube, Vimeo, or Cloudinary /video/upload/… .mp4"
                           />
+                          <VideoUrlHint url={item.videoUrl} />
                         </div>
                       )}
                       {item.type === "lottie" && (
