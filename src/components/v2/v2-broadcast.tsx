@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { motion, useScroll, useTransform, AnimatePresence } from "motion/react";
 import { useScrambleText } from "./shared/scramble-text";
@@ -302,6 +303,7 @@ function BroadcastProjectCard({
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const [hovered, setHovered] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     const el = ref.current;
@@ -320,9 +322,10 @@ function BroadcastProjectCard({
     <div
       ref={ref}
       className="relative"
-      style={{ minHeight: "90vh", display: "flex", flexDirection: "column" }}
+      style={{ minHeight: "90vh", display: "flex", flexDirection: "column", cursor: "pointer" }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      onClick={() => router.push(`/work/${project.slug}`)}
     >
       {/* Image */}
       <div className="relative flex-1" style={{ minHeight: 480 }}>

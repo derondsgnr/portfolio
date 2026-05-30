@@ -11,6 +11,8 @@ export type GlobalConfig = {
   footerTagline: string;
   ctaButtonLabel: string;
   profileImage?: string;
+  /** When false, case studies open in Reader mode and the Cinematic toggle is hidden. */
+  cinematicEnabled: boolean;
 };
 
 const DEFAULT: GlobalConfig = {
@@ -23,6 +25,7 @@ const DEFAULT: GlobalConfig = {
   footerTagline: "Designed & built by hand",
   ctaButtonLabel: "Book a call",
   profileImage: "",
+  cinematicEnabled: false,
 };
 
 export async function getGlobal(): Promise<GlobalConfig> {
@@ -37,6 +40,7 @@ export async function getGlobal(): Promise<GlobalConfig> {
       footerTagline: parsed.footerTagline ?? DEFAULT.footerTagline,
       ctaButtonLabel: parsed.ctaButtonLabel ?? DEFAULT.ctaButtonLabel,
       profileImage: parsed.profileImage ?? "",
+      cinematicEnabled: parsed.cinematicEnabled ?? DEFAULT.cinematicEnabled,
     };
   } catch {
     return DEFAULT;

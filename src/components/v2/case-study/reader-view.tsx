@@ -31,6 +31,8 @@ import { CaseStudyCTA } from "./case-study-cta";
 interface ReaderViewProps {
   caseStudy: CaseStudy;
   onSwitchToCinematic: () => void;
+  /** Hides the Cinematic toggle when false. */
+  cinematicEnabled?: boolean;
   /** For cross-case-study navigation */
   allCaseStudies?: CaseStudy[];
   onSwitchCaseStudy?: (slug: string) => void;
@@ -39,6 +41,7 @@ interface ReaderViewProps {
 export function ReaderView({
   caseStudy,
   onSwitchToCinematic,
+  cinematicEnabled = false,
   allCaseStudies = [],
   onSwitchCaseStudy,
 }: ReaderViewProps) {
@@ -366,18 +369,20 @@ export function ReaderView({
         role="toolbar"
         aria-label="Case study view options"
       >
-        <button
-          type="button"
-          onClick={onSwitchToCinematic}
-          className="flex items-center gap-2 border border-[#E2B93B]/40 bg-[#0A0A0A]/90 px-4 py-2 text-[10px] tracking-[0.2em] text-[#E2B93B] backdrop-blur-sm transition-colors hover:border-[#E2B93B]/70 hover:bg-[#E2B93B]/5"
-          style={{ fontFamily: "monospace" }}
-        >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
-            <rect x="2" y="4" width="20" height="16" rx="2" />
-            <path d="M10 9l5 3-5 3V9z" />
-          </svg>
-          CINEMATIC
-        </button>
+        {cinematicEnabled && (
+          <button
+            type="button"
+            onClick={onSwitchToCinematic}
+            className="flex items-center gap-2 border border-[#E2B93B]/40 bg-[#0A0A0A]/90 px-4 py-2 text-[10px] tracking-[0.2em] text-[#E2B93B] backdrop-blur-sm transition-colors hover:border-[#E2B93B]/70 hover:bg-[#E2B93B]/5"
+            style={{ fontFamily: "monospace" }}
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+              <rect x="2" y="4" width="20" height="16" rx="2" />
+              <path d="M10 9l5 3-5 3V9z" />
+            </svg>
+            CINEMATIC
+          </button>
+        )}
         {caseStudy.liveDemoUrl && caseStudy.liveDemoUrl !== "#" && (
           <a
             href={caseStudy.liveDemoUrl}

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { motion, AnimatePresence, useInView } from "motion/react";
 import { ScrambleText } from "./shared/scramble-text";
@@ -473,6 +474,7 @@ function TransmissionProjectRow({
   const inView = useInView(ref, { once: true, amount: 0.18 });
   const [hovered, setHovered] = useState(false);
   const catIcon = CATEGORY_ICONS[project.category] ?? DefaultCategoryIcon;
+  const router = useRouter();
 
   return (
     <motion.article
@@ -482,6 +484,7 @@ function TransmissionProjectRow({
       transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94], delay: index * 0.05 }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      onClick={() => router.push(`/work/${project.slug}`)}
       data-cursor="true"
       data-cursor-label="VIEW"
       className="grid grid-cols-1 md:grid-cols-2"

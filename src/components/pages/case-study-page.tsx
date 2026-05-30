@@ -9,10 +9,12 @@ export function CaseStudyPage({
   slug,
   caseStudy,
   allCaseStudies,
+  cinematicEnabled = false,
 }: {
   slug: string;
   caseStudy?: CaseStudy;
   allCaseStudies: CaseStudy[];
+  cinematicEnabled?: boolean;
 }) {
   const router = useRouter();
 
@@ -24,6 +26,7 @@ export function CaseStudyPage({
     <CaseStudyEngine
       caseStudy={caseStudy}
       allCaseStudies={allCaseStudies}
+      cinematicEnabled={cinematicEnabled}
       onSwitchCaseStudy={(newSlug) => router.push(`/work/${newSlug}`)}
     />
   );

@@ -5,7 +5,7 @@ import { motion, AnimatePresence, useInView } from "motion/react";
 import { useRouter } from "next/navigation";
 import { V2_PROJECTS, V2_ABOUT } from "../v2-data";
 import type { CraftDocument, CraftItem } from "@/lib/content/craft-model";
-import { CraftProjectSections } from "../craft/craft-project-sections";
+import { CraftProjectSections, CraftLightbox } from "../craft/craft-project-sections";
 import type { Exploration } from "@/lib/content/explorations";
 import type { MediaConfig } from "@/lib/content/media";
 import type { PageCopy } from "@/lib/content/copy";
@@ -840,6 +840,7 @@ function SynthesisCraftHero({ copy, heroBackground }: { copy?: PageCopy; heroBac
 
 /* Cipher-style list view — global index (sorted by pin / feature / title) */
 function CraftListView({ craftItems }: { craftItems: CraftItem[] }) {
+  const [selected, setSelected] = useState<CraftItem | null>(null);
   if (craftItems.length === 0) return null;
   return (
     <div className="max-w-4xl mx-auto">
@@ -852,9 +853,10 @@ function CraftListView({ craftItems }: { craftItems: CraftItem[] }) {
             viewport={{ once: true }}
             transition={{ delay: i * 0.08, duration: 0.5 }}
             className="py-8 grid grid-cols-1 md:grid-cols-12 gap-6 items-center group cursor-pointer"
+            onClick={() => setSelected(item)}
           >
             <div
-              className="md:col-span-2 overflow-hidden rounded-[0.625rem] border border-[rgba(255,255,255,0.08)]"
+              className="md:col-span-2 overflow-hidden rounded-[0.625rem] border border-[rgba(255,255,255,0.08)] relative"
               style={{
                 aspectRatio:
                   typeof item.width === "number" && typeof item.height === "number" && item.height > 0
@@ -870,6 +872,18 @@ function CraftListView({ craftItems }: { craftItems: CraftItem[] }) {
                 className="w-full h-full object-cover transition-all duration-500 group-hover:grayscale-0"
                 style={{ filter: "grayscale(1) brightness(0.5)" }}
               />
+              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+                <span
+                  style={{
+                    fontFamily: "monospace", fontSize: "8px",
+                    letterSpacing: "0.2em", textTransform: "uppercase",
+                    color: "rgba(255,255,255,0.7)", background: "rgba(10,10,10,0.6)",
+                    padding: "5px 10px", backdropFilter: "blur(4px)",
+                  }}
+                >
+                  EXPAND
+                </span>
+              </div>
             </div>
             <div className="md:col-span-1">
               <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#E2B93B" }}>[{item.id.replace("c-", "")}]</span>
@@ -893,6 +907,9 @@ function CraftListView({ craftItems }: { craftItems: CraftItem[] }) {
         </div>
       ))}
       <div className="h-px" style={{ background: "rgba(255,255,255,0.03)" }} />
+      <AnimatePresence>
+        {selected && <CraftLightbox item={selected} onClose={() => setSelected(null)} />}
+      </AnimatePresence>
     </div>
   );
 }

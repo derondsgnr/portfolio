@@ -12,6 +12,7 @@ type Props = { initial: GlobalConfig };
 export function GlobalForm({ initial }: Props) {
   const [socialLinks, setSocialLinks] = useState<SocialLink[]>(initial.socialLinks);
   const [profileImage, setProfileImage] = useState(initial.profileImage ?? "");
+  const [cinematicEnabled, setCinematicEnabled] = useState(initial.cinematicEnabled ?? false);
   const [status, setStatus] = useState<"idle" | "saving" | "ok" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
@@ -35,6 +36,7 @@ export function GlobalForm({ initial }: Props) {
       footerTagline: (form.elements.namedItem("footerTagline") as HTMLInputElement)?.value?.trim() ?? "",
       ctaButtonLabel: (form.elements.namedItem("ctaButtonLabel") as HTMLInputElement)?.value?.trim() ?? "",
       profileImage: profileImage.trim(),
+      cinematicEnabled,
     };
 
     const result = await saveGlobal(data, "Update global");
@@ -196,6 +198,30 @@ export function GlobalForm({ initial }: Props) {
             placeholder="Book a call"
           />
         </div>
+      </div>
+
+      <div>
+        <h2 className="font-mono text-sm text-white/80 mb-4 uppercase tracking-wider">
+          Case study view
+        </h2>
+        <label className="flex items-start gap-3 cursor-pointer select-none">
+          <input
+            type="checkbox"
+            checked={cinematicEnabled}
+            onChange={(e) => setCinematicEnabled(e.target.checked)}
+            className="mt-0.5 h-4 w-4 shrink-0 accent-[#E2B93B]"
+          />
+          <span>
+            <span className="block font-mono text-xs text-white/80">
+              Enable Cinematic mode
+            </span>
+            <span className="block font-mono text-[10px] text-white/40 leading-relaxed mt-1">
+              When on, case studies open in the visual-first Cinematic view and visitors
+              can toggle between Cinematic and Reader. When off, case studies open in
+              Reader and the Cinematic toggle is hidden.
+            </span>
+          </span>
+        </label>
       </div>
 
       <AdminSaveFeedback

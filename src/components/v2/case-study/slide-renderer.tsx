@@ -4,6 +4,7 @@ import type { Slide, NarratorBlock } from "../../../types/case-study";
 import { DeviceMockup } from "./device-mockup";
 import { useScrambleText } from "../shared/scramble-text";
 import { LottiePlayer } from "../shared/lottie-player";
+import { ImageLightbox } from "../shared/image-lightbox";
 import parseHtml from "html-react-parser";
 
 /** Renders rich-text HTML produced by the editor, or falls back to plain-text paragraph splitting. */
@@ -154,13 +155,19 @@ function CaseStudyImage({
   alt,
   className,
   wrapperClassName = "",
+  expandable = false,
+  caption,
 }: {
   src?: string;
   alt: string;
   className: string;
   wrapperClassName?: string;
+  expandable?: boolean;
+  caption?: string;
 }) {
+  const [open, setOpen] = useState(false);
   const showBadge = isFigmaPlaceholderAsset(src);
+  const canExpand = expandable && !!src?.trim();
   return (
     <div className={`relative ${wrapperClassName}`}>
       <img src={src} alt={alt} className={className} />
@@ -171,6 +178,29 @@ function CaseStudyImage({
         >
           PLACEHOLDER ASSET
         </span>
+      )}
+      {canExpand && (
+        <>
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              setOpen(true);
+            }}
+            aria-label={`Expand image${alt ? `: ${alt}` : ""}`}
+            className="group/expand absolute inset-0 z-10 flex cursor-zoom-in items-end justify-center pb-4 md:items-center md:pb-0"
+          >
+            <span className="flex items-center gap-2 border border-[#E2B93B]/40 bg-[#0A0A0A]/80 px-3 py-1.5 opacity-100 backdrop-blur-sm transition-opacity duration-300 md:opacity-0 md:group-hover/expand:opacity-100">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#E2B93B" strokeWidth="2">
+                <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+              </svg>
+              <span className="text-[8px] tracking-[0.15em] text-[#E2B93B] md:text-[9px]" style={{ fontFamily: "monospace" }}>
+                EXPAND
+              </span>
+            </span>
+          </button>
+          <ImageLightbox open={open} onClose={() => setOpen(false)} src={src} alt={alt} caption={caption} />
+        </>
       )}
     </div>
   );
@@ -367,7 +397,7 @@ function SingleMockupSlideComponent({ slide }: { slide: Extract<Slide, { type: "
             className={`relative ${slide.device === "browser" ? "max-w-6xl w-full" : "max-w-4xl"}`}
           >
             <DeviceMockup device={slide.device}>
-              <CaseStudyImage src={slide.image} alt={slide.headline || "Screen mockup"} className="w-full h-auto" wrapperClassName="w-full" />
+              <CaseStudyImage src={slide.image} alt={slide.headline || "Screen mockup"} className="w-full h-auto" wrapperClassName="w-full" expandable caption={slide.caption} />
             </DeviceMockup>
             <ScanLines />
 
@@ -667,7 +697,7 @@ function FlowSlideComponent({ slide }: { slide: Extract<Slide, { type: "flow" }>
               }`}
             >
               <DeviceMockup device={screen.device || "phone"}>
-                <CaseStudyImage src={screen.image} alt={screen.label || `Screen ${i + 1}`} className="w-full h-auto" wrapperClassName="w-full" />
+                <CaseStudyImage src={screen.image} alt={screen.label || `Screen ${i + 1}`} className="w-full h-auto" wrapperClassName="w-full" expandable caption={screen.label} />
               </DeviceMockup>
               {screen.label && (
                 <p className="text-[10px] text-[#666] mt-3 text-center tracking-[0.1em]" style={{ fontFamily: "monospace" }}>
@@ -720,7 +750,7 @@ function EmbedSlideComponent({ slide }: { slide: Extract<Slide, { type: "embed" 
               /* Mobile: fallback image + link */
               <div className="relative">
                 <DeviceMockup device={slide.device || "browser"}>
-                  <CaseStudyImage src={slide.fallbackImage} alt="Demo preview" className="w-full h-auto" wrapperClassName="w-full" />
+                  <CaseStudyImage src={slide.fallbackImage} alt="Demo preview" className="w-full h-auto" wrapperClassName="w-full" expandable />
                 </DeviceMockup>
                 <a
                   href={slide.embedUrl}
@@ -834,6 +864,24 @@ function MockupGallerySlideComponent({ slide }: { slide: Extract<Slide, { type: 
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.2 });
   const [expandedIdx, setExpandedIdx] = useState<number | null>(null);
+  const mockupCount = slide.mockups.length;
+
+  // Keyboard nav + body scroll lock while the lightbox is open
+  useEffect(() => {
+    if (expandedIdx === null) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setExpandedIdx(null);
+      else if (e.key === "ArrowRight") setExpandedIdx((v) => (v !== null && v < mockupCount - 1 ? v + 1 : v));
+      else if (e.key === "ArrowLeft") setExpandedIdx((v) => (v !== null && v > 0 ? v - 1 : v));
+    };
+    document.addEventListener("keydown", onKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [expandedIdx, mockupCount]);
 
   return (
     <div ref={ref} className="min-h-[70vh] flex flex-col justify-center px-6 sm:px-8 md:px-10 lg:px-16 py-20">
@@ -866,7 +914,7 @@ function MockupGallerySlideComponent({ slide }: { slide: Extract<Slide, { type: 
             transition={{ duration: 0.6 }}
             className="overflow-x-auto scrollbar-hide"
           >
-            <div className="flex gap-6 md:gap-8 px-6 sm:px-8 md:px-10 lg:px-16 pb-4 items-end" style={{ minWidth: "max-content" }}>
+            <div className="flex gap-3 md:gap-5 px-6 sm:px-8 md:px-10 lg:px-16 pb-4 items-end" style={{ minWidth: "max-content" }}>
               {slide.mockups.map((mockup, i) => (
                 <motion.div
                   key={i}
@@ -874,9 +922,9 @@ function MockupGallerySlideComponent({ slide }: { slide: Extract<Slide, { type: 
                   animate={inView ? { opacity: 1, x: 0 } : {}}
                   transition={{ duration: 0.6, delay: 0.1 * i }}
                   className={`flex-shrink-0 flex flex-col items-center cursor-pointer group ${
-                    mockup.device === "phone" ? "w-[180px] md:w-[220px]" :
-                    mockup.device === "watch" ? "w-[120px] md:w-[150px]" :
-                    "w-[320px] md:w-[500px]"
+                    mockup.device === "phone" ? "w-[230px] md:w-[300px]" :
+                    mockup.device === "watch" ? "w-[150px] md:w-[200px]" :
+                    "w-[400px] md:w-[680px]"
                   }`}
                   onClick={() => setExpandedIdx(i)}
                 >
@@ -921,17 +969,23 @@ function MockupGallerySlideComponent({ slide }: { slide: Extract<Slide, { type: 
           >
             {/* Close button */}
             <button
-              className="absolute top-4 right-4 z-10 w-10 h-10 border border-[#333] flex items-center justify-center text-[#666] hover:text-white hover:border-white transition-colors text-lg bg-[#0A0A0A]/80"
-              onClick={() => setExpandedIdx(null)}
+              className="absolute top-3 right-3 md:top-5 md:right-5 z-20 flex items-center gap-2 border border-[#E2B93B]/50 bg-[#0A0A0A]/85 backdrop-blur-sm px-3 py-2 text-[#E2B93B] hover:bg-[#E2B93B] hover:text-[#0A0A0A] transition-colors"
+              onClick={(e) => { e.stopPropagation(); setExpandedIdx(null); }}
               aria-label="Close expanded view"
             >
-              &times;
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M18 6 6 18M6 6l12 12" />
+              </svg>
+              <span className="hidden md:inline text-[9px] tracking-[0.18em]" style={{ fontFamily: "monospace" }}>
+                CLOSE
+              </span>
             </button>
 
-            {/* Mobile close hint */}
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 md:hidden">
+            {/* Close hint */}
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10">
               <span className="text-[9px] tracking-[0.15em] text-[#555]" style={{ fontFamily: "monospace" }}>
-                TAP OUTSIDE TO CLOSE
+                <span className="md:hidden">TAP OUTSIDE TO CLOSE</span>
+                <span className="hidden md:inline">ESC OR TAP OUTSIDE TO CLOSE</span>
               </span>
             </div>
 
@@ -962,7 +1016,11 @@ function MockupGallerySlideComponent({ slide }: { slide: Extract<Slide, { type: 
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="max-h-[85vh] max-w-[90vw] md:max-w-[500px] flex flex-col items-center"
+              className={`flex flex-col items-center max-h-[88vh] ${
+                slide.mockups[expandedIdx].device === "phone" ? "w-[min(82vw,38vh)]" :
+                slide.mockups[expandedIdx].device === "watch" ? "w-[min(70vw,32vh)]" :
+                "w-[min(82vw,1100px)]"
+              }`}
               onClick={(e) => e.stopPropagation()}
             >
               <DeviceMockup device={slide.mockups[expandedIdx].device}>
@@ -1050,7 +1108,7 @@ function ProcessSlideComponent({ slide }: { slide: Extract<Slide, { type: "proce
                 className="group relative bg-[#111] border border-[#1a1a1a] overflow-hidden hover:border-[#E2B93B]/20 transition-colors"
               >
                 <div className="relative aspect-[16/10] overflow-hidden">
-                  <CaseStudyImage src={artifact.image} alt={artifact.label} className="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity" wrapperClassName="w-full h-full" />
+                  <CaseStudyImage src={artifact.image} alt={artifact.label} className="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity" wrapperClassName="w-full h-full" expandable caption={artifact.description || artifact.label} />
                   <ScanLines />
                 </div>
                 <div className="p-4">

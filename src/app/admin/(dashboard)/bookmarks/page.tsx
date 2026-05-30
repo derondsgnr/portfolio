@@ -91,16 +91,6 @@ function detectMediaType(url: string, platform: Platform): MediaType {
   return "link";
 }
 
-// ─── Mock initial data ─────────────────────────────────────────────
-const MOCK_BOOKMARKS: BookmarkItem[] = [
-  { id: "bm-01", url: "https://youtube.com/watch?v=dQw4w9WgXcQ", title: "Apple Vision Pro — Full UI Breakdown", thumbnail: "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400", platform: "youtube", category: "design-inspo", tags: ["spatial", "apple", "UI"], notes: "Reference for depth hierarchy in the hero", mediaType: "video", dateAdded: Date.now() - 86400000 * 2 },
-  { id: "bm-02", url: "https://twitter.com/", title: "Emre Arslan — Editorial grid system thread", thumbnail: "https://images.unsplash.com/photo-1558655146-d09347e92766?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400", platform: "twitter", category: "typography", tags: ["grid", "editorial", "layout"], notes: "", mediaType: "link", dateAdded: Date.now() - 86400000 * 4 },
-  { id: "bm-03", url: "https://dribbble.com/", title: "Glassmorphism — Dark card system", thumbnail: "https://images.unsplash.com/photo-1618788372246-79faff0c3742?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400", platform: "dribbble", category: "design-inspo", tags: ["glass", "dark", "cards"], notes: "Reference for the admin panel card style", mediaType: "image", dateAdded: Date.now() - 86400000 * 7 },
-  { id: "bm-04", url: "https://figma.com/", title: "Auto-layout variables — advanced patterns", thumbnail: "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400", platform: "figma", category: "code", tags: ["figma", "variables", "autolayout"], notes: "", mediaType: "link", dateAdded: Date.now() - 86400000 * 10 },
-  { id: "bm-05", url: "https://github.com/", title: "Motion.dev — spring animation cookbook", thumbnail: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400", platform: "github", category: "motion", tags: ["motion", "react", "spring"], notes: "Layout transition patterns I want to replicate", mediaType: "link", dateAdded: Date.now() - 86400000 * 14 },
-  { id: "bm-06", url: "https://instagram.com/", title: "Superflux — Speculative design objects", thumbnail: "https://images.unsplash.com/photo-1569683795645-b62e50fbf103?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400", platform: "instagram", category: "design-inspo", tags: ["speculative", "future", "objects"], notes: "", mediaType: "image", dateAdded: Date.now() - 86400000 * 3 },
-];
-
 const BM_STORAGE_KEY = "admin_bookmarks";
 
 // ─── Quick Add Modal ───────────────────────────────────────────────
@@ -588,8 +578,8 @@ function AdminBookmarksPage() {
   const [bookmarks, setBookmarks] = useState<BookmarkItem[]>(() => {
     try {
       const stored = typeof window !== "undefined" ? localStorage.getItem(BM_STORAGE_KEY) : null;
-      return stored ? JSON.parse(stored) : MOCK_BOOKMARKS;
-    } catch { return MOCK_BOOKMARKS; }
+      return stored ? JSON.parse(stored) : [];
+    } catch { return []; }
   });
 
   const [showAddModal, setShowAddModal] = useState(false);
