@@ -7,6 +7,7 @@ export type GithubPatReminder = {
 
 export type AdminRemindersConfig = {
   githubPat: GithubPatReminder;
+  mydaraGoogleAuth: GithubPatReminder;
 };
 
 export const DEFAULT_ADMIN_REMINDERS: AdminRemindersConfig = {
@@ -15,9 +16,39 @@ export const DEFAULT_ADMIN_REMINDERS: AdminRemindersConfig = {
     intervalDays: 7,
     label: "GitHub PAT (admin content writes)",
   },
+  mydaraGoogleAuth: {
+    lastRotatedIso: null,
+    intervalDays: 7,
+    label: "Google auth token (mydara)",
+  },
 };
 
 const MS_PER_DAY = 86400000;
+
+export function clampIntervalDays(value: number | undefined, fallback: number): number {
+  const n = Number(value);
+  if (!Number.isFinite(n)) return fallback;
+  return Math.min(90, Math.max(1, Math.round(n)));
+}
+
+function mergeReminder(local: GithubPatReminder, parsed?: Partial<GithubPatReminder> | null): GithubPatReminder {
+  return {
+    ...local,
+    ...parsed,
+    intervalDays: clampIntervalDays(parsed?.intervalDays, local.intervalDays),
+  };
+}
+
+/** Merge a (possibly partial) stored config over defaults. Pure + client-safe. */
+export function mergeAdminReminders(
+  local: AdminRemindersConfig,
+  parsed?: Partial<AdminRemindersConfig> | null,
+): AdminRemindersConfig {
+  return {
+    githubPat: mergeReminder(local.githubPat, parsed?.githubPat),
+    mydaraGoogleAuth: mergeReminder(local.mydaraGoogleAuth, parsed?.mydaraGoogleAuth),
+  };
+}
 
 function parseReminderDate(lastRotatedIso: string | null): Date | null {
   if (!lastRotatedIso) return null;

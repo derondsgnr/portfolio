@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { KeyRound } from "lucide-react";
+import type { ReactNode } from "react";
 import {
   type GithubPatReminder,
   daysUntilDue,
@@ -10,7 +11,24 @@ import {
   nextDueDate,
 } from "@/lib/content/admin-reminders";
 
-export function GithubPatReminderBanner({ reminder }: { reminder: GithubPatReminder }) {
+/**
+ * Generic credential-rotation reminder banner. Drives the dashboard nudges for
+ * the GitHub PAT and the mydara Google auth token (and any future reminder of
+ * the same shape).
+ */
+export function ReminderBanner({
+  reminder,
+  title,
+  rotateLocation,
+  icon,
+}: {
+  reminder: GithubPatReminder;
+  /** Short mono heading, e.g. "GitHub key rotation". */
+  title: string;
+  /** Where the user rotates it, woven into the overdue line, e.g. "GitHub". */
+  rotateLocation: string;
+  icon?: ReactNode;
+}) {
   const { lastRotatedIso, intervalDays, label } = reminder;
   const overdue = isOverdue(lastRotatedIso, intervalDays);
   const daysLeft = daysUntilDue(lastRotatedIso, intervalDays);
@@ -28,7 +46,7 @@ export function GithubPatReminderBanner({ reminder }: { reminder: GithubPatRemin
   const status = unset
     ? "No rotation logged yet — set a baseline date or mark rotated today."
     : overdue
-      ? `Overdue — rotate ${label} in GitHub, then log it here.`
+      ? `Overdue — rotate ${label} in ${rotateLocation}, then log it here.`
       : daysLeft === 0
         ? "Due today."
         : `Next rotation due in ${daysLeft} day(s).`;
@@ -36,9 +54,9 @@ export function GithubPatReminderBanner({ reminder }: { reminder: GithubPatRemin
   return (
     <div className={`mb-8 p-4 border ${border} flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3`}>
       <div className="flex items-start gap-3 min-w-0">
-        <KeyRound className="shrink-0 text-[#E2B93B]/70 mt-0.5" size={18} />
+        <span className="shrink-0 text-[#E2B93B]/70 mt-0.5">{icon ?? <KeyRound size={18} />}</span>
         <div className="min-w-0">
-          <p className="text-[11px] font-mono uppercase tracking-[0.14em] text-[#E2B93B]/80">GitHub key rotation</p>
+          <p className="text-[11px] font-mono uppercase tracking-[0.14em] text-[#E2B93B]/80">{title}</p>
           <p className="text-sm text-white/75 font-['Instrument_Sans'] mt-1">{status}</p>
           {next && !overdue && !unset ? (
             <p className="text-[11px] text-white/35 font-['Instrument_Sans'] mt-1">
@@ -59,4 +77,9 @@ export function GithubPatReminderBanner({ reminder }: { reminder: GithubPatRemin
       </Link>
     </div>
   );
+}
+
+/** Preset for the GitHub PAT rotation reminder. */
+export function GithubPatReminderBanner({ reminder }: { reminder: GithubPatReminder }) {
+  return <ReminderBanner reminder={reminder} title="GitHub key rotation" rotateLocation="GitHub" />;
 }
