@@ -5,6 +5,8 @@ import { DeviceMockup } from "./device-mockup";
 import { useScrambleText } from "../shared/scramble-text";
 import { LottiePlayer } from "../shared/lottie-player";
 import { ImageLightbox } from "../shared/image-lightbox";
+import { VideoEmbedFrame } from "../shared/youtube-video-frame";
+import { normalizeCloudinaryVideoUrl, getVideoEmbedUrl } from "@/lib/media-url";
 import parseHtml from "html-react-parser";
 
 /** Renders rich-text HTML produced by the editor, or falls back to plain-text paragraph splitting. */
@@ -794,6 +796,8 @@ function VideoSlideComponent({ slide }: { slide: Extract<Slide, { type: "video" 
   const inView = useInView(ref, { once: true, amount: 0.2 });
   const [isPlaying, setIsPlaying] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+  // YouTube/Vimeo links can't play in a <video> tag — render them as an embed.
+  const embedUrl = getVideoEmbedUrl(slide.videoUrl);
 
   return (
     <div ref={ref} className="min-h-[80vh] flex flex-col justify-center px-6 sm:px-8 md:px-10 lg:px-16 py-20">
@@ -814,26 +818,43 @@ function VideoSlideComponent({ slide }: { slide: Extract<Slide, { type: "video" 
             initial={{ opacity: 0, y: 40 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="relative max-w-4xl cursor-pointer"
-            onClick={() => {
-              if (videoRef.current) {
-                if (isPlaying) videoRef.current.pause();
-                else videoRef.current.play();
-                setIsPlaying(!isPlaying);
-              }
+            className={`relative max-w-4xl ${embedUrl ? "" : "cursor-pointer"}`}
+            onClick={embedUrl ? undefined : () => {
+              const v = videoRef.current;
+              if (!v) return;
+              if (v.paused) v.play();
+              else v.pause();
             }}
           >
             <DeviceMockup device={slide.device || "none"}>
-              {slide.videoUrl ? (
-                <video
-                  ref={videoRef}
-                  src={slide.videoUrl}
-                  poster={slide.posterImage}
-                  className="w-full h-auto"
-                  loop
-                  muted
-                  playsInline
-                />
+              {embedUrl ? (
+                <div className="relative w-full aspect-video">
+                  <VideoEmbedFrame url={slide.videoUrl!} title={slide.headline || "Video"} className="absolute inset-0 w-full h-full border-0" />
+                </div>
+              ) : slide.videoUrl ? (
+                <div className="relative">
+                  <video
+                    ref={videoRef}
+                    src={normalizeCloudinaryVideoUrl(slide.videoUrl)}
+                    poster={slide.posterImage || undefined}
+                    className="w-full h-auto"
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    preload="metadata"
+                    onPlay={() => setIsPlaying(true)}
+                    onPause={() => setIsPlaying(false)}
+                  />
+                  {/* Play affordance — shown only when paused (e.g. autoplay blocked). */}
+                  {!isPlaying && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/30 pointer-events-none">
+                      <div className="w-16 h-16 rounded-full border-2 border-[#E2B93B] flex items-center justify-center">
+                        <div className="w-0 h-0 border-l-[12px] border-l-[#E2B93B] border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent ml-1" />
+                      </div>
+                    </div>
+                  )}
+                </div>
               ) : (
                 <div className="relative">
                   <CaseStudyImage src={slide.posterImage} alt={slide.headline || "Video"} className="w-full h-auto" wrapperClassName="w-full" />
