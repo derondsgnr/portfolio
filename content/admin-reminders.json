@@ -3,5 +3,10 @@
     "lastRotatedIso": "2026-05-05T00:00:00.000Z",
     "intervalDays": 30,
     "label": "GitHub PAT (admin content writes)"
+  },
+  "mydaraGoogleAuth": {
+    "lastRotatedIso": null,
+    "intervalDays": 30,
+    "label": "Google auth token (mydara)"
   }
 }

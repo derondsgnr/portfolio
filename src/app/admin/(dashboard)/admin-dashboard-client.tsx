@@ -9,7 +9,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion } from "motion/react";
 import { useAdmin, formatHistoryTime } from "@/components/admin/admin-context";
-import { GithubPatReminderBanner } from "@/components/admin/github-pat-reminder-banner";
+import { ReminderBanner } from "@/components/admin/github-pat-reminder-banner";
 import { getRememberedAdminEditor, type AdminRecentEditor } from "@/lib/admin/recent-editor";
 import type { GithubPatReminder } from "@/lib/content/admin-reminders";
 import {
@@ -210,7 +210,13 @@ function QuickStats() {
   );
 }
 
-export function AdminDashboardClient({ githubReminder }: { githubReminder: GithubPatReminder }) {
+export function AdminDashboardClient({
+  githubReminder,
+  mydaraReminder,
+}: {
+  githubReminder: GithubPatReminder;
+  mydaraReminder?: GithubPatReminder;
+}) {
   const { history } = useAdmin();
   const [recentEditor, setRecentEditor] = useState<AdminRecentEditor | null>(null);
 
@@ -272,7 +278,14 @@ export function AdminDashboardClient({ githubReminder }: { githubReminder: Githu
         </div>
       </div>
 
-      <GithubPatReminderBanner reminder={githubReminder} />
+      <ReminderBanner reminder={githubReminder} title="GitHub key rotation" rotateLocation="GitHub" />
+      {mydaraReminder ? (
+        <ReminderBanner
+          reminder={mydaraReminder}
+          title="mydara Google token"
+          rotateLocation="Google Cloud Console"
+        />
+      ) : null}
 
       {recentEditor ? (
         <Link
