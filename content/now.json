@@ -1,9 +1,33 @@
 {
   "status": "deep-work",
-  "focus": "Portfolio refresh — Now page + Blog system",
+  "focus": "Portfolio ",
   "streak": 0,
   "streakStart": "2026-05-29",
-  "toolsToday": ["Figma", "Cursor"],
+  "toolsToday": [
+    "Figma",
+    "Cursor",
+    "Claude"
+  ],
   "activity": [],
-  "todos": []
+  "todos": [
+    {
+      "id": "t-1780322042202",
+      "text": "Complete Bantu Case Study ",
+      "category": "design",
+      "completed": false,
+      "startTime": "15:00"
+    },
+    {
+      "id": "t-1780322119801",
+      "text": "Update Contra",
+      "category": "design",
+      "completed": false
+    },
+    {
+      "id": "t-1780322133967",
+      "text": "",
+      "category": "design",
+      "completed": false
+    }
+  ]
 }
