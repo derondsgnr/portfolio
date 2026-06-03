@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, createContext, useContext } from "react";
-import { motion, useInView, AnimatePresence } from "motion/react";
+import { motion, useInView, AnimatePresence, useReducedMotion } from "motion/react";
 import type { Slide, NarratorBlock } from "../../../types/case-study";
 import { DeviceMockup } from "./device-mockup";
 import { useScrambleText } from "../shared/scramble-text";
@@ -897,6 +897,62 @@ function MockupGallerySlideComponent({ slide }: { slide: Extract<Slide, { type: 
   const [expandedIdx, setExpandedIdx] = useState<number | null>(null);
   const mockupCount = slide.mockups.length;
 
+  // ─── Auto-advance carousel ───────────────────────────────────────────────
+  // Centers each mockup in turn on a timer and loops back at the end. Pauses on
+  // hover/touch and while the lightbox is open; manual scroll + tap-to-expand
+  // keep working because we drive the native scroller imperatively rather than
+  // replacing it. Disabled entirely for reduced-motion users.
+  const scrollerRef = useRef<HTMLDivElement>(null);
+  const indexRef = useRef(0);
+  const [paused, setPaused] = useState(false);
+  const prefersReducedMotion = useReducedMotion();
+
+  const scrollToIndex = (idx: number) => {
+    const scroller = scrollerRef.current;
+    if (!scroller) return;
+    const items = scroller.querySelectorAll<HTMLElement>("[data-gallery-item]");
+    const target = items[idx];
+    if (!target) return;
+    const sRect = scroller.getBoundingClientRect();
+    const tRect = target.getBoundingClientRect();
+    // Center the active mockup in the viewport; the browser clamps at the edges.
+    const delta = tRect.left + tRect.width / 2 - (sRect.left + sRect.width / 2);
+    scroller.scrollBy({ left: delta, behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    if (prefersReducedMotion || !inView || paused || expandedIdx !== null || mockupCount <= 1) return;
+    const id = setInterval(() => {
+      const scroller = scrollerRef.current;
+      // Nothing to do if every mockup already fits without scrolling.
+      if (!scroller || scroller.scrollWidth <= scroller.clientWidth + 4) return;
+      indexRef.current = (indexRef.current + 1) % mockupCount;
+      scrollToIndex(indexRef.current);
+    }, 3200);
+    return () => clearInterval(id);
+  }, [prefersReducedMotion, inView, paused, expandedIdx, mockupCount]);
+
+  // Keep the resume point in sync when the reader scrolls/swipes manually, so
+  // auto-advance continues from where they left off instead of jumping.
+  const syncIndexToScroll = () => {
+    const scroller = scrollerRef.current;
+    if (!scroller) return;
+    const items = Array.from(scroller.querySelectorAll<HTMLElement>("[data-gallery-item]"));
+    if (!items.length) return;
+    const center = scroller.getBoundingClientRect().left + scroller.getBoundingClientRect().width / 2;
+    let nearest = 0;
+    let best = Infinity;
+    items.forEach((it, i) => {
+      const r = it.getBoundingClientRect();
+      const d = Math.abs(r.left + r.width / 2 - center);
+      if (d < best) {
+        best = d;
+        nearest = i;
+      }
+    });
+    indexRef.current = nearest;
+  };
+
   // Keyboard nav + body scroll lock while the lightbox is open
   useEffect(() => {
     if (expandedIdx === null) return;
@@ -940,15 +996,22 @@ function MockupGallerySlideComponent({ slide }: { slide: Extract<Slide, { type: 
           </div>
 
           <motion.div
+            ref={scrollerRef}
             initial={{ opacity: 0 }}
             animate={inView ? { opacity: 1 } : {}}
             transition={{ duration: 0.6 }}
             className="overflow-x-auto scrollbar-hide"
+            onMouseEnter={() => setPaused(true)}
+            onMouseLeave={() => setPaused(false)}
+            onTouchStart={() => setPaused(true)}
+            onTouchEnd={() => setPaused(false)}
+            onScroll={syncIndexToScroll}
           >
             <div className="flex gap-3 md:gap-5 px-6 sm:px-8 md:px-10 lg:px-16 pb-4 items-end" style={{ minWidth: "max-content" }}>
               {slide.mockups.map((mockup, i) => (
                 <motion.div
                   key={i}
+                  data-gallery-item
                   initial={{ opacity: 0, x: 40 }}
                   animate={inView ? { opacity: 1, x: 0 } : {}}
                   transition={{ duration: 0.6, delay: 0.1 * i }}
