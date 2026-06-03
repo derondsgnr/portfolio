@@ -9,6 +9,16 @@ import { VideoEmbedFrame } from "../shared/youtube-video-frame";
 import { normalizeCloudinaryVideoUrl, getVideoEmbedUrl } from "@/lib/media-url";
 import parseHtml from "html-react-parser";
 
+/* ─── Shared content widths ──────────────────────────────────────────────────
+ * Slides share one outer gutter (px-6 … lg:px-16) so left edges line up down the
+ * page. These two caps keep the RIGHT edge consistent too: every media block
+ * (image, video, embed, comparison, lottie) is the same width, and body copy is
+ * intentionally narrower for a readable line length. Change a width here, not on
+ * individual slides, so they can't drift apart again.
+ * Display slides (cover, metric, quote) are deliberately exempt — distinct by design. */
+const MEDIA_MAX_W = "max-w-6xl";
+const COPY_MAX_W = "max-w-3xl";
+
 /** Renders rich-text HTML produced by the editor, or falls back to plain-text paragraph splitting. */
 function RichBody({ text, className = "", style }: { text: string; className?: string; style?: React.CSSProperties }) {
   const isHtml = text.trimStart().startsWith("<");
@@ -299,7 +309,7 @@ function NarrativeSlideComponent({ slide }: { slide: Extract<Slide, { type: "nar
   return (
     <div ref={ref} className="min-h-[70vh] flex items-center px-6 sm:px-8 md:px-10 lg:px-16 py-20">
       <SlideLayout narrator={slide.narrator}>
-        <div className="max-w-3xl">
+        <div className={COPY_MAX_W}>
           {slide.headline && (
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -396,7 +406,7 @@ function SingleMockupSlideComponent({ slide }: { slide: Extract<Slide, { type: "
             initial={{ opacity: 0, y: 40, scale: 0.95 }}
             animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className={`relative ${slide.device === "browser" ? "max-w-6xl w-full" : "max-w-4xl"}`}
+            className={`relative ${MEDIA_MAX_W} w-full`}
           >
             <DeviceMockup device={slide.device}>
               <CaseStudyImage src={slide.image} alt={slide.headline || "Screen mockup"} className="w-full h-auto" wrapperClassName="w-full" expandable caption={slide.caption} />
@@ -463,7 +473,7 @@ function ComparisonSlideComponent({ slide }: { slide: Extract<Slide, { type: "co
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.2 }}
             ref={containerRef}
-            className="relative max-w-4xl overflow-hidden cursor-col-resize select-none"
+            className={`relative ${MEDIA_MAX_W} w-full overflow-hidden cursor-col-resize select-none`}
             onMouseMove={(e) => handleMove(e.clientX)}
             onTouchMove={(e) => handleMove(e.touches[0].clientX)}
             style={{ aspectRatio: "16/10" }}
@@ -519,7 +529,7 @@ function InsightSlideComponent({ slide }: { slide: Extract<Slide, { type: "insig
   return (
     <div ref={ref} className="min-h-[70vh] flex items-center px-6 sm:px-8 md:px-10 lg:px-16 py-20">
       <SlideLayout narrator={slide.narrator}>
-        <div className="max-w-3xl">
+        <div className={COPY_MAX_W}>
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -746,7 +756,7 @@ function EmbedSlideComponent({ slide }: { slide: Extract<Slide, { type: "embed" 
             initial={{ opacity: 0, y: 40 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="max-w-6xl w-full"
+            className={`${MEDIA_MAX_W} w-full`}
           >
             {isMobile ? (
               /* Mobile: fallback image + link */
@@ -818,7 +828,7 @@ function VideoSlideComponent({ slide }: { slide: Extract<Slide, { type: "video" 
             initial={{ opacity: 0, y: 40 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className={`relative max-w-4xl ${embedUrl ? "" : "cursor-pointer"}`}
+            className={`relative ${MEDIA_MAX_W} w-full ${embedUrl ? "" : "cursor-pointer"}`}
             onClick={embedUrl ? undefined : () => {
               const v = videoRef.current;
               if (!v) return;
@@ -1162,7 +1172,7 @@ function LottieSlideComponent({ slide }: { slide: Extract<Slide, { type: "lottie
   return (
     <div ref={ref} className="min-h-[70vh] flex items-center px-6 sm:px-8 md:px-10 lg:px-16 py-20">
       <SlideLayout narrator={slide.narrator}>
-        <div className="max-w-5xl w-full">
+        <div className={`${MEDIA_MAX_W} w-full`}>
           {slide.headline && (
             <motion.div
               initial={{ opacity: 0, y: 30 }}
