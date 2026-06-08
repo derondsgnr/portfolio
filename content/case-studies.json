@@ -439,7 +439,7 @@
   },
   {
     "slug": "jet-ride-hailing-from-messy-brief-to-5-user-ecosystem",
-    "status": "draft",
+    "status": "published",
     "featured": false,
     "pinned": false,
     "meta": {
@@ -448,7 +448,9 @@
       "year": "2026",
       "tags": [],
       "cover": "",
-      "summary": ""
+      "summary": "Multi-modal ride-hailing platform for Nigeria and emerging markets. Six user types, one system. I led the product thinking and design end to end, and built the prototypes in code with AI.\nSome details are obfuscated to respect a client confidentiality agreement.",
+      "duration": "4 weeks",
+      "role": "Product Designer, AI Native"
     },
     "template": "full-product",
     "acts": []
