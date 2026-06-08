@@ -453,7 +453,35 @@
       "role": "Product Designer, AI Native"
     },
     "template": "full-product",
-    "acts": []
+    "acts": [
+      {
+        "title": "",
+        "slides": [
+          {
+            "type": "narrative",
+            "id": "slide-1780933039184-0",
+            "body": "<p>A client came to me with an early-stage idea: build a ride-hailing platform for Nigeria. The plan, as handed to me, was to compete with Bolt and differentiate on two things, OTP-verified trips and electric vehicles.</p><p>There was no business model. No user research. No numbers, no users, no validated demand. Two intended differentiators, and a market already owned by Bolt and Uber.</p><p>So the first job was not design. It was working out whether this was a product worth building, and what would actually make it one. The OTP and EV ideas were not a moat. OTP is a feature any competitor can copy in a sprint. EV is mostly a supply-and-financing problem, not a product one. If JET launched on those two ideas alone, it would be a worse-funded clone of an incumbent.</p>",
+            "headline": "<p>The Brief Was a Feeling, Not a Product</p>"
+          },
+          {
+            "type": "single-mockup",
+            "id": "slide-1780933132049-1",
+            "image": "",
+            "device": "none"
+          },
+          {
+            "type": "narrative",
+            "id": "slide-1780933206615-2",
+            "body": "<p>My role was to close that gap. I owned the product thinking and the design across all six surfaces, riders, drivers, fleet owners, hotels, and admins, plus the marketing site. That included the parts a client normally hands a designer already solved: the personas, the competitive position, the business logic, and how the pieces of the system relate. None of that existed. I built it.</p>"
+          },
+          {
+            "type": "narrative",
+            "id": "slide-1780933223563-3",
+            "body": "<p>The deadline was tight, so the process had to be fast without getting sloppy. I worked the brief into strategy first, using Claude to pressure-test the thinking and rough out prototypes before I touched final screens, then moved into Figma Make to design in code. Brief to strategy to working build, compressed. That workflow is the reason a one-person engagement could produce a six-surface product with the business logic worked out underneath it. The AI-native build is not the headline of this project. It is what let me spend my time on the product decisions instead of on production.</p>"
+          }
+        ]
+      }
+    ]
   },
   {
     "slug": "bridgepay",
