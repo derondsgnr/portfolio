@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { motion, AnimatePresence, useInView } from "motion/react";
+import { motion, AnimatePresence, useInView, useMotionValue, useSpring } from "motion/react";
 import { ScrambleText } from "./shared/scramble-text";
 import { GlobalSidebar } from "./global-sidebar";
 import { PersonalProjectsGrid } from "./personal-projects-grid";
@@ -129,46 +129,64 @@ const DefaultCategoryIcon = (
 
 function TransmissionCursor() {
   const TRAIL = 7;
+  const trailSize = (i: number) => Math.max(1.5, 5 - i * 0.65);
   const positions = useRef(Array(TRAIL).fill({ x: -200, y: -200 }));
-  const [dots, setDots] = useState<{ x: number; y: number }[]>(Array(TRAIL).fill({ x: -200, y: -200 }));
-  const [pos, setPos] = useState({ x: -200, y: -200 });
+  const trailRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [hovered, setHovered] = useState(false);
   const [label, setLabel] = useState("");
 
+  // Cursor position lives in motion values, not React state, so moving the
+  // mouse never triggers a re-render. The crosshair follows a spring; the ghost
+  // trail is written straight to the DOM. (The old version called setState on a
+  // forever-running rAF loop, re-rendering the whole cursor ~60×/s and starving
+  // the scroll thread — that was the "hooking" scroll.)
+  const cursorX = useMotionValue(-200);
+  const cursorY = useMotionValue(-200);
+  const sx = useSpring(cursorX, { stiffness: 450, damping: 28, mass: 0.25 });
+  const sy = useSpring(cursorY, { stiffness: 450, damping: 28, mass: 0.25 });
+
   useEffect(() => {
-    let frame: number;
     const onMove = (e: MouseEvent) => {
-      const p = { x: e.clientX, y: e.clientY };
-      setPos(p);
-      positions.current = [p, ...positions.current.slice(0, TRAIL - 1)];
+      const x = e.clientX;
+      const y = e.clientY;
+      cursorX.set(x);
+      cursorY.set(y);
+      positions.current = [{ x, y }, ...positions.current.slice(0, TRAIL - 1)];
+      // Position the trail dots imperatively — no React reconciliation per frame.
+      for (let i = 0; i < TRAIL - 1; i++) {
+        const el = trailRefs.current[i];
+        if (!el) continue;
+        const p = positions.current[i + 1];
+        const s = trailSize(i);
+        el.style.transform = `translate(${p.x - s / 2}px, ${p.y - s / 2}px)`;
+      }
       const el = (e.target as HTMLElement).closest("a, button, [data-cursor]") as HTMLElement | null;
-      setHovered(!!el);
-      setLabel(el?.dataset.cursorLabel ?? "");
-    };
-    const tick = () => {
-      setDots([...positions.current]);
-      frame = requestAnimationFrame(tick);
+      const nextHovered = !!el;
+      const nextLabel = el?.dataset.cursorLabel ?? "";
+      // Only touch state when it actually changes, so a re-render happens on
+      // hover transitions — not on every pixel of movement.
+      setHovered((prev) => (prev === nextHovered ? prev : nextHovered));
+      setLabel((prev) => (prev === nextLabel ? prev : nextLabel));
     };
     window.addEventListener("mousemove", onMove);
-    frame = requestAnimationFrame(tick);
-    return () => {
-      window.removeEventListener("mousemove", onMove);
-      cancelAnimationFrame(frame);
-    };
-  }, []);
+    return () => window.removeEventListener("mousemove", onMove);
+  }, [cursorX, cursorY]);
 
   const arm = hovered ? 6 : 14;
   const gap = hovered ? 5 : 3;
 
   return (
     <>
-      {/* Ghost trail dots */}
-      {dots.slice(1).map((p, i) => {
-        const size = Math.max(1.5, 5 - i * 0.65);
+      {/* Ghost trail dots — transforms set imperatively in onMove */}
+      {Array.from({ length: TRAIL - 1 }).map((_, i) => {
+        const size = trailSize(i);
         const opacity = (1 - (i + 1) / TRAIL) * 0.45;
         return (
           <div
             key={i}
+            ref={(el) => {
+              trailRefs.current[i] = el;
+            }}
             className="fixed top-0 left-0 pointer-events-none z-[9997]"
             style={{
               width: size,
@@ -176,7 +194,7 @@ function TransmissionCursor() {
               borderRadius: "50%",
               background: "#E2B93B",
               opacity,
-              transform: `translate(${p.x - size / 2}px, ${p.y - size / 2}px)`,
+              transform: "translate(-200px, -200px)",
             }}
           />
         );
@@ -185,8 +203,7 @@ function TransmissionCursor() {
       {/* Crosshair */}
       <motion.div
         className="fixed top-0 left-0 pointer-events-none z-[9999]"
-        animate={{ x: pos.x, y: pos.y }}
-        transition={{ type: "spring", stiffness: 450, damping: 28, mass: 0.25 }}
+        style={{ x: sx, y: sy }}
       >
         {/* Center dot */}
         <div style={{ position: "absolute", width: 3, height: 3, borderRadius: "50%", background: "#E2B93B", transform: "translate(-1.5px,-1.5px)" }} />
@@ -224,24 +241,30 @@ function TransmissionCursor() {
           <motion.div
             key={label}
             className="fixed top-0 left-0 pointer-events-none z-[9999]"
+            style={{ x: sx, y: sy }}
             initial={{ opacity: 0, scale: 0.85 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.85 }}
             transition={{ duration: 0.15 }}
-            style={{
-              transform: `translate(${pos.x + 18}px, ${pos.y - 14}px)`,
-              fontFamily: "monospace",
-              fontSize: "7px",
-              letterSpacing: "0.22em",
-              textTransform: "uppercase",
-              color: "#E2B93B",
-              background: "rgba(10,10,10,0.92)",
-              padding: "3px 7px",
-              border: "1px solid rgba(226,185,59,0.28)",
-              whiteSpace: "nowrap",
-            }}
           >
-            {label}
+            <span
+              style={{
+                position: "absolute",
+                left: 18,
+                top: -14,
+                fontFamily: "monospace",
+                fontSize: "7px",
+                letterSpacing: "0.22em",
+                textTransform: "uppercase",
+                color: "#E2B93B",
+                background: "rgba(10,10,10,0.92)",
+                padding: "3px 7px",
+                border: "1px solid rgba(226,185,59,0.28)",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {label}
+            </span>
           </motion.div>
         )}
       </AnimatePresence>
