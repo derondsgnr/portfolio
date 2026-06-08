@@ -106,7 +106,8 @@ export function ReaderView({
       />
 
       {/* ─── Sticky header bar (minimal) ─────────────── */}
-      <div className="fixed top-0 left-0 right-0 z-40 bg-[#0A0A0A]/90 backdrop-blur-sm border-b border-[#1a1a1a]">
+      {/* Offset to the content column on lg+ so it doesn't cover the global sidebar/logo. */}
+      <div className="fixed top-0 left-0 lg:left-[260px] right-0 z-40 bg-[#0A0A0A]/90 backdrop-blur-sm border-b border-[#1a1a1a]">
         {/* Gold progress bar — overlaid on nav bar top edge */}
         <motion.div
           className="absolute top-0 left-0 right-0 h-[3px] bg-[#E2B93B] z-50 origin-left"
@@ -114,15 +115,15 @@ export function ReaderView({
         />
         <div className="flex items-center justify-between px-4 md:px-8 py-3">
           {/* Left: back + title */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 min-w-0">
             <Link
               href="/work"
-              className="text-[#666] hover:text-white transition-colors text-sm"
+              className="shrink-0 text-[#666] hover:text-white transition-colors text-sm"
               aria-label="Back to work"
             >
               &larr;
             </Link>
-            <span className="text-[10px] tracking-[0.2em] text-[#E2B93B]" style={{ fontFamily: "monospace" }}>
+            <span className="truncate min-w-0 text-[10px] tracking-[0.2em] text-[#E2B93B]" style={{ fontFamily: "monospace" }}>
               {caseStudy.meta.title}
             </span>
           </div>
