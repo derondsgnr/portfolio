@@ -455,7 +455,7 @@
     "template": "full-product",
     "acts": [
       {
-        "title": "",
+        "title": "The brief",
         "slides": [
           {
             "type": "narrative",
@@ -478,6 +478,17 @@
             "type": "narrative",
             "id": "slide-1780933223563-3",
             "body": "<p>The deadline was tight, so the process had to be fast without getting sloppy. I worked the brief into strategy first, using Claude to pressure-test the thinking and rough out prototypes before I touched final screens, then moved into Figma Make to design in code. Brief to strategy to working build, compressed. That workflow is the reason a one-person engagement could produce a six-surface product with the business logic worked out underneath it. The AI-native build is not the headline of this project. It is what let me spend my time on the product decisions instead of on production.</p>"
+          }
+        ]
+      },
+      {
+        "title": "",
+        "slides": [
+          {
+            "type": "narrative",
+            "id": "slide-1780933418794-0",
+            "body": "<p>Before designing a single screen, I tore down the competition to find where the market was actually weak. Not what Uber and Bolt do, but where they fail in Nigeria specifically.</p><p>I studied Uber, Bolt, inDrive, and Grab across product, pricing, and trust. The pattern was consistent, and it had nothing to do with OTP or EV:</p><ul><li><p>Driver cancellations are the number one rider complaint. Drivers accept, then cancel when they see a destination that is not profitable. Every cancellation costs the rider five to ten minutes and a lot of goodwill.</p></li><li><p>Surge pricing is opaque. The price jumps with no explanation, so it reads as punishment, not demand.</p></li><li><p>Safety is thin, especially for women riding at night.</p></li><li><p>Vehicle quality is a coin flip. No enforced standard.</p></li></ul><p>The real opening was not a feature. It was trust and reliability. The incumbents had trained Nigerian riders to expect cancellation, price surprises, and uneven safety. A product that fixed those would have a wedge that two copyable features never could.</p><p>That reframed everything. OTP and EV did not disappear, they got repositioned. OTP stopped being the headline and became part of a larger trust layer. EV stopped being a green gimmick and became a cost-and-quality story: cheaper rides because electricity beats fuel, and a higher, more consistent vehicle standard because the fleet is newer. The differentiator was no longer \"we have OTP and EV.\" It was \"we are the platform you can actually trust to show up, charge fairly, and get you there.\"</p><p>Pricing was a big part of that trust, so I did the fare and surge research myself rather than wait for an engineer to translate the backend. Fare logic is never just math. It changes how confident a rider feels, how they read timing, and whether they judge the product as dependable or as something that punishes them when demand rises. I reasoned through how pricing should communicate, not just compute, so the rider understood why a price was what it was before they ever hit book. Doing that builder's work myself is what let me design pricing as a trust surface instead of a number on a screen.</p>",
+            "headline": "<p>Finding the Real Opening</p>"
           }
         ]
       }
