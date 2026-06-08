@@ -1106,6 +1106,7 @@
     "status": "published",
     "featured": false,
     "pinned": false,
-    "projectType": "personal"
+    "projectType": "personal",
+    "browserUrl": "app.dara.finance"
   }
 ]

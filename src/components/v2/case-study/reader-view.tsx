@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion, useScroll, useSpring } from "motion/react";
 import Link from "next/link";
 import type { CaseStudy } from "../../../types/case-study";
-import { SlideRenderer, ScrambleHeading, ScanLines } from "./slide-renderer";
+import { SlideRenderer, ScrambleHeading, ScanLines, resolveBrowserUrl } from "./slide-renderer";
 import { CommentsSection } from "./comments-section";
 import { CaseStudyCTA } from "./case-study-cta";
 
@@ -80,6 +80,7 @@ export function ReaderView({
 
   const allSlides = caseStudy.acts.flatMap((act) => act.slides);
   const hasMultipleActs = caseStudy.acts.length > 1;
+  const browserUrl = resolveBrowserUrl(caseStudy);
 
   // The meta header below already serves as the reader's cover (title, summary, tags
   // + unique client/role/duration). Cover slides are a Cinematic-mode concern, so we
@@ -311,7 +312,7 @@ export function ReaderView({
               .filter((slide) => slide.type !== "cover")
               .map((slide) => (
                 <div key={slide.id} className="relative">
-                  <SlideRenderer slide={slide} />
+                  <SlideRenderer slide={slide} browserUrl={browserUrl} />
                   {/* Divider between slides */}
                   <div className="mx-6 md:mx-16 lg:mx-24">
                     <div className="h-px bg-gradient-to-r from-transparent via-[#1a1a1a] to-transparent" />

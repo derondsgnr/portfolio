@@ -24,6 +24,7 @@ export const DARA_CASE_STUDY: CaseStudy = {
   },
   template: "full-product",
   liveDemoUrl: "https://mydara.co",
+  browserUrl: "app.dara.finance",
   acts: [
     {
       title: "Discovery",

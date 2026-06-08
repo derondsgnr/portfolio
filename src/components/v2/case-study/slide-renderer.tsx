@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, createContext, useContext } from "react";
 import { motion, useInView, AnimatePresence, useReducedMotion } from "motion/react";
 import type { Slide, NarratorBlock } from "../../../types/case-study";
-import { DeviceMockup } from "./device-mockup";
+import { DeviceMockup, BrowserChromeContext } from "./device-mockup";
 import { useScrambleText } from "../shared/scramble-text";
 import { LottiePlayer } from "../shared/lottie-player";
 import { ImageLightbox } from "../shared/image-lightbox";
@@ -18,6 +18,23 @@ import parseHtml from "html-react-parser";
  * Display slides (cover, metric, quote) are deliberately exempt — distinct by design. */
 const MEDIA_MAX_W = "max-w-6xl";
 const COPY_MAX_W = "max-w-3xl";
+
+/**
+ * Address-bar text for this study's browser-frame mockups: the explicit
+ * `browserUrl` if set, otherwise the host of `liveDemoUrl` (e.g.
+ * "https://bantuevents.com" → "bantuevents.com"), otherwise empty.
+ */
+export function resolveBrowserUrl(cs: { browserUrl?: string; liveDemoUrl?: string }): string {
+  const explicit = cs.browserUrl?.trim();
+  if (explicit) return explicit;
+  const demo = cs.liveDemoUrl?.trim();
+  if (!demo) return "";
+  try {
+    return new URL(demo).hostname.replace(/^www\./, "");
+  } catch {
+    return "";
+  }
+}
 
 /** Renders rich-text HTML produced by the editor, or falls back to plain-text paragraph splitting. */
 function RichBody({ text, className = "", style }: { text: string; className?: string; style?: React.CSSProperties }) {
@@ -1280,7 +1297,16 @@ function LottieSlideComponent({ slide }: { slide: Extract<Slide, { type: "lottie
    MAIN SLIDE RENDERER
    ═══════════════════════════════════════════════════════════════ */
 
-export function SlideRenderer({ slide, cinematic = false }: { slide: Slide; cinematic?: boolean }) {
+export function SlideRenderer({
+  slide,
+  cinematic = false,
+  browserUrl,
+}: {
+  slide: Slide;
+  cinematic?: boolean;
+  /** Address-bar text for browser-frame mockups in this case study. */
+  browserUrl?: string;
+}) {
   const components: Record<Slide["type"], React.FC<{ slide: any }>> = {
     "cover": CoverSlideComponent,
     "narrative": NarrativeSlideComponent,
@@ -1301,9 +1327,14 @@ export function SlideRenderer({ slide, cinematic = false }: { slide: Slide; cine
   const Component = components[slide.type];
   if (!Component) return null;
 
+  const content = <Component slide={slide} />;
   return (
     <CinematicContext.Provider value={cinematic}>
-      <Component slide={slide} />
+      {browserUrl != null ? (
+        <BrowserChromeContext.Provider value={browserUrl}>{content}</BrowserChromeContext.Provider>
+      ) : (
+        content
+      )}
     </CinematicContext.Provider>
   );
 }
