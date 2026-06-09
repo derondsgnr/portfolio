@@ -107,7 +107,7 @@ export function ReaderView({
 
       {/* ─── Sticky header bar (minimal) ─────────────── */}
       {/* Offset to the content column on lg+ so it doesn't cover the global sidebar/logo. */}
-      <div className="fixed top-0 left-0 lg:left-[260px] right-0 z-40 bg-[#0A0A0A]/90 backdrop-blur-sm border-b border-[#1a1a1a]">
+      <div className="fixed top-[60px] lg:top-0 left-0 lg:left-[260px] right-0 z-40 bg-[#0A0A0A]/90 backdrop-blur-sm border-b border-[#1a1a1a]">
         {/* Gold progress bar — overlaid on nav bar top edge */}
         <motion.div
           className="absolute top-0 left-0 right-0 h-[3px] bg-[#E2B93B] z-50 origin-left"
