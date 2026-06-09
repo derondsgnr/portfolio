@@ -88,6 +88,12 @@ export function ThemeForm({ initial }: Props) {
         lg: (form.elements.namedItem("spacing-lg") as HTMLInputElement).value,
         xl: (form.elements.namedItem("spacing-xl") as HTMLInputElement).value,
       },
+      typography: {
+        bodyLineHeight: (form.elements.namedItem("type-body-leading") as HTMLInputElement).value,
+        bodyLetterSpacing: (form.elements.namedItem("type-body-tracking") as HTMLInputElement).value,
+        readerLineHeight: (form.elements.namedItem("type-reader-leading") as HTMLInputElement).value,
+        metaLetterSpacing: (form.elements.namedItem("type-meta-tracking") as HTMLInputElement).value,
+      },
     };
 
     const result = await saveTheme(data, "Update theme");
@@ -159,6 +165,32 @@ export function ThemeForm({ initial }: Props) {
               />
             </div>
           ))}
+        </div>
+      </div>
+
+      <div>
+        <h2 className="font-mono text-sm text-white/80 mb-4 uppercase tracking-wider">Typography</h2>
+        <p className="font-mono text-[11px] text-white/35 mb-4 leading-relaxed">
+          Line-heights are unitless (1.0–2.5). Letter-spacings are in em (e.g. 0, or 0.02 to loosen).
+          Body values apply site-wide to text that has no explicit styling; the case-study fields tune the reader prose and metadata labels.
+        </p>
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label htmlFor="type-body-leading" className={labelClass}>Body line-height</label>
+            <input id="type-body-leading" name="type-body-leading" type="number" step="0.05" min="1" max="2.5" defaultValue={initial.typography.bodyLineHeight} className={inputClass} placeholder="1.5" />
+          </div>
+          <div>
+            <label htmlFor="type-body-tracking" className={labelClass}>Body letter-spacing (em)</label>
+            <input id="type-body-tracking" name="type-body-tracking" type="number" step="0.005" defaultValue={initial.typography.bodyLetterSpacing} className={inputClass} placeholder="0" />
+          </div>
+          <div>
+            <label htmlFor="type-reader-leading" className={labelClass}>Case-study body line-height</label>
+            <input id="type-reader-leading" name="type-reader-leading" type="number" step="0.05" min="1" max="2.5" defaultValue={initial.typography.readerLineHeight} className={inputClass} placeholder="1.8" />
+          </div>
+          <div>
+            <label htmlFor="type-meta-tracking" className={labelClass}>Case-study meta letter-spacing (em)</label>
+            <input id="type-meta-tracking" name="type-meta-tracking" type="number" step="0.01" defaultValue={initial.typography.metaLetterSpacing} className={inputClass} placeholder="0.15" />
+          </div>
         </div>
       </div>
 

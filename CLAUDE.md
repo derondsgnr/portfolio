@@ -98,7 +98,7 @@ All public content lives as **JSON files in `content/`**. Each file has a loader
 ```
 content/
   nav.json          → Navigation links
-  theme.json        → Color, font, spacing tokens
+  theme.json        → Color, font, spacing + typography (line-height/letter-spacing) tokens
   global.json       → Footer, social links, CTA label
   site-meta.json    → Title, description, OG image
   projects.json     → Work/case study grid items
@@ -327,6 +327,7 @@ ADMIN_CONTENT_SECRET               → Optional limited admin password (content 
 | 2026-05 | Case study & narrative voice locked in `CLAUDE.md` | Portfolio stories should read as reflective builder journey (mechanics, pivots, honest scope)—not vanity or pitch tone; flagship + series pattern for depth | Golden anchor + rubric + anti-patterns; agents use when editing `src/data/case-studies/*` and related longform |
 | 2026-05 | Case study content dual source (`content/case-studies.json` + TS registry) documented | Public loader merges JSON **over** bundled `src/data/case-studies/*`; editing TS alone left production on stale admin JSON | Agents must sync slug payloads to `case-studies.json`; `docs/dara-case-study-copy.md` for human cross-check |
 | 2026-06 | Per-directive CSP for hosted media (`media-src` + Cloudinary `connect-src`) | Missing `media-src` made `<video>` fall back to `default-src 'self'`, silently blocking the Bantu case-study Cloudinary `.mp4`; same gap blocked hosted Lottie fetches and admin uploads | Added `media-src`, extended `connect-src` to `*.cloudinary.com`; CSP directive map + "adding new media is a CSP change" checklist in **Security Headers**. YouTube/Vimeo `frame-src` still pending |
+| 2026-06 | Typography tokens in `theme.json` (line-height + letter-spacing) | Wanted admin control over leading/kerning. Values were hardcoded in ~1,600 spots; a single global override would break the brutalist design DNA (mono tracking `0.12–0.18em`) | Added `theme.typography` → CSS vars `--body-leading`/`--body-tracking` (applied at `body`, global baseline) + `--reader-leading`/`--meta-tracking` (wired into case-study prose + meta labels). Defaults equal current values (non-regressing). Components with explicit tracking/leading still win — by design |
 
 ---
 

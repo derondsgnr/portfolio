@@ -17,5 +17,11 @@
     "md": "1rem",
     "lg": "1.5rem",
     "xl": "2rem"
+  },
+  "typography": {
+    "bodyLineHeight": "1.5",
+    "bodyLetterSpacing": "0",
+    "readerLineHeight": "1.8",
+    "metaLetterSpacing": "0.15"
   }
 }

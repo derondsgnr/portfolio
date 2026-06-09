@@ -95,6 +95,11 @@ export default async function RootLayout({
     `--spacing-md: ${theme.spacing.md}`,
     `--spacing-lg: ${theme.spacing.lg}`,
     `--spacing-xl: ${theme.spacing.xl}`,
+    // Typography (line-heights unitless; letter-spacings get the em unit appended)
+    `--body-leading: ${theme.typography.bodyLineHeight}`,
+    `--body-tracking: ${theme.typography.bodyLetterSpacing}em`,
+    `--reader-leading: ${theme.typography.readerLineHeight}`,
+    `--meta-tracking: ${theme.typography.metaLetterSpacing}em`,
   ].join("; ");
 
   return (

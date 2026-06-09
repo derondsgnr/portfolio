@@ -346,7 +346,7 @@ function NarrativeSlideComponent({ slide }: { slide: Extract<Slide, { type: "nar
             <RichBody
               text={slide.body}
               className="text-[#aaa]"
-              style={{ fontFamily: "'Instrument Sans', sans-serif", lineHeight: 1.8 }}
+              style={{ fontFamily: "'Instrument Sans', sans-serif", lineHeight: "var(--reader-leading, 1.8)" }}
             />
           </motion.div>
 
@@ -561,9 +561,9 @@ function InsightSlideComponent({ slide }: { slide: Extract<Slide, { type: "insig
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-[#aaa] mb-10"
-              style={{ fontFamily: "'Instrument Sans', sans-serif", lineHeight: 1.8 }}
+              style={{ fontFamily: "'Instrument Sans', sans-serif", lineHeight: "var(--reader-leading, 1.8)" }}
             >
-              <RichBody text={slide.body} className="text-[#aaa]" style={{ fontFamily: "'Instrument Sans', sans-serif", lineHeight: 1.8 }} />
+              <RichBody text={slide.body} className="text-[#aaa]" style={{ fontFamily: "'Instrument Sans', sans-serif", lineHeight: "var(--reader-leading, 1.8)" }} />
             </motion.div>
           )}
 

@@ -123,7 +123,7 @@ export function ReaderView({
             >
               &larr;
             </Link>
-            <span className="truncate min-w-0 text-[10px] tracking-[0.2em] text-[#E2B93B]" style={{ fontFamily: "monospace" }}>
+            <span className="truncate min-w-0 text-[10px] text-[#E2B93B]" style={{ fontFamily: "monospace", letterSpacing: "var(--meta-tracking, 0.15em)" }}>
               {caseStudy.meta.title}
             </span>
           </div>
@@ -241,13 +241,13 @@ export function ReaderView({
       <div className="pt-32 md:pt-40 px-6 md:px-16 lg:px-24 pb-8 border-b border-[#1a1a1a]">
         <div className="max-w-5xl">
           <div className="flex flex-wrap items-center gap-4 mb-4">
-            <span className="text-[10px] tracking-[0.2em] text-[#E2B93B]" style={{ fontFamily: "monospace" }}>
+            <span className="text-[10px] text-[#E2B93B]" style={{ fontFamily: "monospace", letterSpacing: "var(--meta-tracking, 0.15em)" }}>
               {caseStudy.meta.client}
             </span>
             {caseStudy.meta.role && (
               <>
                 <span className="text-[#333]">&mdash;</span>
-                <span className="text-[10px] tracking-[0.1em] text-[#666]" style={{ fontFamily: "monospace" }}>
+                <span className="text-[10px] text-[#666]" style={{ fontFamily: "monospace", letterSpacing: "var(--meta-tracking, 0.15em)" }}>
                   {caseStudy.meta.role}
                 </span>
               </>
@@ -255,7 +255,7 @@ export function ReaderView({
             {caseStudy.meta.duration && (
               <>
                 <span className="text-[#333]">&mdash;</span>
-                <span className="text-[10px] tracking-[0.1em] text-[#666]" style={{ fontFamily: "monospace" }}>
+                <span className="text-[10px] text-[#666]" style={{ fontFamily: "monospace", letterSpacing: "var(--meta-tracking, 0.15em)" }}>
                   {caseStudy.meta.duration}
                 </span>
               </>
@@ -278,8 +278,8 @@ export function ReaderView({
             {caseStudy.meta.tags.map((tag) => (
               <span
                 key={tag}
-                className="text-[9px] tracking-[0.15em] text-[#555] border border-[#222] px-2 py-1"
-                style={{ fontFamily: "monospace" }}
+                className="text-[9px] text-[#555] border border-[#222] px-2 py-1"
+                style={{ fontFamily: "monospace", letterSpacing: "var(--meta-tracking, 0.15em)" }}
               >
                 {tag}
               </span>
