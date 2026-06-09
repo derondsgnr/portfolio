@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { motion, useScroll, useSpring, useInView } from "motion/react";
+import { SplitText, RevealText } from "../shared/split-text";
 import Link from "next/link";
 import Image from "next/image";
 import type { BlogPost } from "@/types/blog";
@@ -455,23 +456,20 @@ export function BlogReader({
         </div>
 
         <div className="relative z-10 px-6 sm:px-8 md:px-10 lg:px-16 -mt-4 md:-mt-6">
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={heroInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-4xl md:text-6xl lg:text-8xl uppercase text-white leading-none mb-6"
+          <SplitText
+            text={post.meta.title}
+            as="h1"
+            className="text-4xl md:text-6xl lg:text-8xl uppercase leading-none mb-6"
             style={{
               fontFamily: "var(--font-heading)",
               letterSpacing: "-0.03em",
             }}
-          >
-            {post.meta.title}
-          </motion.h1>
+            amount={0.2}
+            delay={0.1}
+          />
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={heroInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.4 }}
+          <RevealText
+            delay={0.4}
             className="flex flex-col md:flex-row md:items-start gap-6 pb-10 border-b border-[#111]"
           >
             <p
@@ -493,7 +491,7 @@ export function BlogReader({
               ))}
               <ShareButton title={post.meta.title} slug={post.slug} size="md" />
             </div>
-          </motion.div>
+          </RevealText>
         </div>
       </div>
 
