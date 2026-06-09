@@ -98,7 +98,7 @@ All public content lives as **JSON files in `content/`**. Each file has a loader
 ```
 content/
   nav.json          → Navigation links
-  theme.json        → Color, font, spacing tokens
+  theme.json        → Color, font, spacing + typography (line-height/letter-spacing) tokens
   global.json       → Footer, social links, CTA label
   site-meta.json    → Title, description, OG image
   projects.json     → Work/case study grid items
@@ -326,6 +326,8 @@ ADMIN_CONTENT_SECRET               → Optional limited admin password (content 
 | 2026-05 | Structured craft content + `craft-model.ts` | Per-section galleries (masonry / editorial / list) with native aspect ratios; avoid bundling `fs` into admin client | `content/craft.json` is `{ sections[] }`; loaders in `craft.ts`; types/constants in `craft-model.ts` for RSC + client consumers |
 | 2026-05 | Case study & narrative voice locked in `CLAUDE.md` | Portfolio stories should read as reflective builder journey (mechanics, pivots, honest scope)—not vanity or pitch tone; flagship + series pattern for depth | Golden anchor + rubric + anti-patterns; agents use when editing `src/data/case-studies/*` and related longform |
 | 2026-05 | Case study content dual source (`content/case-studies.json` + TS registry) documented | Public loader merges JSON **over** bundled `src/data/case-studies/*`; editing TS alone left production on stale admin JSON | Agents must sync slug payloads to `case-studies.json`; `docs/dara-case-study-copy.md` for human cross-check |
+| 2026-06 | Per-directive CSP for hosted media (`media-src` + Cloudinary `connect-src`) | Missing `media-src` made `<video>` fall back to `default-src 'self'`, silently blocking the Bantu case-study Cloudinary `.mp4`; same gap blocked hosted Lottie fetches and admin uploads | Added `media-src`, extended `connect-src` to `*.cloudinary.com`; CSP directive map + "adding new media is a CSP change" checklist in **Security Headers**. YouTube/Vimeo `frame-src` still pending |
+| 2026-06 | Typography tokens in `theme.json` (line-height + letter-spacing) | Wanted admin control over leading/kerning. Values were hardcoded in ~1,600 spots; a single global override would break the brutalist design DNA (mono tracking `0.12–0.18em`) | Added `theme.typography` → CSS vars `--body-leading`/`--body-tracking` (applied at `body`, global baseline) + `--reader-leading`/`--meta-tracking` (wired into case-study prose + meta labels). Defaults equal current values (non-regressing). Components with explicit tracking/leading still win — by design |
 
 ---
 
@@ -348,5 +350,33 @@ Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
 X-Frame-Options: DENY
 X-Content-Type-Options: nosniff
 Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
-Content-Security-Policy: allowlist for Google Analytics, Calendly, Supabase
+Content-Security-Policy: per-directive allowlist (see below)
 ```
+
+### CSP — directive-by-directive
+
+**Directives do NOT inherit.** Each resource type falls back to `default-src 'self'`
+when its own directive is absent — so adding a domain to `img-src` does nothing for
+video, fonts, or fetches. When media from a domain works as an image but not as a
+video, suspect the directive split before suspecting the URL.
+
+| Directive | Allows | Governs |
+|-----------|--------|---------|
+| `default-src` | `'self'` | Fallback for anything unlisted |
+| `img-src` | `'self' https: data: blob:` | `<img>`, poster frames |
+| `media-src` | `'self' https: data: blob:` | `<video>`/`<audio>` — incl. Cloudinary `.mp4` |
+| `connect-src` | `'self'`, Supabase, GA/GTM, Vercel, `res.cloudinary.com`, `api.cloudinary.com` | `fetch`/XHR — incl. **hosted Lottie JSON** (`lottie-web` `path:`) and **admin Cloudinary uploads** |
+| `frame-src` | `'self'`, cal.com, calendly | Embeds. **YouTube/Vimeo are NOT yet allowed** — add before using provider embeds in video slides |
+| `script-src` | `'self' 'unsafe-inline' 'unsafe-eval'`, GTM, Calendly | Scripts |
+| `style-src` / `font-src` | `'self' 'unsafe-inline' https:` / `https: data:` | Styles / fonts |
+| `frame-ancestors` | `'none'` | Clickjacking protection |
+
+**Adding new hosted media is a CSP change, not just a content change.** Checklist:
+- Inline image → already covered by `img-src https:`.
+- Inline video/audio (`<video>`) → needs the domain in `media-src` (`https:` covers it).
+- Hosted Lottie / any `fetch`ed asset → needs the domain in `connect-src`.
+- YouTube/Vimeo (or any iframe) → needs the domain in `frame-src`.
+
+CSP failures are **silent** — no build error, no app exception, only a browser
+Console `Refused to load … Content Security Policy` line. There is no CI check for
+this; verify new media types in a real browser after deploy.

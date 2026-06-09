@@ -7,6 +7,13 @@ import type { DeviceType } from "../../../types/case-study";
  * that wrap any content (image, iframe, video).
  */
 
+/**
+ * Address-bar text for browser-frame mockups. Provided per case study by the
+ * renderer; defaults to "app.dara.finance" so any caller without a provider
+ * (e.g. the admin presentation studio) keeps its previous behavior.
+ */
+export const BrowserChromeContext = React.createContext<string>("app.dara.finance");
+
 interface DeviceMockupProps {
   device: DeviceType;
   children: React.ReactNode;
@@ -51,6 +58,7 @@ function PhoneMockup({ children, className = "" }: { children: React.ReactNode; 
 }
 
 function BrowserMockup({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+  const url = React.useContext(BrowserChromeContext);
   return (
     <div className={`flex flex-col w-full ${className}`}>
       <div
@@ -67,8 +75,8 @@ function BrowserMockup({ children, className = "" }: { children: React.ReactNode
             <div className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
           </div>
           <div className="flex-1 mx-8">
-            <div className="bg-[#1a1a1a] rounded-md px-3 py-1 text-[10px] text-[#666] font-mono text-center">
-              app.dara.finance
+            <div className="bg-[#1a1a1a] rounded-md px-3 py-1 text-[10px] text-[#666] font-mono text-center truncate">
+              {url}
             </div>
           </div>
         </div>

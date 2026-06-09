@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import type { CaseStudy, Slide } from "../../../types/case-study";
-import { SlideRenderer, ScrambleHeading } from "./slide-renderer";
+import { SlideRenderer, ScrambleHeading, resolveBrowserUrl } from "./slide-renderer";
 
 const VISUAL_SLIDE_TYPES = new Set([
   "cover", "single-mockup", "comparison", "insight", "metric",
@@ -269,7 +269,7 @@ export function CinematicViewer({
               transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
               className="absolute inset-0 overflow-y-auto"
             >
-              <SlideRenderer slide={currentSlide} cinematic />
+              <SlideRenderer slide={currentSlide} cinematic browserUrl={resolveBrowserUrl(caseStudy)} />
 
               {/* Bottom caption overlay */}
               {getCinematicCaption(currentSlide) && (

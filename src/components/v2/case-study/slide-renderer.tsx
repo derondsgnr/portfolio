@@ -1,13 +1,40 @@
 import React, { useState, useEffect, useRef, createContext, useContext } from "react";
-import { motion, useInView, AnimatePresence } from "motion/react";
+import { motion, useInView, AnimatePresence, useReducedMotion } from "motion/react";
 import type { Slide, NarratorBlock } from "../../../types/case-study";
-import { DeviceMockup } from "./device-mockup";
+import { DeviceMockup, BrowserChromeContext } from "./device-mockup";
 import { useScrambleText } from "../shared/scramble-text";
 import { LottiePlayer } from "../shared/lottie-player";
 import { ImageLightbox } from "../shared/image-lightbox";
 import { VideoEmbedFrame } from "../shared/youtube-video-frame";
 import { normalizeCloudinaryVideoUrl, getVideoEmbedUrl } from "@/lib/media-url";
 import parseHtml from "html-react-parser";
+
+/* ─── Shared content widths ──────────────────────────────────────────────────
+ * Slides share one outer gutter (px-6 … lg:px-16) so left edges line up down the
+ * page. These two caps keep the RIGHT edge consistent too: every media block
+ * (image, video, embed, comparison, lottie) is the same width, and body copy is
+ * intentionally narrower for a readable line length. Change a width here, not on
+ * individual slides, so they can't drift apart again.
+ * Display slides (cover, metric, quote) are deliberately exempt — distinct by design. */
+const MEDIA_MAX_W = "max-w-6xl";
+const COPY_MAX_W = "max-w-3xl";
+
+/**
+ * Address-bar text for this study's browser-frame mockups: the explicit
+ * `browserUrl` if set, otherwise the host of `liveDemoUrl` (e.g.
+ * "https://bantuevents.com" → "bantuevents.com"), otherwise empty.
+ */
+export function resolveBrowserUrl(cs: { browserUrl?: string; liveDemoUrl?: string }): string {
+  const explicit = cs.browserUrl?.trim();
+  if (explicit) return explicit;
+  const demo = cs.liveDemoUrl?.trim();
+  if (!demo) return "";
+  try {
+    return new URL(demo).hostname.replace(/^www\./, "");
+  } catch {
+    return "";
+  }
+}
 
 /** Renders rich-text HTML produced by the editor, or falls back to plain-text paragraph splitting. */
 function RichBody({ text, className = "", style }: { text: string; className?: string; style?: React.CSSProperties }) {
@@ -299,7 +326,7 @@ function NarrativeSlideComponent({ slide }: { slide: Extract<Slide, { type: "nar
   return (
     <div ref={ref} className="min-h-[70vh] flex items-center px-6 sm:px-8 md:px-10 lg:px-16 py-20">
       <SlideLayout narrator={slide.narrator}>
-        <div className="max-w-3xl">
+        <div className={COPY_MAX_W}>
           {slide.headline && (
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -319,7 +346,7 @@ function NarrativeSlideComponent({ slide }: { slide: Extract<Slide, { type: "nar
             <RichBody
               text={slide.body}
               className="text-[#aaa]"
-              style={{ fontFamily: "'Instrument Sans', sans-serif", lineHeight: 1.8 }}
+              style={{ fontFamily: "'Instrument Sans', sans-serif", lineHeight: "var(--reader-leading, 1.8)" }}
             />
           </motion.div>
 
@@ -396,7 +423,7 @@ function SingleMockupSlideComponent({ slide }: { slide: Extract<Slide, { type: "
             initial={{ opacity: 0, y: 40, scale: 0.95 }}
             animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className={`relative ${slide.device === "browser" ? "max-w-6xl w-full" : "max-w-4xl"}`}
+            className={`relative ${MEDIA_MAX_W} w-full`}
           >
             <DeviceMockup device={slide.device}>
               <CaseStudyImage src={slide.image} alt={slide.headline || "Screen mockup"} className="w-full h-auto" wrapperClassName="w-full" expandable caption={slide.caption} />
@@ -463,7 +490,7 @@ function ComparisonSlideComponent({ slide }: { slide: Extract<Slide, { type: "co
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.2 }}
             ref={containerRef}
-            className="relative max-w-4xl overflow-hidden cursor-col-resize select-none"
+            className={`relative ${MEDIA_MAX_W} w-full overflow-hidden cursor-col-resize select-none`}
             onMouseMove={(e) => handleMove(e.clientX)}
             onTouchMove={(e) => handleMove(e.touches[0].clientX)}
             style={{ aspectRatio: "16/10" }}
@@ -519,7 +546,7 @@ function InsightSlideComponent({ slide }: { slide: Extract<Slide, { type: "insig
   return (
     <div ref={ref} className="min-h-[70vh] flex items-center px-6 sm:px-8 md:px-10 lg:px-16 py-20">
       <SlideLayout narrator={slide.narrator}>
-        <div className="max-w-3xl">
+        <div className={COPY_MAX_W}>
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -534,9 +561,9 @@ function InsightSlideComponent({ slide }: { slide: Extract<Slide, { type: "insig
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-[#aaa] mb-10"
-              style={{ fontFamily: "'Instrument Sans', sans-serif", lineHeight: 1.8 }}
+              style={{ fontFamily: "'Instrument Sans', sans-serif", lineHeight: "var(--reader-leading, 1.8)" }}
             >
-              <RichBody text={slide.body} className="text-[#aaa]" style={{ fontFamily: "'Instrument Sans', sans-serif", lineHeight: 1.8 }} />
+              <RichBody text={slide.body} className="text-[#aaa]" style={{ fontFamily: "'Instrument Sans', sans-serif", lineHeight: "var(--reader-leading, 1.8)" }} />
             </motion.div>
           )}
 
@@ -746,7 +773,7 @@ function EmbedSlideComponent({ slide }: { slide: Extract<Slide, { type: "embed" 
             initial={{ opacity: 0, y: 40 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="max-w-6xl w-full"
+            className={`${MEDIA_MAX_W} w-full`}
           >
             {isMobile ? (
               /* Mobile: fallback image + link */
@@ -818,7 +845,7 @@ function VideoSlideComponent({ slide }: { slide: Extract<Slide, { type: "video" 
             initial={{ opacity: 0, y: 40 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className={`relative max-w-4xl ${embedUrl ? "" : "cursor-pointer"}`}
+            className={`relative ${MEDIA_MAX_W} w-full ${embedUrl ? "" : "cursor-pointer"}`}
             onClick={embedUrl ? undefined : () => {
               const v = videoRef.current;
               if (!v) return;
@@ -887,6 +914,62 @@ function MockupGallerySlideComponent({ slide }: { slide: Extract<Slide, { type: 
   const [expandedIdx, setExpandedIdx] = useState<number | null>(null);
   const mockupCount = slide.mockups.length;
 
+  // ─── Auto-advance carousel ───────────────────────────────────────────────
+  // Centers each mockup in turn on a timer and loops back at the end. Pauses on
+  // hover/touch and while the lightbox is open; manual scroll + tap-to-expand
+  // keep working because we drive the native scroller imperatively rather than
+  // replacing it. Disabled entirely for reduced-motion users.
+  const scrollerRef = useRef<HTMLDivElement>(null);
+  const indexRef = useRef(0);
+  const [paused, setPaused] = useState(false);
+  const prefersReducedMotion = useReducedMotion();
+
+  const scrollToIndex = (idx: number) => {
+    const scroller = scrollerRef.current;
+    if (!scroller) return;
+    const items = scroller.querySelectorAll<HTMLElement>("[data-gallery-item]");
+    const target = items[idx];
+    if (!target) return;
+    const sRect = scroller.getBoundingClientRect();
+    const tRect = target.getBoundingClientRect();
+    // Center the active mockup in the viewport; the browser clamps at the edges.
+    const delta = tRect.left + tRect.width / 2 - (sRect.left + sRect.width / 2);
+    scroller.scrollBy({ left: delta, behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    if (prefersReducedMotion || !inView || paused || expandedIdx !== null || mockupCount <= 1) return;
+    const id = setInterval(() => {
+      const scroller = scrollerRef.current;
+      // Nothing to do if every mockup already fits without scrolling.
+      if (!scroller || scroller.scrollWidth <= scroller.clientWidth + 4) return;
+      indexRef.current = (indexRef.current + 1) % mockupCount;
+      scrollToIndex(indexRef.current);
+    }, 3200);
+    return () => clearInterval(id);
+  }, [prefersReducedMotion, inView, paused, expandedIdx, mockupCount]);
+
+  // Keep the resume point in sync when the reader scrolls/swipes manually, so
+  // auto-advance continues from where they left off instead of jumping.
+  const syncIndexToScroll = () => {
+    const scroller = scrollerRef.current;
+    if (!scroller) return;
+    const items = Array.from(scroller.querySelectorAll<HTMLElement>("[data-gallery-item]"));
+    if (!items.length) return;
+    const center = scroller.getBoundingClientRect().left + scroller.getBoundingClientRect().width / 2;
+    let nearest = 0;
+    let best = Infinity;
+    items.forEach((it, i) => {
+      const r = it.getBoundingClientRect();
+      const d = Math.abs(r.left + r.width / 2 - center);
+      if (d < best) {
+        best = d;
+        nearest = i;
+      }
+    });
+    indexRef.current = nearest;
+  };
+
   // Keyboard nav + body scroll lock while the lightbox is open
   useEffect(() => {
     if (expandedIdx === null) return;
@@ -930,15 +1013,22 @@ function MockupGallerySlideComponent({ slide }: { slide: Extract<Slide, { type: 
           </div>
 
           <motion.div
+            ref={scrollerRef}
             initial={{ opacity: 0 }}
             animate={inView ? { opacity: 1 } : {}}
             transition={{ duration: 0.6 }}
             className="overflow-x-auto scrollbar-hide"
+            onMouseEnter={() => setPaused(true)}
+            onMouseLeave={() => setPaused(false)}
+            onTouchStart={() => setPaused(true)}
+            onTouchEnd={() => setPaused(false)}
+            onScroll={syncIndexToScroll}
           >
             <div className="flex gap-3 md:gap-5 px-6 sm:px-8 md:px-10 lg:px-16 pb-4 items-end" style={{ minWidth: "max-content" }}>
               {slide.mockups.map((mockup, i) => (
                 <motion.div
                   key={i}
+                  data-gallery-item
                   initial={{ opacity: 0, x: 40 }}
                   animate={inView ? { opacity: 1, x: 0 } : {}}
                   transition={{ duration: 0.6, delay: 0.1 * i }}
@@ -1162,7 +1252,7 @@ function LottieSlideComponent({ slide }: { slide: Extract<Slide, { type: "lottie
   return (
     <div ref={ref} className="min-h-[70vh] flex items-center px-6 sm:px-8 md:px-10 lg:px-16 py-20">
       <SlideLayout narrator={slide.narrator}>
-        <div className="max-w-5xl w-full">
+        <div className={`${MEDIA_MAX_W} w-full`}>
           {slide.headline && (
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -1207,7 +1297,16 @@ function LottieSlideComponent({ slide }: { slide: Extract<Slide, { type: "lottie
    MAIN SLIDE RENDERER
    ═══════════════════════════════════════════════════════════════ */
 
-export function SlideRenderer({ slide, cinematic = false }: { slide: Slide; cinematic?: boolean }) {
+export function SlideRenderer({
+  slide,
+  cinematic = false,
+  browserUrl,
+}: {
+  slide: Slide;
+  cinematic?: boolean;
+  /** Address-bar text for browser-frame mockups in this case study. */
+  browserUrl?: string;
+}) {
   const components: Record<Slide["type"], React.FC<{ slide: any }>> = {
     "cover": CoverSlideComponent,
     "narrative": NarrativeSlideComponent,
@@ -1228,9 +1327,14 @@ export function SlideRenderer({ slide, cinematic = false }: { slide: Slide; cine
   const Component = components[slide.type];
   if (!Component) return null;
 
+  const content = <Component slide={slide} />;
   return (
     <CinematicContext.Provider value={cinematic}>
-      <Component slide={slide} />
+      {browserUrl != null ? (
+        <BrowserChromeContext.Provider value={browserUrl}>{content}</BrowserChromeContext.Provider>
+      ) : (
+        content
+      )}
     </CinematicContext.Provider>
   );
 }

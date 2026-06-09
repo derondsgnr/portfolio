@@ -22,6 +22,17 @@ export type Theme = {
     lg: string;
     xl: string;
   };
+  /** Typography knobs surfaced in admin Theme. Line-heights are unitless; letter-spacings are em values (stored without the unit). */
+  typography: {
+    /** Site-wide base body line-height (unitless). Tailwind preflight default is 1.5. */
+    bodyLineHeight: string;
+    /** Site-wide base body letter-spacing in em (e.g. "0"). */
+    bodyLetterSpacing: string;
+    /** Case-study reading body (narrative/insight) line-height. */
+    readerLineHeight: string;
+    /** Case-study metadata label letter-spacing in em. */
+    metaLetterSpacing: string;
+  };
 };
 
 const DEFAULT: Theme = {
@@ -44,6 +55,13 @@ const DEFAULT: Theme = {
     lg: "1.5rem",
     xl: "2rem",
   },
+  // Defaults equal the current rendered values so nothing shifts until edited.
+  typography: {
+    bodyLineHeight: "1.5",
+    bodyLetterSpacing: "0",
+    readerLineHeight: "1.8",
+    metaLetterSpacing: "0.15",
+  },
 };
 
 export async function getTheme(): Promise<Theme> {
@@ -54,6 +72,7 @@ export async function getTheme(): Promise<Theme> {
       fonts: { ...DEFAULT.fonts, ...parsed.fonts },
       colors: { ...DEFAULT.colors, ...parsed.colors },
       spacing: { ...DEFAULT.spacing, ...parsed.spacing },
+      typography: { ...DEFAULT.typography, ...parsed.typography },
     };
   } catch {
     return DEFAULT;

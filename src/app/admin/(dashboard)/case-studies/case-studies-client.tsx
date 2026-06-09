@@ -354,6 +354,17 @@ function StudyEditor({
                     <input className={adminCx.input} value={form.meta.cover} onChange={(e) => setMeta("cover", e.target.value)} placeholder="https://..." />
                     <ImageFieldGuide role="case-study-hero" imageUrl={form.meta.cover} compact className="mt-3" />
                   </FormField>
+                  <FormField label="Browser mockup URL" className="lg:col-span-2">
+                    <input
+                      className={adminCx.input}
+                      value={form.browserUrl ?? ""}
+                      onChange={(e) => setForm((f) => ({ ...f, browserUrl: e.target.value || undefined }))}
+                      placeholder="app.dara.finance"
+                    />
+                    <p className="text-[9px] text-white/20 font-['Instrument_Sans'] mt-1.5">
+                      Address-bar text shown in browser-frame mockups for this study. Leave blank to use the live demo URL’s domain.
+                    </p>
+                  </FormField>
                   <FormField label="Template">
                     <div className="grid grid-cols-2 gap-2">
                       {TEMPLATES.map((t) => (

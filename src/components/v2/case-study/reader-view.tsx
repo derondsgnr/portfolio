@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion, useScroll, useSpring } from "motion/react";
 import Link from "next/link";
 import type { CaseStudy } from "../../../types/case-study";
-import { SlideRenderer, ScrambleHeading, ScanLines } from "./slide-renderer";
+import { SlideRenderer, ScrambleHeading, ScanLines, resolveBrowserUrl } from "./slide-renderer";
 import { CommentsSection } from "./comments-section";
 import { CaseStudyCTA } from "./case-study-cta";
 
@@ -80,6 +80,7 @@ export function ReaderView({
 
   const allSlides = caseStudy.acts.flatMap((act) => act.slides);
   const hasMultipleActs = caseStudy.acts.length > 1;
+  const browserUrl = resolveBrowserUrl(caseStudy);
 
   // The meta header below already serves as the reader's cover (title, summary, tags
   // + unique client/role/duration). Cover slides are a Cinematic-mode concern, so we
@@ -105,7 +106,8 @@ export function ReaderView({
       />
 
       {/* ─── Sticky header bar (minimal) ─────────────── */}
-      <div className="fixed top-0 left-0 right-0 z-40 bg-[#0A0A0A]/90 backdrop-blur-sm border-b border-[#1a1a1a]">
+      {/* Offset to the content column on lg+ so it doesn't cover the global sidebar/logo. */}
+      <div className="fixed top-0 left-0 lg:left-[260px] right-0 z-40 bg-[#0A0A0A]/90 backdrop-blur-sm border-b border-[#1a1a1a]">
         {/* Gold progress bar — overlaid on nav bar top edge */}
         <motion.div
           className="absolute top-0 left-0 right-0 h-[3px] bg-[#E2B93B] z-50 origin-left"
@@ -113,15 +115,15 @@ export function ReaderView({
         />
         <div className="flex items-center justify-between px-4 md:px-8 py-3">
           {/* Left: back + title */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 min-w-0">
             <Link
               href="/work"
-              className="text-[#666] hover:text-white transition-colors text-sm"
+              className="shrink-0 text-[#666] hover:text-white transition-colors text-sm"
               aria-label="Back to work"
             >
               &larr;
             </Link>
-            <span className="text-[10px] tracking-[0.2em] text-[#E2B93B]" style={{ fontFamily: "monospace" }}>
+            <span className="truncate min-w-0 text-[10px] text-[#E2B93B]" style={{ fontFamily: "monospace", letterSpacing: "var(--meta-tracking, 0.15em)" }}>
               {caseStudy.meta.title}
             </span>
           </div>
@@ -239,13 +241,13 @@ export function ReaderView({
       <div className="pt-32 md:pt-40 px-6 md:px-16 lg:px-24 pb-8 border-b border-[#1a1a1a]">
         <div className="max-w-5xl">
           <div className="flex flex-wrap items-center gap-4 mb-4">
-            <span className="text-[10px] tracking-[0.2em] text-[#E2B93B]" style={{ fontFamily: "monospace" }}>
+            <span className="text-[10px] text-[#E2B93B]" style={{ fontFamily: "monospace", letterSpacing: "var(--meta-tracking, 0.15em)" }}>
               {caseStudy.meta.client}
             </span>
             {caseStudy.meta.role && (
               <>
                 <span className="text-[#333]">&mdash;</span>
-                <span className="text-[10px] tracking-[0.1em] text-[#666]" style={{ fontFamily: "monospace" }}>
+                <span className="text-[10px] text-[#666]" style={{ fontFamily: "monospace", letterSpacing: "var(--meta-tracking, 0.15em)" }}>
                   {caseStudy.meta.role}
                 </span>
               </>
@@ -253,7 +255,7 @@ export function ReaderView({
             {caseStudy.meta.duration && (
               <>
                 <span className="text-[#333]">&mdash;</span>
-                <span className="text-[10px] tracking-[0.1em] text-[#666]" style={{ fontFamily: "monospace" }}>
+                <span className="text-[10px] text-[#666]" style={{ fontFamily: "monospace", letterSpacing: "var(--meta-tracking, 0.15em)" }}>
                   {caseStudy.meta.duration}
                 </span>
               </>
@@ -276,8 +278,8 @@ export function ReaderView({
             {caseStudy.meta.tags.map((tag) => (
               <span
                 key={tag}
-                className="text-[9px] tracking-[0.15em] text-[#555] border border-[#222] px-2 py-1"
-                style={{ fontFamily: "monospace" }}
+                className="text-[9px] text-[#555] border border-[#222] px-2 py-1"
+                style={{ fontFamily: "monospace", letterSpacing: "var(--meta-tracking, 0.15em)" }}
               >
                 {tag}
               </span>
@@ -311,7 +313,7 @@ export function ReaderView({
               .filter((slide) => slide.type !== "cover")
               .map((slide) => (
                 <div key={slide.id} className="relative">
-                  <SlideRenderer slide={slide} />
+                  <SlideRenderer slide={slide} browserUrl={browserUrl} />
                   {/* Divider between slides */}
                   <div className="mx-6 md:mx-16 lg:mx-24">
                     <div className="h-px bg-gradient-to-r from-transparent via-[#1a1a1a] to-transparent" />

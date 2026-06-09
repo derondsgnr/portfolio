@@ -238,6 +238,9 @@ export interface CaseStudy {
   };
   /** Live demo URL — shown as persistent floating button */
   liveDemoUrl?: string;
+  /** Address-bar text shown in browser-frame mockups for this study (e.g. "app.dara.finance").
+   *  Falls back to the host of liveDemoUrl when unset. */
+  browserUrl?: string;
   /** Controls which section this appears in. "personal" shows in the Personal Projects grid.
    *  Defaults to "case-study" if omitted. */
   projectType?: "case-study" | "personal";

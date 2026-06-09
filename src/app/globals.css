@@ -49,6 +49,10 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     position: relative;
+    /* Site-wide typographic baseline (admin Theme). Components with explicit
+       tracking/leading still win; this governs everything that doesn't override. */
+    line-height: var(--body-leading, 1.5);
+    letter-spacing: var(--body-tracking, 0em);
   }
 
   html {
