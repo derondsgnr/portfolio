@@ -458,6 +458,15 @@
         "title": "The brief",
         "slides": [
           {
+            "type": "cover",
+            "id": "jet-ride-hailing-from-messy-brief-to-5-user-ecosystem-cover",
+            "headline": "Jet ride hailing: from messy brief to 5 user ecosystem",
+            "subtitle": "Multi-modal ride-hailing platform for Nigeria and emerging markets. Six user types, one system. I led the product thinking and design end to end, and built the prototypes in code with AI.\nSome details are obfuscated to respect a client confidentiality agreement.",
+            "tags": [],
+            "heroImage": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1780145583/jet_vgpppd.png",
+            "device": "browser"
+          },
+          {
             "type": "narrative",
             "id": "slide-1780933039184-0",
             "body": "<p>A client came to me with an early-stage idea: build a ride-hailing platform for Nigeria. The plan, as handed to me, was to compete with Bolt and differentiate on two things, OTP-verified trips and electric vehicles.</p><p>There was no business model. No user research. No numbers, no users, no validated demand. Two intended differentiators, and a market already owned by Bolt and Uber.</p><p>So the first job was not design. It was working out whether this was a product worth building, and what would actually make it one. The OTP and EV ideas were not a moat. OTP is a feature any competitor can copy in a sprint. EV is mostly a supply-and-financing problem, not a product one. If JET launched on those two ideas alone, it would be a worse-funded clone of an incumbent.</p>",
@@ -489,6 +498,18 @@
             "id": "slide-1780933418794-0",
             "body": "<p>Before designing a single screen, <strong>I tore down the competition to find where the market was actually weak.</strong> Not what Uber and Bolt do, but where they fail in Nigeria specifically.</p><p><strong>I studied Uber, Bolt, inDrive, and Grab </strong>across product, pricing, and trust. The pattern was consistent, and it had nothing to do with OTP or EV:</p><ul><li><p>Driver cancellations are the number one rider complaint. Drivers accept, then cancel when they see a destination that is not profitable. Every cancellation costs the rider five to ten minutes and a lot of goodwill.</p></li><li><p>Surge pricing is opaque. The price jumps with no explanation, so it reads as punishment, not demand.</p></li><li><p>Safety is thin, especially for women riding at night.</p></li><li><p>Vehicle quality is a coin flip. No enforced standard.</p></li></ul><p>The real opening was not a feature. It was trust and reliability. The incumbents had trained Nigerian riders to expect cancellation, price surprises, and uneven safety. A product that fixed those would have a wedge that two copyable features never could.</p><p>That reframed everything. OTP and EV did not disappear, they got repositioned. OTP stopped being the headline and became part of a larger trust layer. EV stopped being a green gimmick and became a cost-and-quality story: cheaper rides because electricity beats fuel, and a higher, more consistent vehicle standard because the fleet is newer. The differentiator was no longer \"we have OTP and EV.\" It was \"we are the platform you can actually trust to show up, charge fairly, and get you there.\"</p><p><strong>Pricing was a big part of that trust,</strong> so I did the <strong>fare and surge research</strong> myself rather than wait for an engineer to translate the backend. Fare logic is never just math. It changes how confident a rider feels, how they read timing, and whether they judge the product as dependable or as something that punishes them when demand rises. I reasoned through how pricing should communicate, not just compute, so the rider understood why a price was what it was before they ever hit book. Doing that builder's work myself is what let me design pricing as a trust surface instead of a number on a screen.</p>",
             "headline": "<p>Finding the Real Opening</p>"
+          },
+          {
+            "type": "single-mockup",
+            "id": "slide-1781093838454-1",
+            "image": "",
+            "device": "none"
+          },
+          {
+            "type": "narrative",
+            "id": "slide-1781093879823-2",
+            "body": "<p>The clearest expression of the trust wedge was a product decision aimed at the market's most documented failure: show drivers the destination and the fare before they accept a ride.</p><p>In Nigeria, this is a live problem, not a solved one. As of early 2026, the market leader still does not show drivers the destination when a request comes in. Drivers see only a rough area, so they accept, then call to ask where you are going, and cancel if the trip does not suit them. The result is the<strong> single most common rider complaint in the market:</strong> you book, someone accepts, and then you are dropped back into the queue. The incumbents know this hurts, they have been scrambling at it, piloting fare negotiation, broadcasting one request to several drivers at once so the first to accept wins. <strong>The problem is real enough that the biggest players are actively reworking their matching to fix it.</strong></p><p>JET's answer was informed acceptance. <strong>Show the destination and the net fare upfront</strong>, so a driver makes one real decision instead of accepting and bailing. <em>If a driver accepts, the rider can trust they are actually coming.</em></p><p>This is not a free win, and I designed for the cost. Showing destinations upfront invites cherry-picking, drivers skipping less profitable routes and leaving some areas underserved. The mitigation was an incentive layer: higher earnings multipliers on routes and times that need supply, surfaced on the driver home screen, plus an acceptance-rate metric so chronic declining has consequences. Informed acceptance for the driver, reliability for the rider, and a lever for the platform to balance supply.</p><p><em>I am not claiming this as an invention. The point is the opposite: I designed JET around the market's actual, documented failure instead of the two features the client walked in with. Knowing that the real fight in Nigerian ride-hailing is over cancellation, matching, and trust, not over OTP or EV, is what made the product decisions land where they mattered.</em></p>",
+            "headline": "<p>Designing Against the Cancellation Problem</p>"
           }
         ]
       }
