@@ -458,6 +458,15 @@
         "title": "The brief",
         "slides": [
           {
+            "type": "cover",
+            "id": "jet-ride-hailing-from-messy-brief-to-5-user-ecosystem-cover",
+            "headline": "Jet ride hailing: from messy brief to 5 user ecosystem",
+            "subtitle": "Multi-modal ride-hailing platform for Nigeria and emerging markets. Six user types, one system. I led the product thinking and design end to end, and built the prototypes in code with AI.\nSome details are obfuscated to respect a client confidentiality agreement.",
+            "tags": [],
+            "heroImage": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1780145583/jet_vgpppd.png",
+            "device": "browser"
+          },
+          {
             "type": "narrative",
             "id": "slide-1780933039184-0",
             "body": "<p>A client came to me with an early-stage idea: build a ride-hailing platform for Nigeria. The plan, as handed to me, was to compete with Bolt and differentiate on two things, OTP-verified trips and electric vehicles.</p><p>There was no business model. No user research. No numbers, no users, no validated demand. Two intended differentiators, and a market already owned by Bolt and Uber.</p><p>So the first job was not design. It was working out whether this was a product worth building, and what would actually make it one. The OTP and EV ideas were not a moat. OTP is a feature any competitor can copy in a sprint. EV is mostly a supply-and-financing problem, not a product one. If JET launched on those two ideas alone, it would be a worse-funded clone of an incumbent.</p>",
@@ -466,7 +475,7 @@
           {
             "type": "single-mockup",
             "id": "slide-1780933132049-1",
-            "image": "",
+            "image": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1781130293/jet_Trip_order_abkait.png",
             "device": "none"
           },
           {
@@ -489,6 +498,104 @@
             "id": "slide-1780933418794-0",
             "body": "<p>Before designing a single screen, <strong>I tore down the competition to find where the market was actually weak.</strong> Not what Uber and Bolt do, but where they fail in Nigeria specifically.</p><p><strong>I studied Uber, Bolt, inDrive, and Grab </strong>across product, pricing, and trust. The pattern was consistent, and it had nothing to do with OTP or EV:</p><ul><li><p>Driver cancellations are the number one rider complaint. Drivers accept, then cancel when they see a destination that is not profitable. Every cancellation costs the rider five to ten minutes and a lot of goodwill.</p></li><li><p>Surge pricing is opaque. The price jumps with no explanation, so it reads as punishment, not demand.</p></li><li><p>Safety is thin, especially for women riding at night.</p></li><li><p>Vehicle quality is a coin flip. No enforced standard.</p></li></ul><p>The real opening was not a feature. It was trust and reliability. The incumbents had trained Nigerian riders to expect cancellation, price surprises, and uneven safety. A product that fixed those would have a wedge that two copyable features never could.</p><p>That reframed everything. OTP and EV did not disappear, they got repositioned. OTP stopped being the headline and became part of a larger trust layer. EV stopped being a green gimmick and became a cost-and-quality story: cheaper rides because electricity beats fuel, and a higher, more consistent vehicle standard because the fleet is newer. The differentiator was no longer \"we have OTP and EV.\" It was \"we are the platform you can actually trust to show up, charge fairly, and get you there.\"</p><p><strong>Pricing was a big part of that trust,</strong> so I did the <strong>fare and surge research</strong> myself rather than wait for an engineer to translate the backend. Fare logic is never just math. It changes how confident a rider feels, how they read timing, and whether they judge the product as dependable or as something that punishes them when demand rises. I reasoned through how pricing should communicate, not just compute, so the rider understood why a price was what it was before they ever hit book. Doing that builder's work myself is what let me design pricing as a trust surface instead of a number on a screen.</p>",
             "headline": "<p>Finding the Real Opening</p>"
+          },
+          {
+            "type": "single-mockup",
+            "id": "slide-1781093838454-1",
+            "image": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1781130293/jet_Trip_order_abkait.png",
+            "device": "none"
+          },
+          {
+            "type": "narrative",
+            "id": "slide-1781093879823-2",
+            "body": "<p>The clearest expression of the trust wedge was a product decision aimed at the market's most documented failure: show drivers the destination and the fare before they accept a ride.</p><p>In Nigeria, this is a live problem, not a solved one. As of early 2026, the market leader still does not show drivers the destination when a request comes in. Drivers see only a rough area, so they accept, then call to ask where you are going, and cancel if the trip does not suit them. The result is the<strong> single most common rider complaint in the market:</strong> you book, someone accepts, and then you are dropped back into the queue. The incumbents know this hurts, they have been scrambling at it, piloting fare negotiation, broadcasting one request to several drivers at once so the first to accept wins. <strong>The problem is real enough that the biggest players are actively reworking their matching to fix it.</strong></p><p>JET's answer was informed acceptance. <strong>Show the destination and the net fare upfront</strong>, so a driver makes one real decision instead of accepting and bailing. <em>If a driver accepts, the rider can trust they are actually coming.</em></p><p>This is not a free win, and I designed for the cost. Showing destinations upfront invites cherry-picking, drivers skipping less profitable routes and leaving some areas underserved. The mitigation was an incentive layer: higher earnings multipliers on routes and times that need supply, surfaced on the driver home screen, plus an acceptance-rate metric so chronic declining has consequences. Informed acceptance for the driver, reliability for the rider, and a lever for the platform to balance supply.</p><p><strong>I am not claiming this as an invention. The point is the opposite: I designed JET around the market's actual, documented failure instead of the two features the client walked in with. Knowing that the real fight in Nigerian ride-hailing is over cancellation, matching, and trust, not over OTP or EV, is what made the product decisions land where they mattered.</strong></p>",
+            "headline": "<p>Designing Against the Cancellation Problem</p>"
+          },
+          {
+            "type": "single-mockup",
+            "id": "slide-1781132095798-4",
+            "image": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1781130293/jet_Trip_order_abkait.png",
+            "device": "none"
+          },
+          {
+            "type": "narrative",
+            "id": "slide-1781094539736-3",
+            "body": "<p>The brief listed \"hotels\" as a user type. It did not say what hotels were <em>for</em>. Working that out was the most valuable thing I did on JET, because it was a business model decision disguised as a feature, and I had to make it for two different stakeholders at once.</p><p><strong>For the guest,</strong> a hotel booking a ride is a trust transfer. A traveler in an unfamiliar city does not trust a new ride-hailing app, but they trust the hotel they are staying in. When the hotel books the ride, the hotel's credibility carries JET. The guest gets a vetted ride without ever having to download an app cold or trust a stranger's brand.</p><p><strong>For the business,</strong> hotels are a distribution and revenue channel. They bring riders who would never have found JET on their own, high-value travelers, delivered through a partner instead of paid acquisition. The hotel is a customer, a reseller, and a trust intermediary in one relationship.</p><p><strong>So I designed the mechanic to match the business reality:</strong></p><ul><li><p>Each hotel runs on a prepaid billing account with credits. When a guest's trip completes, the cost is deducted from the hotel's balance. The hotel is the paying account, which is what makes it a real B2B channel and not just a booking button.</p></li><li><p>The guest is not left out of the trip. Borrowing the pattern from Bolt's dispatch-sharing, where the person expecting a vehicle can watch it move toward them in real time, I gave the guest live tracking of their ride and the OTP that confirms the trip is complete. The guest monitors and verifies, even though the hotel pays.</p></li><li><p>The commercial logic for the hotel is margin on the ride plus a concierge-grade perk for high-value guests. The hotel makes money and looks good doing it.</p></li></ul><p>That combination, hotel pays, guest controls and verifies, is what makes the relationship work for everyone. The hotel gets a revenue line and a guest perk. The guest gets a trusted ride they can watch and confirm. JET gets a distribution channel and a paying B2B customer.</p>",
+            "headline": "<p>The Part That Was Actually Mine: What Hotels Do</p>"
+          },
+          {
+            "type": "mockup-gallery",
+            "id": "slide-1781132258082-5",
+            "mockups": [
+              {
+                "image": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1781132064/Hotel_1_tvysrb.png",
+                "device": "browser"
+              },
+              {
+                "image": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1781132036/Hotel_2_c6u4f2.png",
+                "device": "browser"
+              },
+              {
+                "image": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1781132049/Hotel_3_w6ph9b.png",
+                "device": "browser"
+              },
+              {
+                "image": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1781132040/Hotel_4_qrmndr.png",
+                "device": "browser"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Decisions & Solutions",
+        "slides": [
+          {
+            "type": "narrative",
+            "id": "slide-1781094702978-0",
+            "body": "<p>Defining the hotel relationship surfaced a problem a normal two-party ride never has.</p><p>In a standard trip, it is the rider and the driver. If something goes wrong, it is between them. But a hotel-booked ride has three parties, the hotel that paid, the guest who rode, and the driver who drove. That raises a question with real money attached: <strong>what happens when the trip is disputed?</strong> A driver drops a guest short of the destination and marks it complete. Or a guest withholds confirmation so the trip never closes and the driver is not paid against a trip they actually ran.</p><p><strong>The guest-held OTP at drop-off is the first line of defense, the trip cannot be marked complete and billed against the hotel's credits until the guest confirms arrival. </strong>But the OTP does not resolve a genuine dispute on its own. For that, I routed disputed trip-ends to the JET admin as the arbiter, with the trip data, the live-tracking record, and the OTP status as the evidence. The admin decides, and the resolution flows back to the hotel's billing and the driver's payout.</p><p><em>This is the kind of problem that only appears when you take the business relationships seriously. A designer arranging screens never meets it. A designer defining how the parties relate meets it immediately.</em></p>",
+            "headline": "<p>The Edge Case the Hotel Model Created</p>"
+          },
+          {
+            "type": "lottie",
+            "id": "slide-1781126956021-4",
+            "lottieUrl": "https://res.cloudinary.com/da6wyupbv/raw/upload/v1781126936/Hotel_pnalbs.json",
+            "loop": true
+          },
+          {
+            "type": "narrative",
+            "id": "slide-1781094835918-2",
+            "body": "<p>Repositioning EV as cost-and-quality solved the pitch, but not the behavior. A discount alone does not change habits. If I wanted riders to actually keep choosing electric, <strong>the choice had to feel rewarding, measurable, and worth repeating.</strong></p><p>So I designed the EV layer as behavior change, not a checkbox. <strong>Riders get a lower price for choosing an electric vehicle,</strong> the immediate incentive. On top of that, <strong>I added a gamified carbon-saving score,</strong> so the rider sees the impact of their choice accumulate over time. The discount gets them to choose electric once. The visible, growing carbon score gives them a reason to choose it again, and a small sense of progress they own.</p><p>That connects the business model to actual behavior. <em>The client wanted EV adoption. Adoption does not come from telling people to go green. It comes from making the green choice the cheaper, more satisfying, more visible one. I designed the product so the social mission and the business incentive pointed the same direction.</em></p>",
+            "headline": "<p>Making the EV Choice Stick</p>"
+          },
+          {
+            "type": "lottie",
+            "id": "slide-1781116155133-4",
+            "lottieUrl": "https://res.cloudinary.com/da6wyupbv/raw/upload/v1781116093/EV-carbon_fxw1wv.json",
+            "loop": true
+          },
+          {
+            "type": "narrative",
+            "id": "slide-1781094989310-3",
+            "body": "<p>One question in the hotel model I deliberately did not answer: <strong>how the hotel recovers the ride cost from the guest.</strong></p><p>There are two clean options, and they trade off against each other. Bundle the ride into the room rate or a service package, which is simpler to bill but makes guests pay for something they may not use. Or offer it as an optional add-on at checkout, which respects consent but lowers the attach rate. The right answer depends on real pricing data and guest behavior, what guests will tolerate, what hotels will push, how it affects margin.</p><p><strong>The client had none of that data, and inventing it would have been guesswork dressed up as a decision. </strong>So I scoped it as a defined open question for validation rather than a fake answer. Knowing where the idea outruns the evidence is part of the work, especially when you are taking something from a vague brief to a real product without users yet.</p>",
+            "headline": "<p>Where I Stopped, On Purpose</p>"
+          }
+        ]
+      },
+      {
+        "title": "Shipped",
+        "slides": [
+          {
+            "type": "narrative",
+            "id": "slide-1781095110362-0",
+            "body": "<p>JET was a strategy-and-design engagement:</p><ul><li><p><strong>A defined product strategy where there was none, positioned around trust and reliability instead of two copyable features.</strong></p></li><li><p><strong>The business logic for how six user types relate, including the hotel partnership model that was missing from the brief entirely.</strong></p></li><li><p><strong>A complete, coherent design system across all six surfaces, built so a fleet owner, a hotel, and a rider all read the same trip through the same visual language.</strong></p></li><li><p><strong>A developer-ready handoff. I built the prototypes in code (React, via Figma Make) with the routing, components, and key states laid out, so the engineering team had a working reference to build against instead of a static mockup to interpret.</strong></p></li></ul><p>I took an early-stage idea with no model and no research, and handed back a product someone could actually build and defend.</p><hr><h2></h2><p></p>",
+            "headline": "<p>What Shipped</p>"
+          },
+          {
+            "type": "narrative",
+            "id": "slide-1781095120246-1",
+            "body": "<p>The transferable skill here is not \"I designed a ride-hailing app.\" It is this: I am a product designer who takes an underspecified mobility operation, works out how the parties actually relate, commercially and operationally, and designs a system that holds those relationships together. Being AI-native means I can build the prototypes myself to pressure-test that thinking, fast, without waiting on a team.</p><p>That is the core problem of fleet and mobility operations. A fleet owner, a driver, the company managing the fleet, and the corporate client are all different parties with different stakes in the same vehicle and the same trip. The value is not in any one dashboard. It is in defining who sees what, who pays whom, who is accountable when something goes wrong, and making the whole system tell one coherent story.</p><p>JET is where I learned to do that work, on a brief that gave me nothing but the chance to figure it out.</p>",
+            "headline": "<p>Why This Matters for Mobility and Fleet Operations</p>"
           }
         ]
       }
