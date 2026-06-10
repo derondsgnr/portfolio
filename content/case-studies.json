@@ -522,6 +522,28 @@
             "id": "slide-1781094539736-3",
             "body": "<p>The brief listed \"hotels\" as a user type. It did not say what hotels were <em>for</em>. Working that out was the most valuable thing I did on JET, because it was a business model decision disguised as a feature, and I had to make it for two different stakeholders at once.</p><p><strong>For the guest,</strong> a hotel booking a ride is a trust transfer. A traveler in an unfamiliar city does not trust a new ride-hailing app, but they trust the hotel they are staying in. When the hotel books the ride, the hotel's credibility carries JET. The guest gets a vetted ride without ever having to download an app cold or trust a stranger's brand.</p><p><strong>For the business,</strong> hotels are a distribution and revenue channel. They bring riders who would never have found JET on their own, high-value travelers, delivered through a partner instead of paid acquisition. The hotel is a customer, a reseller, and a trust intermediary in one relationship.</p><p><strong>So I designed the mechanic to match the business reality:</strong></p><ul><li><p>Each hotel runs on a prepaid billing account with credits. When a guest's trip completes, the cost is deducted from the hotel's balance. The hotel is the paying account, which is what makes it a real B2B channel and not just a booking button.</p></li><li><p>The guest is not left out of the trip. Borrowing the pattern from Bolt's dispatch-sharing, where the person expecting a vehicle can watch it move toward them in real time, I gave the guest live tracking of their ride and the OTP that confirms the trip is complete. The guest monitors and verifies, even though the hotel pays.</p></li><li><p>The commercial logic for the hotel is margin on the ride plus a concierge-grade perk for high-value guests. The hotel makes money and looks good doing it.</p></li></ul><p>That combination, hotel pays, guest controls and verifies, is what makes the relationship work for everyone. The hotel gets a revenue line and a guest perk. The guest gets a trusted ride they can watch and confirm. JET gets a distribution channel and a paying B2B customer.</p>",
             "headline": "<p>The Part That Was Actually Mine: What Hotels Do</p>"
+          },
+          {
+            "type": "mockup-gallery",
+            "id": "slide-1781132258082-5",
+            "mockups": [
+              {
+                "image": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1781132064/Hotel_1_tvysrb.png",
+                "device": "browser"
+              },
+              {
+                "image": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1781132036/Hotel_2_c6u4f2.png",
+                "device": "browser"
+              },
+              {
+                "image": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1781132049/Hotel_3_w6ph9b.png",
+                "device": "browser"
+              },
+              {
+                "image": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1781132040/Hotel_4_qrmndr.png",
+                "device": "browser"
+              }
+            ]
           }
         ]
       },
