@@ -529,10 +529,10 @@
             "headline": "<p>The Edge Case the Hotel Model Created</p>"
           },
           {
-            "type": "single-mockup",
-            "id": "slide-1781094828185-1",
-            "image": "",
-            "device": "none"
+            "type": "lottie",
+            "id": "slide-1781126956021-4",
+            "lottieUrl": "https://res.cloudinary.com/da6wyupbv/raw/upload/v1781126936/Hotel_pnalbs.json",
+            "loop": true
           },
           {
             "type": "narrative",
