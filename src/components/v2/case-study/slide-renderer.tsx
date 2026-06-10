@@ -897,61 +897,17 @@ function MockupGallerySlideComponent({ slide }: { slide: Extract<Slide, { type: 
   const [expandedIdx, setExpandedIdx] = useState<number | null>(null);
   const mockupCount = slide.mockups.length;
 
-  // ─── Auto-advance carousel ───────────────────────────────────────────────
-  // Centers each mockup in turn on a timer and loops back at the end. Pauses on
-  // hover/touch and while the lightbox is open; manual scroll + tap-to-expand
-  // keep working because we drive the native scroller imperatively rather than
-  // replacing it. Disabled entirely for reduced-motion users.
-  const scrollerRef = useRef<HTMLDivElement>(null);
-  const indexRef = useRef(0);
-  const [paused, setPaused] = useState(false);
+  // ─── Continuous marquee ──────────────────────────────────────────────────
+  // The track holds the mockups twice and drifts left forever; at -50% the
+  // second copy sits exactly where the first began, so the loop is seamless
+  // (cards carry their gap as a right margin so the two halves tile exactly).
+  // Hovering the strip pauses it (CSS) and lets the reader target one mockup —
+  // the hovered card scales/lifts while the rest dim. Reduced-motion users get
+  // a static, swipeable row instead.
   const prefersReducedMotion = useReducedMotion();
-
-  const scrollToIndex = (idx: number) => {
-    const scroller = scrollerRef.current;
-    if (!scroller) return;
-    const items = scroller.querySelectorAll<HTMLElement>("[data-gallery-item]");
-    const target = items[idx];
-    if (!target) return;
-    const sRect = scroller.getBoundingClientRect();
-    const tRect = target.getBoundingClientRect();
-    // Center the active mockup in the viewport; the browser clamps at the edges.
-    const delta = tRect.left + tRect.width / 2 - (sRect.left + sRect.width / 2);
-    scroller.scrollBy({ left: delta, behavior: "smooth" });
-  };
-
-  useEffect(() => {
-    if (prefersReducedMotion || !inView || paused || expandedIdx !== null || mockupCount <= 1) return;
-    const id = setInterval(() => {
-      const scroller = scrollerRef.current;
-      // Nothing to do if every mockup already fits without scrolling.
-      if (!scroller || scroller.scrollWidth <= scroller.clientWidth + 4) return;
-      indexRef.current = (indexRef.current + 1) % mockupCount;
-      scrollToIndex(indexRef.current);
-    }, 3200);
-    return () => clearInterval(id);
-  }, [prefersReducedMotion, inView, paused, expandedIdx, mockupCount]);
-
-  // Keep the resume point in sync when the reader scrolls/swipes manually, so
-  // auto-advance continues from where they left off instead of jumping.
-  const syncIndexToScroll = () => {
-    const scroller = scrollerRef.current;
-    if (!scroller) return;
-    const items = Array.from(scroller.querySelectorAll<HTMLElement>("[data-gallery-item]"));
-    if (!items.length) return;
-    const center = scroller.getBoundingClientRect().left + scroller.getBoundingClientRect().width / 2;
-    let nearest = 0;
-    let best = Infinity;
-    items.forEach((it, i) => {
-      const r = it.getBoundingClientRect();
-      const d = Math.abs(r.left + r.width / 2 - center);
-      if (d < best) {
-        best = d;
-        nearest = i;
-      }
-    });
-    indexRef.current = nearest;
-  };
+  // Slower with more mockups so the on-screen speed stays roughly constant.
+  const marqueeDuration = Math.max(18, mockupCount * 7);
+  const animateMarquee = !prefersReducedMotion && mockupCount > 0;
 
   // Keyboard nav + body scroll lock while the lightbox is open
   useEffect(() => {
@@ -985,66 +941,72 @@ function MockupGallerySlideComponent({ slide }: { slide: Extract<Slide, { type: 
             </div>
           )}
 
-          {/* Swipe hint for mobile */}
-          <div className="px-6 md:hidden mb-4 flex items-center gap-2">
+          {/* Hint — swipe (static row) or hover (marquee) */}
+          <div className="px-6 mb-4 flex items-center gap-2">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E2B93B" strokeWidth="1.5" className="opacity-60">
               <path d="M5 12h14M12 5l7 7-7 7" />
             </svg>
             <span className="text-[9px] tracking-[0.15em] text-[#E2B93B]/60" style={{ fontFamily: "monospace" }}>
-              SWIPE TO EXPLORE
+              {animateMarquee ? "HOVER TO PAUSE · TAP TO EXPAND" : "SWIPE TO EXPLORE"}
             </span>
           </div>
 
           <motion.div
-            ref={scrollerRef}
             initial={{ opacity: 0 }}
             animate={inView ? { opacity: 1 } : {}}
             transition={{ duration: 0.6 }}
-            className="overflow-x-auto scrollbar-hide"
-            onMouseEnter={() => setPaused(true)}
-            onMouseLeave={() => setPaused(false)}
-            onTouchStart={() => setPaused(true)}
-            onTouchEnd={() => setPaused(false)}
-            onScroll={syncIndexToScroll}
+            className={animateMarquee ? "overflow-hidden cs-marquee-mask" : "overflow-x-auto scrollbar-hide"}
           >
-            <div className="flex gap-3 md:gap-5 px-6 sm:px-8 md:px-10 lg:px-16 pb-4 items-end" style={{ minWidth: "max-content" }}>
-              {slide.mockups.map((mockup, i) => (
-                <motion.div
-                  key={i}
-                  data-gallery-item
-                  initial={{ opacity: 0, x: 40 }}
-                  animate={inView ? { opacity: 1, x: 0 } : {}}
-                  transition={{ duration: 0.6, delay: 0.1 * i }}
-                  className={`flex-shrink-0 flex flex-col items-center cursor-pointer group ${
-                    mockup.device === "phone" ? "w-[230px] md:w-[300px]" :
-                    mockup.device === "watch" ? "w-[150px] md:w-[200px]" :
-                    "w-[400px] md:w-[680px]"
-                  }`}
-                  onClick={() => setExpandedIdx(i)}
-                >
-                  <div className="relative w-full">
-                    <DeviceMockup device={mockup.device}>
-                      <CaseStudyImage src={mockup.image} alt={mockup.label || `Mockup ${i + 1}`} className="w-full h-auto" wrapperClassName="w-full" />
-                    </DeviceMockup>
-                    {/* Expand affordance */}
-                    <div className="absolute inset-0 flex items-end justify-center pb-6 md:items-center md:pb-0 opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-                      <div className="bg-[#0A0A0A]/80 backdrop-blur-sm border border-[#E2B93B]/40 px-3 py-1.5 flex items-center gap-2">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#E2B93B" strokeWidth="2">
-                          <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
-                        </svg>
-                        <span className="text-[8px] md:text-[9px] tracking-[0.15em] text-[#E2B93B]" style={{ fontFamily: "monospace" }}>
-                          TAP TO EXPAND
-                        </span>
+            <div
+              className={[
+                "flex items-end pb-4 w-max",
+                animateMarquee
+                  ? "cs-marquee hover:[animation-play-state:paused] [&:hover>[data-gallery-item]]:opacity-40 [&>[data-gallery-item]:hover]:!opacity-100"
+                  : "gap-3 md:gap-5 px-6 sm:px-8 md:px-10 lg:px-16",
+              ].join(" ")}
+              style={animateMarquee ? { animationDuration: `${marqueeDuration}s` } : undefined}
+            >
+              {(animateMarquee ? [...slide.mockups, ...slide.mockups] : slide.mockups).map((mockup, idx) => {
+                const i = idx % mockupCount;
+                const isDup = idx >= mockupCount;
+                return (
+                  <div
+                    key={idx}
+                    data-gallery-item
+                    aria-hidden={isDup}
+                    className={`flex-shrink-0 flex flex-col items-center cursor-pointer group/item transition-[transform,opacity] duration-300 ease-out hover:scale-[1.04] hover:-translate-y-2 ${
+                      animateMarquee ? "mr-3 md:mr-5" : ""
+                    } ${
+                      mockup.device === "phone" ? "w-[230px] md:w-[300px]" :
+                      mockup.device === "watch" ? "w-[150px] md:w-[200px]" :
+                      "w-[400px] md:w-[680px]"
+                    }`}
+                    onClick={() => setExpandedIdx(i)}
+                  >
+                    <div className="relative w-full transition-shadow duration-300 group-hover/item:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.7)]">
+                      <DeviceMockup device={mockup.device}>
+                        <CaseStudyImage src={mockup.image} alt={mockup.label || `Mockup ${i + 1}`} className="w-full h-auto" wrapperClassName="w-full" />
+                      </DeviceMockup>
+                      {/* Expand affordance */}
+                      <div className="absolute inset-0 flex items-end justify-center pb-6 md:items-center md:pb-0 opacity-100 md:opacity-0 group-hover/item:opacity-100 transition-opacity duration-300 pointer-events-none">
+                        <div className="bg-[#0A0A0A]/80 backdrop-blur-sm border border-[#E2B93B]/40 px-3 py-1.5 flex items-center gap-2">
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#E2B93B" strokeWidth="2">
+                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+                          </svg>
+                          <span className="text-[8px] md:text-[9px] tracking-[0.15em] text-[#E2B93B]" style={{ fontFamily: "monospace" }}>
+                            TAP TO EXPAND
+                          </span>
+                        </div>
                       </div>
                     </div>
+                    {mockup.label && (
+                      <p className="text-[10px] text-[#666] mt-3 tracking-[0.1em]" style={{ fontFamily: "monospace" }}>
+                        {mockup.label}
+                      </p>
+                    )}
                   </div>
-                  {mockup.label && (
-                    <p className="text-[10px] text-[#666] mt-3 tracking-[0.1em]" style={{ fontFamily: "monospace" }}>
-                      {mockup.label}
-                    </p>
-                  )}
-                </motion.div>
-              ))}
+                );
+              })}
             </div>
           </motion.div>
         </div>

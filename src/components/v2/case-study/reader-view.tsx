@@ -129,26 +129,6 @@ export function ReaderView({
             </span>
           </div>
 
-          {/* Center: act nav (desktop only) */}
-          {hasMultipleActs && (
-            <div className="hidden md:flex items-center gap-1">
-              {caseStudy.acts.map((act, i) => (
-                <button
-                  key={i}
-                  onClick={() => actRefs.current[i]?.scrollIntoView({ behavior: "smooth" })}
-                  className={`text-[10px] tracking-[0.15em] px-2 py-1 transition-colors border-b-2 ${
-                    activeAct === i
-                      ? "text-[#E2B93B] border-[#E2B93B]"
-                      : "text-[#555] border-transparent hover:text-[#999]"
-                  }`}
-                  style={{ fontFamily: "monospace" }}
-                >
-                  {act.title}
-                </button>
-              ))}
-            </div>
-          )}
-
           {/* Right: switch (desktop only) */}
           <div className="flex items-center gap-3">
             {allCaseStudies.length > 1 && (
@@ -183,6 +163,35 @@ export function ReaderView({
           </div>
         )}
       </div>
+
+      {/* ─── Act side nav (desktop) ──────────────────── */}
+      {/* Fixed to the middle-right, with a backdrop panel so the labels keep
+          contrast as media scrolls underneath. Mobile uses the act pills above. */}
+      {hasMultipleActs && (
+        <nav
+          className="hidden md:flex fixed right-4 lg:right-6 top-1/2 -translate-y-1/2 z-40 flex-col gap-0.5 p-2 rounded-[10px] border border-white/10 bg-[#0A0A0A]/70 backdrop-blur-md shadow-[0_12px_40px_rgba(0,0,0,0.6)]"
+          aria-label="Section navigation"
+        >
+          {caseStudy.acts.map((act, i) => (
+            <button
+              key={i}
+              onClick={() => actRefs.current[i]?.scrollIntoView({ behavior: "smooth" })}
+              className={`group flex items-center justify-end gap-2.5 px-2 py-1.5 text-right text-[10px] tracking-[0.15em] uppercase transition-colors ${
+                activeAct === i ? "text-[#E2B93B]" : "text-[#666] hover:text-[#aaa]"
+              }`}
+              style={{ fontFamily: "monospace" }}
+              aria-current={activeAct === i ? "true" : undefined}
+            >
+              <span className="whitespace-nowrap">{act.title}</span>
+              <span
+                className={`h-3.5 w-[2px] shrink-0 transition-all ${
+                  activeAct === i ? "bg-[#E2B93B]" : "bg-[#2a2a2a] group-hover:bg-[#444]"
+                }`}
+              />
+            </button>
+          ))}
+        </nav>
+      )}
 
       {/* ─── Project switcher bottom sheet ────────────── */}
       {showProjectNav && allCaseStudies.length > 1 && (
@@ -420,7 +429,10 @@ export function ReaderView({
   );
 }
 
-/* ─── Next case study footer ─────────────────────────────────── */
+/* ─── Next case studies footer ───────────────────────────────── */
+// Shows up to two *related* studies as cards (thumbnail + title + summary).
+// Relevance = shared tags with the current study; ties and shortfalls fall back
+// to source order so we always surface two when the catalogue allows.
 function NextCaseStudyFooter({
   currentSlug,
   allCaseStudies,
@@ -430,31 +442,84 @@ function NextCaseStudyFooter({
   allCaseStudies: CaseStudy[];
   onNavigate?: (slug: string) => void;
 }) {
-  const currentIdx = allCaseStudies.findIndex((cs) => cs.slug === currentSlug);
-  const nextIdx = (currentIdx + 1) % allCaseStudies.length;
-  const next = allCaseStudies[nextIdx];
+  const current = allCaseStudies.find((cs) => cs.slug === currentSlug);
+  const others = allCaseStudies.filter((cs) => cs.slug !== currentSlug);
+  if (!current || others.length === 0) return null;
 
-  if (!next || next.slug === currentSlug) return null;
+  const currentTags = new Set((current.meta.tags || []).map((t) => t.toLowerCase()));
+  const picks = others
+    .map((cs, idx) => ({
+      cs,
+      idx,
+      score: (cs.meta.tags || []).filter((t) => currentTags.has(t.toLowerCase())).length,
+    }))
+    .sort((a, b) => b.score - a.score || a.idx - b.idx)
+    .slice(0, 2)
+    .map((s) => s.cs);
+
+  if (picks.length === 0) return null;
 
   return (
-    <div className="relative z-10 border-t border-[#1a1a1a]">
-      <button
-        onClick={() => onNavigate?.(next.slug)}
-        className="w-full text-left px-6 md:px-16 lg:px-24 py-16 md:py-24 group hover:bg-[#111] transition-colors"
-      >
-        <span className="text-[10px] tracking-[0.3em] text-[#555] block mb-4" style={{ fontFamily: "monospace" }}>
-          NEXT CASE STUDY
-        </span>
-        <h3
-          className="text-4xl md:text-6xl text-white group-hover:text-[#E2B93B] transition-colors"
-          style={{ letterSpacing: "-0.02em" }}
-        >
-          {next.meta.title}
-        </h3>
-        <p className="text-[#666] mt-2 text-sm" style={{ fontFamily: "monospace" }}>
-          {next.meta.summary}
-        </p>
-      </button>
+    <div className="relative z-10 border-t border-[#1a1a1a] px-6 md:px-16 lg:px-24 py-16 md:py-24">
+      <span className="text-[10px] tracking-[0.3em] text-[#555] block mb-8" style={{ fontFamily: "monospace" }}>
+        {picks.length > 1 ? "NEXT CASE STUDIES" : "NEXT CASE STUDY"}
+      </span>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8">
+        {picks.map((cs) => (
+          <button
+            key={cs.slug}
+            onClick={() => onNavigate?.(cs.slug)}
+            className="group text-left block"
+          >
+            <div className="relative overflow-hidden border border-[#1a1a1a] aspect-[16/10] bg-[#111]">
+              {cs.meta.cover && (
+                <img
+                  src={cs.meta.cover}
+                  alt={cs.meta.title}
+                  loading="lazy"
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+              )}
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A]/85 to-transparent opacity-60 group-hover:opacity-40 transition-opacity" />
+            </div>
+            <div className="mt-4 flex items-start justify-between gap-4">
+              <div className="min-w-0">
+                <h3
+                  className="text-2xl md:text-3xl text-white group-hover:text-[#E2B93B] transition-colors"
+                  style={{ letterSpacing: "-0.02em" }}
+                >
+                  {cs.meta.title}
+                </h3>
+                <p
+                  className="text-[#666] mt-1 text-sm line-clamp-2"
+                  style={{ fontFamily: "'Instrument Sans', sans-serif" }}
+                >
+                  {cs.meta.summary}
+                </p>
+              </div>
+              <span
+                className="shrink-0 mt-2 text-[#555] transition-all group-hover:text-[#E2B93B] group-hover:translate-x-1"
+                aria-hidden
+              >
+                &rarr;
+              </span>
+            </div>
+            {(cs.meta.tags || []).length > 0 && (
+              <div className="flex flex-wrap gap-2 mt-3">
+                {cs.meta.tags.slice(0, 2).map((tag) => (
+                  <span
+                    key={tag}
+                    className="text-[9px] text-[#555] border border-[#222] px-2 py-1"
+                    style={{ fontFamily: "monospace", letterSpacing: "var(--meta-tracking, 0.15em)" }}
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
+          </button>
+        ))}
+      </div>
     </div>
   );
 }

@@ -124,3 +124,20 @@
   border-radius: 0 !important;
 }
 
+
+/* ── Case-study gallery marquee (continuous drift, seamless at -50%) ── */
+@keyframes cs-marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.cs-marquee {
+  animation: cs-marquee linear infinite;
+  will-change: transform;
+}
+.cs-marquee-mask {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+}
+@media (prefers-reduced-motion: reduce) {
+  .cs-marquee { animation: none; }
+}
