@@ -518,6 +518,29 @@
             "headline": "<p>The Part That Was Actually Mine: What Hotels Do</p>"
           }
         ]
+      },
+      {
+        "title": "Decisions & Solutions",
+        "slides": [
+          {
+            "type": "narrative",
+            "id": "slide-1781094702978-0",
+            "body": "<p>Defining the hotel relationship surfaced a problem a normal two-party ride never has.</p><p>In a standard trip, it is the rider and the driver. If something goes wrong, it is between them. But a hotel-booked ride has three parties, the hotel that paid, the guest who rode, and the driver who drove. That raises a question with real money attached: <strong>what happens when the trip is disputed?</strong> A driver drops a guest short of the destination and marks it complete. Or a guest withholds confirmation so the trip never closes and the driver is not paid against a trip they actually ran.</p><p><strong>The guest-held OTP at drop-off is the first line of defense, the trip cannot be marked complete and billed against the hotel's credits until the guest confirms arrival. </strong>But the OTP does not resolve a genuine dispute on its own. For that, I routed disputed trip-ends to the JET admin as the arbiter, with the trip data, the live-tracking record, and the OTP status as the evidence. The admin decides, and the resolution flows back to the hotel's billing and the driver's payout.</p><p><em>This is the kind of problem that only appears when you take the business relationships seriously. A designer arranging screens never meets it. A designer defining how the parties relate meets it immediately.</em></p>",
+            "headline": "<p>The Edge Case the Hotel Model Created</p>"
+          },
+          {
+            "type": "single-mockup",
+            "id": "slide-1781094828185-1",
+            "image": "",
+            "device": "none"
+          },
+          {
+            "type": "narrative",
+            "id": "slide-1781094835918-2",
+            "body": "<p>Repositioning EV as cost-and-quality solved the pitch, but not the behavior. A discount alone does not change habits. If I wanted riders to actually keep choosing electric, <strong>the choice had to feel rewarding, measurable, and worth repeating.</strong></p><p>So I designed the EV layer as behavior change, not a checkbox. <strong>Riders get a lower price for choosing an electric vehicle,</strong> the immediate incentive. On top of that, <strong>I added a gamified carbon-saving score,</strong> so the rider sees the impact of their choice accumulate over time. The discount gets them to choose electric once. The visible, growing carbon score gives them a reason to choose it again, and a small sense of progress they own.</p><p>That connects the business model to actual behavior. <em>The client wanted EV adoption. Adoption does not come from telling people to go green. It comes from making the green choice the cheaper, more satisfying, more visible one. I designed the product so the social mission and the business incentive pointed the same direction.</em></p>",
+            "headline": "<p>Making the EV Choice Stick</p>"
+          }
+        ]
       }
     ]
   },
