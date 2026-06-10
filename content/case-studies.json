@@ -547,6 +547,23 @@
             "headline": "<p>Where I Stopped, On Purpose</p>"
           }
         ]
+      },
+      {
+        "title": "Shipped",
+        "slides": [
+          {
+            "type": "narrative",
+            "id": "slide-1781095110362-0",
+            "body": "<p>JET was a strategy-and-design engagement:</p><ul><li><p><strong>A defined product strategy where there was none, positioned around trust and reliability instead of two copyable features.</strong></p></li><li><p><strong>The business logic for how six user types relate, including the hotel partnership model that was missing from the brief entirely.</strong></p></li><li><p><strong>A complete, coherent design system across all six surfaces, built so a fleet owner, a hotel, and a rider all read the same trip through the same visual language.</strong></p></li><li><p><strong>A developer-ready handoff. I built the prototypes in code (React, via Figma Make) with the routing, components, and key states laid out, so the engineering team had a working reference to build against instead of a static mockup to interpret.</strong></p></li></ul><p>I took an early-stage idea with no model and no research, and handed back a product someone could actually build and defend.</p><hr><h2></h2><p></p>",
+            "headline": "<h2>What Shipped</h2><p></p>"
+          },
+          {
+            "type": "narrative",
+            "id": "slide-1781095120246-1",
+            "body": "<p>The transferable skill here is not \"I designed a ride-hailing app.\" It is this: I am a product designer who takes an underspecified mobility operation, works out how the parties actually relate, commercially and operationally, and designs a system that holds those relationships together. Being AI-native means I can build the prototypes myself to pressure-test that thinking, fast, without waiting on a team.</p><p>That is the core problem of fleet and mobility operations. A fleet owner, a driver, the company managing the fleet, and the corporate client are all different parties with different stakes in the same vehicle and the same trip. The value is not in any one dashboard. It is in defining who sees what, who pays whom, who is accountable when something goes wrong, and making the whole system tell one coherent story.</p><p>JET is where I learned to do that work, on a brief that gave me nothing but the chance to figure it out.</p>",
+            "headline": "<p>Why This Matters for Mobility and Fleet Operations</p>"
+          }
+        ]
       }
     ]
   },
