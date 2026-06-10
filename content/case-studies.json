@@ -555,7 +555,7 @@
             "type": "narrative",
             "id": "slide-1781095110362-0",
             "body": "<p>JET was a strategy-and-design engagement:</p><ul><li><p><strong>A defined product strategy where there was none, positioned around trust and reliability instead of two copyable features.</strong></p></li><li><p><strong>The business logic for how six user types relate, including the hotel partnership model that was missing from the brief entirely.</strong></p></li><li><p><strong>A complete, coherent design system across all six surfaces, built so a fleet owner, a hotel, and a rider all read the same trip through the same visual language.</strong></p></li><li><p><strong>A developer-ready handoff. I built the prototypes in code (React, via Figma Make) with the routing, components, and key states laid out, so the engineering team had a working reference to build against instead of a static mockup to interpret.</strong></p></li></ul><p>I took an early-stage idea with no model and no research, and handed back a product someone could actually build and defend.</p><hr><h2></h2><p></p>",
-            "headline": "<h2>What Shipped</h2><p></p>"
+            "headline": "<p>What Shipped</p>"
           },
           {
             "type": "narrative",
