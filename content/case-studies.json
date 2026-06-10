@@ -541,6 +541,12 @@
             "headline": "<p>Making the EV Choice Stick</p>"
           },
           {
+            "type": "lottie",
+            "id": "slide-1781116155133-4",
+            "lottieUrl": "https://res.cloudinary.com/da6wyupbv/raw/upload/v1781116093/EV-carbon_fxw1wv.json",
+            "loop": true
+          },
+          {
             "type": "narrative",
             "id": "slide-1781094989310-3",
             "body": "<p>One question in the hotel model I deliberately did not answer: <strong>how the hotel recovers the ride cost from the guest.</strong></p><p>There are two clean options, and they trade off against each other. Bundle the ride into the room rate or a service package, which is simpler to bill but makes guests pay for something they may not use. Or offer it as an optional add-on at checkout, which respects consent but lowers the attach rate. The right answer depends on real pricing data and guest behavior, what guests will tolerate, what hotels will push, how it affects margin.</p><p><strong>The client had none of that data, and inventing it would have been guesswork dressed up as a decision. </strong>So I scoped it as a defined open question for validation rather than a fake answer. Knowing where the idea outruns the evidence is part of the work, especially when you are taking something from a vague brief to a real product without users yet.</p>",
