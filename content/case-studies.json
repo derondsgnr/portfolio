@@ -539,6 +539,12 @@
             "id": "slide-1781094835918-2",
             "body": "<p>Repositioning EV as cost-and-quality solved the pitch, but not the behavior. A discount alone does not change habits. If I wanted riders to actually keep choosing electric, <strong>the choice had to feel rewarding, measurable, and worth repeating.</strong></p><p>So I designed the EV layer as behavior change, not a checkbox. <strong>Riders get a lower price for choosing an electric vehicle,</strong> the immediate incentive. On top of that, <strong>I added a gamified carbon-saving score,</strong> so the rider sees the impact of their choice accumulate over time. The discount gets them to choose electric once. The visible, growing carbon score gives them a reason to choose it again, and a small sense of progress they own.</p><p>That connects the business model to actual behavior. <em>The client wanted EV adoption. Adoption does not come from telling people to go green. It comes from making the green choice the cheaper, more satisfying, more visible one. I designed the product so the social mission and the business incentive pointed the same direction.</em></p>",
             "headline": "<p>Making the EV Choice Stick</p>"
+          },
+          {
+            "type": "narrative",
+            "id": "slide-1781094989310-3",
+            "body": "<p>One question in the hotel model I deliberately did not answer: <strong>how the hotel recovers the ride cost from the guest.</strong></p><p>There are two clean options, and they trade off against each other. Bundle the ride into the room rate or a service package, which is simpler to bill but makes guests pay for something they may not use. Or offer it as an optional add-on at checkout, which respects consent but lowers the attach rate. The right answer depends on real pricing data and guest behavior, what guests will tolerate, what hotels will push, how it affects margin.</p><p><strong>The client had none of that data, and inventing it would have been guesswork dressed up as a decision. </strong>So I scoped it as a defined open question for validation rather than a fake answer. Knowing where the idea outruns the evidence is part of the work, especially when you are taking something from a vague brief to a real product without users yet.</p>",
+            "headline": "<p>Where I Stopped, On Purpose</p>"
           }
         ]
       }
