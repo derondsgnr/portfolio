@@ -5,6 +5,7 @@ import { motion, useScroll, useSpring } from "motion/react";
 import Link from "next/link";
 import type { CaseStudy } from "../../../types/case-study";
 import { SlideRenderer, ScrambleHeading, ScanLines, resolveBrowserUrl } from "./slide-renderer";
+import { SplitText, RevealText } from "../shared/split-text";
 import { CommentsSection } from "./comments-section";
 import { CaseStudyCTA } from "./case-study-cta";
 
@@ -261,18 +262,21 @@ export function ReaderView({
               </>
             )}
           </div>
-          <h1
-            className="text-5xl md:text-7xl lg:text-8xl text-white mb-4"
+          <SplitText
+            text={caseStudy.meta.title}
+            as="h1"
+            className="text-5xl md:text-7xl lg:text-8xl mb-4"
             style={{ letterSpacing: "-0.02em" }}
-          >
-            {caseStudy.meta.title}
-          </h1>
-          <p
-            className="text-[#888] max-w-2xl"
-            style={{ fontFamily: "'Instrument Sans', sans-serif", lineHeight: 1.7 }}
-          >
-            {caseStudy.meta.summary}
-          </p>
+            amount={0.2}
+          />
+          <RevealText delay={0.32}>
+            <p
+              className="text-[#888] max-w-2xl"
+              style={{ fontFamily: "'Instrument Sans', sans-serif", lineHeight: 1.7 }}
+            >
+              {caseStudy.meta.summary}
+            </p>
+          </RevealText>
 
           <div className="flex flex-wrap gap-2 mt-6">
             {caseStudy.meta.tags.map((tag) => (

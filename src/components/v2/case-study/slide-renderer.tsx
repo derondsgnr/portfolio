@@ -3,6 +3,7 @@ import { motion, useInView, AnimatePresence, useReducedMotion } from "motion/rea
 import type { Slide, NarratorBlock } from "../../../types/case-study";
 import { DeviceMockup, BrowserChromeContext } from "./device-mockup";
 import { useScrambleText } from "../shared/scramble-text";
+import { SplitText, RevealText } from "../shared/split-text";
 import { LottiePlayer } from "../shared/lottie-player";
 import { ImageLightbox } from "../shared/image-lightbox";
 import { VideoEmbedFrame } from "../shared/youtube-video-frame";
@@ -320,54 +321,38 @@ function CoverSlideComponent({ slide }: { slide: Extract<Slide, { type: "cover" 
 
 /* ─── NARRATIVE ──────────────────────────────────────────────── */
 function NarrativeSlideComponent({ slide }: { slide: Extract<Slide, { type: "narrative" }> }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, amount: 0.3 });
-
   return (
-    <div ref={ref} className="min-h-[70vh] flex items-center px-6 sm:px-8 md:px-10 lg:px-16 py-20">
+    <div className="min-h-[70vh] flex items-center px-6 sm:px-8 md:px-10 lg:px-16 py-20">
       <SlideLayout narrator={slide.narrator}>
         <div className={COPY_MAX_W}>
           {slide.headline && (
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.7 }}
-            >
-              <ScrambleHeading text={slide.headline} className="text-3xl md:text-5xl mb-8" scramble={false} />
-            </motion.div>
+            <SplitText
+              text={slide.headline}
+              as="h2"
+              className="text-3xl md:text-5xl mb-8"
+              style={{ letterSpacing: "-0.02em" }}
+            />
           )}
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="space-y-4"
-          >
+          <RevealText delay={slide.headline ? 0.28 : 0} className="space-y-4">
             <RichBody
               text={slide.body}
               className="text-[#aaa]"
               style={{ fontFamily: "'Instrument Sans', sans-serif", lineHeight: "var(--reader-leading, 1.8)" }}
             />
-          </motion.div>
+          </RevealText>
 
           {slide.annotation && (
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={inView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="mt-8 border-l-2 border-[#E2B93B]/50 pl-4"
-            >
+            <RevealText delay={slide.headline ? 0.38 : 0.1} className="mt-8 border-l-2 border-[#E2B93B]/50 pl-4">
               <p className="text-[#E2B93B]/80 text-sm" style={{ fontFamily: "monospace" }}>
                 <RichInline text={slide.annotation} />
               </p>
-            </motion.div>
+            </RevealText>
           )}
 
           {slide.references && slide.references.length > 0 && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={inView ? { opacity: 1 } : {}}
-              transition={{ duration: 0.5, delay: 0.25 }}
+            <RevealText
+              delay={0.42}
               className="mt-10 pt-6"
               style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}
             >
@@ -391,7 +376,7 @@ function NarrativeSlideComponent({ slide }: { slide: Extract<Slide, { type: "nar
                   </a>
                 ))}
               </div>
-            </motion.div>
+            </RevealText>
           )}
         </div>
       </SlideLayout>
@@ -409,14 +394,14 @@ function SingleMockupSlideComponent({ slide }: { slide: Extract<Slide, { type: "
       <SlideLayout narrator={slide.narrator}>
         <div>
           {slide.headline && (
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.7 }}
-              className="mb-10"
-            >
-              <ScrambleHeading text={slide.headline} className="text-2xl md:text-4xl" scramble={false} />
-            </motion.div>
+            <div className="mb-10">
+              <SplitText
+                text={slide.headline}
+                as="h2"
+                className="text-2xl md:text-4xl"
+                style={{ letterSpacing: "-0.02em" }}
+              />
+            </div>
           )}
 
           <motion.div
@@ -475,14 +460,14 @@ function ComparisonSlideComponent({ slide }: { slide: Extract<Slide, { type: "co
       <SlideLayout narrator={slide.narrator}>
         <div>
           {slide.headline && (
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.7 }}
-              className="mb-10"
-            >
-              <ScrambleHeading text={slide.headline} className="text-2xl md:text-4xl" scramble={false} />
-            </motion.div>
+            <div className="mb-10">
+              <SplitText
+                text={slide.headline}
+                as="h2"
+                className="text-2xl md:text-4xl"
+                style={{ letterSpacing: "-0.02em" }}
+              />
+            </div>
           )}
 
           <motion.div
@@ -547,24 +532,17 @@ function InsightSlideComponent({ slide }: { slide: Extract<Slide, { type: "insig
     <div ref={ref} className="min-h-[70vh] flex items-center px-6 sm:px-8 md:px-10 lg:px-16 py-20">
       <SlideLayout narrator={slide.narrator}>
         <div className={COPY_MAX_W}>
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.7 }}
-          >
-            <ScrambleHeading text={slide.headline} className="text-3xl md:text-5xl mb-10" scramble={false} />
-          </motion.div>
+          <SplitText
+            text={slide.headline}
+            as="h2"
+            className="text-3xl md:text-5xl mb-10"
+            style={{ letterSpacing: "-0.02em" }}
+          />
 
           {slide.body && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-[#aaa] mb-10"
-              style={{ fontFamily: "'Instrument Sans', sans-serif", lineHeight: "var(--reader-leading, 1.8)" }}
-            >
+            <RevealText delay={0.28} className="mb-10">
               <RichBody text={slide.body} className="text-[#aaa]" style={{ fontFamily: "'Instrument Sans', sans-serif", lineHeight: "var(--reader-leading, 1.8)" }} />
-            </motion.div>
+            </RevealText>
           )}
 
           {/* Insight card */}
@@ -601,14 +579,14 @@ function MetricSlideComponent({ slide }: { slide: Extract<Slide, { type: "metric
       <SlideLayout narrator={slide.narrator}>
         <div className="max-w-5xl w-full">
           {slide.headline && (
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.7 }}
-              className="mb-16"
-            >
-              <ScrambleHeading text={slide.headline} className="text-3xl md:text-5xl" scramble={false} />
-            </motion.div>
+            <div className="mb-16">
+              <SplitText
+                text={slide.headline}
+                as="h2"
+                className="text-3xl md:text-5xl"
+                style={{ letterSpacing: "-0.02em" }}
+              />
+            </div>
           )}
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 lg:gap-10">
@@ -694,7 +672,12 @@ function FlowSlideComponent({ slide }: { slide: Extract<Slide, { type: "flow" }>
     <div ref={ref} className="min-h-[70vh] flex flex-col justify-center py-20">
       {slide.headline && (
         <div className="px-6 sm:px-8 md:px-10 lg:px-16 mb-10">
-          <ScrambleHeading text={slide.headline} className="text-2xl md:text-4xl" scramble={false} />
+          <SplitText
+            text={slide.headline}
+            as="h2"
+            className="text-2xl md:text-4xl"
+            style={{ letterSpacing: "-0.02em" }}
+          />
         </div>
       )}
 
@@ -759,14 +742,14 @@ function EmbedSlideComponent({ slide }: { slide: Extract<Slide, { type: "embed" 
       <SlideLayout narrator={slide.narrator}>
         <div>
           {slide.headline && (
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.7 }}
-              className="mb-10"
-            >
-              <ScrambleHeading text={slide.headline} className="text-2xl md:text-4xl" scramble={false} />
-            </motion.div>
+            <div className="mb-10">
+              <SplitText
+                text={slide.headline}
+                as="h2"
+                className="text-2xl md:text-4xl"
+                style={{ letterSpacing: "-0.02em" }}
+              />
+            </div>
           )}
 
           <motion.div
@@ -831,14 +814,14 @@ function VideoSlideComponent({ slide }: { slide: Extract<Slide, { type: "video" 
       <SlideLayout narrator={slide.narrator}>
         <div>
           {slide.headline && (
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.7 }}
-              className="mb-10"
-            >
-              <ScrambleHeading text={slide.headline} className="text-2xl md:text-4xl" scramble={false} />
-            </motion.div>
+            <div className="mb-10">
+              <SplitText
+                text={slide.headline}
+                as="h2"
+                className="text-2xl md:text-4xl"
+                style={{ letterSpacing: "-0.02em" }}
+              />
+            </div>
           )}
 
           <motion.div
@@ -992,14 +975,14 @@ function MockupGallerySlideComponent({ slide }: { slide: Extract<Slide, { type: 
       <SlideLayout narrator={slide.narrator}>
         <div>
           {slide.headline && (
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.7 }}
-              className="mb-12"
-            >
-              <ScrambleHeading text={slide.headline} className="text-2xl md:text-4xl" scramble={false} />
-            </motion.div>
+            <div className="mb-12">
+              <SplitText
+                text={slide.headline}
+                as="h2"
+                className="text-2xl md:text-4xl"
+                style={{ letterSpacing: "-0.02em" }}
+              />
+            </div>
           )}
 
           {/* Swipe hint for mobile */}
@@ -1199,14 +1182,14 @@ function ProcessSlideComponent({ slide }: { slide: Extract<Slide, { type: "proce
       <SlideLayout narrator={slide.narrator}>
         <div>
           {slide.headline && (
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.7 }}
-              className="mb-12"
-            >
-              <ScrambleHeading text={slide.headline} className="text-2xl md:text-4xl" scramble={false} />
-            </motion.div>
+            <div className="mb-12">
+              <SplitText
+                text={slide.headline}
+                as="h2"
+                className="text-2xl md:text-4xl"
+                style={{ letterSpacing: "-0.02em" }}
+              />
+            </div>
           )}
 
           <div className="grid md:grid-cols-2 gap-6">
@@ -1254,13 +1237,12 @@ function LottieSlideComponent({ slide }: { slide: Extract<Slide, { type: "lottie
       <SlideLayout narrator={slide.narrator}>
         <div className={`${MEDIA_MAX_W} w-full`}>
           {slide.headline && (
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.7 }}
-            >
-              <ScrambleHeading text={slide.headline} className="text-3xl md:text-5xl mb-8" scramble={false} />
-            </motion.div>
+            <SplitText
+              text={slide.headline}
+              as="h2"
+              className="text-3xl md:text-5xl mb-8"
+              style={{ letterSpacing: "-0.02em" }}
+            />
           )}
 
           <motion.div
