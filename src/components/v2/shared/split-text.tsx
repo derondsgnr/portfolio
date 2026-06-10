@@ -8,6 +8,7 @@ import React, {
   useMemo,
 } from "react";
 import { motion, useInView, useReducedMotion } from "motion/react";
+import parseHtml from "html-react-parser";
 
 // Runs synchronously after DOM commit, before paint on the client.
 // Falls back to useEffect during SSR (no-op there since hooks don't run on server).
@@ -80,8 +81,17 @@ export function SplitText({
     }
   });
 
-  // Plain fallback: HTML content or reduced-motion preference.
-  if (prefersReducedMotion || isHtml) {
+  // HTML content can't be split into lines — render it parsed, plainly.
+  if (isHtml) {
+    return React.createElement(
+      Tag,
+      { className, style },
+      <span className="rte-body">{parseHtml(text)}</span>
+    );
+  }
+
+  // Plain fallback: reduced-motion preference.
+  if (prefersReducedMotion) {
     return React.createElement(Tag, { className, style }, text);
   }
 
@@ -113,7 +123,15 @@ export function SplitText({
     Tag,
     { ref: containerRef, className, style },
     lines.map((line, i) => (
-      <span key={i} style={{ display: "block", overflow: "hidden" }}>
+      <span
+        key={i}
+        style={{
+          display: "block",
+          overflow: "hidden",
+          paddingBottom: "0.15em",
+          marginBottom: "-0.15em",
+        }}
+      >
         <motion.span
           initial={{ y: "110%", color: INITIAL_COLOR }}
           animate={
