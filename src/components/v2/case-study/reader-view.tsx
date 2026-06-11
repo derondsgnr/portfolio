@@ -165,32 +165,49 @@ export function ReaderView({
       </div>
 
       {/* ─── Act side nav (desktop) ──────────────────── */}
-      {/* Fixed to the middle-right, with a backdrop panel so the labels keep
-          contrast as media scrolls underneath. Mobile uses the act pills above. */}
+      {/* No card or glass panel — labels sit directly on the page. A soft
+          vignette behind them (invisible on the flat #0A0A0A background)
+          adds contrast only where media scrolls underneath. Mobile keeps
+          the act pills in the sticky header above. */}
       {hasMultipleActs && (
-        <nav
-          className="hidden md:flex fixed right-4 lg:right-6 top-1/2 -translate-y-1/2 z-40 flex-col gap-0.5 p-2 rounded-[10px] border border-white/10 bg-[#0A0A0A]/70 backdrop-blur-md shadow-[0_12px_40px_rgba(0,0,0,0.6)]"
-          aria-label="Section navigation"
-        >
-          {caseStudy.acts.map((act, i) => (
-            <button
-              key={i}
-              onClick={() => actRefs.current[i]?.scrollIntoView({ behavior: "smooth" })}
-              className={`group flex items-center justify-end gap-2.5 px-2 py-1.5 text-right text-[10px] tracking-[0.15em] uppercase transition-colors ${
-                activeAct === i ? "text-[#E2B93B]" : "text-[#666] hover:text-[#aaa]"
-              }`}
-              style={{ fontFamily: "monospace" }}
-              aria-current={activeAct === i ? "true" : undefined}
-            >
-              <span className="whitespace-nowrap">{act.title}</span>
-              <span
-                className={`h-3.5 w-[2px] shrink-0 transition-all ${
-                  activeAct === i ? "bg-[#E2B93B]" : "bg-[#2a2a2a] group-hover:bg-[#444]"
+        <>
+          <div
+            className="hidden md:block fixed inset-y-0 right-0 w-56 z-30 pointer-events-none"
+            style={{ background: "linear-gradient(to left, rgba(10,10,10,0.6), transparent 75%)" }}
+            aria-hidden
+          />
+          <motion.nav
+            initial={{ opacity: 0, x: 16 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="hidden md:flex fixed right-5 lg:right-8 top-1/2 -translate-y-1/2 z-40 flex-col items-end gap-3.5"
+            aria-label="Section navigation"
+          >
+            {caseStudy.acts.map((act, i) => (
+              <button
+                key={i}
+                onClick={() => actRefs.current[i]?.scrollIntoView({ behavior: "smooth", block: "start" })}
+                className={`group flex cursor-pointer items-center gap-3 text-right text-[10px] tracking-[0.2em] uppercase transition-colors duration-300 ${
+                  activeAct === i ? "text-[#E2B93B]" : "text-white/35 hover:text-white/75"
                 }`}
-              />
-            </button>
-          ))}
-        </nav>
+                style={{ fontFamily: "monospace", filter: "drop-shadow(0 1px 5px rgba(0,0,0,0.6))" }}
+                aria-current={activeAct === i ? "true" : undefined}
+              >
+                <span className="whitespace-nowrap">{act.title}</span>
+                <span className="relative h-px w-5 shrink-0 overflow-hidden bg-white/15">
+                  <span className="absolute inset-0 origin-right scale-x-0 bg-white/40 transition-transform duration-300 group-hover:scale-x-100" />
+                  {activeAct === i && (
+                    <motion.span
+                      layoutId="act-side-nav-indicator"
+                      className="absolute inset-0 bg-[#E2B93B]"
+                      transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                    />
+                  )}
+                </span>
+              </button>
+            ))}
+          </motion.nav>
+        </>
       )}
 
       {/* ─── Project switcher bottom sheet ────────────── */}
@@ -321,6 +338,7 @@ export function ReaderView({
             key={actIndex}
             ref={(el) => { actRefs.current[actIndex] = el; }}
             className="relative"
+            style={{ scrollMarginTop: "100px" }}
           >
             {act.slides
               .filter((slide) => slide.type !== "cover")
