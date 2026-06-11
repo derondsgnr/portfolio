@@ -481,12 +481,7 @@
           {
             "type": "narrative",
             "id": "slide-1780933206615-2",
-            "body": "<p>My role was to close that gap. I owned the product thinking and the design across all six surfaces, riders, drivers, fleet owners, hotels, and admins, plus the marketing site. That included the parts a client normally hands a designer already solved: the personas, the competitive position, the business logic, and how the pieces of the system relate. None of that existed. I built it.</p>"
-          },
-          {
-            "type": "narrative",
-            "id": "slide-1780933223563-3",
-            "body": "<p>The deadline was tight, so the process had to be fast without getting sloppy. I worked the brief into strategy first, using Claude to pressure-test the thinking and rough out prototypes before I touched final screens, then moved into Figma Make to design in code. Brief to strategy to working build, compressed. That workflow is the reason a one-person engagement could produce a six-surface product with the business logic worked out underneath it. The AI-native build is not the headline of this project. It is what let me spend my time on the product decisions instead of on production.</p>"
+            "body": "<p>My role was to close that gap. I owned the product thinking and the design across all six surfaces, riders, drivers, fleet owners, hotels, and admins, plus the marketing site. That included the parts a client normally hands a designer already solved: the personas, the competitive position, the business logic, and how the pieces of the system relate. None of that existed. I built it.<br><br>The deadline was tight, so the process had to be fast without getting sloppy. I worked the brief into strategy first, using Claude to pressure-test the thinking and rough out prototypes before I touched final screens, then moved into Figma Make to design in code. Brief to strategy to working build, compressed. That workflow is the reason a one-person engagement could produce a six-surface product with the business logic worked out underneath it. The AI-native build is not the headline of this project. It is what let me spend my time on the product decisions instead of on production.</p>"
           }
         ]
       },
