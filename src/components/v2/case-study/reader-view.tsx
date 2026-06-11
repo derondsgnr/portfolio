@@ -8,6 +8,8 @@ import { SlideRenderer, ScrambleHeading, ScanLines, resolveBrowserUrl } from "./
 import { SplitText, RevealText } from "../shared/split-text";
 import { CommentsSection } from "./comments-section";
 import { CaseStudyCTA } from "./case-study-cta";
+import { CaseStudyMediaProvider } from "./case-study-media-context";
+import { CaseStudyMediaLightbox } from "../shared/case-study-media-lightbox";
 
 /**
  * READER VIEW — Continuous scroll mode (default)
@@ -93,6 +95,7 @@ export function ReaderView({
   const heroImage = firstCover?.heroImage || caseStudy.meta.cover || "";
 
   return (
+    <CaseStudyMediaProvider slides={allSlides}>
     <div ref={containerRef} className="relative min-h-screen bg-[#0A0A0A] pb-28 md:pb-24">
       {/* ─── Signal grid + scan lines (Synthesis DNA) ──── */}
       <div
@@ -443,7 +446,10 @@ export function ReaderView({
           onNavigate={onSwitchCaseStudy}
         />
       )}
+
+      <CaseStudyMediaLightbox />
     </div>
+    </CaseStudyMediaProvider>
   );
 }
 
