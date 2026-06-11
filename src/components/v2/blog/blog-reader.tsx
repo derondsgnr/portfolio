@@ -9,6 +9,8 @@ import type { BlogPost } from "@/types/blog";
 import type { BlogSeries } from "@/types/blog";
 import type { Slide } from "@/types/case-study";
 import { SlideRenderer } from "../case-study/slide-renderer";
+import { CaseStudyMediaProvider } from "../case-study/case-study-media-context";
+import { CaseStudyMediaLightbox } from "../shared/case-study-media-lightbox";
 import { SeriesBanner } from "./series-banner";
 import { SeriesNavFooter } from "./series-nav-footer";
 
@@ -365,6 +367,7 @@ export function BlogReader({
   const heroInView = useInView(heroRef, { once: true, amount: 0.2 });
 
   return (
+    <CaseStudyMediaProvider slides={post.slides}>
     <div className="relative bg-[#0A0A0A] min-h-screen">
       <div
         className="fixed inset-0 pointer-events-none z-0"
@@ -535,6 +538,9 @@ export function BlogReader({
         )}
         <RelatedPosts posts={relatedPosts} />
       </div>
+
+      <CaseStudyMediaLightbox />
     </div>
+    </CaseStudyMediaProvider>
   );
 }

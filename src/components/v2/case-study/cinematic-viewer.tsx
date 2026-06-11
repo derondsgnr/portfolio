@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef, useCallback, useMemo } from "react"
 import { motion, AnimatePresence } from "motion/react";
 import type { CaseStudy, Slide } from "../../../types/case-study";
 import { SlideRenderer, ScrambleHeading, resolveBrowserUrl } from "./slide-renderer";
+import { CaseStudyMediaProvider } from "./case-study-media-context";
+import { CaseStudyMediaLightbox } from "../shared/case-study-media-lightbox";
 
 const VISUAL_SLIDE_TYPES = new Set([
   "cover", "single-mockup", "comparison", "insight", "metric",
@@ -44,6 +46,13 @@ export function CinematicViewer({
   // Only visual slide types — narrative slides are excluded in cinematic mode
   const allSlides: Slide[] = useMemo(
     () => caseStudy.acts.flatMap((act) => act.slides).filter((s) => VISUAL_SLIDE_TYPES.has(s.type)),
+    [caseStudy]
+  );
+
+  // Unfiltered, full-study slide list for the shared media lightbox — lets the
+  // reader page through every expandable image regardless of which slide is current.
+  const allMediaSlides: Slide[] = useMemo(
+    () => caseStudy.acts.flatMap((act) => act.slides),
     [caseStudy]
   );
 
@@ -184,6 +193,7 @@ export function CinematicViewer({
   };
 
   return (
+    <CaseStudyMediaProvider slides={allMediaSlides}>
     <div
       ref={containerRef}
       className="fixed inset-0 z-[100] bg-[#0A0A0A] flex flex-col"
@@ -498,6 +508,9 @@ export function CinematicViewer({
         Slide {currentIndex + 1} of {allSlides.length}:
         {"headline" in currentSlide ? ` ${String((currentSlide as any).headline ?? "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim()}` : ""}
       </div>
+
+      <CaseStudyMediaLightbox />
     </div>
+    </CaseStudyMediaProvider>
   );
 }
