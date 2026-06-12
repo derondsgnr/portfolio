@@ -783,11 +783,10 @@
         "title": "What I Did",
         "slides": [
           {
-            "type": "section-break",
-            "id": "urban-act2",
-            "actTitle": "What I Did",
-            "actNumber": 2,
-            "subtitle": "Rider app and driver app"
+            "type": "narrative",
+            "id": "slide-1781259693351-5",
+            "body": "<p>Before the feature work, I created and maintained a design system across the driver and rider apps, so the whole product felt like one Urban.</p><p>The starting state was inconsistent: typography that changed from screen to screen, uneven spacing, assets that did not match. Moving from the driver side to the rider side felt like moving between two different products built by two different teams. I tightened the typography, regularized the spacing, and unified the assets so that a single visual language carried across both sides. Modern, consistent, and recognizably one system.</p><p>This is the layer most people skip and then wonder why a product feels untrustworthy. A travel platform asking people to pay upfront for an interstate journey cannot afford to look stitched together.</p>",
+            "headline": "<p>First, One Urban: The Design System</p>"
           },
           {
             "type": "narrative",
