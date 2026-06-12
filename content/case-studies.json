@@ -770,6 +770,12 @@
             "id": "urban-problem",
             "headline": "The problem (before redesign)",
             "body": "<p>Urban is the personal product of a client I had already built JET for. He brought me in as a project manager. While managing those tasks, I kept running into the product's interface, and it was rough. Fragmented navigation, information that belonged together split across screens, a driver experience that made you hop between a homepage and a separate dashboard for no reason.</p><p>So I texted him and offered to take on the UI. He gave me access, and what started as a project-management contract became an end-to-end redesign of both sides of the product.</p><p>That origin matters, because it is how I work. I do not wait for a design brief to land. I find the problem, and I make the case for fixing it.</p>"
+          },
+          {
+            "type": "narrative",
+            "id": "slide-1781259558829-3",
+            "body": "<p>Before any redesign decision, one rule governed all of them: I could not overly disrupt the existing architecture.</p><p>This was pre-AI-assisted development for their team. Every structural change I proposed had a real cost in engineering time and money. So the job was not to redraw the product from scratch into something prettier. It was to find the highest-leverage changes, the ones that fixed the real confusion and risk, while respecting a system that was already partly built and expensive to move.</p><p>Designing within that boundary is the actual skill. Anyone can redesign with a blank canvas. Doing it inside a live system, where every change is a negotiation with engineering reality, is what shipping in an established company looks like. The team found the approach refreshing and simpler precisely because it was disciplined, not because it was unconstrained.</p>",
+            "headline": "<p>The Constraint That Shaped Everything</p>"
           }
         ]
       },
