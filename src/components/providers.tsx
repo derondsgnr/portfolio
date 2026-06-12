@@ -9,6 +9,7 @@ import { BookingProvider } from "./v2/booking-context";
 import { BookingDrawer } from "./v2/booking-drawer";
 import { SiteConfigProvider } from "@/contexts/site-config-context";
 import { TestimonialsProvider } from "@/contexts/testimonials-context";
+import { ScrollAffordances } from "./v2/shared/scroll-affordances";
 import type { TestimonialItem } from "@/lib/content/testimonials";
 import { useArmAudio } from "@/hooks/useSound";
 import type { NavItem } from "@/lib/content/nav";
@@ -69,6 +70,7 @@ export function Providers({ children, nav = [], global: globalConfig, sounds, te
           </motion.div>
         </AnimatePresence>
         <BookingDrawer />
+        {!isAdmin && <ScrollAffordances />}
       </div>
     </BookingProvider>
     </TestimonialsProvider>

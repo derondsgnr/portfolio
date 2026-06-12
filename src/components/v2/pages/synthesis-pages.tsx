@@ -295,6 +295,30 @@ function SignalWorkHero({ projects = V2_PROJECTS, copy }: { projects?: typeof V2
   );
 }
 
+/* "Coming soon" affordance — persistent badge + hover scrim, blocks click-through */
+function ComingSoonOverlay() {
+  return (
+    <>
+      <div className="absolute right-4 bottom-4 z-[2]">
+        <span
+          className="border border-[#E2B93B]/50 bg-[#0A0A0A]/80 px-2.5 py-1 backdrop-blur-sm"
+          style={{ fontFamily: "monospace", fontSize: "9px", letterSpacing: "0.18em", textTransform: "uppercase", color: "#E2B93B" }}
+        >
+          Coming soon
+        </span>
+      </div>
+      <div className="absolute inset-0 z-[2] flex items-center justify-center bg-[#0A0A0A]/0 opacity-0 transition-opacity duration-300 group-hover:bg-[#0A0A0A]/75 group-hover:opacity-100">
+        <span
+          className="border border-[#E2B93B]/60 bg-[#0A0A0A]/90 px-5 py-2"
+          style={{ fontFamily: "monospace", fontSize: "11px", letterSpacing: "0.22em", textTransform: "uppercase", color: "#E2B93B" }}
+        >
+          Coming soon
+        </span>
+      </div>
+    </>
+  );
+}
+
 /* Synthesis list view (hover-reveal, cipher scramble) */
 function WorkListView({ projects = V2_PROJECTS }: { projects?: typeof V2_PROJECTS }) {
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
@@ -302,17 +326,22 @@ function WorkListView({ projects = V2_PROJECTS }: { projects?: typeof V2_PROJECT
 
   return (
     <div className="max-w-6xl mx-auto">
-      {projects.map((project, i) => (
+      {projects.map((project, i) => {
+        const isComingSoon = (project as any).status === "coming-soon";
+        return (
         <motion.div
           key={project.id}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.8 }}
-          className="relative cursor-pointer group"
+          className={`relative group ${isComingSoon ? "cursor-default" : "cursor-pointer"}`}
           onMouseEnter={() => setHoveredIdx(i)}
           onMouseLeave={() => setHoveredIdx(null)}
-          onClick={withSound(() => (project as any).slug && router.push(`/work/${(project as any).slug}`), "navigate")}
+          onClick={withSound(() => {
+            if (isComingSoon) return;
+            (project as any).slug && router.push(`/work/${(project as any).slug}`);
+          }, "navigate")}
         >
           <div className="h-px" style={{ background: "rgba(255,255,255,0.04)" }} />
 
@@ -329,9 +358,19 @@ function WorkListView({ projects = V2_PROJECTS }: { projects?: typeof V2_PROJECT
             <span style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(2rem, 10vw, 3.5rem)", lineHeight: 1, letterSpacing: "-0.02em", textTransform: "uppercase", color: hoveredIdx === i ? "#E2B93B" : "rgba(255,255,255,0.85)", display: "block", marginBottom: "6px" }}>
               <ScrambleText text={project.title} speed={20} />
             </span>
-            <span style={{ fontFamily: "monospace", fontSize: "11px", letterSpacing: "0.12em", color: "rgba(255,255,255,0.45)", textTransform: "uppercase" }}>
-              {project.category}
-            </span>
+            <div className="flex items-center gap-2">
+              <span style={{ fontFamily: "monospace", fontSize: "11px", letterSpacing: "0.12em", color: "rgba(255,255,255,0.45)", textTransform: "uppercase" }}>
+                {project.category}
+              </span>
+              {isComingSoon && (
+                <span
+                  className="border border-[#E2B93B]/50 px-1.5 py-0.5"
+                  style={{ fontFamily: "monospace", fontSize: "9px", letterSpacing: "0.18em", textTransform: "uppercase", color: "#E2B93B" }}
+                >
+                  Coming soon
+                </span>
+              )}
+            </div>
           </div>
 
           {/* Desktop layout — horizontal */}
@@ -343,6 +382,14 @@ function WorkListView({ projects = V2_PROJECTS }: { projects?: typeof V2_PROJECT
               <ScrambleText text={project.title} speed={20} />
             </span>
             <div className="text-right">
+              {isComingSoon && (
+                <span
+                  className="mb-1 inline-block border border-[#E2B93B]/50 px-1.5 py-0.5"
+                  style={{ fontFamily: "monospace", fontSize: "9px", letterSpacing: "0.18em", textTransform: "uppercase", color: "#E2B93B" }}
+                >
+                  Coming soon
+                </span>
+              )}
               <span className="block" style={{ fontFamily: "monospace", fontSize: "11px", letterSpacing: "0.15em", color: "rgba(255,255,255,0.5)", textTransform: "uppercase" }}>
                 {project.category}
               </span>
@@ -403,6 +450,7 @@ function WorkListView({ projects = V2_PROJECTS }: { projects?: typeof V2_PROJECT
                         {project.year}
                       </span>
                     </div>
+                    {isComingSoon && <ComingSoonOverlay />}
                   </div>
 
                   {/* Description — page background only, directly under the image strip */}
@@ -423,7 +471,8 @@ function WorkListView({ projects = V2_PROJECTS }: { projects?: typeof V2_PROJECT
             )}
           </AnimatePresence>
         </motion.div>
-      ))}
+        );
+      })}
       <div className="h-px" style={{ background: "rgba(255,255,255,0.04)" }} />
     </div>
   );
@@ -435,15 +484,20 @@ function WorkGridView({ projects = V2_PROJECTS }: { projects?: typeof V2_PROJECT
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-1">
-      {projects.map((project, i) => (
+      {projects.map((project, i) => {
+        const isComingSoon = (project as any).status === "coming-soon";
+        return (
         <motion.div
           key={project.id}
           initial={{ opacity: 0, clipPath: "inset(0 100% 0 0)" }}
           whileInView={{ opacity: 1, clipPath: "inset(0 0% 0 0)" }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: i * 0.15, ease: [0.77, 0, 0.175, 1] }}
-          className="group relative flex min-h-[380px] cursor-pointer flex-col overflow-hidden sm:min-h-[460px] md:min-h-[560px]"
-          onClick={withSound(() => (project as any).slug && router.push(`/work/${(project as any).slug}`), "navigate")}
+          className={`group relative flex min-h-[380px] flex-col overflow-hidden sm:min-h-[460px] md:min-h-[560px] ${isComingSoon ? "cursor-default" : "cursor-pointer"}`}
+          onClick={withSound(() => {
+            if (isComingSoon) return;
+            (project as any).slug && router.push(`/work/${(project as any).slug}`);
+          }, "navigate")}
         >
           <div className="relative min-h-[220px] sm:min-h-[280px] md:min-h-[340px] flex-[2.5] shrink-0">
             <img
@@ -459,6 +513,7 @@ function WorkGridView({ projects = V2_PROJECTS }: { projects?: typeof V2_PROJECT
                   "repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.12) 3px, rgba(0,0,0,0.12) 4px)",
               }}
             />
+            {isComingSoon && <ComingSoonOverlay />}
             <div className="absolute left-4 right-4 top-4 z-[1] flex items-start justify-between gap-3">
               <span
                 style={{
@@ -529,7 +584,8 @@ function WorkGridView({ projects = V2_PROJECTS }: { projects?: typeof V2_PROJECT
             {project.description}
           </p>
         </motion.div>
-      ))}
+        );
+      })}
     </div>
   );
 }

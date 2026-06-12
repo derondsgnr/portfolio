@@ -13,6 +13,7 @@ export function GlobalForm({ initial }: Props) {
   const [socialLinks, setSocialLinks] = useState<SocialLink[]>(initial.socialLinks);
   const [profileImage, setProfileImage] = useState(initial.profileImage ?? "");
   const [cinematicEnabled, setCinematicEnabled] = useState(initial.cinematicEnabled ?? false);
+  const [cvUrl, setCvUrl] = useState(initial.cvUrl ?? "");
   const [status, setStatus] = useState<"idle" | "saving" | "ok" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
@@ -37,6 +38,7 @@ export function GlobalForm({ initial }: Props) {
       ctaButtonLabel: (form.elements.namedItem("ctaButtonLabel") as HTMLInputElement)?.value?.trim() ?? "",
       profileImage: profileImage.trim(),
       cinematicEnabled,
+      cvUrl: cvUrl.trim(),
     };
 
     const result = await saveGlobal(data, "Update global");
@@ -198,6 +200,28 @@ export function GlobalForm({ initial }: Props) {
             placeholder="Book a call"
           />
         </div>
+      </div>
+
+      <div>
+        <h2 className="font-mono text-sm text-white/80 mb-4 uppercase tracking-wider">
+          Download CV
+        </h2>
+        <p className="font-mono text-[10px] text-white/40 mb-3 leading-relaxed">
+          Paste a link to your CV/resume (PDF). When set, a "Download CV" CTA appears
+          alongside the booking CTAs on case studies and the homepage. Leave blank to hide it.
+        </p>
+        <label htmlFor="cvUrl" className={labelClass}>
+          CV URL
+        </label>
+        <input
+          id="cvUrl"
+          name="cvUrl"
+          type="text"
+          value={cvUrl}
+          onChange={(e) => setCvUrl(e.target.value)}
+          className={inputClass}
+          placeholder="https://res.cloudinary.com/.../deron-cv.pdf"
+        />
       </div>
 
       <div>

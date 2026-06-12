@@ -163,6 +163,7 @@ export function ProjectsList({ initial }: Props) {
   const counts = useMemo(
     () => ({
       published: projects.filter((project) => (project.status ?? "published") === "published").length,
+      comingSoon: projects.filter((project) => project.status === "coming-soon").length,
       draft: projects.filter((project) => project.status === "draft").length,
       archived: projects.filter((project) => project.status === "archived").length,
       featured: projects.filter((project) => project.featured).length,
@@ -304,6 +305,7 @@ export function ProjectsList({ initial }: Props) {
           <div className="mt-2 flex flex-wrap gap-3 font-mono text-[11px] uppercase tracking-[0.12em] text-white/45">
             <span>{projects.length} total</span>
             <span>{counts.published} published</span>
+            <span>{counts.comingSoon} coming soon</span>
             <span>{counts.draft} draft</span>
             <span>{counts.archived} archived</span>
             <span>{counts.featured} featured</span>
@@ -357,6 +359,13 @@ export function ProjectsList({ initial }: Props) {
                   className="border border-white/10 px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.12em] text-white/60 transition-colors hover:border-[#E2B93B]/40 hover:text-[#E2B93B]"
                 >
                   Publish
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleBulkStatus("coming-soon")}
+                  className="border border-white/10 px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.12em] text-white/60 transition-colors hover:border-[#E2B93B]/40 hover:text-[#E2B93B]"
+                >
+                  Coming Soon
                 </button>
                 <button
                   type="button"

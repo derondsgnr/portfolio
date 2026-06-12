@@ -113,9 +113,15 @@ export function ProjectForm({ project, onSave, onCancel }: Props) {
             className={inputClass}
           >
             <option value="published">Published</option>
+            <option value="coming-soon">Coming Soon</option>
             <option value="draft">Draft</option>
             <option value="archived">Archived</option>
           </select>
+          {form.status === "coming-soon" && (
+            <p className="mt-1 font-mono text-[10px] text-white/40 leading-relaxed">
+              Shows in the work grid with a "Coming soon" overlay; clicking it does nothing until set to Published.
+            </p>
+          )}
         </div>
         <div className="flex items-end gap-4 pb-2">
           <label className="flex items-center gap-2 font-mono text-xs text-white/70">

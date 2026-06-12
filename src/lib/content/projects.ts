@@ -27,7 +27,7 @@ export type Project = {
   description: string;
   image: string;
   slug: string;
-  status?: "published" | "draft" | "archived";
+  status?: "published" | "draft" | "archived" | "coming-soon";
   featured: boolean;
   pinned: boolean;
   projectType?: "case-study" | "personal";
