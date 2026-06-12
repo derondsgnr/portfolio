@@ -763,18 +763,13 @@
             "type": "narrative",
             "id": "urban-overview",
             "headline": "Overview",
-            "body": "Urban is a transportation platform built to improve how Nigerians travel across states. The founder had a big, long-term vision — something that would outlive him and genuinely make travel safer, kinder, and more organized for ordinary Nigerians. The product team before me was mostly engineers, and the apps reflected that. The design was outdated, the flows were confusing, and the experience didn't match the heart and ambition behind the idea."
+            "body": "<p>Urban is a transportation platform built to improve how Nigerians travel across states. The founder had a big, long-term vision — something that would outlive him and genuinely make travel safer, kinder, and more organized for ordinary Nigerians. The product team before me was mostly engineers, and the apps reflected that. The design was outdated, the flows were confusing, and the experience didn't match the heart and ambition behind the idea.</p>"
           },
           {
             "type": "narrative",
             "id": "urban-problem",
             "headline": "The problem (before redesign)",
-            "body": "The UI looked old and disconnected. The UX was confusing, with too many unnecessary screens. Trip booking didn't follow patterns Nigerians are familiar with. The copy felt robotic and unhelpful. Drivers had three separate pages just to understand their trips. Important actions were hidden. There were no real safety features. The navigation made simple tasks feel stressful. The founder knew something was wrong, but he couldn't fully name it. He just knew the product wasn't doing justice to his vision — and he needed help."
-          },
-          {
-            "type": "mockup-gallery",
-            "id": "slide-1779549228496-3",
-            "mockups": []
+            "body": "<p>Urban is the personal product of a client I had already built JET for. He brought me in as a project manager. While managing those tasks, I kept running into the product's interface, and it was rough. Fragmented navigation, information that belonged together split across screens, a driver experience that made you hop between a homepage and a separate dashboard for no reason.</p><p>So I texted him and offered to take on the UI. He gave me access, and what started as a project-management contract became an end-to-end redesign of both sides of the product.</p><p>That origin matters, because it is how I work. I do not wait for a design brief to land. I find the problem, and I make the case for fixing it.</p>"
           }
         ]
       },
