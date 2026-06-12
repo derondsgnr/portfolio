@@ -2,6 +2,23 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import {
+  closestCenter,
+  DndContext,
+  DragEndEvent,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import { saveCaseStudies } from "@/app/admin/actions";
 import { AdminConfirmAction } from "@/components/admin/admin-confirm-dialog";
 import { useAdmin } from "@/components/admin/admin-context";
@@ -20,6 +37,11 @@ import {
 
 function slugify(value: string): string {
   return value.toLowerCase().trim().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "").replace(/-+/g, "-");
+}
+
+/** Ensures every act has a stable id for drag-to-reorder, generating one for legacy acts that lack it. */
+function withActIds(acts: Act[]): Act[] {
+  return acts.map((act, i) => (act.id ? act : { ...act, id: `act-${Date.now()}-${i}` }));
 }
 
 const DEFAULT_SLUG_RE = /^new-study-\d+$/;
@@ -109,23 +131,35 @@ function StudyListItem({
 function ActPanel({
   act,
   index,
-  total,
   onUpdate,
-  onMove,
   onDelete,
 }: {
   act: Act;
   index: number;
-  total: number;
   onUpdate: (updated: Act) => void;
-  onMove: (dir: "up" | "down") => void;
   onDelete: () => void;
 }) {
   const [open, setOpen] = useState(index === 0);
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+    id: act.id ?? `act-${index}`,
+  });
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
 
   return (
-    <div className="border border-white/[0.07] mb-3">
+    <div ref={setNodeRef} style={style} className={`border border-white/[0.07] mb-3 ${isDragging ? "opacity-60" : ""}`}>
       <div className="flex items-center gap-2 px-4 py-3 bg-white/[0.02]">
+        <button
+          type="button"
+          {...attributes}
+          {...listeners}
+          className="cursor-grab px-1 py-1 text-white/20 hover:text-[#E2B93B] active:cursor-grabbing transition-colors font-mono text-xs shrink-0"
+          aria-label={`Drag to reorder ${act.title || "act"}`}
+        >
+          ::
+        </button>
         <button onClick={() => setOpen((o) => !o)} className="flex-1 flex items-center gap-2 text-left">
           <ChevronDown size={13} className={`text-white/30 transition-transform ${open ? "" : "-rotate-90"}`} />
           <input
@@ -138,8 +172,6 @@ function ActPanel({
           <span className="text-[9px] text-white/20 font-['Instrument_Sans'] shrink-0">{act.slides.length} slides</span>
         </button>
         <div className="flex items-center gap-1 shrink-0">
-          <button onClick={() => onMove("up")} disabled={index === 0} className="p-1 text-white/15 hover:text-white/50 disabled:opacity-20 transition-colors"><ChevronDown size={12} className="rotate-180" /></button>
-          <button onClick={() => onMove("down")} disabled={index === total - 1} className="p-1 text-white/15 hover:text-white/50 disabled:opacity-20 transition-colors"><ChevronDown size={12} /></button>
           <AdminConfirmAction
             title="Delete act?"
             description="Delete this act and every slide inside it."
@@ -175,9 +207,13 @@ function StudyEditor({
   onClose: () => void;
   isSaving: boolean;
 }) {
-  const [form, setForm] = useState<CaseStudy>(study);
+  const [form, setForm] = useState<CaseStudy>(() => ({ ...study, acts: withActIds(study.acts) }));
   const [tagInput, setTagInput] = useState("");
   const [metaOpen, setMetaOpen] = useState(false);
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
+  );
   // While the slug is still the auto-generated default (and the user hasn't
   // hand-edited it), keep deriving it from the title so new studies get a real
   // URL without a manual step. A hand-edited slug is never overwritten.
@@ -196,7 +232,7 @@ function StudyEditor({
   });
 
   useEffect(() => {
-    setForm(study);
+    setForm({ ...study, acts: withActIds(study.acts) });
     setSlugTouched(!DEFAULT_SLUG_RE.test(study.slug));
   }, [study]);
 
@@ -217,12 +253,15 @@ function StudyEditor({
     setForm((f) => { const acts = [...f.acts]; acts[index] = updated; return { ...f, acts }; });
   }
 
-  function moveAct(index: number, dir: "up" | "down") {
+  function handleActDragEnd(event: DragEndEvent) {
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
+
     setForm((f) => {
-      const acts = [...f.acts];
-      const to = dir === "up" ? index - 1 : index + 1;
-      [acts[index], acts[to]] = [acts[to], acts[index]];
-      return { ...f, acts };
+      const oldIndex = f.acts.findIndex((act) => act.id === active.id);
+      const newIndex = f.acts.findIndex((act) => act.id === over.id);
+      if (oldIndex === -1 || newIndex === -1) return f;
+      return { ...f, acts: arrayMove(f.acts, oldIndex, newIndex) };
     });
   }
 
@@ -231,7 +270,7 @@ function StudyEditor({
   }
 
   function addAct() {
-    const newAct: Act = { title: `Act ${form.acts.length + 1}`, slides: [] };
+    const newAct: Act = { id: `act-${Date.now()}`, title: `Act ${form.acts.length + 1}`, slides: [] };
     setForm((f) => ({ ...f, acts: [...f.acts, newAct] }));
   }
 
@@ -454,9 +493,13 @@ function StudyEditor({
               </button>
             </div>
           )}
-          {form.acts.map((act, i) => (
-            <ActPanel key={i} act={act} index={i} total={form.acts.length} onUpdate={(updated) => updateAct(i, updated)} onMove={(dir) => moveAct(i, dir)} onDelete={() => deleteAct(i)} />
-          ))}
+          <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleActDragEnd}>
+            <SortableContext items={form.acts.map((act, i) => act.id ?? `act-${i}`)} strategy={verticalListSortingStrategy}>
+              {form.acts.map((act, i) => (
+                <ActPanel key={act.id ?? i} act={act} index={i} onUpdate={(updated) => updateAct(i, updated)} onDelete={() => deleteAct(i)} />
+              ))}
+            </SortableContext>
+          </DndContext>
         </div>
       </div>
     </div>

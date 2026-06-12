@@ -11,6 +11,23 @@
 
 import { useState, useEffect, useMemo, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import {
+  closestCenter,
+  DndContext,
+  DragEndEvent,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import { saveBlogSeries, saveBlogCategories, loadContent, saveContent } from "@/app/admin/actions";
 import { AdminConfirmAction } from "@/components/admin/admin-confirm-dialog";
 import { useAdmin } from "@/components/admin/admin-context";
@@ -684,6 +701,39 @@ function isStringArray(value: unknown): value is string[] {
   return Array.isArray(value) && value.every((item) => typeof item === "string");
 }
 
+function SortableSeriesPostRow({
+  slug,
+  index,
+  onRemove,
+}: {
+  slug: string;
+  index: number;
+  onRemove: () => void;
+}) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: slug });
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
+  return (
+    <div ref={setNodeRef} style={style} className={`flex items-center gap-2 ${isDragging ? "opacity-60" : ""}`}>
+      <button
+        type="button"
+        {...attributes}
+        {...listeners}
+        className="cursor-grab px-1 text-white/20 hover:text-[#E2B93B] active:cursor-grabbing transition-colors font-mono text-xs"
+        aria-label={`Drag to reorder ${slug}`}
+      >
+        ::
+      </button>
+      <span className="text-[10px] text-[#E2B93B]/50 font-['Instrument_Sans'] w-5">{index + 1}.</span>
+      <span className="text-[11px] text-white/50 font-['Instrument_Sans'] flex-1 truncate">{slug}</span>
+      <button onClick={onRemove} className="text-white/20 hover:text-red-400/60 transition-colors"><X size={11} /></button>
+    </div>
+  );
+}
+
 function SeriesManager({
   series,
   onUpdate,
@@ -712,6 +762,20 @@ function SeriesManager({
     onCancel: cancelEdit,
     saveEnabled: Boolean(form?.title.trim()) && !isSaving,
   });
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
+  );
+
+  function handlePostsDragEnd(event: DragEndEvent) {
+    if (!form) return;
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
+    const oldIndex = form.posts.findIndex((slug) => slug === active.id);
+    const newIndex = form.posts.findIndex((slug) => slug === over.id);
+    if (oldIndex === -1 || newIndex === -1) return;
+    setForm({ ...form, posts: arrayMove(form.posts, oldIndex, newIndex) });
+  }
 
   function startEdit(s: ManagedSeries) {
     if (!confirmIfUnsaved()) return;
@@ -808,38 +872,18 @@ function SeriesManager({
           </label>
           <FormField label="Posts in series (ordered)">
             <div className="space-y-2">
-              {form.posts.map((slug, i) => (
-                <div key={slug} className="flex items-center gap-2">
-                  <span className="text-[10px] text-[#E2B93B]/50 font-['Instrument_Sans'] w-5">{i + 1}.</span>
-                  <span className="text-[11px] text-white/50 font-['Instrument_Sans'] flex-1 truncate">{slug}</span>
-                  <button
-                    onClick={() => {
-                      if (i > 0) {
-                        const arr = [...form.posts];
-                        [arr[i - 1], arr[i]] = [arr[i], arr[i - 1]];
-                        setForm({ ...form, posts: arr });
-                      }
-                    }}
-                    className="text-[9px] text-white/20 hover:text-white/50 transition-colors"
-                    disabled={i === 0}
-                  >↑</button>
-                  <button
-                    onClick={() => {
-                      if (i < form.posts.length - 1) {
-                        const arr = [...form.posts];
-                        [arr[i], arr[i + 1]] = [arr[i + 1], arr[i]];
-                        setForm({ ...form, posts: arr });
-                      }
-                    }}
-                    className="text-[9px] text-white/20 hover:text-white/50 transition-colors"
-                    disabled={i === form.posts.length - 1}
-                  >↓</button>
-                  <button
-                    onClick={() => setForm({ ...form, posts: form.posts.filter((_, j) => j !== i) })}
-                    className="text-white/20 hover:text-red-400/60 transition-colors"
-                  ><X size={11} /></button>
-                </div>
-              ))}
+              <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handlePostsDragEnd}>
+                <SortableContext items={form.posts} strategy={verticalListSortingStrategy}>
+                  {form.posts.map((slug, i) => (
+                    <SortableSeriesPostRow
+                      key={slug}
+                      slug={slug}
+                      index={i}
+                      onRemove={() => setForm({ ...form, posts: form.posts.filter((_, j) => j !== i) })}
+                    />
+                  ))}
+                </SortableContext>
+              </DndContext>
               {/* Add post dropdown */}
               <select
                 className={adminCx.select}
@@ -929,6 +973,43 @@ function SeriesManager({
 }
 
 // ─── Categories Manager ─────────────────────────────────────────────
+function SortableCategoryRow({
+  category,
+  index,
+  onRemove,
+}: {
+  category: string;
+  index: number;
+  onRemove: () => void;
+}) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: category });
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
+  return (
+    <div
+      ref={setNodeRef}
+      style={style}
+      className={`flex items-center gap-3 px-4 py-2.5 border-b border-white/[0.05] hover:bg-white/[0.02] transition-colors ${isDragging ? "opacity-60" : ""}`}
+    >
+      <button
+        type="button"
+        {...attributes}
+        {...listeners}
+        className="cursor-grab px-1 text-white/20 hover:text-[#E2B93B] active:cursor-grabbing transition-colors font-mono text-xs"
+        aria-label={`Drag to reorder ${category}`}
+      >
+        ::
+      </button>
+      <span className="text-[10px] text-[#E2B93B]/40 font-['Instrument_Sans'] w-4">{index + 1}</span>
+      <span className="text-[12px] text-white/60 font-['Instrument_Sans'] flex-1">{category}</span>
+      <button onClick={onRemove} className="text-white/20 hover:text-red-400/60 transition-colors"><X size={11} /></button>
+    </div>
+  );
+}
+
 function CategoriesManager({
   categories,
   onUpdate,
@@ -958,20 +1039,20 @@ function CategoriesManager({
     onUpdate(next);
   }
 
-  function moveUp(idx: number) {
-    if (idx === 0) return;
-    const arr = [...items];
-    [arr[idx - 1], arr[idx]] = [arr[idx], arr[idx - 1]];
-    setItems(arr);
-    onUpdate(arr);
-  }
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
+  );
 
-  function moveDown(idx: number) {
-    if (idx === items.length - 1) return;
-    const arr = [...items];
-    [arr[idx], arr[idx + 1]] = [arr[idx + 1], arr[idx]];
-    setItems(arr);
-    onUpdate(arr);
+  function handleDragEnd(event: DragEndEvent) {
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
+    const oldIndex = items.findIndex((cat) => cat === active.id);
+    const newIndex = items.findIndex((cat) => cat === over.id);
+    if (oldIndex === -1 || newIndex === -1) return;
+    const next = arrayMove(items, oldIndex, newIndex);
+    setItems(next);
+    onUpdate(next);
   }
 
   return (
@@ -986,18 +1067,13 @@ function CategoriesManager({
       </div>
 
       <div className="border border-white/[0.07] overflow-hidden mb-4">
-        {items.map((cat, i) => (
-          <div
-            key={cat}
-            className="flex items-center gap-3 px-4 py-2.5 border-b border-white/[0.05] hover:bg-white/[0.02] transition-colors"
-          >
-            <span className="text-[10px] text-[#E2B93B]/40 font-['Instrument_Sans'] w-4">{i + 1}</span>
-            <span className="text-[12px] text-white/60 font-['Instrument_Sans'] flex-1">{cat}</span>
-            <button onClick={() => moveUp(i)} disabled={i === 0} className="text-[9px] text-white/20 hover:text-white/50 transition-colors disabled:opacity-30">↑</button>
-            <button onClick={() => moveDown(i)} disabled={i === items.length - 1} className="text-[9px] text-white/20 hover:text-white/50 transition-colors disabled:opacity-30">↓</button>
-            <button onClick={() => removeCategory(i)} className="text-white/20 hover:text-red-400/60 transition-colors"><X size={11} /></button>
-          </div>
-        ))}
+        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+          <SortableContext items={items} strategy={verticalListSortingStrategy}>
+            {items.map((cat, i) => (
+              <SortableCategoryRow key={cat} category={cat} index={i} onRemove={() => removeCategory(i)} />
+            ))}
+          </SortableContext>
+        </DndContext>
       </div>
 
       <div className="flex gap-2">
