@@ -205,6 +205,8 @@ export type Slide =
 
 /* ─── Act / Chapter ──────────────────────────────────────────── */
 export interface Act {
+  /** Stable id for drag-to-reorder; generated on read for legacy acts that lack one. */
+  id?: string;
   title: string;
   slides: Slide[];
 }

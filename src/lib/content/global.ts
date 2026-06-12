@@ -13,6 +13,8 @@ export type GlobalConfig = {
   profileImage?: string;
   /** When false, case studies open in Reader mode and the Cinematic toggle is hidden. */
   cinematicEnabled: boolean;
+  /** Link to a downloadable CV/resume. CTA only renders when set. */
+  cvUrl?: string;
 };
 
 const DEFAULT: GlobalConfig = {
@@ -26,6 +28,7 @@ const DEFAULT: GlobalConfig = {
   ctaButtonLabel: "Book a call",
   profileImage: "",
   cinematicEnabled: false,
+  cvUrl: "",
 };
 
 export async function getGlobal(): Promise<GlobalConfig> {
@@ -41,6 +44,7 @@ export async function getGlobal(): Promise<GlobalConfig> {
       ctaButtonLabel: parsed.ctaButtonLabel ?? DEFAULT.ctaButtonLabel,
       profileImage: parsed.profileImage ?? "",
       cinematicEnabled: parsed.cinematicEnabled ?? DEFAULT.cinematicEnabled,
+      cvUrl: parsed.cvUrl ?? "",
     };
   } catch {
     return DEFAULT;

@@ -2,6 +2,7 @@ import React from "react";
 import { motion, useInView } from "motion/react";
 import { useRef } from "react";
 import { useBooking } from "../booking-context";
+import { useSiteConfig } from "@/contexts/site-config-context";
 
 /**
  * CASE STUDY CTA — "Interested in working together?"
@@ -11,6 +12,8 @@ import { useBooking } from "../booking-context";
 
 export function CaseStudyCTA() {
   const { open } = useBooking();
+  const { global } = useSiteConfig();
+  const cvUrl = global.cvUrl?.trim();
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.3 });
 
@@ -77,6 +80,18 @@ export function CaseStudyCTA() {
           >
             OR SEND A MESSAGE &rarr;
           </button>
+          {cvUrl && (
+            <a
+              href={cvUrl}
+              download
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[10px] tracking-[0.2em] text-[#E2B93B]/70 hover:text-[#E2B93B] transition-colors duration-300"
+              style={{ fontFamily: "monospace" }}
+            >
+              DOWNLOAD CV
+            </a>
+          )}
         </div>
       </motion.div>
 

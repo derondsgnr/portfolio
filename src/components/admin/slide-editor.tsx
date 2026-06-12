@@ -11,13 +11,30 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import {
+  closestCenter,
+  DndContext,
+  DragEndEvent,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import type { Slide } from "@/types/case-study";
 import { adminCx, FormField } from "./admin-primitives";
 import { ImageFieldGuide } from "./image-system-guide";
 import { RichTextEditor } from "./rich-text-editor";
 import { openOnKeyboard } from "@/lib/admin/interaction";
 import {
-  ChevronUp, ChevronDown, Trash2, Plus, X,
+  Trash2, Plus, X,
   FileText, Quote, BarChart2, Zap, Image, Layers,
   ArrowLeftRight, Monitor, Video, AlignLeft, GitBranch, Layout, Type, PlayCircle,
 } from "lucide-react";
@@ -486,26 +503,29 @@ function TypePicker({ onSelect, onClose }: { onSelect: (type: Slide["type"]) => 
 // ─── Slide Navigator item ──────────────────────────────────────────
 function SlideNavItem({
   slide,
-  index,
-  total,
   isActive,
   onClick,
-  onMove,
   onDelete,
 }: {
   slide: Slide;
-  index: number;
-  total: number;
   isActive: boolean;
   onClick: () => void;
-  onMove: (dir: "up" | "down") => void;
   onDelete: () => void;
 }) {
   const typeMeta = SLIDE_TYPES.find((t) => t.type === slide.type);
   const Icon = typeMeta?.icon ?? FileText;
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+    id: slide.id,
+  });
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
 
   return (
     <div
+      ref={setNodeRef}
+      style={style}
       onClick={onClick}
       onDoubleClick={onClick}
       onKeyDown={(event) => openOnKeyboard(event, onClick)}
@@ -516,7 +536,7 @@ function SlideNavItem({
         isActive
           ? "border-l-[#E2B93B] bg-white/[0.04] text-white"
           : "border-l-transparent hover:bg-white/[0.02] text-white/40 hover:text-white/70"
-      }`}
+      } ${isDragging ? "opacity-60" : ""}`}
     >
       <Icon size={11} className={`shrink-0 ${isActive ? "text-[#E2B93B]" : ""}`} />
       <div className="flex-1 min-w-0">
@@ -528,19 +548,13 @@ function SlideNavItem({
       <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 shrink-0 transition-opacity">
         <button
           type="button"
-          onClick={(e) => { e.stopPropagation(); onMove("up"); }}
-          disabled={index === 0}
-          className="p-0.5 text-white/20 hover:text-white/60 disabled:opacity-20 transition-colors"
+          {...attributes}
+          {...listeners}
+          onClick={(e) => e.stopPropagation()}
+          className="cursor-grab px-1 py-0.5 text-white/20 hover:text-[#E2B93B] active:cursor-grabbing transition-colors font-mono text-xs"
+          aria-label="Drag to reorder slide"
         >
-          <ChevronUp size={12} />
-        </button>
-        <button
-          type="button"
-          onClick={(e) => { e.stopPropagation(); onMove("down"); }}
-          disabled={index === total - 1}
-          className="p-0.5 text-white/20 hover:text-white/60 disabled:opacity-20 transition-colors"
-        >
-          <ChevronDown size={12} />
+          ::
         </button>
         <button
           type="button"
@@ -565,13 +579,21 @@ interface SlideEditorProps {
 export function SlideEditor({ slides, onChange, label = "Slides" }: SlideEditorProps) {
   const [activeIndex, setActiveIndex] = useState<number | null>(slides.length > 0 ? 0 : null);
   const [showTypePicker, setShowTypePicker] = useState(false);
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
+  );
 
-  function move(i: number, dir: "up" | "down") {
-    const next = [...slides];
-    const to = dir === "up" ? i - 1 : i + 1;
-    [next[i], next[to]] = [next[to], next[i]];
-    onChange(next);
-    setActiveIndex(to);
+  function handleDragEnd(event: DragEndEvent) {
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
+
+    const oldIndex = slides.findIndex((slide) => slide.id === active.id);
+    const newIndex = slides.findIndex((slide) => slide.id === over.id);
+    if (oldIndex === -1 || newIndex === -1) return;
+
+    onChange(arrayMove(slides, oldIndex, newIndex));
+    if (activeIndex === oldIndex) setActiveIndex(newIndex);
   }
 
   function remove(i: number) {
@@ -612,18 +634,19 @@ export function SlideEditor({ slides, onChange, label = "Slides" }: SlideEditorP
               <p className="text-[10px] text-white/15 font-['Instrument_Sans']">No slides yet</p>
             </div>
           )}
-          {slides.map((slide, i) => (
-            <SlideNavItem
-              key={slide.id}
-              slide={slide}
-              index={i}
-              total={slides.length}
-              isActive={activeIndex === i}
-              onClick={() => setActiveIndex(i)}
-              onMove={(dir) => move(i, dir)}
-              onDelete={() => remove(i)}
-            />
-          ))}
+          <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+            <SortableContext items={slides.map((slide) => slide.id)} strategy={verticalListSortingStrategy}>
+              {slides.map((slide, i) => (
+                <SlideNavItem
+                  key={slide.id}
+                  slide={slide}
+                  isActive={activeIndex === i}
+                  onClick={() => setActiveIndex(i)}
+                  onDelete={() => remove(i)}
+                />
+              ))}
+            </SortableContext>
+          </DndContext>
         </div>
 
         {/* Add slide button */}

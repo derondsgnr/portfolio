@@ -4,6 +4,7 @@ import { motion } from "motion/react";
 import { ScrambleText } from "../shared/scramble-text";
 import { useBooking } from "../booking-context";
 import { withSound, useSoundOnHover } from "@/hooks/useSound";
+import { useSiteConfig } from "@/contexts/site-config-context";
 
 export interface SynthesisCTAProps {
   label?: string;
@@ -34,6 +35,8 @@ export function SynthesisCTASection({
 }: SynthesisCTAProps) {
   const { open } = useBooking();
   const onHover = useSoundOnHover("hover");
+  const { global } = useSiteConfig();
+  const cvUrl = global.cvUrl?.trim();
 
   return (
     <section id="cta" className="relative py-48 px-8 overflow-hidden">
@@ -109,6 +112,19 @@ export function SynthesisCTASection({
           >
             {ctaSecondary}
           </button>
+          {cvUrl && (
+            <a
+              href={cvUrl}
+              download
+              target="_blank"
+              rel="noopener noreferrer"
+              onMouseEnter={onHover}
+              className="text-[11px] tracking-[0.2em] text-[#E2B93B]/70 hover:text-[#E2B93B] px-8 py-3.5 transition-colors duration-300"
+              style={{ fontFamily: "monospace" }}
+            >
+              DOWNLOAD CV
+            </a>
+          )}
         </motion.div>
 
         <motion.div
