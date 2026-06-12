@@ -812,6 +812,29 @@
         ]
       },
       {
+        "title": "Rider Mobile App",
+        "slides": [
+          {
+            "type": "narrative",
+            "id": "slide-1781260307214-0",
+            "body": "<p>The rider experience needed the journey from \"I want to travel\" to \"my seat is booked\" rebuilt.</p><p><strong>Booking that respects how travel actually works</strong></p><p>The old booking was thin: pick a departure state, a destination state, a date. No map, no smart input, no sense of the route. I rebuilt it around how interstate travel actually happens.</p><p>First, I added vehicle-type choice. On long routes, a seat in a smaller car costs more because it is more comfortable and carries fewer people, while a larger bus subsidizes the cost across more passengers. So a rider selects bus, mini-bus, or sedan, and search returns the trips matching their departure, destination, and vehicle type.</p><p>Then the park-versus-city decision, which is the call I am most confident in. Their design showed only city to city. But there are multiple parks in a single city, and a vague \"Abuja\" means a rider books and only afterward discovers the park is across town, or that Urban does not actually serve their area. So my trip cards show state to state, the price, seats available, and the specific departure and destination parks. Now a rider knows which route the car runs, which park is closest to them, and where along the route they can be picked up or dropped off.</p><p><strong>Reducing steps without losing safety</strong></p><p>I cut the booking down while keeping the things that protect people:</p><ul><li><p><strong>A seat-arrangement visualizer,</strong> showing the real layout of the vehicle, which seats are taken, which are free, and how many remain, with a clear legend.</p></li><li><p><strong>A reusable manifest.</strong> Physical parks collect next-of-kin details in case of emergency. I kept that, but made it a one-time fill that saves for future trips. Name and phone pull from the account, so the rider only adds next-of-kin name, relationship, and number once.</p></li><li><p><strong>Upfront extra-luggage pricing.</strong> The client wanted luggage weighed and charged at the park. I pushed back, because springing a cost on someone at departure is a bad experience. I surfaced extra-luggage pricing inside booking so the full cost is visible before payment, not sprung at the gate.</p></li><li><p><strong>A segmented booking summary,</strong> split into trip information, traveler details, and cost, so a dense confirmation screen becomes easy to read, with the exact park location linkable to Google Maps.</p></li></ul><p></p>",
+            "headline": "<p>The Rider Side: Reimagining the Booking</p>"
+          },
+          {
+            "type": "narrative",
+            "id": "slide-1781260430253-1",
+            "body": "<p>Because of the architecture I was working within, I had to preempt the ways a booking can break.</p><p>What happens if the payment processor stalls mid-transaction? I added a pending-trip card that stays on the rider's homepage. Tapping it opens a small status model, payment received, confirming details, trip booked, so the rider can see exactly where their booking stands instead of staring at uncertainty after sending money.</p><p>And what happens if two riders book the same seat? I raised this as an edge case. Having built products since, I would now name it directly as a race condition and an idempotency problem. The pending-and-confirm pattern helps handle it, and it surfaces the design question underneath: is the operation willing to reassign a seat, and if so, how does the rider get told and rerouted? I designed the reassurance layer and flagged the concurrency decision for the team to confirm technically, rather than pretend I had solved their backend.</p><p>That instinct, to design for the unhappy path, came directly from having built. It is the clearest example of how being AI-native and hands-on with code feeds back into sharper product decisions.</p>",
+            "headline": "<p>Designing for failure</p>"
+          },
+          {
+            "type": "narrative",
+            "id": "slide-1781260463421-2",
+            "body": "<p>The old homepage gave no direction. I rebuilt it around priority: three actions ranked by intent, book a trip first, then find a park, then fund wallet, with the wallet balance visible and fundable on the screen. I added a marketing section for their other products (Urban Cards, Urban Flights, installment plans) as clean cards, plus quick-access shortcuts. I also designed the card-creation flow, the KYC and identity-verification onboarding, and redesigned the flights experience, which ties into their installment plan.</p>",
+            "headline": "<p>The homepage as a guide</p>"
+          }
+        ]
+      },
+      {
         "title": "Result & Reflection",
         "slides": [
           {
