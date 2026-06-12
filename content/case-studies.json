@@ -838,23 +838,16 @@
         "title": "Result & Reflection",
         "slides": [
           {
-            "type": "section-break",
-            "id": "urban-act3",
-            "actTitle": "The Result",
-            "actNumber": 3,
-            "subtitle": "After the redesign"
-          },
-          {
             "type": "narrative",
             "id": "urban-result",
-            "headline": "Impact",
-            "body": "The apps became much easier to navigate. The booking and trip flow became clearer. Drivers could manage work without confusion. The product looked modern and trustworthy. Safety was taken seriously. Redundant screens were removed. Development became faster because of the components I created. Most importantly, the product finally started to look and feel like the vision the founder had in his mind."
+            "headline": "<p>What Shipped</p>",
+            "body": "<p>Urban went live in 2026. The team found the redesign refreshing and simpler than what they had, and it shipped without forcing a costly rebuild of their architecture, which was the whole constraint.</p><p>What I delivered:</p><ul><li><p>A unified design system across the driver and rider apps, where there had been two mismatched experiences.</p></li><li><p>A driver experience rebuilt around how the fleet operation actually runs, with the navigation collapsed from a fragmented five-tab structure to a clear four-tab lifecycle.</p></li><li><p>A security suite designed for the specific risks of Nigerian interstate travel.</p></li><li><p>A rebuilt rider booking flow that respects routes, parks, and the unhappy paths of payment and seat assignment.</p></li><li><p>All of it designed to fit the existing system, not to detonate it.</p></li></ul><p></p>"
           },
           {
             "type": "narrative",
             "id": "urban-reflection",
-            "headline": "Reflection",
-            "body": "This project taught me a lot about designing within tight constraints and improving a system without breaking what already worked. It also reminded me how much I enjoy helping founders translate their ideas into experiences that feel human and thoughtful."
+            "headline": "<p>Why This Matters for Mobility and Fleet Operations</p>",
+            "body": "<p>Urban is fleet operations. Drivers on shift, agencies scheduling trips and assigning vehicles, fleet owners tracking performance, fuel logged across a journey, all of it needing to stay legible to the people running it day to day.</p><p>The skill on show is taking a tangled, multi-actor mobility operation and making it make sense, for the driver, the rider, the agency, and the fleet owner, without rebuilding the engine underneath. That is the exact problem fleet and mobility platforms exist to solve: many parties, one operation, real constraints, and a system that has to stay coherent while it runs.</p><p>I am a product designer who is AI-native and builds. On Urban, the building showed up as judgment, designing for race conditions and payment failures because I have hit them myself, while staying disciplined about a system I was not free to rewrite.</p>"
           }
         ]
       }
