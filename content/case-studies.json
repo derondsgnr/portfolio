@@ -728,8 +728,8 @@
   {
     "slug": "urban",
     "meta": {
-      "title": "Urban",
-      "client": "Urban",
+      "title": "Urban — Interstate Travel Platform That Shipped",
+      "client": "Blip Limited",
       "year": "2025",
       "role": "Product Designer",
       "tags": [
@@ -866,7 +866,8 @@
     },
     "status": "published",
     "featured": false,
-    "pinned": false
+    "pinned": false,
+    "browserUrl": "www.urban.com.ng"
   },
   {
     "slug": "customer-support-platform",
