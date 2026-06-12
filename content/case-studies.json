@@ -735,8 +735,7 @@
       "tags": [
         "Transportation",
         "Rideshare",
-        "Mobile Design",
-        "Web Design"
+        "Mobile Design"
       ],
       "cover": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1779405775/rider_tsgr9d.jpg",
       "summary": "Redesigning both rider and driver apps for a Nigerian interstate transport platform — modern, simple, safe, without breaking the complex system already in use.",
@@ -855,11 +854,11 @@
     "outcome": {
       "metrics": [
         {
-          "label": "Scope",
+          "label": "Refreshed Design System",
           "value": "Rider + driver apps"
         },
         {
-          "label": "Focus",
+          "label": "",
           "value": "Interstate travel in Nigeria"
         }
       ]
@@ -867,7 +866,8 @@
     "status": "published",
     "featured": false,
     "pinned": false,
-    "browserUrl": "www.urban.com.ng"
+    "browserUrl": "https://www.urban.ng/",
+    "liveDemoUrl": "https://www.urban.ng/"
   },
   {
     "slug": "customer-support-platform",
