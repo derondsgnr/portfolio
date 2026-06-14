@@ -1,28 +1,19 @@
 "use client";
 
-import { useRef } from "react";
-import dynamic from "next/dynamic";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { motion, useInView } from "motion/react";
 import { ScrambleText } from "../shared/scramble-text";
-import type { FilmShow } from "../about/film-deck";
+import { AboutGlobe } from "../about/about-globe";
+import { FilmDeck, type FilmShow } from "../about/film-deck";
+import { GameConsole } from "../about/game-console";
 
-/* The globe (WebGL/cobe), the cover-flow deck (drag) and the CRT console
-   (intervals) are client-only interactive widgets — server-rendering them
-   risks hydration mismatches, so they load on the client behind sized
-   placeholders. */
-const AboutGlobe = dynamic(() => import("../about/about-globe").then((m) => ({ default: m.AboutGlobe })), {
-  ssr: false,
-  loading: () => <div style={{ width: "100%", maxWidth: 460, aspectRatio: "1", margin: "0 auto" }} />,
-});
-const FilmDeck = dynamic(() => import("../about/film-deck").then((m) => ({ default: m.FilmDeck })), {
-  ssr: false,
-  loading: () => <div style={{ height: 360 }} />,
-});
-const GameConsole = dynamic(() => import("../about/game-console").then((m) => ({ default: m.GameConsole })), {
-  ssr: false,
-  loading: () => <div style={{ height: 290 }} />,
-});
+/* The globe (WebGL/cobe), cover-flow deck (drag) and CRT console (intervals)
+   are client-only. We render identical placeholders on the server AND the
+   first client render, then swap to the real widgets after mount — a plain
+   state flip, no Suspense boundary. (next/dynamic { ssr:false } created
+   Suspense fallbacks that crashed hydration with insertBefore inside the
+   animating wrappers.) */
 
 /* ═══════════════════════════════════════════════════════════════
    ABOUT — a built page, not a filled-in one.
@@ -73,6 +64,9 @@ function Reveal({ children, delay = 0, className }: { children: React.ReactNode;
 export function AboutV2({ profileImage }: { profileImage?: string }) {
   const heroRef = useRef<HTMLElement>(null);
   const heroIn = useInView(heroRef, { once: true, amount: 0.4 });
+  // Client-only widgets mount after hydration (deterministic, no Suspense).
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   return (
     <main className="relative" style={{ background: "#0A0A0A", minHeight: "100vh", overflow: "hidden" }}>
@@ -168,7 +162,7 @@ export function AboutV2({ profileImage }: { profileImage?: string }) {
             </p>
           </Reveal>
           <Reveal delay={0.1}>
-            <AboutGlobe />
+            {mounted ? <AboutGlobe /> : <div style={{ width: "100%", maxWidth: 460, aspectRatio: "1", margin: "0 auto" }} />}
           </Reveal>
         </div>
       </section>
@@ -197,7 +191,7 @@ export function AboutV2({ profileImage }: { profileImage?: string }) {
           I don&apos;t review things — I just always have something playing, usually something about people. A few on heavy rotation:
         </p>
         <Reveal>
-          <FilmDeck shows={SHOWS} />
+          {mounted ? <FilmDeck shows={SHOWS} /> : <div style={{ height: 360 }} />}
         </Reveal>
         <div className="flex flex-wrap" style={{ gap: 8, marginTop: 28 }}>
           {GENRES.map((g) => (
@@ -221,7 +215,7 @@ export function AboutV2({ profileImage }: { profileImage?: string }) {
             </p>
           </Reveal>
           <Reveal delay={0.1}>
-            <GameConsole games={GAMES} />
+            {mounted ? <GameConsole games={GAMES} /> : <div style={{ height: 290 }} />}
           </Reveal>
         </div>
       </section>
