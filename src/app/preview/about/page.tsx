@@ -12,5 +12,5 @@ export const metadata: Metadata = {
 
 export default async function AboutPreviewPage() {
   const global = await getGlobal();
-  return <AboutV2 profileImage={global.profileImage} />;
+  return <AboutV2 profileImage={global.profileImage} socials={global.socialLinks} />;
 }

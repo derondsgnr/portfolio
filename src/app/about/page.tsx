@@ -30,6 +30,7 @@ export default async function Page() {
         landing={landing}
         projects={projects}
         profileImage={global.profileImage}
+        socials={global.socialLinks}
       />
     </>
   );
