@@ -27,12 +27,13 @@ export function TransmissionServicesIndex({ services }: { services?: ServiceItem
 
   return (
     <motion.section
+      id="services"
       ref={ref as React.RefObject<HTMLElement>}
       initial={{ opacity: 0, y: 28 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
       className="px-6 py-14 sm:px-8 md:px-10 md:py-20"
-      style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}
+      style={{ borderTop: "1px solid rgba(255,255,255,0.05)", scrollMarginTop: 24 }}
     >
       <span
         style={{
