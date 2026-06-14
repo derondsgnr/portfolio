@@ -37,6 +37,11 @@ const SHOWS: FilmShow[] = [
 const GENRES = ["Documentaries", "Thriller", "Anime & animation", "Horror", "Marvel & DC", "Sitcoms", "Dark & mind-bending"];
 const GAMES = ["Halo", "God of War", "Mortal Kombat", "FIFA", "Call of Duty", "NBA 2K"];
 
+/* Temporary feature flags while we isolate the mount-time crash.
+   Globe is OFF so the rest of the page is viewable. Flip these one at a time
+   to binary-search the culprit. */
+const FEATURES = { globe: false, filmDeck: true, gameConsole: true };
+
 function MonoLabel({ children, color }: { children: React.ReactNode; color?: string }) {
   return (
     <span style={{ fontFamily: "monospace", fontSize: "10px", letterSpacing: "0.24em", textTransform: "uppercase", color: color ?? "rgba(255,255,255,0.4)", display: "block" }}>
@@ -147,25 +152,27 @@ export function AboutV2({ profileImage }: { profileImage?: string }) {
       </section>
 
       {/* ── 3 · Globe ────────────────────────────────────────── */}
-      <section className="relative px-6 sm:px-8 md:px-10" style={{ paddingTop: 64, paddingBottom: 80, borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-        <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: 48, alignItems: "center" }}>
-          <Reveal>
-            <MonoLabel color={GOLD}>Building for the world</MonoLabel>
-            <h2 style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(1.9rem, 4.4vw, 3.2rem)", lineHeight: 1.0, textTransform: "uppercase", color: "#F2F0EC", margin: "18px 0 18px", maxWidth: "16ch" }}>
-              From Abuja, for everywhere the software skips.
-            </h2>
-            <p style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "15px", lineHeight: 1.75, color: "rgba(255,255,255,0.6)", maxWidth: "46ch" }}>
-              Transport, fleet management, and AI-integrated products built for emerging markets first — the riders, drivers, freelancers and small businesses the big software market treats as an afterthought.
-            </p>
-            <p style={{ fontFamily: "monospace", fontSize: "10px", letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(255,255,255,0.3)", marginTop: 20 }}>
-              ⊙ Drag the globe to spin it
-            </p>
-          </Reveal>
-          <Reveal delay={0.1}>
-            {mounted ? <AboutGlobe /> : <div style={{ width: "100%", maxWidth: 460, aspectRatio: "1", margin: "0 auto" }} />}
-          </Reveal>
-        </div>
-      </section>
+      {FEATURES.globe && (
+        <section className="relative px-6 sm:px-8 md:px-10" style={{ paddingTop: 64, paddingBottom: 80, borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+          <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: 48, alignItems: "center" }}>
+            <Reveal>
+              <MonoLabel color={GOLD}>Building for the world</MonoLabel>
+              <h2 style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(1.9rem, 4.4vw, 3.2rem)", lineHeight: 1.0, textTransform: "uppercase", color: "#F2F0EC", margin: "18px 0 18px", maxWidth: "16ch" }}>
+                From Abuja, for everywhere the software skips.
+              </h2>
+              <p style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "15px", lineHeight: 1.75, color: "rgba(255,255,255,0.6)", maxWidth: "46ch" }}>
+                Transport, fleet management, and AI-integrated products built for emerging markets first — the riders, drivers, freelancers and small businesses the big software market treats as an afterthought.
+              </p>
+              <p style={{ fontFamily: "monospace", fontSize: "10px", letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(255,255,255,0.3)", marginTop: 20 }}>
+                ⊙ Drag the globe to spin it
+              </p>
+            </Reveal>
+            <Reveal delay={0.1}>
+              {mounted ? <AboutGlobe /> : <div style={{ width: "100%", maxWidth: 460, aspectRatio: "1", margin: "0 auto" }} />}
+            </Reveal>
+          </div>
+        </section>
+      )}
 
       {/* ── 4 · The obsession (editorial break) ──────────────── */}
       <section className="relative px-6 sm:px-8 md:px-10" style={{ paddingTop: 72, paddingBottom: 72, borderTop: "1px solid rgba(255,255,255,0.06)" }}>
@@ -191,7 +198,7 @@ export function AboutV2({ profileImage }: { profileImage?: string }) {
           I don&apos;t review things — I just always have something playing, usually something about people. A few on heavy rotation:
         </p>
         <Reveal>
-          {mounted ? <FilmDeck shows={SHOWS} /> : <div style={{ height: 360 }} />}
+          {FEATURES.filmDeck && mounted ? <FilmDeck shows={SHOWS} /> : <div style={{ height: 360 }} />}
         </Reveal>
         <div className="flex flex-wrap" style={{ gap: 8, marginTop: 28 }}>
           {GENRES.map((g) => (
@@ -215,7 +222,7 @@ export function AboutV2({ profileImage }: { profileImage?: string }) {
             </p>
           </Reveal>
           <Reveal delay={0.1}>
-            {mounted ? <GameConsole games={GAMES} /> : <div style={{ height: 290 }} />}
+            {FEATURES.gameConsole && mounted ? <GameConsole games={GAMES} /> : <div style={{ height: 290 }} />}
           </Reveal>
         </div>
       </section>
