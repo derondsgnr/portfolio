@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { SynthesisAboutPage } from "../v2/pages/synthesis-pages";
+import { AboutV2 } from "../v2/pages/about-v2";
 
 const PageBuilder = dynamic(() => import("../v2/page-builder").then((m) => ({ default: m.PageBuilder })), {
   ssr: true,
@@ -16,11 +16,13 @@ export function AboutPage({
   pageConfig,
   landing,
   projects,
+  profileImage,
 }: {
   copy?: PageCopy;
   pageConfig: PageConfig;
   landing: LandingContent;
   projects?: Project[];
+  profileImage?: string;
 }) {
   if (pageConfig.sections.length > 0) {
     return (
@@ -32,5 +34,5 @@ export function AboutPage({
       />
     );
   }
-  return <SynthesisAboutPage copy={copy} />;
+  return <AboutV2 profileImage={profileImage} />;
 }
