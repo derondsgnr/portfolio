@@ -1,15 +1,22 @@
 import type { MetadataRoute } from "next";
 import { getCaseStudies } from "@/lib/content/case-studies";
 import { getBlogPosts, getBlogSeries } from "@/lib/content/blog";
+import { getHiddenNavPaths } from "@/lib/content/nav";
 
 const BASE_URL = "https://derondsgnr.com";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [caseStudies, blogPosts, series] = await Promise.all([
+  const [caseStudies, blogPosts, series, hiddenPaths] = await Promise.all([
     getCaseStudies(),
     getBlogPosts(),
     getBlogSeries(),
+    getHiddenNavPaths(),
   ]);
+
+  // Drop any URL that lives under a hidden nav path (e.g. hiding /blog removes
+  // /blog, /blog/* and /blog/series/*). Mirrors the route-level 404 gating.
+  const isHidden = (path: string) =>
+    hiddenPaths.some((p) => p !== "/" && (path === p || path.startsWith(`${p}/`)));
 
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: BASE_URL, changeFrequency: "weekly", priority: 1.0 },
@@ -41,5 +48,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }));
 
-  return [...staticRoutes, ...caseStudyRoutes, ...blogPostRoutes, ...seriesRoutes];
+  return [...staticRoutes, ...caseStudyRoutes, ...blogPostRoutes, ...seriesRoutes].filter(
+    (entry) => !isHidden(entry.url.replace(BASE_URL, "") || "/")
+  );
 }

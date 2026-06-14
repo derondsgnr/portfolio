@@ -6,12 +6,13 @@ import { getCraftItems } from "@/lib/content/craft";
 import { getServices } from "@/lib/content/services";
 import { getPagesConfig } from "@/lib/content/pages";
 import { getLandingContent } from "@/lib/content/landing";
+import { getHiddenNavPaths } from "@/lib/content/nav";
 import { BLOG_POSTS } from "@/lib/data/blog-data";
 import { TransmissionVariation } from "@/components/v2/v2-transmission";
 import { HomePage } from "@/components/pages/home-page";
 
 export default async function Page() {
-  const [projects, testimonials, globalConfig, copy, craftItems, services, pagesConfig, landing] =
+  const [projects, testimonials, globalConfig, copy, craftItems, services, pagesConfig, landing, hiddenPaths] =
     await Promise.all([
       getProjects(),
       getTestimonials(),
@@ -21,6 +22,7 @@ export default async function Page() {
       getServices(),
       getPagesConfig(),
       getLandingContent(),
+      getHiddenNavPaths(),
     ]);
 
   const posts = BLOG_POSTS.filter((p) => !p.status || p.status === "published")
@@ -43,6 +45,7 @@ export default async function Page() {
         posts={posts}
         craftItems={craftItems}
         services={services}
+        hiddenPaths={hiddenPaths}
         global={globalConfig}
         copy={copy}
       />

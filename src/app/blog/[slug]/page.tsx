@@ -8,6 +8,7 @@ import {
   getRelatedBlogPosts,
   getSeriesForPost,
 } from "@/lib/content/blog";
+import { isPathHidden } from "@/lib/content/nav";
 
 const BlogReader = dynamic(
   () => import("@/components/v2/blog/blog-reader").then((m) => ({ default: m.BlogReader })),
@@ -49,6 +50,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function BlogPostPage({ params }: Props) {
+  if (await isPathHidden("/blog")) notFound();
   const { slug } = await params;
   const post = slug ? await getBlogPostBySlug(slug) : undefined;
 
