@@ -3,52 +3,27 @@
 import { useRef, useState } from "react";
 import { motion, AnimatePresence, useInView } from "motion/react";
 import { ScrambleText } from "../shared/scramble-text";
+import { ServicesMediaMarquee } from "./services-media-marquee";
+import { DEFAULT_SERVICES, type ServiceItem } from "@/lib/content/defaults";
 
 /* ═══════════════════════════════════════════════════════════════
    SERVICES — Variant B · Editorial Index
    Contents-page split. Muted Anton list on the left; one detail
    panel on the right that swaps as you hover / focus an entry —
-   the name scrambles in, with a "what you get" mono list + scope.
+   the name scrambles in, with a "what you get" mono list + scope,
+   and a kinetic media crawl pulled from existing case-study/craft
+   uploads (assigned per service in admin).
    ═══════════════════════════════════════════════════════════════ */
 
-const SERVICES = [
-  {
-    name: "Product Design",
-    gives: ["Research → shipped pixels", "Flows, IA, journeys", "High-fidelity surface"],
-    scope: "End-to-end, solo or embedded in your team.",
-  },
-  {
-    name: "Design Systems",
-    gives: ["Component library", "Design tokens", "Usage docs"],
-    scope: "So the team stops redrawing the same button.",
-  },
-  {
-    name: "Build & Ship",
-    gives: ["React / Next implementation", "Prototype → production", "QA mindset"],
-    scope: "Hands-on in the codebase. Validation, not theatre.",
-  },
-  {
-    name: "Brand Identity",
-    gives: ["Visual language", "Type system", "Brand through-line"],
-    scope: "Makes the product feel like one coherent thing.",
-  },
-  {
-    name: "AI Product Design",
-    gives: ["Human-first AI UX", "Trust & confidence states", "Model-in-the-loop flows"],
-    scope: "Building Dara taught me where trust actually breaks.",
-  },
-  {
-    name: "Interactive Prototypes",
-    gives: ["Clickable demos", "Real interactions", "Vision you can feel"],
-    scope: "Carries further than any deck.",
-  },
-];
-
-export function TransmissionServicesIndex() {
+export function TransmissionServicesIndex({ services }: { services?: ServiceItem[] }) {
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.12 });
   const [active, setActive] = useState(0);
-  const current = SERVICES[active];
+
+  const list = services && services.length > 0 ? services : DEFAULT_SERVICES;
+  const safeActive = Math.min(active, list.length - 1);
+  const current = list[safeActive];
+  const currentMedia = current?.media ?? [];
 
   return (
     <motion.section
@@ -79,11 +54,11 @@ export function TransmissionServicesIndex() {
       >
         {/* Left — the index */}
         <div style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-          {SERVICES.map((s, i) => {
-            const on = i === active;
+          {list.map((s, i) => {
+            const on = i === safeActive;
             return (
               <motion.button
-                key={s.name}
+                key={s.id}
                 type="button"
                 onHoverStart={() => setActive(i)}
                 onFocus={() => setActive(i)}
@@ -151,7 +126,7 @@ export function TransmissionServicesIndex() {
         >
           <AnimatePresence mode="wait">
             <motion.div
-              key={current.name}
+              key={current?.id ?? current?.name}
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
@@ -222,6 +197,25 @@ export function TransmissionServicesIndex() {
                 <span style={{ color: "rgba(255,255,255,0.3)" }}>SCOPE — </span>
                 {current.scope}
               </p>
+
+              {currentMedia.length > 0 ? (
+                <div style={{ marginTop: 28 }}>
+                  <span
+                    style={{
+                      fontFamily: "monospace",
+                      fontSize: "10px",
+                      letterSpacing: "0.24em",
+                      textTransform: "uppercase",
+                      color: "rgba(255,255,255,0.35)",
+                      display: "block",
+                      marginBottom: 12,
+                    }}
+                  >
+                    In the work
+                  </span>
+                  <ServicesMediaMarquee media={currentMedia} />
+                </div>
+              ) : null}
             </motion.div>
           </AnimatePresence>
         </div>

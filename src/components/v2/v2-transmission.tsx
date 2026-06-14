@@ -8,9 +8,11 @@ import { motion, AnimatePresence, useInView, useMotionValue, useSpring } from "m
 import { ScrambleText } from "./shared/scramble-text";
 import { GlobalSidebar } from "./global-sidebar";
 import { PersonalProjectsGrid } from "./personal-projects-grid";
+import { TransmissionServicesIndex } from "./sections/transmission-services-index";
 import type { Project } from "@/lib/content/projects";
 import type { TestimonialItem } from "@/lib/content/testimonials";
 import type { CraftItem } from "@/lib/content/craft";
+import type { ServiceItem } from "@/lib/content/services";
 
 
 /* ═══════════════════════════════════════════════════════════════
@@ -1382,6 +1384,7 @@ export function TransmissionVariation({
   testimonials,
   posts,
   craftItems,
+  services,
   global: globalConfig,
   copy,
 }: {
@@ -1389,6 +1392,7 @@ export function TransmissionVariation({
   testimonials: TestimonialItem[];
   posts: BlogMeta[];
   craftItems: CraftItem[];
+  services: ServiceItem[];
   global: AdminGlobal;
   copy: AdminCopy;
 }) {
@@ -1463,6 +1467,7 @@ export function TransmissionVariation({
         )}
 
         <TransmissionAbout aboutCopy={aboutCopy} />
+        <TransmissionServicesIndex services={services} />
         <TransmissionCraft items={craftItems} />
         <TransmissionTestimonials testimonials={testimonials} />
         <TransmissionWriting posts={posts} />
