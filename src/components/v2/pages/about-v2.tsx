@@ -20,6 +20,7 @@ const SHOWS: { title: string; why: string; cover?: string }[] = [
   { title: "Interview with the Vampire", why: "Immortality as a relationship microscope — messy people problems that never die." },
   { title: "Shrinking", why: "Grief and therapy played for warmth, not pity." },
   { title: "The Midnight Gospel", why: "Psychedelic talks about death, the mind, and meaning." },
+  { title: "Dark", why: "Cause and effect across generations — the patterns that refuse to stay buried." },
   { title: "The Big Bang Theory", why: "Comfort sitcom — my social-dynamics sandbox." },
 ];
 
@@ -439,7 +440,7 @@ export function AboutV2({ profileImage }: { profileImage?: string }) {
                 Not a critic — a watcher
               </span>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-4" style={{ gap: 16 }}>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5" style={{ gap: 16 }}>
               {SHOWS.map((s) => (
                 <Poster key={s.title} show={s} />
               ))}
