@@ -71,3 +71,74 @@ export const DEFAULT_TESTIMONIALS: TestimonialItem[] = [
   { id: 1, quote: "One key thing I would say about Deron, having worked with him for a very long time, is the full attention, detail, and commitment he puts into getting work done. He goes the extra mile to make sure the results surpass your expectations. It has always been a pleasure working with him, and I am super confident you would love working with him too.", name: "Alabi Hafeez", role: "CEO", company: "Bridgepay", avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080", companyLogo: null },
   { id: 2, quote: "Deron has a keen eye for detail and is always open to feedback to make the project better. Working with him made the entire process enjoyable.", name: "Latifah Yusuf", role: "Collaborator", company: "TechCabal", avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080", companyLogo: null },
 ];
+
+/**
+ * A service's attached media. URLs are *references* to assets already uploaded
+ * elsewhere on the site (case study slides, craft items, media config) — the
+ * admin picker gathers those into a library so nothing has to be re-uploaded.
+ */
+export type ServiceMediaRef = {
+  url: string;
+  type: "image" | "video";
+  /** Where it came from, for the admin tray label (e.g. "Case study: Dara"). */
+  label?: string;
+};
+
+export type ServiceItem = {
+  id: string;
+  name: string;
+  /** "What you get" bullet list. */
+  gives: string[];
+  /** One-line scope statement. */
+  scope: string;
+  /** Media crawl shown in the Editorial Index detail panel. */
+  media?: ServiceMediaRef[];
+  status?: "published" | "draft" | "archived";
+  featured?: boolean;
+  pinned?: boolean;
+};
+
+export const DEFAULT_SERVICES: ServiceItem[] = [
+  {
+    id: "product-design",
+    name: "Product Design",
+    gives: ["Research → shipped pixels", "Flows, IA, journeys", "High-fidelity surface"],
+    scope: "End-to-end, solo or embedded in your team.",
+    media: [],
+  },
+  {
+    id: "design-systems",
+    name: "Design Systems",
+    gives: ["Component library", "Design tokens", "Usage docs"],
+    scope: "So the team stops redrawing the same button.",
+    media: [],
+  },
+  {
+    id: "build-ship",
+    name: "Build & Ship",
+    gives: ["React / Next implementation", "Prototype → production", "QA mindset"],
+    scope: "Hands-on in the codebase. Validation, not theatre.",
+    media: [],
+  },
+  {
+    id: "brand-identity",
+    name: "Brand Identity",
+    gives: ["Visual language", "Type system", "Brand through-line"],
+    scope: "Makes the product feel like one coherent thing.",
+    media: [],
+  },
+  {
+    id: "ai-product-design",
+    name: "AI Product Design",
+    gives: ["Human-first AI UX", "Trust & confidence states", "Model-in-the-loop flows"],
+    scope: "Building Dara taught me where trust actually breaks.",
+    media: [],
+  },
+  {
+    id: "interactive-prototypes",
+    name: "Interactive Prototypes",
+    gives: ["Clickable demos", "Real interactions", "Vision you can feel"],
+    scope: "Carries further than any deck.",
+    media: [],
+  },
+];

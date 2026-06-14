@@ -1,5 +1,5 @@
 export type AdminRecentEditor = {
-  section: "blog" | "case-studies" | "projects" | "testimonials";
+  section: "blog" | "case-studies" | "projects" | "testimonials" | "services";
   label: string;
   href: string;
   updatedAt: number;
