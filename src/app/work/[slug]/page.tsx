@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { CaseStudyPage } from "@/components/pages/case-study-page";
 import { getCaseStudyBySlug, getCaseStudies } from "@/lib/content/case-studies";
 import { getGlobal } from "@/lib/content/global";
+import { isPathHidden } from "@/lib/content/nav";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -33,6 +35,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function Page({ params }: Props) {
+  if (await isPathHidden("/work")) notFound();
   const { slug } = await params;
   const [caseStudy, allCaseStudies, global] = await Promise.all([
     getCaseStudyBySlug(slug),

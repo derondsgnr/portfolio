@@ -3,7 +3,7 @@
   { "label": "Work", "path": "/work" },
   { "label": "Services", "path": "/#services" },
   { "label": "Craft", "path": "/craft" },
-  { "label": "Writing", "path": "/blog" },
+  { "label": "Writing", "path": "/blog", "hidden": true },
   { "label": "About", "path": "/about" },
   { "label": "Now", "path": "/now" }
 ]

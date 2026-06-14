@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { getPageCopy } from "@/lib/content/copy";
 import { getBlogCategories } from "@/lib/data/blog-categories";
 import { getBlogPosts, getBlogSeries } from "@/lib/content/blog";
+import { isPathHidden } from "@/lib/content/nav";
 import BlogPageClient from "./blog-page-client";
 
 export const metadata: Metadata = {
@@ -9,6 +11,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
+  if (await isPathHidden("/blog")) notFound();
   const [copy, categories, posts, series] = await Promise.all([
     getPageCopy("blog"),
     getBlogCategories(),

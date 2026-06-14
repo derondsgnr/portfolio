@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { getProjects } from "@/lib/content/projects";
 import { getPageCopy } from "@/lib/content/copy";
 import { getLandingContent } from "@/lib/content/landing";
 import { getPageConfig } from "@/lib/content/pages";
+import { isPathHidden } from "@/lib/content/nav";
 import { AboutPage } from "@/components/pages/about-page";
 
 export const metadata: Metadata = {
@@ -10,6 +12,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
+  if (await isPathHidden("/about")) notFound();
   const [projects, copy, landing, pageConfig] = await Promise.all([
     getProjects(),
     getPageCopy("about"),
