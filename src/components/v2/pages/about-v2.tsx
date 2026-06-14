@@ -1,12 +1,28 @@
 "use client";
 
 import { useRef } from "react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { motion, useInView } from "motion/react";
 import { ScrambleText } from "../shared/scramble-text";
-import { AboutGlobe } from "../about/about-globe";
-import { FilmDeck, type FilmShow } from "../about/film-deck";
-import { GameConsole } from "../about/game-console";
+import type { FilmShow } from "../about/film-deck";
+
+/* The globe (WebGL/cobe), the cover-flow deck (drag) and the CRT console
+   (intervals) are client-only interactive widgets — server-rendering them
+   risks hydration mismatches, so they load on the client behind sized
+   placeholders. */
+const AboutGlobe = dynamic(() => import("../about/about-globe").then((m) => ({ default: m.AboutGlobe })), {
+  ssr: false,
+  loading: () => <div style={{ width: "100%", maxWidth: 460, aspectRatio: "1", margin: "0 auto" }} />,
+});
+const FilmDeck = dynamic(() => import("../about/film-deck").then((m) => ({ default: m.FilmDeck })), {
+  ssr: false,
+  loading: () => <div style={{ height: 360 }} />,
+});
+const GameConsole = dynamic(() => import("../about/game-console").then((m) => ({ default: m.GameConsole })), {
+  ssr: false,
+  loading: () => <div style={{ height: 290 }} />,
+});
 
 /* ═══════════════════════════════════════════════════════════════
    ABOUT — a built page, not a filled-in one.
