@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { motion, useInView } from "motion/react";
 import { AboutGlobe } from "../about/about-globe";
 import { FilmDeck, type FilmShow } from "../about/film-deck";
 import { GameConsole } from "../about/game-console";
@@ -19,7 +18,6 @@ import type { SocialLink } from "@/lib/content/global";
    ═══════════════════════════════════════════════════════════════ */
 
 const GOLD = "#E2B93B";
-const EASE = [0.25, 0.46, 0.45, 0.94] as const;
 
 /* Flags kept as a safety net — flip a widget off if it ever misbehaves. */
 const FEATURES = { globe: true, filmDeck: true, gameConsole: true };
@@ -35,9 +33,12 @@ const GENRES = ["Documentaries", "Thriller", "Anime & animation", "Horror", "Mar
 const GAMES = ["Halo", "God of War", "Mortal Kombat", "FIFA", "Call of Duty", "NBA 2K"];
 const LIVES = ["Digital marketing", "Code", "Ecommerce", "Music production", "Blogging", "Graphic design"];
 
+/* Plain wrapper — content is visible by default (no JS-gated opacity reveal).
+   The page stays readable even if a script hiccups; the motion lives in the
+   interactive widgets, not in hiding the words. `delay` is accepted but unused
+   so existing call sites keep working. */
 function Beat({
   children,
-  delay = 0,
   style,
   className,
 }: {
@@ -46,19 +47,10 @@ function Beat({
   style?: React.CSSProperties;
   className?: string;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, amount: 0.35 });
   return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 26 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.65, ease: EASE, delay }}
-      className={className}
-      style={style}
-    >
+    <div className={className} style={style}>
       {children}
-    </motion.div>
+    </div>
   );
 }
 
@@ -96,25 +88,15 @@ export function AboutV2({ profileImage, socials = [] }: { profileImage?: string;
             Abuja, NG · 9.07°N 7.49°E
           </span>
           <div className="flex flex-col md:flex-row md:items-end" style={{ gap: 28, marginTop: 18 }}>
-            <motion.h1
-              initial={{ opacity: 0, y: 18 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, ease: EASE }}
-              style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "clamp(2rem, 5vw, 3.4rem)", fontWeight: 600, lineHeight: 1.05, color: "#F2F0EC", letterSpacing: "-0.01em" }}
-            >
+            <h1 style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "clamp(2rem, 5vw, 3.4rem)", fontWeight: 600, lineHeight: 1.05, color: "#F2F0EC", letterSpacing: "-0.01em" }}>
               Hi, I&apos;m Deron <span style={{ color: GOLD }}>👋</span>
-            </motion.h1>
+            </h1>
             {profileImage ? (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.96, rotate: -3 }}
-                animate={{ opacity: 1, scale: 1, rotate: -3 }}
-                transition={{ duration: 0.7, delay: 0.15, ease: EASE }}
-                style={{ position: "relative", flexShrink: 0, width: 132, height: 160, borderRadius: 10, overflow: "hidden", border: "1px solid rgba(255,255,255,0.12)" }}
-              >
+              <div style={{ position: "relative", flexShrink: 0, width: 132, height: 160, borderRadius: 10, overflow: "hidden", border: "1px solid rgba(255,255,255,0.12)", transform: "rotate(-3deg)" }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={profileImage} alt="Deron" style={{ width: "100%", height: "100%", objectFit: "cover", filter: "grayscale(0.15) contrast(1.02)" }} />
                 <span aria-hidden style={{ position: "absolute", bottom: -1, right: -1, width: 20, height: 20, borderRight: `2px solid ${GOLD}`, borderBottom: `2px solid ${GOLD}` }} />
-              </motion.div>
+              </div>
             ) : null}
           </div>
         </div>
