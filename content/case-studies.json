@@ -777,7 +777,8 @@
             "body": "<p>Before any redesign decision, one rule governed all of them: I could not overly disrupt the existing architecture.</p><p>This was pre-AI-assisted development for their team. Every structural change I proposed had a real cost in engineering time and money. So the job was not to redraw the product from scratch into something prettier. It was to find the highest-leverage changes, the ones that fixed the real confusion and risk, while respecting a system that was already partly built and expensive to move.</p><p>Designing within that boundary is the actual skill. Anyone can redesign with a blank canvas. Doing it inside a live system, where every change is a negotiation with engineering reality, is what shipping in an established company looks like. The team found the approach refreshing and simpler precisely because it was disciplined, not because it was unconstrained.</p>",
             "headline": "<p>The Constraint That Shaped Everything</p>"
           }
-        ]
+        ],
+        "id": "act-1781591137830-0"
       },
       {
         "title": "Driver Mobile App",
@@ -809,7 +810,8 @@
             "id": "slide-1781260053668-9",
             "body": "<p><strong>Designing for the real risks of Nigerian road travel</strong></p><p>Interstate travel here carries risks that a generic ride-hailing design never accounts for. I designed for them directly:</p><ul><li><p><strong>An SOS button, one tap from the home screen.</strong> Under genuine duress, no one navigates three menus deep. It had to be immediate. On activation, the driver's location goes to the relevant authorities and to Urban, so help can be directed to a real place. It is not a complete solution, it still depends on Nigeria's emergency response, but it is a real step where there was none.</p></li><li><p><strong>Driver and vehicle details surfaced to the rider.</strong> The old design hid them, which is a security and liability hole. If a third party can walk into a park, pose as an Urban driver, and leave with passengers, that is a serious risk. Showing verified driver and car details closes it.</p></li><li><p><strong>Particulars accessible in-app.</strong> Checkpoint officials sometimes seize a driver's physical particulars to extort them. Having the documents in the app does not stop the stop, but it changes the leverage. I made them easy to reach from the homepage.</p></li><li><p><strong>A hide-wallet-balance toggle for trips,</strong> gated behind biometrics or a password, designed for the reality of roadside robbery on long routes. Hiding a balance is not an obvious feature. It comes from understanding where and how drivers are actually vulnerable.</p></li></ul><p>None of these come from a UI pattern library. They come from understanding the operating environment, which is exactly the kind of domain knowledge that does not transfer to a foreign competitor or a generalist.</p><p>I also fleshed out the full driver onboarding to collect the information the operation actually needs, added a rider-review system that feeds back into driver performance and lets fleet owners see who is excelling and who needs work, and built out the settings the original lacked entirely, including login and security, because without it a driver had no way to recover their account.</p>"
           }
-        ]
+        ],
+        "id": "act-1781591137830-1"
       },
       {
         "title": "Rider Mobile App",
@@ -832,7 +834,8 @@
             "body": "<p>The old homepage gave no direction. I rebuilt it around priority: three actions ranked by intent, book a trip first, then find a park, then fund wallet, with the wallet balance visible and fundable on the screen. I added a marketing section for their other products (Urban Cards, Urban Flights, installment plans) as clean cards, plus quick-access shortcuts. I also designed the card-creation flow, the KYC and identity-verification onboarding, and redesigned the flights experience, which ties into their installment plan.</p>",
             "headline": "<p>The homepage as a guide</p>"
           }
-        ]
+        ],
+        "id": "act-1781591137830-2"
       },
       {
         "title": "Result & Reflection",
@@ -849,7 +852,8 @@
             "headline": "<p>Why This Matters for Mobility and Fleet Operations</p>",
             "body": "<p>Urban is fleet operations. Drivers on shift, agencies scheduling trips and assigning vehicles, fleet owners tracking performance, fuel logged across a journey, all of it needing to stay legible to the people running it day to day.</p><p>The skill on show is taking a tangled, multi-actor mobility operation and making it make sense, for the driver, the rider, the agency, and the fleet owner, without rebuilding the engine underneath. That is the exact problem fleet and mobility platforms exist to solve: many parties, one operation, real constraints, and a system that has to stay coherent while it runs.</p><p>I am a product designer who is AI-native and builds. On Urban, the building showed up as judgment, designing for race conditions and payment failures because I have hit them myself, while staying disciplined about a system I was not free to rewrite.</p>"
           }
-        ]
+        ],
+        "id": "act-1781591137830-3"
       }
     ],
     "outcome": {
