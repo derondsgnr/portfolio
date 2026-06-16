@@ -4,7 +4,7 @@
     "title": "CareerEdge",
     "category": "Career / EdTech",
     "year": "2026",
-    "description": "Multi-role career platform \u2014 I positioned the AI guide as the product spine so a massive surface area stays learnable: progressive disclosure, honest navigation, and context that carries across journeys.",
+    "description": "Multi-role career platform — I positioned the AI guide as the product spine so a massive surface area stays learnable: progressive disclosure, honest navigation, and context that carries across journeys.",
     "image": "https://placehold.co/1080x608/0A0A0A/E2B93B/png?text=CareerEdge%20%C2%B7%20Career%20OS",
     "slug": "careeredge",
     "featured": true,
@@ -15,7 +15,7 @@
     "title": "Bridgepay",
     "category": "Fintech",
     "year": "2025",
-    "description": "Shaping a new escrow sub-product from the ground up \u2014 making online buying and selling safer for Nigerians moving money globally.",
+    "description": "Shaping a new escrow sub-product from the ground up — making online buying and selling safer for Nigerians moving money globally.",
     "image": "https://placehold.co/1080x608/0A0A0A/E2B93B/png?text=Bridgepay%20%C2%B7%20Escrow%20%26%20FX",
     "slug": "bridgepay"
   },
@@ -24,7 +24,7 @@
     "title": "Urban",
     "category": "Transportation",
     "year": "2025",
-    "description": "Redesigning both rider and driver apps for a Nigerian interstate transport platform \u2014 modern, simple, safe.",
+    "description": "Redesigning both rider and driver apps for a Nigerian interstate transport platform — modern, simple, safe.",
     "image": "https://placehold.co/1080x608/0A0A0A/E2B93B/png?text=Urban%20%C2%B7%20Rider%20%26%20driver",
     "slug": "urban"
   },
@@ -33,16 +33,17 @@
     "title": "Customer Support Platform",
     "category": "B2B",
     "year": "2025",
-    "description": "PowerCS \u2014 helping a founder turn a big vision into a real, manageable MVP, from PRD to clear flows and dashboard.",
+    "description": "PowerCS — helping a founder turn a big vision into a real, manageable MVP, from PRD to clear flows and dashboard.",
     "image": "https://placehold.co/1080x608/0A0A0A/E2B93B/png?text=PowerCS%20%C2%B7%20Customer%20support",
-    "slug": "customer-support-platform"
+    "slug": "customer-support-platform",
+    "status": "coming-soon"
   },
   {
     "id": "04",
     "title": "Dara",
     "category": "Fintech",
-    "year": "2025\u201326",
-    "description": "Dara turns bank and fintech alerts into filing signal: scan email, run Gemini, you classify into buckets, the system learns, then it aggregates toward what you owe and when. Extraction is still patchy by provider\u2014I am not dressing that up.",
+    "year": "2025–26",
+    "description": "Dara turns bank and fintech alerts into filing signal: scan email, run Gemini, you classify into buckets, the system learns, then it aggregates toward what you owe and when. Extraction is still patchy by provider—I am not dressing that up.",
     "image": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1778268299/Screenshot_2026-05-08_at_20.22.38_zruykd.png",
     "slug": "dara"
   }
