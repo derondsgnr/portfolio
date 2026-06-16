@@ -625,7 +625,7 @@
               "Mobile Design"
             ],
             "heroImage": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1779405022/Banner_gn0y5x.jpg",
-            "device": "phone"
+            "device": "none"
           },
           {
             "type": "narrative",
@@ -637,7 +637,7 @@
             "type": "single-mockup",
             "id": "slide-1781622538534-2",
             "image": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1781622187/bridgepay_Others_hmbpop.jpg",
-            "device": "phone"
+            "device": "none"
           }
         ],
         "id": "act-1781622223461-0"
@@ -656,14 +656,14 @@
             "id": "bridgepay-mock-onboarding",
             "headline": "<p>Service Provider </p>",
             "image": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1781622189/Bridgepay_Provider_qtf90n.jpg",
-            "device": "phone",
+            "device": "none",
             "caption": "<p>Placeholder — swap for shipped UI.</p>"
           },
           {
             "type": "single-mockup",
             "id": "slide-1781622419669-2",
             "image": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1781622190/Bridgepay_Customer_zadjho.jpg",
-            "device": "phone",
+            "device": "none",
             "headline": "<p>Customer</p>"
           }
         ],
