@@ -811,9 +811,27 @@
             "body": "<p><strong>Stripping vanity metrics from the dashboard</strong></p><p>The old dashboard was a wall of cards: revenue, total trips, scheduled trips, total applications, rejected applications, accepted applications. I asked a simple question of each one, what use is this to the driver? A driver employed by an agency does not need to stare at their count of rejected applications. It is noise that does nothing for them.</p><p>So I unified total, rejected, and accepted applications into a single acceptance rate, one number that tells a driver how successful they are at winning the trips they bid for, with a chart underneath to show the breakdown. I added a fuel-usage chart, hours traveled per week, completed trips, and folded the agency and vehicle information behind a clear \"view vehicle\" action. The dashboard went from a data dump to a few things a driver can actually use.</p><p></p>"
           },
           {
+            "type": "comparison",
+            "id": "slide-1781629254659-8",
+            "before": {
+              "image": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1781629184/Metrics_before_-_Driver_mhefvc.jpg",
+              "label": "Before"
+            },
+            "after": {
+              "image": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1781629184/Metrics_after_-_Driver_yprtoh.jpg",
+              "label": "After"
+            }
+          },
+          {
             "type": "narrative",
             "id": "slide-1781260053668-9",
             "body": "<p><strong>Designing for the real risks of Nigerian road travel</strong></p><p>Interstate travel here carries risks that a generic ride-hailing design never accounts for. I designed for them directly:</p><ul><li><p><strong>An SOS button, one tap from the home screen.</strong> Under genuine duress, no one navigates three menus deep. It had to be immediate. On activation, the driver's location goes to the relevant authorities and to Urban, so help can be directed to a real place. It is not a complete solution, it still depends on Nigeria's emergency response, but it is a real step where there was none.</p></li><li><p><strong>Driver and vehicle details surfaced to the rider.</strong> The old design hid them, which is a security and liability hole. If a third party can walk into a park, pose as an Urban driver, and leave with passengers, that is a serious risk. Showing verified driver and car details closes it.</p></li><li><p><strong>Particulars accessible in-app.</strong> Checkpoint officials sometimes seize a driver's physical particulars to extort them. Having the documents in the app does not stop the stop, but it changes the leverage. I made them easy to reach from the homepage.</p></li><li><p><strong>A hide-wallet-balance toggle for trips,</strong> gated behind biometrics or a password, designed for the reality of roadside robbery on long routes. Hiding a balance is not an obvious feature. It comes from understanding where and how drivers are actually vulnerable.</p></li></ul><p>None of these come from a UI pattern library. They come from understanding the operating environment, which is exactly the kind of domain knowledge that does not transfer to a foreign competitor or a generalist.</p><p>I also fleshed out the full driver onboarding to collect the information the operation actually needs, added a rider-review system that feeds back into driver performance and lets fleet owners see who is excelling and who needs work, and built out the settings the original lacked entirely, including login and security, because without it a driver had no way to recover their account.</p>"
+          },
+          {
+            "type": "single-mockup",
+            "id": "slide-1781629233076-8",
+            "image": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1781622112/After_-_Driver_s2q3ne.jpg",
+            "device": "none"
           }
         ],
         "id": "act-1781591137830-1"
@@ -846,6 +864,12 @@
             "headline": "<p>Designing for failure</p>"
           },
           {
+            "type": "single-mockup",
+            "id": "slide-1781629321829-5",
+            "image": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1781629183/Failure_-_Rider_lghvir.jpg",
+            "device": "phone"
+          },
+          {
             "type": "narrative",
             "id": "slide-1781260463421-2",
             "body": "<p>The old homepage gave no direction. I rebuilt it around priority: three actions ranked by intent, book a trip first, then find a park, then fund wallet, with the wallet balance visible and fundable on the screen. I added a marketing section for their other products (Urban Cards, Urban Flights, installment plans) as clean cards, plus quick-access shortcuts. I also designed the card-creation flow, the KYC and identity-verification onboarding, and redesigned the flights experience, which ties into their installment plan.</p>",
@@ -854,7 +878,7 @@
           {
             "type": "single-mockup",
             "id": "slide-1781623397532-4",
-            "image": "",
+            "image": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1781629185/Home_-_Rider_maxdkr.jpg",
             "device": "none"
           }
         ],
