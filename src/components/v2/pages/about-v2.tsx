@@ -19,8 +19,8 @@ import type { SocialLink } from "@/lib/content/global";
 
 const GOLD = "#E2B93B";
 
-/* Heavy interactive sections — off for now. Flip one true to bring it back. */
-const FEATURES = { globe: false, filmDeck: false, gameConsole: false };
+/* Heavy interactive sections — globe + console off for now; film deck stays. */
+const FEATURES = { globe: false, filmDeck: true, gameConsole: false };
 
 const SHOWS: FilmShow[] = [
   { title: "Interview with the Vampire", why: "Immortality as a relationship microscope — messy people problems that never die." },
