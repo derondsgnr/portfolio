@@ -11,6 +11,8 @@
 
 import { useMemo, useState } from "react";
 import { X, GripVertical, Plus } from "lucide-react";
+import { CloudinaryUploadField } from "@/components/admin/cloudinary-upload-field";
+import { isLottieUrl, isPlayableVideoUrl } from "@/lib/media-url";
 import type { LibraryMediaItem } from "@/lib/content/media-library";
 import type { ServiceMediaRef } from "@/lib/content/defaults";
 
@@ -20,10 +22,32 @@ type Props = {
   onChange: (next: ServiceMediaRef[]) => void;
 };
 
-type TypeFilter = "all" | "image" | "video";
+type TypeFilter = "all" | "image" | "video" | "lottie";
 
 function toRef(item: LibraryMediaItem): ServiceMediaRef {
   return { url: item.url, type: item.type, label: item.label };
+}
+
+function classifyUrl(url: string): ServiceMediaRef["type"] {
+  if (isLottieUrl(url)) return "lottie";
+  if (isPlayableVideoUrl(url)) return "video";
+  return "image";
+}
+
+/** Square thumbnail for a media url. Lottie shows a labelled placeholder. */
+function Thumb({ type, url }: { type: ServiceMediaRef["type"]; url: string }) {
+  if (type === "lottie") {
+    return (
+      <div className="flex h-full w-full items-center justify-center bg-[#161616]">
+        <span className="font-mono text-[9px] uppercase tracking-[0.12em] text-[#E2B93B]/80">◇ Lottie</span>
+      </div>
+    );
+  }
+  if (type === "video") {
+    return <video src={url} muted playsInline preload="metadata" className="h-full w-full object-cover" />;
+  }
+  // eslint-disable-next-line @next/next/no-img-element
+  return <img src={url} alt="" className="h-full w-full object-cover" loading="lazy" />;
 }
 
 export function MediaLibraryPicker({ library, value, onChange }: Props) {
@@ -76,6 +100,12 @@ export function MediaLibraryPicker({ library, value, onChange }: Props) {
     if (url) addByUrl(url);
   }
 
+  function addUploaded(url: string) {
+    const u = url.trim();
+    if (!u || selectedUrls.has(u)) return;
+    onChange([...value, { url: u, type: classifyUrl(u), label: "Uploaded" }]);
+  }
+
   return (
     <div className="space-y-4">
       {/* Selected tray — drop target + reorder */}
@@ -117,18 +147,7 @@ export function MediaLibraryPicker({ library, value, onChange }: Props) {
                   className="group relative flex w-[104px] flex-col overflow-hidden rounded border border-white/10 bg-black/40"
                 >
                   <div className="relative h-[60px] w-full bg-black/60">
-                    {m.type === "video" ? (
-                      <video
-                        src={m.url}
-                        muted
-                        playsInline
-                        preload="metadata"
-                        className="h-full w-full object-cover"
-                      />
-                    ) : (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img src={m.url} alt="" className="h-full w-full object-cover" />
-                    )}
+                    <Thumb type={m.type} url={m.url} />
                     <span className="absolute left-1 top-1 rounded bg-black/70 px-1 font-mono text-[8px] uppercase tracking-[0.1em] text-[#E2B93B]">
                       {m.type}
                     </span>
@@ -191,6 +210,19 @@ export function MediaLibraryPicker({ library, value, onChange }: Props) {
         </select>
       </div>
 
+      {/* Upload a new file (image / video / Lottie .json) */}
+      <div className="rounded border border-white/10 bg-white/[0.02] px-3 py-2">
+        <p className="font-mono text-[10px] text-white/45">
+          …or upload a new image, video, or Lottie (.json) — it attaches straight to this service.
+        </p>
+        <CloudinaryUploadField
+          accept="image/*,video/*,.json,.lottie,application/json"
+          label="Upload media"
+          busyNote="Uploading…"
+          onUploaded={(r) => addUploaded(r.secure_url)}
+        />
+      </div>
+
       {/* Library grid — drag source + click to toggle */}
       <div className="rounded border border-white/10 bg-white/[0.02] p-3">
         <div className="mb-3 flex flex-wrap items-center gap-2">
@@ -202,7 +234,7 @@ export function MediaLibraryPicker({ library, value, onChange }: Props) {
             className="flex-1 min-w-[140px] bg-[#111] px-3 py-1.5 font-mono text-xs text-white/80 border border-white/10 placeholder:text-white/30 focus:border-[#E2B93B]/50 focus:outline-none"
           />
           <div className="flex gap-1">
-            {(["all", "image", "video"] as TypeFilter[]).map((t) => (
+            {(["all", "image", "video", "lottie"] as TypeFilter[]).map((t) => (
               <button
                 key={t}
                 type="button"
@@ -241,18 +273,7 @@ export function MediaLibraryPicker({ library, value, onChange }: Props) {
                       on ? "border-[#E2B93B]" : "border-white/10 hover:border-white/30"
                     }`}
                   >
-                    {item.type === "video" ? (
-                      <video
-                        src={item.url}
-                        muted
-                        playsInline
-                        preload="metadata"
-                        className="h-full w-full object-cover"
-                      />
-                    ) : (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img src={item.url} alt="" className="h-full w-full object-cover" loading="lazy" />
-                    )}
+                    <Thumb type={item.type} url={item.url} />
                     <span className="absolute left-1 top-1 rounded bg-black/70 px-1 font-mono text-[8px] uppercase tracking-[0.1em] text-white/70">
                       {item.type}
                     </span>

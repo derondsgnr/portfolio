@@ -207,8 +207,10 @@ export function GlobalForm({ initial }: Props) {
           Download CV
         </h2>
         <p className="font-mono text-[10px] text-white/40 mb-3 leading-relaxed">
-          Paste a link to your CV/resume (PDF). When set, a "Download CV" CTA appears
-          alongside the booking CTAs on case studies and the homepage. Leave blank to hide it.
+          Upload a PDF, or paste a link — a direct file URL, a{" "}
+          <span className="text-[#E2B93B]/80">Google Drive</span> or Dropbox share link works too
+          (we convert it to a direct download). When set, a "Download CV" CTA appears alongside the
+          booking CTAs on case studies and the homepage. Leave blank to hide it.
         </p>
         <label htmlFor="cvUrl" className={labelClass}>
           CV URL
@@ -220,8 +222,24 @@ export function GlobalForm({ initial }: Props) {
           value={cvUrl}
           onChange={(e) => setCvUrl(e.target.value)}
           className={inputClass}
-          placeholder="https://res.cloudinary.com/.../deron-cv.pdf"
+          placeholder="https://drive.google.com/file/d/… or https://…/deron-cv.pdf"
         />
+        <CloudinaryUploadField
+          accept="application/pdf,.pdf"
+          label="Upload PDF"
+          busyNote="Uploading CV…"
+          onUploaded={(r) => setCvUrl(r.secure_url)}
+        />
+        {cvUrl.trim() ? (
+          <a
+            href={cvUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-2 inline-block font-mono text-[10px] text-white/45 underline hover:text-[#E2B93B]"
+          >
+            Preview current CV ↗
+          </a>
+        ) : null}
       </div>
 
       <div>

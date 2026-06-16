@@ -79,7 +79,7 @@ export const DEFAULT_TESTIMONIALS: TestimonialItem[] = [
  */
 export type ServiceMediaRef = {
   url: string;
-  type: "image" | "video";
+  type: "image" | "video" | "lottie";
   /** Where it came from, for the admin tray label (e.g. "Case study: Dara"). */
   label?: string;
 };

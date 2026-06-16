@@ -121,7 +121,9 @@ function SortableServiceRow({
                   key={m.url}
                   className="relative block h-8 w-8 overflow-hidden rounded border border-white/10 bg-black/40"
                 >
-                  {m.type === "video" ? (
+                  {m.type === "lottie" ? (
+                    <span className="flex h-full w-full items-center justify-center bg-[#161616] font-mono text-[7px] uppercase text-[#E2B93B]/80">◇</span>
+                  ) : m.type === "video" ? (
                     <video src={m.url} muted playsInline preload="metadata" className="h-full w-full object-cover" />
                   ) : (
                     // eslint-disable-next-line @next/next/no-img-element

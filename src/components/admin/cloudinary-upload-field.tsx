@@ -6,10 +6,14 @@ import { isCloudinaryUploadConfigured, uploadFileToCloudinary, type CloudinaryUp
 type Props = {
   onUploaded: (result: CloudinaryUploadResult) => void;
   busyNote?: string;
+  /** Accepted file types (input accept attr). Defaults to image + video. */
+  accept?: string;
+  /** Button label when idle. */
+  label?: string;
 };
 
 /** Local file → Cloudinary → callback with secure_url (+ dimensions for images). Requires NEXT_PUBLIC Cloudinary env. */
-export function CloudinaryUploadField({ onUploaded, busyNote = "Uploading…" }: Props) {
+export function CloudinaryUploadField({ onUploaded, busyNote = "Uploading…", accept = "image/*,video/*", label = "Upload file" }: Props) {
   const inputId = useId();
   const fileRef = useRef<HTMLInputElement>(null);
   const [busy, setBusy] = useState(false);
@@ -48,11 +52,11 @@ export function CloudinaryUploadField({ onUploaded, busyNote = "Uploading…" }:
         ref={fileRef}
         id={inputId}
         type="file"
-        accept="image/*,video/*"
+        accept={accept}
         className="sr-only"
         onChange={handleFile}
         disabled={busy}
-        aria-label="Upload image or video file"
+        aria-label={label}
       />
       <button
         type="button"
@@ -60,7 +64,7 @@ export function CloudinaryUploadField({ onUploaded, busyNote = "Uploading…" }:
         onClick={() => fileRef.current?.click()}
         className="px-4 py-1.5 border border-[#E2B93B]/35 font-mono text-[10px] uppercase tracking-[0.12em] text-[#E2B93B] hover:bg-[#E2B93B]/10 transition-colors disabled:opacity-40"
       >
-        {busy ? busyNote : "Upload file"}
+        {busy ? busyNote : label}
       </button>
       {error ? <span className="font-mono text-[10px] text-red-400">{error}</span> : null}
     </div>
