@@ -8,7 +8,8 @@
     "image": "https://placehold.co/1080x608/0A0A0A/E2B93B/png?text=CareerEdge%20%C2%B7%20Career%20OS",
     "slug": "careeredge",
     "featured": true,
-    "pinned": true
+    "pinned": true,
+    "status": "draft"
   },
   {
     "id": "01",
