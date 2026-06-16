@@ -633,18 +633,12 @@
             "headline": "The brief",
             "body": "Bridgepay was building a payments platform to help Nigerians move money globally when the founder approached me with an emerging idea: \"Can we make online buying and selling safer for everyone?\" He and I had worked together before, so he trusted my ability to think holistically — product → UX → compliance → UI → strategy. Together, we shaped a new escrow sub-product from the ground up, starting with an empty screen."
           }
-        ]
+        ],
+        "id": "act-1781622223461-0"
       },
       {
         "title": "What I Designed",
         "slides": [
-          {
-            "type": "section-break",
-            "id": "bridgepay-act2",
-            "actTitle": "What I Designed",
-            "actNumber": 2,
-            "subtitle": "End-to-end flows from sign-up to cross-border transfer"
-          },
           {
             "type": "narrative",
             "id": "bridgepay-flows",
@@ -654,18 +648,9 @@
           {
             "type": "single-mockup",
             "id": "bridgepay-mock-onboarding",
-            "headline": "Onboarding",
-            "image": "https://placehold.co/1600x1000/0A0A0A/E2B93B/png?text=Bridgepay%20%C2%B7%20Sign%20up",
+            "image": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1781622189/Bridgepay_Provider_qtf90n.jpg",
             "device": "phone",
-            "caption": "Placeholder — swap for shipped UI."
-          },
-          {
-            "type": "single-mockup",
-            "id": "bridgepay-mock-escrow",
-            "headline": "Escrow initiation",
-            "image": "https://placehold.co/1600x1000/0A0A0A/E2B93B/png?text=Bridgepay%20%C2%B7%20Escrow",
-            "device": "phone",
-            "caption": "Placeholder — buyer / seller paths."
+            "caption": "<p>Placeholder — swap for shipped UI.</p>"
           },
           {
             "type": "single-mockup",
@@ -673,9 +658,10 @@
             "headline": "International payments",
             "image": "https://placehold.co/1600x1000/0A0A0A/E2B93B/png?text=Bridgepay%20%C2%B7%20FX%20transfer",
             "device": "phone",
-            "caption": "Placeholder — currency clarity & confirmation."
+            "caption": "<p>Placeholder — currency clarity &amp; confirmation.</p>"
           }
-        ]
+        ],
+        "id": "act-1781622223461-1"
       },
       {
         "title": "Outcome",
@@ -700,7 +686,8 @@
             "attribution": "Alabi Hafeez",
             "role": "CEO, Bridgepay"
           }
-        ]
+        ],
+        "id": "act-1781622223461-2"
       }
     ],
     "outcome": {
