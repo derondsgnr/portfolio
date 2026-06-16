@@ -11,6 +11,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { ArrowUpRight, ArrowLeft, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { SafeLink } from "@/components/safe-link";
 import {
   TextReveal,
   Reveal,
@@ -279,7 +280,7 @@ function WorkDescent() {
         </div>
 
         <Reveal delay={0.3} className="text-center mt-16 md:mt-24">
-          <Link
+          <SafeLink
             href="/work"
             className="text-white/30 hover:text-[#e2b93b] transition-colors duration-300 inline-flex items-center gap-3"
             style={{
@@ -291,7 +292,7 @@ function WorkDescent() {
           >
             View all work
             <ArrowUpRight className="w-3.5 h-3.5" strokeWidth={1} />
-          </Link>
+          </SafeLink>
         </Reveal>
       </section>
     </SectionTransition>
@@ -484,7 +485,7 @@ function AboutDescent() {
           </Reveal>
 
           <Reveal delay={0.6}>
-            <Link
+            <SafeLink
               href="/about"
               className="inline-flex items-center gap-4 text-[#e2b93b]/50 hover:text-[#e2b93b] transition-colors duration-300 mt-10"
             >
@@ -499,7 +500,7 @@ function AboutDescent() {
                 More about me
               </span>
               <ArrowRight className="w-3.5 h-3.5" strokeWidth={1} />
-            </Link>
+            </SafeLink>
           </Reveal>
         </div>
 

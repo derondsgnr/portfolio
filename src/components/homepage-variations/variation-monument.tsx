@@ -13,6 +13,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { ArrowUpRight, ArrowLeft, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { SafeLink } from "@/components/safe-link";
 import {
   TextReveal,
   Reveal,
@@ -219,7 +220,7 @@ function WorkMonument() {
               </TextReveal>
             </div>
             <Reveal delay={0.2}>
-              <Link
+              <SafeLink
                 href="/work"
                 className="text-white/30 hover:text-[#e2b93b] transition-colors duration-300 flex items-center gap-2"
                 style={{
@@ -232,7 +233,7 @@ function WorkMonument() {
               >
                 View all
                 <ArrowUpRight className="w-3 h-3" strokeWidth={1} />
-              </Link>
+              </SafeLink>
             </Reveal>
           </div>
         </div>
@@ -492,7 +493,7 @@ function AboutMonument() {
               From strategy to interface, I move at the speed your startup
               needs.
             </p>
-            <Link
+            <SafeLink
               href="/about"
               className="inline-flex items-center gap-4 text-[#e2b93b]/50 hover:text-[#e2b93b] transition-colors duration-300 mt-6"
             >
@@ -508,7 +509,7 @@ function AboutMonument() {
                 Full Story
               </span>
               <ArrowRight className="w-3.5 h-3.5" strokeWidth={1} />
-            </Link>
+            </SafeLink>
           </Reveal>
         </div>
       </section>

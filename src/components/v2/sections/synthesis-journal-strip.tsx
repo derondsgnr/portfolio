@@ -4,6 +4,7 @@ import Link from "next/link";
 import { motion } from "motion/react";
 import type { BlogPost } from "@/types/blog";
 import { withSound, useSoundOnHover } from "@/hooks/useSound";
+import { useIsHidden } from "@/contexts/site-config-context";
 
 function formatJournalDate(iso: string): string {
   const t = new Date(`${iso}T12:00:00`).getTime();
@@ -35,6 +36,9 @@ export function SynthesisJournalStrip({
   const onRowHover = useSoundOnHover("hover");
   const latest = posts.slice(0, maxPosts);
   const hasPosts = latest.length > 0;
+  // A "WRITING" teaser — vanish entirely if /blog is hidden.
+  const blogHidden = useIsHidden("/blog");
+  if (blogHidden) return null;
 
   return (
     <section className="relative border-t border-[rgba(255,255,255,0.06)]" aria-labelledby="homepage-journal-heading">
