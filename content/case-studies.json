@@ -753,6 +753,12 @@
             "body": "<p>Urban is the personal product of a client I had already built JET for. He brought me in as a project manager. While managing those tasks, I kept running into the product's interface, and it was rough. Fragmented navigation, information that belonged together split across screens, a driver experience that made you hop between a homepage and a separate dashboard for no reason.</p><p>So I texted him and offered to take on the UI. He gave me access, and what started as a project-management contract became an end-to-end redesign of both sides of the product.</p><p>That origin matters, because it is how I work. I do not wait for a design brief to land. I find the problem, and I make the case for fixing it.</p>"
           },
           {
+            "type": "single-mockup",
+            "id": "slide-1781623060850-4",
+            "image": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1781622112/Before_-_Driver_tvkycw.jpg",
+            "device": "phone"
+          },
+          {
             "type": "narrative",
             "id": "slide-1781259558829-3",
             "body": "<p>Before any redesign decision, one rule governed all of them: I could not overly disrupt the existing architecture.</p><p>This was pre-AI-assisted development for their team. Every structural change I proposed had a real cost in engineering time and money. So the job was not to redraw the product from scratch into something prettier. It was to find the highest-leverage changes, the ones that fixed the real confusion and risk, while respecting a system that was already partly built and expensive to move.</p><p>Designing within that boundary is the actual skill. Anyone can redesign with a blank canvas. Doing it inside a live system, where every change is a negotiation with engineering reality, is what shipping in an established company looks like. The team found the approach refreshing and simpler precisely because it was disciplined, not because it was unconstrained.</p>",
@@ -777,9 +783,27 @@
             "headline": "<p>The Driver Side: Fixing a Fragmented Operation</p>"
           },
           {
+            "type": "single-mockup",
+            "id": "slide-1781623112950-5",
+            "image": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1781622112/Before_-_Driver_tvkycw.jpg",
+            "device": "phone"
+          },
+          {
             "type": "narrative",
             "id": "slide-1781260004750-7",
             "body": "<p><strong>Collapsing three fragmented tabs into a real model</strong></p><p>The navigation was the core problem. The driver app had five tabs, and three of them, trips, records, requests, were really the same thing in different states, with inconsistent language making it worse. \"Trips\" sometimes meant orders, sometimes meant completed journeys. The same concept had different names in different places.</p><p>I worked it back to a single mental model: a trip has two phases. It starts as a request, then it becomes a trip. A trip can be scheduled or active, and eventually all of it becomes history. There was no reason to split that one lifecycle across three tabs each with their own internal subdivisions.</p><p>To get the interaction right, I looked at how fintech apps handle records and states, because they live and die on showing many items in many states without becoming a mess, and at food-delivery apps, where an order moves through phases (ordered, received, en route, arrived) on one coherent surface. I borrowed the pattern where the most active item sits pinned at the top and drops into history once it resolves.</p><p>So I collapsed the navigation from five tabs to four (home, requests, trips, account), and restructured requests into \"new requests\" and \"my applications.\" When a driver applies for a trip, it sits at the top of my applications as pending. If rejected, it drops to history and the top clears. If accepted, it moves to trips. One lifecycle, legible at every stage. I also pulled the next upcoming trip onto the homepage, so a driver opening the app immediately sees what they are heading to and when, instead of a blank screen.</p><p></p>"
+          },
+          {
+            "type": "comparison",
+            "id": "slide-1781623184365-6",
+            "before": {
+              "image": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1781622112/Before_-_Driver_tvkycw.jpg",
+              "label": "Before"
+            },
+            "after": {
+              "image": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1781622108/Others_-_Driver_xbrjfe.jpg",
+              "label": "After"
+            }
           },
           {
             "type": "narrative",
