@@ -654,15 +654,16 @@
           {
             "type": "single-mockup",
             "id": "bridgepay-mock-onboarding",
+            "headline": "<p>Service Provider</p>",
             "image": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1781622189/Bridgepay_Provider_qtf90n.jpg",
-            "device": "none",
-            "caption": "<p>Placeholder — swap for shipped UI.</p>"
+            "device": "none"
           },
           {
             "type": "single-mockup",
             "id": "slide-1781622419669-2",
             "image": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1781622190/Bridgepay_Customer_zadjho.jpg",
-            "device": "none"
+            "device": "none",
+            "headline": "<p>Customer</p>"
           }
         ],
         "id": "act-1781622223461-1"
