@@ -632,6 +632,12 @@
             "id": "bridgepay-context",
             "headline": "The brief",
             "body": "Bridgepay was building a payments platform to help Nigerians move money globally when the founder approached me with an emerging idea: \"Can we make online buying and selling safer for everyone?\" He and I had worked together before, so he trusted my ability to think holistically — product → UX → compliance → UI → strategy. Together, we shaped a new escrow sub-product from the ground up, starting with an empty screen."
+          },
+          {
+            "type": "single-mockup",
+            "id": "slide-1781622538534-2",
+            "image": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1781622187/bridgepay_Others_hmbpop.jpg",
+            "device": "phone"
           }
         ],
         "id": "act-1781622223461-0"
@@ -648,17 +654,17 @@
           {
             "type": "single-mockup",
             "id": "bridgepay-mock-onboarding",
+            "headline": "<p>Service Provider </p>",
             "image": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1781622189/Bridgepay_Provider_qtf90n.jpg",
             "device": "phone",
             "caption": "<p>Placeholder — swap for shipped UI.</p>"
           },
           {
             "type": "single-mockup",
-            "id": "bridgepay-mock-intl",
-            "headline": "International payments",
-            "image": "https://placehold.co/1600x1000/0A0A0A/E2B93B/png?text=Bridgepay%20%C2%B7%20FX%20transfer",
+            "id": "slide-1781622419669-2",
+            "image": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1781622190/Bridgepay_Customer_zadjho.jpg",
             "device": "phone",
-            "caption": "<p>Placeholder — currency clarity &amp; confirmation.</p>"
+            "headline": "<p>Customer</p>"
           }
         ],
         "id": "act-1781622223461-1"
@@ -666,13 +672,6 @@
       {
         "title": "Outcome",
         "slides": [
-          {
-            "type": "section-break",
-            "id": "bridgepay-act3",
-            "actTitle": "Outcome",
-            "actNumber": 3,
-            "subtitle": "Results and reflection"
-          },
           {
             "type": "narrative",
             "id": "bridgepay-outcome",
