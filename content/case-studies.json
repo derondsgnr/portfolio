@@ -401,7 +401,8 @@
           {
             "type": "narrative",
             "id": "slide-1780015582742-5",
-            "body": "<p>I also had my friend test the prototypes throughout the journey, not just at the end. I wanted to validate assumptions while the product was still moving, not after I had already locked in the wrong thing. That kept me honest. It let me see where the logic made sense, where it broke down, and where the experience was too optimistic about how people actually manage events.</p>"
+            "body": "<p>I also had my friend test the prototypes throughout the journey, not just at the end. I wanted to validate assumptions while the product was still moving, not after I had already locked in the wrong thing. That kept me honest. It let me see where the logic made sense, where it broke down, and where the experience was too optimistic about how people actually manage events.</p>",
+            "headline": "<p>User in the loop</p>"
           },
           {
             "type": "narrative",
@@ -417,12 +418,6 @@
           },
           {
             "type": "narrative",
-            "id": "slide-1780015677212-8",
-            "body": "<p>The same thinking applied to vendor location tracking. In a market like this, location is not just a map detail. It is operational truth. If a vendor is assigned to a wrong zone, the whole event experience becomes harder to manage. So I treated vendor location tracking as part of the core system, not as an afterthought tucked into settings somewhere.</p>",
-            "headline": "<p>Right place, on time.</p>"
-          },
-          {
-            "type": "narrative",
             "id": "slide-1780015780566-9",
             "body": "<p>That was not just me being attracted to color. It was a business decision.</p><p>Bantu needed to compete, and in a crowded event market, looking calm and neutral is not always a strength. If the product is trying to win attention in a space where people already associate energy, celebration, and momentum with the category, the visual language has to carry some of that confidence. So I pushed the palette toward something vibrant and more alive, while still keeping the interface usable.</p><p>I also worked differently on this project than I would have a few years ago.</p><p><strong>The workflow was more like:</strong></p><ol><li><p>brief in,</p></li><li><p>Claude for strategy,</p></li><li><p>then Figma Make for designing in code.</p></li></ol><p>That let me move faster from thinking to structure to something tangible. I was not treating design as a static handoff artifact. I was using code-assisted design to test decisions quickly and stay close to the real product logic.</p><p>The timeline also forced honesty.<br>What was scoped as <em>one month stretched to nine weeks</em>. That happens. Especially when the first version of the brief is incomplete and the product logic is more layered than it sounded at the start. I would rather a structure that can actually survive than rush it through and hand off a beautiful misunderstanding.</p>",
             "headline": "<p>Visually, I made a deliberate choice to go vibrant.</p>"
@@ -432,7 +427,8 @@
             "id": "slide-1780066024038-10",
             "mockups": []
           }
-        ]
+        ],
+        "id": "act-1781592341798-0"
       }
     ],
     "liveDemoUrl": "https://bantuevents.com"
