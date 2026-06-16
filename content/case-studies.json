@@ -756,7 +756,7 @@
             "type": "single-mockup",
             "id": "slide-1781623060850-4",
             "image": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1781622112/Before_-_Driver_tvkycw.jpg",
-            "device": "phone"
+            "device": "none"
           },
           {
             "type": "narrative",
@@ -786,7 +786,7 @@
             "type": "single-mockup",
             "id": "slide-1781623112950-5",
             "image": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1781622112/Before_-_Driver_tvkycw.jpg",
-            "device": "phone"
+            "device": "none"
           },
           {
             "type": "narrative",
@@ -855,7 +855,7 @@
             "type": "single-mockup",
             "id": "slide-1781623397532-4",
             "image": "",
-            "device": "phone"
+            "device": "none"
           }
         ],
         "id": "act-1781591137830-2"
