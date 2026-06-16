@@ -828,6 +828,18 @@
             "headline": "<p>The Rider Side: Reimagining the Booking</p>"
           },
           {
+            "type": "comparison",
+            "id": "slide-1781623378833-3",
+            "before": {
+              "image": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1781622115/Before_-_rider_hjiou5.jpg",
+              "label": "Before"
+            },
+            "after": {
+              "image": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1781622115/After_-_rider_oqxms0.jpg",
+              "label": "After"
+            }
+          },
+          {
             "type": "narrative",
             "id": "slide-1781260430253-1",
             "body": "<p>Because of the architecture I was working within, I had to preempt the ways a booking can break.</p><p>What happens if the payment processor stalls mid-transaction? I added a pending-trip card that stays on the rider's homepage. Tapping it opens a small status model, payment received, confirming details, trip booked, so the rider can see exactly where their booking stands instead of staring at uncertainty after sending money.</p><p>And what happens if two riders book the same seat? I raised this as an edge case. Having built products since, I would now name it directly as a race condition and an idempotency problem. The pending-and-confirm pattern helps handle it, and it surfaces the design question underneath: is the operation willing to reassign a seat, and if so, how does the rider get told and rerouted? I designed the reassurance layer and flagged the concurrency decision for the team to confirm technically, rather than pretend I had solved their backend.</p><p>That instinct, to design for the unhappy path, came directly from having built. It is the clearest example of how being AI-native and hands-on with code feeds back into sharper product decisions.</p>",
@@ -838,6 +850,12 @@
             "id": "slide-1781260463421-2",
             "body": "<p>The old homepage gave no direction. I rebuilt it around priority: three actions ranked by intent, book a trip first, then find a park, then fund wallet, with the wallet balance visible and fundable on the screen. I added a marketing section for their other products (Urban Cards, Urban Flights, installment plans) as clean cards, plus quick-access shortcuts. I also designed the card-creation flow, the KYC and identity-verification onboarding, and redesigned the flights experience, which ties into their installment plan.</p>",
             "headline": "<p>The homepage as a guide</p>"
+          },
+          {
+            "type": "single-mockup",
+            "id": "slide-1781623397532-4",
+            "image": "",
+            "device": "phone"
           }
         ],
         "id": "act-1781591137830-2"
