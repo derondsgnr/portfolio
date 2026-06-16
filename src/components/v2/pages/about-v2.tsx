@@ -22,6 +22,9 @@ const GOLD = "#E2B93B";
 /* Heavy interactive sections — globe + console off for now; film deck stays. */
 const FEATURES = { globe: false, filmDeck: true, gameConsole: false };
 
+/* Copy sections hidden (not deleted) until we redesign them. Flip true to show. */
+const SECTIONS = { lives: false, console: false, friendCat: false, health: false };
+
 const SHOWS: FilmShow[] = [
   { title: "Interview with the Vampire", why: "Immortality as a relationship microscope — messy people problems that never die." },
   { title: "Shrinking", why: "Grief and therapy played for warmth, not pity." },
@@ -176,24 +179,28 @@ export function AboutV2({ profileImage, socials = [] }: { profileImage?: string;
         </Beat>
 
         {/* ── The many lives (left) ───────────────────────────── */}
-        <Beat style={{ marginBottom: 18 }}>
-          <p style={{ ...body, maxWidth: "44ch" }}>I&apos;ve lived a few lives to get here —</p>
-        </Beat>
-        <Beat style={{ marginBottom: 30 }}>
-          <ul className="flex flex-wrap" style={{ listStyle: "none", padding: 0, margin: 0, gap: "10px 22px", maxWidth: "46ch" }}>
-            {LIVES.map((l, i) => (
-              <li key={l} className="ab-life" style={{ display: "flex", alignItems: "baseline", gap: 8, cursor: "default" }}>
-                <span className="ab-life-no" style={{ fontFamily: "monospace", fontSize: "9px", color: "rgba(226,185,59,0.7)", transition: "color .25s" }}>{String(i + 1).padStart(2, "0")}</span>
-                <span className="ab-life-name" style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "clamp(1rem, 1.4vw, 1.25rem)", color: "rgba(255,255,255,0.62)", transition: "color .25s" }}>{l}</span>
-              </li>
-            ))}
-          </ul>
-        </Beat>
-        <Beat style={{ ...body, maxWidth: "50ch", marginBottom: 96 }}>
-          <p>
-            As a kid I drew and wrote my own comics. I was always going to make things — product design just finally gave the creativity somewhere to point.
-          </p>
-        </Beat>
+        {SECTIONS.lives && (
+          <>
+            <Beat style={{ marginBottom: 18 }}>
+              <p style={{ ...body, maxWidth: "44ch" }}>I&apos;ve lived a few lives to get here —</p>
+            </Beat>
+            <Beat style={{ marginBottom: 30 }}>
+              <ul className="flex flex-wrap" style={{ listStyle: "none", padding: 0, margin: 0, gap: "10px 22px", maxWidth: "46ch" }}>
+                {LIVES.map((l, i) => (
+                  <li key={l} className="ab-life" style={{ display: "flex", alignItems: "baseline", gap: 8, cursor: "default" }}>
+                    <span className="ab-life-no" style={{ fontFamily: "monospace", fontSize: "9px", color: "rgba(226,185,59,0.7)", transition: "color .25s" }}>{String(i + 1).padStart(2, "0")}</span>
+                    <span className="ab-life-name" style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "clamp(1rem, 1.4vw, 1.25rem)", color: "rgba(255,255,255,0.62)", transition: "color .25s" }}>{l}</span>
+                  </li>
+                ))}
+              </ul>
+            </Beat>
+            <Beat style={{ ...body, maxWidth: "50ch", marginBottom: 96 }}>
+              <p>
+                As a kid I drew and wrote my own comics. I was always going to make things — product design just finally gave the creativity somewhere to point.
+              </p>
+            </Beat>
+          </>
+        )}
 
         {/* ── The peak ────────────────────────────────────────── */}
         <Beat style={{ ...body, maxWidth: "46ch", marginBottom: 22 }}>
@@ -258,37 +265,43 @@ export function AboutV2({ profileImage, socials = [] }: { profileImage?: string;
         </Beat>
 
         {/* ── Console ─────────────────────────────────────────── */}
-        <div className={FEATURES.gameConsole ? "grid grid-cols-1 md:grid-cols-[1fr_360px]" : ""} style={{ gap: 40, alignItems: "center", marginBottom: 96 }}>
-          <Beat>
-            <p style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(1.5rem, 3.6vw, 2.6rem)", lineHeight: 1.04, textTransform: "uppercase", color: "#F2F0EC", maxWidth: "16ch" }}>
-              I&apos;m also mourning the console I don&apos;t own.
-            </p>
-            <p style={{ ...body, maxWidth: "40ch", marginTop: 16 }}>
-              Console, PC, mobile — I&apos;ll play all of it. Raised on these. The PS5 wishlist stays open indefinitely.
-            </p>
-          </Beat>
-          {FEATURES.gameConsole && (
-            <Beat delay={0.05}>
-              <WidgetBoundary fallback={<div style={{ height: 290 }} />}>
-                {mounted ? <GameConsole games={GAMES} /> : <div style={{ height: 290 }} />}
-              </WidgetBoundary>
+        {SECTIONS.console && (
+          <div className={FEATURES.gameConsole ? "grid grid-cols-1 md:grid-cols-[1fr_360px]" : ""} style={{ gap: 40, alignItems: "center", marginBottom: 96 }}>
+            <Beat>
+              <p style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(1.5rem, 3.6vw, 2.6rem)", lineHeight: 1.04, textTransform: "uppercase", color: "#F2F0EC", maxWidth: "16ch" }}>
+                I&apos;m also mourning the console I don&apos;t own.
+              </p>
+              <p style={{ ...body, maxWidth: "40ch", marginTop: 16 }}>
+                Console, PC, mobile — I&apos;ll play all of it. Raised on these. The PS5 wishlist stays open indefinitely.
+              </p>
             </Beat>
-          )}
-        </div>
+            {FEATURES.gameConsole && (
+              <Beat delay={0.05}>
+                <WidgetBoundary fallback={<div style={{ height: 290 }} />}>
+                  {mounted ? <GameConsole games={GAMES} /> : <div style={{ height: 290 }} />}
+                </WidgetBoundary>
+              </Beat>
+            )}
+          </div>
+        )}
 
         {/* ── Friend / cat ────────────────────────────────────── */}
-        <Beat style={{ ...body, maxWidth: "50ch", marginLeft: "auto", marginRight: 0, marginBottom: 64 }}>
-          <p>
-            The rest of the time I&apos;m getting dragged outside by a friend who&apos;s better at rest than I am. My <span className="ab-emph" style={{ color: GOLD }}>cat</span> supervises all of it.
-          </p>
-        </Beat>
+        {SECTIONS.friendCat && (
+          <Beat style={{ ...body, maxWidth: "50ch", marginLeft: "auto", marginRight: 0, marginBottom: 64 }}>
+            <p>
+              The rest of the time I&apos;m getting dragged outside by a friend who&apos;s better at rest than I am. My <span className="ab-emph" style={{ color: GOLD }}>cat</span> supervises all of it.
+            </p>
+          </Beat>
+        )}
 
         {/* ── Health (quiet) ──────────────────────────────────── */}
-        <Beat style={{ marginBottom: 110 }}>
-          <p style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "clamp(1.2rem, 2.4vw, 1.7rem)", lineHeight: 1.5, color: "rgba(255,255,255,0.78)", maxWidth: "30ch" }}>
-            I care, maybe too much, about how people are actually doing — mental health, and the physical stuff the system gets to last. Especially <span className="ab-emph" style={{ color: GOLD }}>women&apos;s health and autoimmune</span>. Same reflex that makes me build for the overlooked.
-          </p>
-        </Beat>
+        {SECTIONS.health && (
+          <Beat style={{ marginBottom: 110 }}>
+            <p style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "clamp(1.2rem, 2.4vw, 1.7rem)", lineHeight: 1.5, color: "rgba(255,255,255,0.78)", maxWidth: "30ch" }}>
+              I care, maybe too much, about how people are actually doing — mental health, and the physical stuff the system gets to last. Especially <span className="ab-emph" style={{ color: GOLD }}>women&apos;s health and autoimmune</span>. Same reflex that makes me build for the overlooked.
+            </p>
+          </Beat>
+        )}
 
         {/* ── Sign-off + socials ──────────────────────────────── */}
         <Beat>
