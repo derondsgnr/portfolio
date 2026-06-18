@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { motion, AnimatePresence, useInView, useMotionValue, useSpring } from "motion/react";
 import { ScrambleText } from "./shared/scramble-text";
+import { SafeLink } from "@/components/safe-link";
 import { GlobalSidebar } from "./global-sidebar";
 import { PersonalProjectsGrid } from "./personal-projects-grid";
 import { TransmissionServicesIndex } from "./sections/transmission-services-index";
@@ -422,7 +423,7 @@ function TransmissionHero({ projects, heroCopy }: { projects: Project[]; heroCop
           transition={{ delay: 0.65, duration: 0.6 }}
           className="flex items-center gap-4"
         >
-          <Link
+          <SafeLink
             href="/work"
             data-cursor-label="EXPLORE"
             style={{
@@ -440,7 +441,7 @@ function TransmissionHero({ projects, heroCopy }: { projects: Project[]; heroCop
             onMouseLeave={(e) => (e.currentTarget.style.background = "#F0F0F0")}
           >
             See all work
-          </Link>
+          </SafeLink>
           <Link
             href="#contact"
             style={{

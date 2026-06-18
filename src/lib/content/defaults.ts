@@ -79,7 +79,7 @@ export const DEFAULT_TESTIMONIALS: TestimonialItem[] = [
  */
 export type ServiceMediaRef = {
   url: string;
-  type: "image" | "video";
+  type: "image" | "video" | "lottie";
   /** Where it came from, for the admin tray label (e.g. "Case study: Dara"). */
   label?: string;
 };
@@ -142,3 +142,79 @@ export const DEFAULT_SERVICES: ServiceItem[] = [
     media: [],
   },
 ];
+
+/* ─── About page ─────────────────────────────────────────────────
+   Editable copy + media + per-section visibility for the About page.
+   Wrap a word in *asterisks* to render it in gold (e.g. "*why*"). */
+export type AboutFilm = { title: string; why: string; cover?: string };
+
+export type AboutSections = {
+  globe: boolean;
+  lives: boolean;
+  films: boolean;
+  console: boolean;
+  friendCat: boolean;
+  health: boolean;
+};
+
+export type AboutContent = {
+  greeting: string;
+  location: string;
+  hook: string;
+  intro: string[];
+  livesIntro: string;
+  lives: string[];
+  comics: string;
+  missionIntro: string;
+  peak: string;
+  dara: string;
+  daraTag: string;
+  midShow: string;
+  films: AboutFilm[];
+  genres: string[];
+  consoleHeading: string;
+  consoleBody: string;
+  games: string[];
+  friendCat: string;
+  health: string;
+  signoff: string;
+  /** Per-section hide/unhide, editable from /admin/about. */
+  sections: AboutSections;
+};
+
+export const DEFAULT_ABOUT: AboutContent = {
+  greeting: "Hi, I'm Deron",
+  location: "Abuja, NG · 9.07°N 7.49°E",
+  hook: "Most people learn to read a room. I had to *reverse-engineer* one.",
+  intro: [
+    "Social cues never came easily — people would say one thing and mean the opposite, and I needed to know *why*. So I started watching. Collecting patterns. Working out what people actually meant, so I'd know how to meet them.",
+    "That itch became a stack of psychology books. Then neuroscience — emotion is the layer sitting under every decision. Then anthropology, sociology, anything that explained how people work. It's also why I obsess over how a product *feels*, not just whether it works.",
+  ],
+  livesIntro: "I've lived a few lives to get here —",
+  lives: ["Digital marketing", "Code", "Ecommerce", "Music production", "Blogging", "Graphic design"],
+  comics:
+    "As a kid I drew and wrote my own comics. I was always going to make things — product design just finally gave the creativity somewhere to point.",
+  missionIntro:
+    "And it pointed somewhere specific. The deeper I went, the clearer it got: technology quietly leaves people behind. Not fast enough, not abled enough, not enough access — and the future moves on without you.",
+  peak: "I build so *fewer people* get left.",
+  dara: "Right now that's Dara — an AI finance assistant for Nigerian freelancers and small businesses.",
+  daraTag: "● beta · still learning",
+  midShow: "Off the clock, I'm mid-show. I watch for the people, never the plot.",
+  films: [
+    { title: "Interview with the Vampire", why: "Immortality as a relationship microscope — messy people problems that never die.", cover: "" },
+    { title: "Shrinking", why: "Grief and therapy played for warmth, not pity.", cover: "" },
+    { title: "The Midnight Gospel", why: "Psychedelic talks about death, the mind, and meaning.", cover: "" },
+    { title: "Dark", why: "Cause and effect across generations — the patterns that refuse to stay buried.", cover: "" },
+    { title: "The Big Bang Theory", why: "Comfort sitcom — my social-dynamics sandbox.", cover: "" },
+  ],
+  genres: ["Documentaries", "Thriller", "Anime & animation", "Horror", "Marvel & DC", "Sitcoms", "Dark & mind-bending"],
+  consoleHeading: "I'm also mourning the console I don't own.",
+  consoleBody: "Console, PC, mobile — I'll play all of it. Raised on these. The PS5 wishlist stays open indefinitely.",
+  games: ["Halo", "God of War", "Mortal Kombat", "FIFA", "Call of Duty", "NBA 2K"],
+  friendCat:
+    "The rest of the time I'm getting dragged outside by a friend who's better at rest than I am. My *cat* supervises all of it.",
+  health:
+    "I care, maybe too much, about how people are actually doing — mental health, and the physical stuff the system gets to last. Especially *women's health and autoimmune*. Same reflex that makes me build for the overlooked.",
+  signoff: "If you've read this far — hi. Let's build something for the people usually *skipped*. :)",
+  sections: { globe: false, lives: false, films: true, console: false, friendCat: false, health: false },
+};

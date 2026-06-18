@@ -3,6 +3,7 @@ import { motion, useInView } from "motion/react";
 import { useRef } from "react";
 import { useBooking } from "../booking-context";
 import { useSiteConfig } from "@/contexts/site-config-context";
+import { toDownloadableUrl } from "@/lib/download-url";
 
 /**
  * CASE STUDY CTA — "Interested in working together?"
@@ -13,7 +14,7 @@ import { useSiteConfig } from "@/contexts/site-config-context";
 export function CaseStudyCTA() {
   const { open } = useBooking();
   const { global } = useSiteConfig();
-  const cvUrl = global.cvUrl?.trim();
+  const cvUrl = toDownloadableUrl(global.cvUrl);
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.3 });
 

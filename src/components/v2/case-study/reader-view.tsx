@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { motion, useScroll, useSpring } from "motion/react";
-import Link from "next/link";
+import { SafeLink } from "@/components/safe-link";
 import type { CaseStudy } from "../../../types/case-study";
 import { SlideRenderer, ScrambleHeading, ScanLines, resolveBrowserUrl } from "./slide-renderer";
 import { SplitText, RevealText } from "../shared/split-text";
@@ -120,13 +120,13 @@ export function ReaderView({
         <div className="flex items-center justify-between px-4 md:px-8 py-3">
           {/* Left: back + title */}
           <div className="flex items-center gap-3 min-w-0">
-            <Link
+            <SafeLink
               href="/work"
               className="shrink-0 text-[#666] hover:text-white transition-colors text-sm"
               aria-label="Back to work"
             >
               &larr;
-            </Link>
+            </SafeLink>
             <span className="truncate min-w-0 text-[10px] text-[#E2B93B]" style={{ fontFamily: "monospace", letterSpacing: "var(--meta-tracking, 0.15em)" }}>
               {caseStudy.meta.title}
             </span>

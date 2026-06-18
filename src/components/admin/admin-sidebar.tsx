@@ -20,7 +20,7 @@ import {
   Link2, Layout, X, Menu, LogOut, ExternalLink,
   MessageSquare, Bookmark, FileText, Mail, Rocket,
   CalendarClock, Users, Send, Bot, Brain, Clapperboard, KeyRound, Crop,
-  Keyboard, Briefcase,
+  Keyboard, Briefcase, UserRound,
 } from "lucide-react";
 import { logout } from "@/app/admin/actions";
 
@@ -35,6 +35,7 @@ const NAV_GROUPS = [
       { number: 3,  label: "Case Studies",  path: "/admin/case-studies",  icon: FileText },
       { number: 4,  label: "Testimonials",  path: "/admin/testimonials",  icon: MessageSquare },
       { number: 5,  label: "Services",      path: "/admin/services",      icon: Briefcase },
+      { number: 6,  label: "About",         path: "/admin/about",         icon: UserRound },
       { number: 6,  label: "Contacts",     path: "/admin/contacts",      icon: Mail },
       { number: 6,  label: "Blog",          path: "/admin/blog",          icon: BookOpen },
       { number: 7,  label: "Now",           path: "/admin/now",           icon: Zap },

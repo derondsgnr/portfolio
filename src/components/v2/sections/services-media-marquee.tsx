@@ -1,7 +1,34 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { ServiceMediaRef } from "@/lib/content/services";
+
+/* Hosted-Lottie tile — loads lottie-web on the client and plays the animation.
+   The JSON is fetched via `path`, so its host must be in the CSP connect-src. */
+function LottieTile({ url }: { url: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    let anim: { destroy: () => void } | null = null;
+    let cancelled = false;
+    import("lottie-web")
+      .then((mod) => {
+        if (cancelled || !ref.current) return;
+        anim = mod.default.loadAnimation({
+          container: ref.current,
+          renderer: "svg",
+          loop: true,
+          autoplay: true,
+          path: url,
+        });
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+      anim?.destroy();
+    };
+  }, [url]);
+  return <div ref={ref} aria-hidden style={{ width: 150, height: "100%" }} />;
+}
 
 /* ═══════════════════════════════════════════════════════════════
    SERVICES MEDIA MARQUEE
@@ -76,7 +103,9 @@ export function ServicesMediaMarquee({
               overflow: "hidden",
             }}
           >
-            {m.type === "video" ? (
+            {m.type === "lottie" ? (
+              <LottieTile url={m.url} />
+            ) : m.type === "video" ? (
               <video
                 src={m.url}
                 autoPlay

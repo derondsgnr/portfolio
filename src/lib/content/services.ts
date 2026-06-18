@@ -1,7 +1,7 @@
 import type { ServiceItem, ServiceMediaRef } from "./defaults";
 import { DEFAULT_SERVICES } from "./defaults";
 import { readContentJson } from "./live-source";
-import { isPlayableVideoUrl } from "@/lib/media-url";
+import { isPlayableVideoUrl, isLottieUrl } from "@/lib/media-url";
 
 export type { ServiceItem, ServiceMediaRef };
 
@@ -19,10 +19,12 @@ function normalizeMediaRef(raw: unknown): ServiceMediaRef | null {
   const item = raw as Record<string, unknown>;
   const url = typeof item.url === "string" ? item.url.trim() : "";
   if (!url) return null;
-  // Trust a stored "video" type, but also infer from the URL so older entries
-  // and hand-edited JSON still render with the right element.
-  const declared = item.type === "video" ? "video" : item.type === "image" ? "image" : undefined;
-  const type: "image" | "video" = declared ?? (isPlayableVideoUrl(url) ? "video" : "image");
+  // Trust a stored type, but also infer from the URL so older entries and
+  // hand-edited JSON still render with the right element.
+  const declared =
+    item.type === "video" ? "video" : item.type === "image" ? "image" : item.type === "lottie" ? "lottie" : undefined;
+  const type: ServiceMediaRef["type"] =
+    declared ?? (isLottieUrl(url) ? "lottie" : isPlayableVideoUrl(url) ? "video" : "image");
   const label = typeof item.label === "string" && item.label.trim() ? item.label.trim() : undefined;
   return { url, type, label };
 }

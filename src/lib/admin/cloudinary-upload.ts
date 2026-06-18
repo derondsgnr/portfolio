@@ -25,12 +25,15 @@ export async function uploadFileToCloudinary(file: File): Promise<CloudinaryUplo
     throw new Error("Cloudinary is not configured (missing NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME or preset).");
   }
 
+  const name = file.name.toLowerCase();
   const isVideo = file.type.startsWith("video/");
-  const isLottie =
-    file.name.toLowerCase().endsWith(".json") || file.name.toLowerCase().endsWith(".lottie");
+  const isLottie = name.endsWith(".json") || name.endsWith(".lottie");
+  const isPdf = name.endsWith(".pdf") || file.type === "application/pdf";
+  // Lottie JSON and PDFs are delivered as raw files (so a CV downloads cleanly).
+  const isRaw = isLottie || isPdf;
   const endpoint = isVideo
     ? `https://api.cloudinary.com/v1_1/${cloud}/video/upload`
-    : isLottie
+    : isRaw
     ? `https://api.cloudinary.com/v1_1/${cloud}/raw/upload`
     : `https://api.cloudinary.com/v1_1/${cloud}/image/upload`;
 

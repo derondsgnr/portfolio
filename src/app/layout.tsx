@@ -7,7 +7,7 @@ import { getSiteMeta } from "@/lib/content/site-meta";
 import { getIntegrations } from "@/lib/content/integrations";
 import { getTestimonials } from "@/lib/content/testimonials";
 import { getTheme } from "@/lib/content/theme";
-import { getNav } from "@/lib/content/nav";
+import { getNav, getHiddenNavPaths } from "@/lib/content/nav";
 import { getGlobal } from "@/lib/content/global";
 import { getSounds } from "@/lib/content/sounds";
 
@@ -66,7 +66,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [integrations, theme, nav, global, sounds, testimonials, siteMeta] = await Promise.all([
+  const [integrations, theme, nav, global, sounds, testimonials, siteMeta, hiddenPaths] = await Promise.all([
     getIntegrations(),
     getTheme(),
     getNav(),
@@ -74,6 +74,7 @@ export default async function RootLayout({
     getSounds(),
     getTestimonials(),
     getSiteMeta(),
+    getHiddenNavPaths(),
   ]);
   const pair = theme.fonts.pair in FONT_PAIR_VARS ? theme.fonts.pair : "anton-instrument";
   const fonts = FONT_PAIR_VARS[pair];
@@ -133,7 +134,7 @@ export default async function RootLayout({
             }),
           }}
         />
-        <Providers nav={nav} global={global} sounds={sounds} testimonials={testimonials} logo={siteMeta.logo}>{children}</Providers>
+        <Providers nav={nav} global={global} sounds={sounds} testimonials={testimonials} logo={siteMeta.logo} hiddenPaths={hiddenPaths}>{children}</Providers>
         <AnalyticsScripts integrations={integrations} />
       </body>
     </html>
