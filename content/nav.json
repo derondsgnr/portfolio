@@ -4,6 +4,6 @@
   { "label": "Services", "path": "/#services" },
   { "label": "Craft", "path": "/craft" },
   { "label": "Writing", "path": "/blog", "hidden": true },
-  { "label": "About", "path": "/about" },
+  { "label": "About", "path": "/about", "hidden": true },
   { "label": "Now", "path": "/now" }
 ]

@@ -105,7 +105,8 @@ content/
   case-studies.json → Full case study payloads (admin + GitHub). **Loader merges this over `src/data/case-studies/*.ts` — for any slug in JSON, JSON wins in full.**
   copy.json         → Homepage hero text, blog page copy
   testimonials.json → Quotes + attribution
-  services.json     → Homepage Services (Editorial Index): `name`, `gives[]` ("what you get"), `scope`, and `media[]`. Loader `services.ts`; types `ServiceItem`/`ServiceMediaRef` in `defaults.ts`. `media[]` URLs **reference** existing case-study/craft/media uploads — gathered by `media-library.ts` and picked in admin (drag-drop grid + dropdown). Nothing is re-uploaded; the URL IS the reference.
+  services.json     → Homepage Services (Editorial Index): `name`, `gives[]` ("what you get"), `scope`, and `media[]`. Loader `services.ts`; types `ServiceItem`/`ServiceMediaRef` in `defaults.ts`. `media[]` URLs **reference** existing case-study/craft/media uploads — gathered by `media-library.ts` and picked in admin (drag-drop grid + dropdown). Plus a direct upload (image/video/Lottie).
+  about.json        → About page copy + media + per-section visibility. Loader `about.ts`; type `AboutContent`/`DEFAULT_ABOUT` in `defaults.ts`. Edited at `/admin/about`. Renders via `AboutV2` (`*word*` → gold). `sections` toggles hide/show each block (globe/lives/films/console/friendCat/health).
   now.json          → Current status, activity log
   sounds.json       → Audio event URLs
   media.json        → Background/media URLs

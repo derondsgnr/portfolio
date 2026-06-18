@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { getGlobal } from "@/lib/content/global";
+import { getAboutContent } from "@/lib/content/about";
 import { AboutV2 } from "@/components/v2/pages/about-v2";
 
 /* Preview-only route for the About rework. Lets the owner review the new
@@ -11,6 +12,6 @@ export const metadata: Metadata = {
 };
 
 export default async function AboutPreviewPage() {
-  const global = await getGlobal();
-  return <AboutV2 profileImage={global.profileImage} socials={global.socialLinks} />;
+  const [global, aboutContent] = await Promise.all([getGlobal(), getAboutContent()]);
+  return <AboutV2 profileImage={global.profileImage} socials={global.socialLinks} content={aboutContent} />;
 }

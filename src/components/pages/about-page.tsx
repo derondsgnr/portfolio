@@ -11,6 +11,7 @@ import type { PageCopy } from "@/lib/content/copy";
 import type { LandingContent } from "@/lib/content/landing";
 import type { PageConfig } from "@/lib/content/pages";
 import type { SocialLink } from "@/lib/content/global";
+import type { AboutContent } from "@/lib/content/about";
 
 export function AboutPage({
   copy,
@@ -19,6 +20,7 @@ export function AboutPage({
   projects,
   profileImage,
   socials,
+  aboutContent,
 }: {
   copy?: PageCopy;
   pageConfig: PageConfig;
@@ -26,6 +28,7 @@ export function AboutPage({
   projects?: Project[];
   profileImage?: string;
   socials?: SocialLink[];
+  aboutContent?: AboutContent;
 }) {
   if (pageConfig.sections.length > 0) {
     return (
@@ -37,5 +40,5 @@ export function AboutPage({
       />
     );
   }
-  return <AboutV2 profileImage={profileImage} socials={socials} />;
+  return <AboutV2 profileImage={profileImage} socials={socials} content={aboutContent} />;
 }

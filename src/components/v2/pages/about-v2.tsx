@@ -3,42 +3,44 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { AboutGlobe } from "../about/about-globe";
-import { FilmDeck, type FilmShow } from "../about/film-deck";
+import { FilmDeck } from "../about/film-deck";
 import { GameConsole } from "../about/game-console";
 import { WidgetBoundary } from "../about/widget-boundary";
 import type { SocialLink } from "@/lib/content/global";
+import type { AboutContent } from "@/lib/content/about";
+import { DEFAULT_ABOUT } from "@/lib/content/defaults";
 
 /* ═══════════════════════════════════════════════════════════════
    ABOUT — a letter, not a layout.
-   One first-person voice, asymmetric rhythm, lean. The heavy
-   interactive set-pieces (globe / film deck / console) are behind
-   FEATURES flags — currently OFF while we focus the page on copy +
-   craft. Reveals are visible-by-default (server renders them shown,
-   JS only enhances) so the page can never blank out again.
+   One first-person voice, asymmetric rhythm, lean. All copy, media and
+   per-section visibility come from `content` (content/about.json, edited
+   at /admin/about). Wrap a word in *asterisks* to render it gold. Reveals
+   are visible-by-default so the page can never blank out.
    ═══════════════════════════════════════════════════════════════ */
 
 const GOLD = "#E2B93B";
 
-/* Heavy interactive sections — globe + console off for now; film deck stays. */
-const FEATURES = { globe: false, filmDeck: true, gameConsole: false };
-
-/* Copy sections hidden (not deleted) until we redesign them. Flip true to show. */
-const SECTIONS = { lives: false, console: false, friendCat: false, health: false };
-
-const SHOWS: FilmShow[] = [
-  { title: "Interview with the Vampire", why: "Immortality as a relationship microscope — messy people problems that never die." },
-  { title: "Shrinking", why: "Grief and therapy played for warmth, not pity." },
-  { title: "The Midnight Gospel", why: "Psychedelic talks about death, the mind, and meaning." },
-  { title: "Dark", why: "Cause and effect across generations — the patterns that refuse to stay buried." },
-  { title: "The Big Bang Theory", why: "Comfort sitcom — my social-dynamics sandbox." },
-];
-const GENRES = ["Documentaries", "Thriller", "Anime & animation", "Horror", "Marvel & DC", "Sitcoms", "Dark & mind-bending"];
-const GAMES = ["Halo", "God of War", "Mortal Kombat", "FIFA", "Call of Duty", "NBA 2K"];
-const LIVES = ["Digital marketing", "Code", "Ecommerce", "Music production", "Blogging", "Graphic design"];
+/** Render text with *wrapped* spans in gold. */
+function Highlighted({ text }: { text: string }) {
+  const parts = text.split(/(\*[^*]+\*)/g);
+  return (
+    <>
+      {parts.map((p, i) =>
+        p.length > 2 && p.startsWith("*") && p.endsWith("*") ? (
+          <span key={i} style={{ color: GOLD }}>
+            {p.slice(1, -1)}
+          </span>
+        ) : (
+          <span key={i}>{p}</span>
+        )
+      )}
+    </>
+  );
+}
 
 /* Visible-by-default scroll reveal. Server + first client render show the
-   content (opacity:1) — only after mount does JS hide-then-reveal on scroll,
-   with a timed fallback so nothing can ever stay hidden. */
+   content (opacity:1) — JS only hides-then-reveals on scroll, with a timed
+   fallback so nothing can ever stay hidden. */
 function Beat({
   children,
   delay = 0,
@@ -111,9 +113,20 @@ const body: React.CSSProperties = {
   color: "rgba(255,255,255,0.72)",
 };
 
-export function AboutV2({ profileImage, socials = [] }: { profileImage?: string; socials?: SocialLink[] }) {
+export function AboutV2({
+  profileImage,
+  socials = [],
+  content = DEFAULT_ABOUT,
+}: {
+  profileImage?: string;
+  socials?: SocialLink[];
+  content?: AboutContent;
+}) {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
+
+  const c = content;
+  const s = c.sections;
 
   return (
     <main className="relative" style={{ background: "#0A0A0A", minHeight: "100vh", overflowX: "hidden" }}>
@@ -132,7 +145,6 @@ export function AboutV2({ profileImage, socials = [] }: { profileImage?: string;
         .ab-social:hover .ab-arrow { transform: translate(3px,-3px); }
         .ab-genre { transition: border-color .2s ease, color .2s ease; }
         .ab-genre:hover { border-color: rgba(226,185,59,0.5); color: #F0F0F0; }
-        .ab-emph { transition: color .2s ease; }
       `}</style>
 
       {/* warm glow */}
@@ -142,11 +154,11 @@ export function AboutV2({ profileImage, socials = [] }: { profileImage?: string;
         {/* ── Opening ─────────────────────────────────────────── */}
         <div className="relative" style={{ marginBottom: 72 }}>
           <span style={{ fontFamily: "monospace", fontSize: "10px", letterSpacing: "0.24em", textTransform: "uppercase", color: "rgba(255,255,255,0.4)" }}>
-            Abuja, NG · 9.07°N 7.49°E
+            {c.location}
           </span>
           <div className="flex flex-col md:flex-row md:items-end" style={{ gap: 28, marginTop: 18 }}>
             <h1 style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "clamp(2rem, 5vw, 3.4rem)", fontWeight: 600, lineHeight: 1.05, color: "#F2F0EC", letterSpacing: "-0.01em" }}>
-              Hi, I&apos;m Deron <span style={{ color: GOLD }}>👋</span>
+              {c.greeting} <span style={{ color: GOLD }}>👋</span>
             </h1>
             {profileImage ? (
               <div style={{ position: "relative", flexShrink: 0, width: 132, height: 160, borderRadius: 10, overflow: "hidden", border: "1px solid rgba(255,255,255,0.12)", transform: "rotate(-3deg)" }}>
@@ -161,33 +173,29 @@ export function AboutV2({ profileImage, socials = [] }: { profileImage?: string;
         {/* ── The hook ────────────────────────────────────────── */}
         <Beat style={{ marginBottom: 56 }}>
           <p style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(2.2rem, 6.5vw, 5rem)", lineHeight: 0.98, textTransform: "uppercase", color: "#F2F0EC", letterSpacing: "-0.01em", maxWidth: "18ch" }}>
-            Most people learn to read a room. I had to{" "}
-            <span style={{ color: GOLD }}>reverse-engineer</span> one.
+            <Highlighted text={c.hook} />
           </p>
         </Beat>
 
-        {/* ── Psychology (pushed right) ───────────────────────── */}
-        <Beat style={{ ...body, maxWidth: "52ch", marginLeft: "auto", marginRight: 0, marginBottom: 30 }}>
-          <p>
-            Social cues never came easily — people would say one thing and mean the opposite, and I needed to know <em style={{ color: "rgba(255,255,255,0.92)", fontStyle: "italic" }}>why</em>. So I started watching. Collecting patterns. Working out what people actually meant, so I&apos;d know how to meet them.
-          </p>
-        </Beat>
-        <Beat style={{ ...body, maxWidth: "52ch", marginLeft: "auto", marginRight: 0, marginBottom: 64 }}>
-          <p>
-            That itch became a stack of psychology books. Then neuroscience — emotion is the layer sitting under every decision. Then anthropology, sociology, anything that explained how people work. It&apos;s also why I obsess over how a product <span className="ab-emph" style={{ color: GOLD }}>feels</span>, not just whether it works.
-          </p>
-        </Beat>
+        {/* ── Intro (pushed right) ────────────────────────────── */}
+        {c.intro.map((para, i) => (
+          <Beat key={i} style={{ ...body, maxWidth: "52ch", marginLeft: "auto", marginRight: 0, marginBottom: i === c.intro.length - 1 ? 64 : 30 }}>
+            <p>
+              <Highlighted text={para} />
+            </p>
+          </Beat>
+        ))}
 
-        {/* ── The many lives (left) ───────────────────────────── */}
-        {SECTIONS.lives && (
+        {/* ── The many lives ──────────────────────────────────── */}
+        {s.lives && (
           <>
             <Beat style={{ marginBottom: 18 }}>
-              <p style={{ ...body, maxWidth: "44ch" }}>I&apos;ve lived a few lives to get here —</p>
+              <p style={{ ...body, maxWidth: "44ch" }}>{c.livesIntro}</p>
             </Beat>
             <Beat style={{ marginBottom: 30 }}>
               <ul className="flex flex-wrap" style={{ listStyle: "none", padding: 0, margin: 0, gap: "10px 22px", maxWidth: "46ch" }}>
-                {LIVES.map((l, i) => (
-                  <li key={l} className="ab-life" style={{ display: "flex", alignItems: "baseline", gap: 8, cursor: "default" }}>
+                {c.lives.map((l, i) => (
+                  <li key={i} className="ab-life" style={{ display: "flex", alignItems: "baseline", gap: 8, cursor: "default" }}>
                     <span className="ab-life-no" style={{ fontFamily: "monospace", fontSize: "9px", color: "rgba(226,185,59,0.7)", transition: "color .25s" }}>{String(i + 1).padStart(2, "0")}</span>
                     <span className="ab-life-name" style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "clamp(1rem, 1.4vw, 1.25rem)", color: "rgba(255,255,255,0.62)", transition: "color .25s" }}>{l}</span>
                   </li>
@@ -195,26 +203,22 @@ export function AboutV2({ profileImage, socials = [] }: { profileImage?: string;
               </ul>
             </Beat>
             <Beat style={{ ...body, maxWidth: "50ch", marginBottom: 96 }}>
-              <p>
-                As a kid I drew and wrote my own comics. I was always going to make things — product design just finally gave the creativity somewhere to point.
-              </p>
+              <p>{c.comics}</p>
             </Beat>
           </>
         )}
 
         {/* ── The peak ────────────────────────────────────────── */}
         <Beat style={{ ...body, maxWidth: "46ch", marginBottom: 22 }}>
-          <p>
-            And it pointed somewhere specific. The deeper I went, the clearer it got: technology quietly leaves people behind. Not fast enough, not abled enough, not enough access — and the future moves on without you.
-          </p>
+          <p>{c.missionIntro}</p>
         </Beat>
         <Beat style={{ marginBottom: 40 }}>
           <p style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(2.4rem, 7.5vw, 5.6rem)", lineHeight: 0.96, textTransform: "uppercase", color: "#F2F0EC", letterSpacing: "-0.01em", maxWidth: "15ch" }}>
-            I build so <span style={{ color: GOLD }}>fewer people</span> get left.
+            <Highlighted text={c.peak} />
           </p>
         </Beat>
 
-        {FEATURES.globe && (
+        {s.globe && (
           <>
             <Beat delay={0.05} style={{ marginBottom: 28 }}>
               <div className="md:translate-x-[8%]">
@@ -236,69 +240,69 @@ export function AboutV2({ profileImage, socials = [] }: { profileImage?: string;
         {/* ── Dara ────────────────────────────────────────────── */}
         <Beat style={{ marginBottom: 96 }}>
           <p style={{ ...body, maxWidth: "48ch" }}>
-            Right now that&apos;s <span style={{ color: "#F0F0F0", fontWeight: 600 }}>Dara</span> — an AI finance assistant for Nigerian freelancers and small businesses.
-            <span style={{ marginLeft: 12, fontFamily: "monospace", fontSize: "10px", letterSpacing: "0.16em", textTransform: "uppercase", color: GOLD, whiteSpace: "nowrap" }}>● beta · still learning</span>
+            <Highlighted text={c.dara} />
+            {c.daraTag ? (
+              <span style={{ marginLeft: 12, fontFamily: "monospace", fontSize: "10px", letterSpacing: "0.16em", textTransform: "uppercase", color: GOLD, whiteSpace: "nowrap" }}>{c.daraTag}</span>
+            ) : null}
           </p>
         </Beat>
 
-        {/* ── Mid-show ────────────────────────────────────────── */}
-        <Beat style={{ marginBottom: 28 }}>
-          <p style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(1.5rem, 3.6vw, 2.6rem)", lineHeight: 1.04, textTransform: "uppercase", color: "#F2F0EC", maxWidth: "20ch" }}>
-            Off the clock, I&apos;m mid-show. I watch for the people, never the plot.
-          </p>
-        </Beat>
-        {FEATURES.filmDeck && (
-          <Beat delay={0.05} style={{ marginBottom: 16 }}>
-            <WidgetBoundary fallback={<div style={{ height: 360 }} />}>
-              {mounted ? <FilmDeck shows={SHOWS} /> : <div style={{ height: 360 }} />}
-            </WidgetBoundary>
-          </Beat>
-        )}
-        <Beat style={{ marginBottom: 96 }}>
-          <div className="flex flex-wrap" style={{ gap: 8 }}>
-            {GENRES.map((g) => (
-              <span key={g} className="ab-genre" style={{ fontFamily: "monospace", fontSize: "10px", letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(255,255,255,0.42)", border: "1px solid rgba(255,255,255,0.09)", borderRadius: 999, padding: "5px 11px", cursor: "default" }}>
-                {g}
-              </span>
-            ))}
-          </div>
-        </Beat>
-
-        {/* ── Console ─────────────────────────────────────────── */}
-        {SECTIONS.console && (
-          <div className={FEATURES.gameConsole ? "grid grid-cols-1 md:grid-cols-[1fr_360px]" : ""} style={{ gap: 40, alignItems: "center", marginBottom: 96 }}>
-            <Beat>
-              <p style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(1.5rem, 3.6vw, 2.6rem)", lineHeight: 1.04, textTransform: "uppercase", color: "#F2F0EC", maxWidth: "16ch" }}>
-                I&apos;m also mourning the console I don&apos;t own.
-              </p>
-              <p style={{ ...body, maxWidth: "40ch", marginTop: 16 }}>
-                Console, PC, mobile — I&apos;ll play all of it. Raised on these. The PS5 wishlist stays open indefinitely.
+        {/* ── Films ───────────────────────────────────────────── */}
+        {s.films && (
+          <>
+            <Beat style={{ marginBottom: 28 }}>
+              <p style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(1.5rem, 3.6vw, 2.6rem)", lineHeight: 1.04, textTransform: "uppercase", color: "#F2F0EC", maxWidth: "20ch" }}>
+                {c.midShow}
               </p>
             </Beat>
-            {FEATURES.gameConsole && (
-              <Beat delay={0.05}>
-                <WidgetBoundary fallback={<div style={{ height: 290 }} />}>
-                  {mounted ? <GameConsole games={GAMES} /> : <div style={{ height: 290 }} />}
-                </WidgetBoundary>
-              </Beat>
-            )}
+            <Beat delay={0.05} style={{ marginBottom: 16 }}>
+              <WidgetBoundary fallback={<div style={{ height: 360 }} />}>
+                {mounted ? <FilmDeck shows={c.films} /> : <div style={{ height: 360 }} />}
+              </WidgetBoundary>
+            </Beat>
+            <Beat style={{ marginBottom: 96 }}>
+              <div className="flex flex-wrap" style={{ gap: 8 }}>
+                {c.genres.map((g, i) => (
+                  <span key={i} className="ab-genre" style={{ fontFamily: "monospace", fontSize: "10px", letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(255,255,255,0.42)", border: "1px solid rgba(255,255,255,0.09)", borderRadius: 999, padding: "5px 11px", cursor: "default" }}>
+                    {g}
+                  </span>
+                ))}
+              </div>
+            </Beat>
+          </>
+        )}
+
+        {/* ── Console ─────────────────────────────────────────── */}
+        {s.console && (
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_360px]" style={{ gap: 40, alignItems: "center", marginBottom: 96 }}>
+            <Beat>
+              <p style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(1.5rem, 3.6vw, 2.6rem)", lineHeight: 1.04, textTransform: "uppercase", color: "#F2F0EC", maxWidth: "16ch" }}>
+                {c.consoleHeading}
+              </p>
+              <p style={{ ...body, maxWidth: "40ch", marginTop: 16 }}>{c.consoleBody}</p>
+            </Beat>
+            <Beat delay={0.05}>
+              <WidgetBoundary fallback={<div style={{ height: 290 }} />}>
+                {mounted ? <GameConsole games={c.games} /> : <div style={{ height: 290 }} />}
+              </WidgetBoundary>
+            </Beat>
           </div>
         )}
 
         {/* ── Friend / cat ────────────────────────────────────── */}
-        {SECTIONS.friendCat && (
+        {s.friendCat && (
           <Beat style={{ ...body, maxWidth: "50ch", marginLeft: "auto", marginRight: 0, marginBottom: 64 }}>
             <p>
-              The rest of the time I&apos;m getting dragged outside by a friend who&apos;s better at rest than I am. My <span className="ab-emph" style={{ color: GOLD }}>cat</span> supervises all of it.
+              <Highlighted text={c.friendCat} />
             </p>
           </Beat>
         )}
 
         {/* ── Health (quiet) ──────────────────────────────────── */}
-        {SECTIONS.health && (
+        {s.health && (
           <Beat style={{ marginBottom: 110 }}>
             <p style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "clamp(1.2rem, 2.4vw, 1.7rem)", lineHeight: 1.5, color: "rgba(255,255,255,0.78)", maxWidth: "30ch" }}>
-              I care, maybe too much, about how people are actually doing — mental health, and the physical stuff the system gets to last. Especially <span className="ab-emph" style={{ color: GOLD }}>women&apos;s health and autoimmune</span>. Same reflex that makes me build for the overlooked.
+              <Highlighted text={c.health} />
             </p>
           </Beat>
         )}
@@ -306,7 +310,7 @@ export function AboutV2({ profileImage, socials = [] }: { profileImage?: string;
         {/* ── Sign-off + socials ──────────────────────────────── */}
         <Beat>
           <p style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(2rem, 5.5vw, 4rem)", lineHeight: 0.98, textTransform: "uppercase", color: "#F2F0EC", maxWidth: "20ch", marginBottom: 28 }}>
-            If you&apos;ve read this far — hi. Let&apos;s build something for the people usually <span style={{ color: GOLD }}>skipped</span>. :)
+            <Highlighted text={c.signoff} />
           </p>
           <div className="flex flex-wrap items-center" style={{ gap: 14, marginBottom: 28 }}>
             <Link href="/#contact" className="ab-cta" style={{ fontFamily: "monospace", fontSize: "10px", letterSpacing: "0.18em", textTransform: "uppercase", color: "#0A0A0A", background: GOLD, padding: "14px 30px", display: "inline-block" }}>
@@ -318,10 +322,10 @@ export function AboutV2({ profileImage, socials = [] }: { profileImage?: string;
               <span style={{ fontFamily: "monospace", fontSize: "9px", letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(255,255,255,0.3)" }}>
                 Find me
               </span>
-              {socials.map((s) => (
+              {socials.map((soc) => (
                 <a
-                  key={s.label}
-                  href={s.url}
+                  key={soc.label}
+                  href={soc.url}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="ab-social"
@@ -329,7 +333,7 @@ export function AboutV2({ profileImage, socials = [] }: { profileImage?: string;
                   onMouseEnter={(e) => (e.currentTarget.style.color = GOLD)}
                   onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.55)")}
                 >
-                  {shortSocial(s.label)} <span className="ab-arrow" style={{ color: "rgba(255,255,255,0.25)" }}>↗</span>
+                  {shortSocial(soc.label)} <span className="ab-arrow" style={{ color: "rgba(255,255,255,0.25)" }}>↗</span>
                 </a>
               ))}
             </div>
