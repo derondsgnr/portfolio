@@ -13,6 +13,7 @@ import { useState, useRef } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "motion/react";
 import { ArrowUpRight, ArrowLeft, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { SafeLink } from "@/components/safe-link";
 import {
   TextReveal,
   Reveal,
@@ -292,14 +293,14 @@ function WorkOrbit() {
             </TextReveal>
           </div>
           <Reveal delay={0.2}>
-            <Link
+            <SafeLink
               href="/work"
               className="text-white/30 hover:text-[#e2b93b] transition-colors duration-300 flex items-center gap-2"
               style={{ fontFamily: "var(--font-body)", fontSize: "0.7rem", letterSpacing: "0.08em", fontWeight: 300, fontStyle: "italic" }}
             >
               All work
               <ArrowUpRight className="w-3.5 h-3.5" strokeWidth={1.5} />
-            </Link>
+            </SafeLink>
           </Reveal>
         </div>
 
@@ -579,7 +580,7 @@ function AboutOrbit() {
               </p>
             </Reveal>
             <Reveal delay={0.5}>
-              <Link
+              <SafeLink
                 href="/about"
                 className="inline-flex items-center gap-2 text-[#e2b93b]/60 hover:text-[#e2b93b] transition-colors duration-300"
               >
@@ -590,7 +591,7 @@ function AboutOrbit() {
                   More
                 </span>
                 <ArrowRight className="w-3.5 h-3.5" strokeWidth={1.5} />
-              </Link>
+              </SafeLink>
             </Reveal>
           </div>
         </div>

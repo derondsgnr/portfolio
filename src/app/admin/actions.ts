@@ -178,6 +178,16 @@ export async function saveTestimonials(items: unknown[], message?: string): Prom
   return saveContent("content/testimonials.json", content, message ?? "Update testimonials");
 }
 
+export async function saveServices(items: unknown[], message?: string): Promise<{ ok: boolean; error?: string }> {
+  const content = JSON.stringify(items, null, 2);
+  return saveContent("content/services.json", content, message ?? "Update services");
+}
+
+export async function saveAbout(data: unknown, message?: string): Promise<{ ok: boolean; error?: string }> {
+  const content = JSON.stringify(data, null, 2);
+  return saveContent("content/about.json", content, message ?? "Update about page");
+}
+
 export async function saveSounds(data: Record<string, string>, message?: string): Promise<{ ok: boolean; error?: string }> {
   const content = JSON.stringify(data, null, 2);
   return saveContent("content/sounds.json", content, message ?? "Update sounds");

@@ -243,7 +243,10 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
       });
       return { sections };
     });
-    setExpandedItems((prev) => new Set([...prev, `${si}-${newId}`]));
+    // Expand the new item by POSITION (its index = previous length), never by
+    // its editable id — keying on the id is what broke typing focus.
+    const newIndex = craft.sections[si]?.items.length ?? 0;
+    setExpandedItems((prev) => new Set([...prev, `${si}-${newIndex}`]));
   }
 
   function toggleCraftItem(key: string) {
@@ -502,7 +505,7 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
         <ImageFieldGuide role="craft-gallery" compact />
         <form onSubmit={handleSaveCraft} className="space-y-8">
           {craft.sections.map((section, si) => (
-            <div key={`${section.id}-${si}`} className="border border-white/12 p-4 space-y-4 bg-black/20">
+            <div key={`craft-section-${si}`} className="border border-white/12 p-4 space-y-4 bg-black/20">
               <div className="flex flex-wrap gap-4 items-start justify-between">
                 <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 flex-1">
                   <div className="min-w-0">
@@ -555,12 +558,13 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
                   <p className="font-mono text-[11px] text-white/35 py-2">No items in this section.</p>
                 ) : null}
                 {section.items.map((item, ii) => {
-                  const itemKey = `${si}-${item.id}`;
+                  // Track expansion + React key by POSITION, not the editable id.
+                  const itemKey = `${si}-${ii}`;
                   const isExpanded = expandedItems.has(itemKey);
                   const itemStatus = item.status ?? "published";
                   return (
                     <div
-                      key={`${si}-${item.id}-${ii}`}
+                      key={`craft-item-${si}-${ii}`}
                       className="rounded border border-white/[0.08] bg-[#0f0f0f] overflow-hidden"
                     >
                       {/* Collapsed row */}
@@ -806,12 +810,12 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
             {explorations.length === 0 && (
               <p className="font-mono text-[11px] text-white/35 py-2">No explorations yet — add one above.</p>
             )}
-            {explorations.map((item) => {
+            {explorations.map((item, exIdx) => {
               const isExpanded = expandedExplorations.has(item.id);
               const toolsRaw = explorationToolsRaw[item.id] ?? (item.tools ?? []).join(", ");
               return (
                 <div
-                  key={item.id}
+                  key={`exploration-${exIdx}`}
                   className="rounded border border-white/[0.08] bg-[#0f0f0f] overflow-hidden"
                 >
                   {/* Collapsed row */}

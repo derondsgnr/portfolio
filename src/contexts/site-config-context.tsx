@@ -8,6 +8,8 @@ export type SiteConfig = {
   nav: NavItem[];
   global: GlobalConfig;
   logo?: string;
+  /** Internal paths flagged hidden in nav (e.g. ["/blog"]). Drives hidden-aware links/sections. */
+  hiddenPaths: string[];
 };
 
 const SiteConfigContext = createContext<SiteConfig | null>(null);
@@ -16,15 +18,17 @@ export function SiteConfigProvider({
   nav,
   global: globalConfig,
   logo,
+  hiddenPaths = [],
   children,
 }: {
   nav: NavItem[];
   global: GlobalConfig;
   logo?: string;
+  hiddenPaths?: string[];
   children: React.ReactNode;
 }) {
   return (
-    <SiteConfigContext.Provider value={{ nav, global: globalConfig, logo }}>
+    <SiteConfigContext.Provider value={{ nav, global: globalConfig, logo, hiddenPaths }}>
       {children}
     </SiteConfigContext.Provider>
   );
@@ -52,7 +56,28 @@ export function useSiteConfig(): SiteConfig {
         ctaButtonLabel: "Book a call",
         cinematicEnabled: false,
       },
+      hiddenPaths: [],
     };
   }
   return ctx;
+}
+
+/**
+ * True when `target` points at a hidden page — an exact match (covers anchors
+ * like "/#services"), the page itself, or anything nested under it (so hiding
+ * "/blog" also hides "/blog/x"). Home ("/") is never hidden.
+ */
+export function isHiddenPath(target: string | undefined | null, hiddenPaths: string[]): boolean {
+  if (!target) return false;
+  if (hiddenPaths.includes(target)) return true;
+  const base = target.split(/[?#]/)[0] || "/";
+  return hiddenPaths.some((h) => h && h !== "/" && (base === h || base.startsWith(`${h}/`)));
+}
+
+export function useHiddenPaths(): string[] {
+  return useSiteConfig().hiddenPaths;
+}
+
+export function useIsHidden(target: string | undefined | null): boolean {
+  return isHiddenPath(target, useHiddenPaths());
 }

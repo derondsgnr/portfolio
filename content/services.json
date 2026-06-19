@@ -1,0 +1,62 @@
+[
+  {
+    "id": "product-design",
+    "name": "Product Design",
+    "gives": ["Research → shipped pixels", "Flows, IA, journeys", "High-fidelity surface"],
+    "scope": "End-to-end, solo or embedded in your team.",
+    "media": [],
+    "status": "published",
+    "featured": false,
+    "pinned": false
+  },
+  {
+    "id": "design-systems",
+    "name": "Design Systems",
+    "gives": ["Component library", "Design tokens", "Usage docs"],
+    "scope": "So the team stops redrawing the same button.",
+    "media": [],
+    "status": "published",
+    "featured": false,
+    "pinned": false
+  },
+  {
+    "id": "build-ship",
+    "name": "Build & Ship",
+    "gives": ["React / Next implementation", "Prototype → production", "QA mindset"],
+    "scope": "Hands-on in the codebase. Validation, not theatre.",
+    "media": [],
+    "status": "published",
+    "featured": false,
+    "pinned": false
+  },
+  {
+    "id": "brand-identity",
+    "name": "Brand Identity",
+    "gives": ["Visual language", "Type system", "Brand through-line"],
+    "scope": "Makes the product feel like one coherent thing.",
+    "media": [],
+    "status": "published",
+    "featured": false,
+    "pinned": false
+  },
+  {
+    "id": "ai-product-design",
+    "name": "AI Product Design",
+    "gives": ["Human-first AI UX", "Trust & confidence states", "Model-in-the-loop flows"],
+    "scope": "Building Dara taught me where trust actually breaks.",
+    "media": [],
+    "status": "published",
+    "featured": false,
+    "pinned": false
+  },
+  {
+    "id": "interactive-prototypes",
+    "name": "Interactive Prototypes",
+    "gives": ["Clickable demos", "Real interactions", "Vision you can feel"],
+    "scope": "Carries further than any deck.",
+    "media": [],
+    "status": "published",
+    "featured": false,
+    "pinned": false
+  }
+]

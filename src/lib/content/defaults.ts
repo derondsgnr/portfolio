@@ -71,3 +71,150 @@ export const DEFAULT_TESTIMONIALS: TestimonialItem[] = [
   { id: 1, quote: "One key thing I would say about Deron, having worked with him for a very long time, is the full attention, detail, and commitment he puts into getting work done. He goes the extra mile to make sure the results surpass your expectations. It has always been a pleasure working with him, and I am super confident you would love working with him too.", name: "Alabi Hafeez", role: "CEO", company: "Bridgepay", avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080", companyLogo: null },
   { id: 2, quote: "Deron has a keen eye for detail and is always open to feedback to make the project better. Working with him made the entire process enjoyable.", name: "Latifah Yusuf", role: "Collaborator", company: "TechCabal", avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080", companyLogo: null },
 ];
+
+/**
+ * A service's attached media. URLs are *references* to assets already uploaded
+ * elsewhere on the site (case study slides, craft items, media config) — the
+ * admin picker gathers those into a library so nothing has to be re-uploaded.
+ */
+export type ServiceMediaRef = {
+  url: string;
+  type: "image" | "video" | "lottie";
+  /** Where it came from, for the admin tray label (e.g. "Case study: Dara"). */
+  label?: string;
+};
+
+export type ServiceItem = {
+  id: string;
+  name: string;
+  /** "What you get" bullet list. */
+  gives: string[];
+  /** One-line scope statement. */
+  scope: string;
+  /** Media crawl shown in the Editorial Index detail panel. */
+  media?: ServiceMediaRef[];
+  status?: "published" | "draft" | "archived";
+  featured?: boolean;
+  pinned?: boolean;
+};
+
+export const DEFAULT_SERVICES: ServiceItem[] = [
+  {
+    id: "product-design",
+    name: "Product Design",
+    gives: ["Research → shipped pixels", "Flows, IA, journeys", "High-fidelity surface"],
+    scope: "End-to-end, solo or embedded in your team.",
+    media: [],
+  },
+  {
+    id: "design-systems",
+    name: "Design Systems",
+    gives: ["Component library", "Design tokens", "Usage docs"],
+    scope: "So the team stops redrawing the same button.",
+    media: [],
+  },
+  {
+    id: "build-ship",
+    name: "Build & Ship",
+    gives: ["React / Next implementation", "Prototype → production", "QA mindset"],
+    scope: "Hands-on in the codebase. Validation, not theatre.",
+    media: [],
+  },
+  {
+    id: "brand-identity",
+    name: "Brand Identity",
+    gives: ["Visual language", "Type system", "Brand through-line"],
+    scope: "Makes the product feel like one coherent thing.",
+    media: [],
+  },
+  {
+    id: "ai-product-design",
+    name: "AI Product Design",
+    gives: ["Human-first AI UX", "Trust & confidence states", "Model-in-the-loop flows"],
+    scope: "Building Dara taught me where trust actually breaks.",
+    media: [],
+  },
+  {
+    id: "interactive-prototypes",
+    name: "Interactive Prototypes",
+    gives: ["Clickable demos", "Real interactions", "Vision you can feel"],
+    scope: "Carries further than any deck.",
+    media: [],
+  },
+];
+
+/* ─── About page ─────────────────────────────────────────────────
+   Editable copy + media + per-section visibility for the About page.
+   Wrap a word in *asterisks* to render it in gold (e.g. "*why*"). */
+export type AboutFilm = { title: string; why: string; cover?: string };
+
+export type AboutSections = {
+  globe: boolean;
+  lives: boolean;
+  films: boolean;
+  console: boolean;
+  friendCat: boolean;
+  health: boolean;
+};
+
+export type AboutContent = {
+  greeting: string;
+  location: string;
+  hook: string;
+  intro: string[];
+  livesIntro: string;
+  lives: string[];
+  comics: string;
+  missionIntro: string;
+  peak: string;
+  dara: string;
+  daraTag: string;
+  midShow: string;
+  films: AboutFilm[];
+  genres: string[];
+  consoleHeading: string;
+  consoleBody: string;
+  games: string[];
+  friendCat: string;
+  health: string;
+  signoff: string;
+  /** Per-section hide/unhide, editable from /admin/about. */
+  sections: AboutSections;
+};
+
+export const DEFAULT_ABOUT: AboutContent = {
+  greeting: "Hi, I'm Deron",
+  location: "Abuja, NG · 9.07°N 7.49°E",
+  hook: "Most people learn to read a room. I had to *reverse-engineer* one.",
+  intro: [
+    "Social cues never came easily — people would say one thing and mean the opposite, and I needed to know *why*. So I started watching. Collecting patterns. Working out what people actually meant, so I'd know how to meet them.",
+    "That itch became a stack of psychology books. Then neuroscience — emotion is the layer sitting under every decision. Then anthropology, sociology, anything that explained how people work. It's also why I obsess over how a product *feels*, not just whether it works.",
+  ],
+  livesIntro: "I've lived a few lives to get here —",
+  lives: ["Digital marketing", "Code", "Ecommerce", "Music production", "Blogging", "Graphic design"],
+  comics:
+    "As a kid I drew and wrote my own comics. I was always going to make things — product design just finally gave the creativity somewhere to point.",
+  missionIntro:
+    "And it pointed somewhere specific. The deeper I went, the clearer it got: technology quietly leaves people behind. Not fast enough, not abled enough, not enough access — and the future moves on without you.",
+  peak: "I build so *fewer people* get left.",
+  dara: "Right now that's Dara — an AI finance assistant for Nigerian freelancers and small businesses.",
+  daraTag: "● beta · still learning",
+  midShow: "Off the clock, I'm mid-show. I watch for the people, never the plot.",
+  films: [
+    { title: "Interview with the Vampire", why: "Immortality as a relationship microscope — messy people problems that never die.", cover: "" },
+    { title: "Shrinking", why: "Grief and therapy played for warmth, not pity.", cover: "" },
+    { title: "The Midnight Gospel", why: "Psychedelic talks about death, the mind, and meaning.", cover: "" },
+    { title: "Dark", why: "Cause and effect across generations — the patterns that refuse to stay buried.", cover: "" },
+    { title: "The Big Bang Theory", why: "Comfort sitcom — my social-dynamics sandbox.", cover: "" },
+  ],
+  genres: ["Documentaries", "Thriller", "Anime & animation", "Horror", "Marvel & DC", "Sitcoms", "Dark & mind-bending"],
+  consoleHeading: "I'm also mourning the console I don't own.",
+  consoleBody: "Console, PC, mobile — I'll play all of it. Raised on these. The PS5 wishlist stays open indefinitely.",
+  games: ["Halo", "God of War", "Mortal Kombat", "FIFA", "Call of Duty", "NBA 2K"],
+  friendCat:
+    "The rest of the time I'm getting dragged outside by a friend who's better at rest than I am. My *cat* supervises all of it.",
+  health:
+    "I care, maybe too much, about how people are actually doing — mental health, and the physical stuff the system gets to last. Especially *women's health and autoimmune*. Same reflex that makes me build for the overlooked.",
+  signoff: "If you've read this far — hi. Let's build something for the people usually *skipped*. :)",
+  sections: { globe: false, lives: false, films: true, console: false, friendCat: false, health: false },
+};

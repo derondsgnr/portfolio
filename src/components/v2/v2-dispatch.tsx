@@ -7,6 +7,8 @@ import Image from "next/image";
 import { motion, AnimatePresence, useInView } from "motion/react";
 import { ScrambleText } from "./shared/scramble-text";
 import { Navbar } from "@/components/navbar";
+import { SafeLink } from "@/components/safe-link";
+import { useIsHidden } from "@/contexts/site-config-context";
 import type { Project } from "@/lib/content/projects";
 
 /* ═══════════════════════════════════════════════════════════════
@@ -273,7 +275,7 @@ function DispatchHero({ projects }: { projects: Project[] }) {
           transition={{ delay: 0.7, duration: 0.6 }}
           className="flex items-center gap-4"
         >
-          <Link
+          <SafeLink
             href="/work"
             style={{
               fontFamily: "monospace",
@@ -290,7 +292,7 @@ function DispatchHero({ projects }: { projects: Project[] }) {
             onMouseLeave={(e) => (e.currentTarget.style.background = "#F0F0F0")}
           >
             See all work
-          </Link>
+          </SafeLink>
           <Link
             href="#contact"
             style={{
@@ -534,6 +536,7 @@ function DispatchCTA() {
 }
 
 export function DispatchVariation({ projects }: { projects: Project[] }) {
+  const workHidden = useIsHidden("/work");
   return (
     <div style={{ background: "#0A0A0A", minHeight: "100vh" }}>
       <style>{`@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }`}</style>
@@ -545,43 +548,47 @@ export function DispatchVariation({ projects }: { projects: Project[] }) {
       <main className="lg:ml-[260px]">
         <DispatchHero projects={projects} />
 
-        {/* Work label */}
-        <div
-          className="px-14 pt-20 pb-10 flex items-center justify-between"
-          style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}
-        >
-          <span
-            style={{
-              fontFamily: "monospace",
-              fontSize: "9px",
-              letterSpacing: "0.2em",
-              textTransform: "uppercase",
-              color: "rgba(255,255,255,0.25)",
-            }}
-          >
-            Latest work
-          </span>
-          <Link
-            href="/work"
-            style={{
-              fontFamily: "monospace",
-              fontSize: "9px",
-              letterSpacing: "0.16em",
-              textTransform: "uppercase",
-              color: "rgba(255,255,255,0.35)",
-              transition: "color 0.2s",
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.color = "#E2B93B")}
-            onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.35)")}
-          >
-            See all →
-          </Link>
-        </div>
+        {!workHidden && (
+          <>
+            {/* Work label */}
+            <div
+              className="px-14 pt-20 pb-10 flex items-center justify-between"
+              style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}
+            >
+              <span
+                style={{
+                  fontFamily: "monospace",
+                  fontSize: "9px",
+                  letterSpacing: "0.2em",
+                  textTransform: "uppercase",
+                  color: "rgba(255,255,255,0.25)",
+                }}
+              >
+                Latest work
+              </span>
+              <Link
+                href="/work"
+                style={{
+                  fontFamily: "monospace",
+                  fontSize: "9px",
+                  letterSpacing: "0.16em",
+                  textTransform: "uppercase",
+                  color: "rgba(255,255,255,0.35)",
+                  transition: "color 0.2s",
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = "#E2B93B")}
+                onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.35)")}
+              >
+                See all →
+              </Link>
+            </div>
 
-        {/* Project rows */}
-        {projects.slice(0, 5).map((project, i) => (
-          <DispatchProjectRow key={project.id} project={project} index={i} />
-        ))}
+            {/* Project rows */}
+            {projects.slice(0, 5).map((project, i) => (
+              <DispatchProjectRow key={project.id} project={project} index={i} />
+            ))}
+          </>
+        )}
 
         <DispatchCTA />
       </main>
