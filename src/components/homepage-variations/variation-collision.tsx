@@ -11,6 +11,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { ArrowUpRight, ArrowLeft, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { SafeLink } from "@/components/safe-link";
 import {
   TextReveal,
   Reveal,
@@ -326,7 +327,7 @@ function WorkCollision() {
         </div>
 
         <Reveal delay={0.3} className="mt-16 md:mt-24">
-          <Link
+          <SafeLink
             href="/work"
             className="text-white/50 hover:text-[#e2b93b] transition-colors duration-300 inline-flex items-center gap-2"
             style={{
@@ -337,7 +338,7 @@ function WorkCollision() {
             }}
           >
             [View all work →]
-          </Link>
+          </SafeLink>
         </Reveal>
       </section>
     </SectionTransition>
@@ -544,7 +545,7 @@ function AboutCollision() {
               </p>
             </Reveal>
             <Reveal delay={0.5}>
-              <Link
+              <SafeLink
                 href="/about"
                 className="inline-flex items-center gap-2 text-[#e2b93b]/70 hover:text-[#e2b93b] transition-colors duration-300"
               >
@@ -558,7 +559,7 @@ function AboutCollision() {
                 >
                   [More about me →]
                 </span>
-              </Link>
+              </SafeLink>
             </Reveal>
           </div>
         </div>

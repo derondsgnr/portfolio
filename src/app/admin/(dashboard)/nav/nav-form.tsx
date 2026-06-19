@@ -36,6 +36,7 @@ function SortableNavItem({
   onEditStart,
   onEditCancel,
   onEditSave,
+  onToggleHidden,
   onMoveUp,
   onMoveDown,
   onRemove,
@@ -48,6 +49,7 @@ function SortableNavItem({
   onEditStart: () => void;
   onEditCancel: () => void;
   onEditSave: (data: { label?: string; path?: string; href?: string }) => void;
+  onToggleHidden: () => void;
   onMoveUp: () => void;
   onMoveDown: () => void;
   onRemove: () => void;
@@ -62,7 +64,9 @@ function SortableNavItem({
     <li
       ref={setNodeRef}
       style={style}
-      className={`flex items-center gap-3 p-4 border border-white/10 bg-[#0A0A0A] ${isDragging ? "opacity-50" : ""}`}
+      className={`flex items-center gap-3 p-4 border bg-[#0A0A0A] ${isDragging ? "opacity-50" : ""} ${
+        item.hidden ? "border-[#E2B93B]/30" : "border-white/10"
+      }`}
     >
       <button
         type="button"
@@ -155,15 +159,32 @@ function SortableNavItem({
         </div>
       ) : (
         <div className="flex-1 min-w-0">
-          <span className="font-mono text-sm text-white">{item.label}</span>
+          <span className={`font-mono text-sm ${item.hidden ? "text-white/45" : "text-white"}`}>
+            {item.label}
+          </span>
           <span className="font-mono text-xs text-white/50 ml-2">
             {item.path ?? item.href ?? "—"}
           </span>
+          {item.hidden && (
+            <span className="ml-2 border border-[#E2B93B]/40 bg-[#E2B93B]/10 px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-[0.14em] text-[#E2B93B]">
+              Hidden
+            </span>
+          )}
         </div>
       )}
 
       {!editing && (
         <div className="flex gap-2 shrink-0">
+          <button
+            type="button"
+            onClick={onToggleHidden}
+            className={`font-mono text-xs ${
+              item.hidden ? "text-[#E2B93B] hover:text-white" : "text-white/40 hover:text-[#E2B93B]"
+            }`}
+            title={item.hidden ? "Make this page public again" : "Hide this page from the site"}
+          >
+            {item.hidden ? "Show" : "Hide"}
+          </button>
           <button
             type="button"
             onClick={onEditStart}
@@ -266,8 +287,17 @@ export function NavForm({ initial }: Props) {
     } else {
       next.path = "/";
     }
+    // Preserve visibility state across edits (the form doesn't expose it).
+    if (curr.hidden) next.hidden = true;
     updated[i] = next;
     setEditing(null);
+    handleSave(updated);
+  }
+
+  function toggleHidden(i: number) {
+    const updated = items.map((item, idx) =>
+      idx === i ? { ...item, hidden: !item.hidden } : item
+    );
     handleSave(updated);
   }
 
@@ -316,6 +346,7 @@ export function NavForm({ initial }: Props) {
                   onEditStart={() => setEditing(i)}
                   onEditCancel={() => setEditing(null)}
                   onEditSave={(data) => handleEdit(i, data)}
+                  onToggleHidden={() => toggleHidden(i)}
                   onMoveUp={() => moveUp(i)}
                   onMoveDown={() => moveDown(i)}
                   onRemove={() => handleRemove(i)}

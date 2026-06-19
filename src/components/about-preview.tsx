@@ -4,8 +4,12 @@ import Link from "next/link";
 import { Reveal, LineDraw, TextReveal } from "./motion-primitives";
 import { ArrowRight } from "lucide-react";
 import { motion } from "motion/react";
+import { useIsHidden } from "@/contexts/site-config-context";
 
 export function AboutPreview() {
+  // This whole block is a teaser for /about — vanish if that page is hidden.
+  const aboutHidden = useIsHidden("/about");
+  if (aboutHidden) return null;
   return (
     <section className="py-24 md:py-40 px-6 md:px-10">
       <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-4">

@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { getBlogSeries, getBlogSeriesBySlug, getSeriesPosts } from "@/lib/content/blog";
+import { isPathHidden } from "@/lib/content/nav";
 import SeriesPageClient from "./series-page-client";
 
 interface Props {
@@ -33,6 +35,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function Page({ params }: Props) {
+  if (await isPathHidden("/blog")) notFound();
   const { seriesSlug } = await params;
   const [series, posts] = await Promise.all([
     getBlogSeriesBySlug(seriesSlug),

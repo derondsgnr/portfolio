@@ -5,6 +5,7 @@ import { motion, useScroll, useSpring, useInView } from "motion/react";
 import { SplitText, RevealText } from "../shared/split-text";
 import Link from "next/link";
 import Image from "next/image";
+import { SafeLink } from "@/components/safe-link";
 import type { BlogPost } from "@/types/blog";
 import type { BlogSeries } from "@/types/blog";
 import type { Slide } from "@/types/case-study";
@@ -279,20 +280,20 @@ function AuthorBio() {
           Designer and builder — I prototype to learn what&apos;s possible, then refine until it ships. Systems-thinking, hands-on builds, and interfaces people remember.
         </p>
         <div className="flex items-center gap-4">
-          <Link
+          <SafeLink
             href="/about"
             className="text-[10px] tracking-[0.15em] text-[#E2B93B]/70 hover:text-[#E2B93B] transition-colors"
             style={{ fontFamily: "monospace" }}
           >
             MORE ABOUT →
-          </Link>
-          <Link
+          </SafeLink>
+          <SafeLink
             href="/work"
             className="text-[10px] tracking-[0.15em] text-[#444] hover:text-[#666] transition-colors"
             style={{ fontFamily: "monospace" }}
           >
             SEE WORK →
-          </Link>
+          </SafeLink>
         </div>
       </div>
     </motion.div>
@@ -386,13 +387,13 @@ export function BlogReader({
           style={{ scaleX }}
         />
         <div className="flex items-center justify-between px-6 md:px-10 py-3">
-          <Link
+          <SafeLink
             href="/blog"
             className="text-[10px] tracking-[0.15em] text-[#555] hover:text-[#E2B93B] transition-colors"
             style={{ fontFamily: "monospace" }}
           >
             ← WRITING
-          </Link>
+          </SafeLink>
           <span
             className="text-[10px] tracking-[0.15em] text-[#E2B93B] hidden md:block"
             style={{ fontFamily: "monospace" }}

@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { motion, useInView } from "motion/react";
 import Link from "next/link";
+import { SafeLink } from "@/components/safe-link";
 import { notFound } from "next/navigation";
 import type { BlogPost, BlogSeries } from "@/types/blog";
 
@@ -59,13 +60,13 @@ export default function SeriesPage({
           transition={{ duration: 0.4 }}
           className="mb-12"
         >
-          <Link
+          <SafeLink
             href="/blog"
             className="text-[10px] tracking-[0.15em] text-[#555] hover:text-[#E2B93B] transition-colors"
             style={{ fontFamily: "monospace", textDecoration: "none" }}
           >
             ← WRITING
-          </Link>
+          </SafeLink>
         </motion.div>
 
         {/* Series label */}

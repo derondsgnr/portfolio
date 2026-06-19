@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { getProjects } from "@/lib/content/projects";
 import { getPageCopy } from "@/lib/content/copy";
 import { getLandingContent } from "@/lib/content/landing";
 import { getPageConfig } from "@/lib/content/pages";
+import { getGlobal } from "@/lib/content/global";
+import { getAboutContent } from "@/lib/content/about";
+import { isPathHidden } from "@/lib/content/nav";
 import { AboutPage } from "@/components/pages/about-page";
 
 export const metadata: Metadata = {
@@ -10,11 +14,14 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-  const [projects, copy, landing, pageConfig] = await Promise.all([
+  if (await isPathHidden("/about")) notFound();
+  const [projects, copy, landing, pageConfig, global, aboutContent] = await Promise.all([
     getProjects(),
     getPageCopy("about"),
     getLandingContent(),
     getPageConfig("about"),
+    getGlobal(),
+    getAboutContent(),
   ]);
   return (
     <>
@@ -24,6 +31,9 @@ export default async function Page() {
         pageConfig={pageConfig}
         landing={landing}
         projects={projects}
+        profileImage={global.profileImage}
+        socials={global.socialLinks}
+        aboutContent={aboutContent}
       />
     </>
   );

@@ -5,6 +5,7 @@ import { ScrambleText } from "../shared/scramble-text";
 import { useBooking } from "../booking-context";
 import { withSound, useSoundOnHover } from "@/hooks/useSound";
 import { useSiteConfig } from "@/contexts/site-config-context";
+import { toDownloadableUrl } from "@/lib/download-url";
 
 export interface SynthesisCTAProps {
   label?: string;
@@ -36,7 +37,7 @@ export function SynthesisCTASection({
   const { open } = useBooking();
   const onHover = useSoundOnHover("hover");
   const { global } = useSiteConfig();
-  const cvUrl = global.cvUrl?.trim();
+  const cvUrl = toDownloadableUrl(global.cvUrl);
 
   return (
     <section id="cta" className="relative py-48 px-8 overflow-hidden">

@@ -6,11 +6,14 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { motion, AnimatePresence, useInView, useMotionValue, useSpring } from "motion/react";
 import { ScrambleText } from "./shared/scramble-text";
+import { SafeLink } from "@/components/safe-link";
 import { GlobalSidebar } from "./global-sidebar";
 import { PersonalProjectsGrid } from "./personal-projects-grid";
+import { TransmissionServicesIndex } from "./sections/transmission-services-index";
 import type { Project } from "@/lib/content/projects";
 import type { TestimonialItem } from "@/lib/content/testimonials";
 import type { CraftItem } from "@/lib/content/craft";
+import type { ServiceItem } from "@/lib/content/services";
 
 
 /* ═══════════════════════════════════════════════════════════════
@@ -420,7 +423,7 @@ function TransmissionHero({ projects, heroCopy }: { projects: Project[]; heroCop
           transition={{ delay: 0.65, duration: 0.6 }}
           className="flex items-center gap-4"
         >
-          <Link
+          <SafeLink
             href="/work"
             data-cursor-label="EXPLORE"
             style={{
@@ -438,7 +441,7 @@ function TransmissionHero({ projects, heroCopy }: { projects: Project[]; heroCop
             onMouseLeave={(e) => (e.currentTarget.style.background = "#F0F0F0")}
           >
             See all work
-          </Link>
+          </SafeLink>
           <Link
             href="#contact"
             style={{
@@ -665,7 +668,7 @@ const ABOUT_STATS_FALLBACK = [
   { label: "Available", value: "Yes" },
 ];
 
-function TransmissionAbout({ aboutCopy }: { aboutCopy: AboutCopy }) {
+function TransmissionAbout({ aboutCopy, showFullStory = true }: { aboutCopy: AboutCopy; showFullStory?: boolean }) {
   const stats = aboutCopy.stats?.length ? aboutCopy.stats : ABOUT_STATS_FALLBACK;
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.14 });
@@ -727,31 +730,33 @@ function TransmissionAbout({ aboutCopy }: { aboutCopy: AboutCopy }) {
             {aboutCopy.bioParagraphs?.[0] ?? "I work at the intersection of product design and engineering. I prototype in code, design in Figma, and ship in whatever order makes sense. Right now building Dara — an AI finance assistant — and taking on select client work."}
           </p>
 
-          <Link
-            href="/about"
-            data-cursor-label="ABOUT"
-            style={{
-              fontFamily: "monospace",
-              fontSize: "8.5px",
-              letterSpacing: "0.18em",
-              textTransform: "uppercase",
-              color: "rgba(255,255,255,0.38)",
-              border: "1px solid rgba(255,255,255,0.12)",
-              padding: "10px 22px",
-              display: "inline-block",
-              transition: "all 0.2s",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.color = "#F0F0F0";
-              e.currentTarget.style.borderColor = "rgba(255,255,255,0.38)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.color = "rgba(255,255,255,0.38)";
-              e.currentTarget.style.borderColor = "rgba(255,255,255,0.12)";
-            }}
-          >
-            Full story →
-          </Link>
+          {showFullStory && (
+            <Link
+              href="/about"
+              data-cursor-label="ABOUT"
+              style={{
+                fontFamily: "monospace",
+                fontSize: "8.5px",
+                letterSpacing: "0.18em",
+                textTransform: "uppercase",
+                color: "rgba(255,255,255,0.38)",
+                border: "1px solid rgba(255,255,255,0.12)",
+                padding: "10px 22px",
+                display: "inline-block",
+                transition: "all 0.2s",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = "#F0F0F0";
+                e.currentTarget.style.borderColor = "rgba(255,255,255,0.38)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = "rgba(255,255,255,0.38)";
+                e.currentTarget.style.borderColor = "rgba(255,255,255,0.12)";
+              }}
+            >
+              Full story →
+            </Link>
+          )}
         </div>
 
         {/* Right — stats grid */}
@@ -1382,6 +1387,8 @@ export function TransmissionVariation({
   testimonials,
   posts,
   craftItems,
+  services,
+  hiddenPaths = [],
   global: globalConfig,
   copy,
 }: {
@@ -1389,12 +1396,16 @@ export function TransmissionVariation({
   testimonials: TestimonialItem[];
   posts: BlogMeta[];
   craftItems: CraftItem[];
+  services: ServiceItem[];
+  /** Nav paths flagged hidden — their homepage previews + page links are suppressed. */
+  hiddenPaths?: string[];
   global: AdminGlobal;
   copy: AdminCopy;
 }) {
   const heroCopy = copy.homepage?.hero ?? {};
   const aboutCopy = copy.homepage?.about ?? {};
   const ctaCopy = copy.homepage?.cta ?? {};
+  const isHidden = (p: string) => hiddenPaths.includes(p);
 
   const caseStudyProjects = projects.filter((p) => !p.projectType || p.projectType === "case-study");
   const personalProjects = projects.filter((p) => p.projectType === "personal");
@@ -1412,60 +1423,61 @@ export function TransmissionVariation({
       <main className="transmission-root lg:ml-[260px]">
         <TransmissionHero projects={projects} heroCopy={heroCopy} />
 
-        {/* Work section header */}
-        <div
-          className="px-6 pt-14 pb-8 sm:px-8 md:px-10 md:pt-20 md:pb-10 flex items-center justify-between"
-          style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}
-        >
-          <span
-            style={{
-              fontFamily: "monospace",
-              fontSize: "7.5px",
-              letterSpacing: "0.22em",
-              textTransform: "uppercase",
-              color: "rgba(255,255,255,0.2)",
-            }}
-          >
-            Selected work
-          </span>
-          <Link
-            href="/work"
-            style={{
-              fontFamily: "monospace",
-              fontSize: "7.5px",
-              letterSpacing: "0.16em",
-              textTransform: "uppercase",
-              color: "rgba(255,255,255,0.28)",
-              transition: "color 0.2s",
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.color = "#E2B93B")}
-            onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.28)")}
-          >
-            See all →
-          </Link>
-        </div>
+        {!isHidden("/work") && (
+          <>
+            {/* Work section header */}
+            <div
+              className="px-6 pt-14 pb-8 sm:px-8 md:px-10 md:pt-20 md:pb-10 flex items-center justify-between"
+              style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}
+            >
+              <span
+                style={{
+                  fontFamily: "monospace",
+                  fontSize: "7.5px",
+                  letterSpacing: "0.22em",
+                  textTransform: "uppercase",
+                  color: "rgba(255,255,255,0.2)",
+                }}
+              >
+                Selected work
+              </span>
+              <Link
+                href="/work"
+                style={{
+                  fontFamily: "monospace",
+                  fontSize: "7.5px",
+                  letterSpacing: "0.16em",
+                  textTransform: "uppercase",
+                  color: "rgba(255,255,255,0.28)",
+                  transition: "color 0.2s",
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = "#E2B93B")}
+                onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.28)")}
+              >
+                See all →
+              </Link>
+            </div>
 
-        {caseStudyProjects.slice(0, 5).map((project, i) => (
-          <TransmissionProjectRow
-            key={project.id}
-            project={project}
-            index={i}
-          />
-        ))}
+            {caseStudyProjects.slice(0, 5).map((project, i) => (
+              <TransmissionProjectRow key={project.id} project={project} index={i} />
+            ))}
 
-        {personalProjects.length > 0 && (
-          <div
-            className="px-6 sm:px-8 md:px-10 py-14 md:py-20"
-            style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}
-          >
-            <PersonalProjectsGrid projects={personalProjects} />
-          </div>
+            {personalProjects.length > 0 && (
+              <div
+                className="px-6 sm:px-8 md:px-10 py-14 md:py-20"
+                style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}
+              >
+                <PersonalProjectsGrid projects={personalProjects} />
+              </div>
+            )}
+          </>
         )}
 
-        <TransmissionAbout aboutCopy={aboutCopy} />
-        <TransmissionCraft items={craftItems} />
+        <TransmissionAbout aboutCopy={aboutCopy} showFullStory={!isHidden("/about")} />
+        <TransmissionServicesIndex services={services} />
+        {!isHidden("/craft") && <TransmissionCraft items={craftItems} />}
         <TransmissionTestimonials testimonials={testimonials} />
-        <TransmissionWriting posts={posts} />
+        {!isHidden("/blog") && <TransmissionWriting posts={posts} />}
         <TransmissionCTA ctaCopy={ctaCopy} ctaLabel={globalConfig.ctaButtonLabel} />
       </main>
     </div>
