@@ -196,13 +196,13 @@ export function AdminFeatureGuide() {
   }, [pathname]);
 
   return (
-    <div className="fixed bottom-6 right-6 z-40 w-[340px] max-w-[calc(100vw-2rem)] border border-white/[0.10] bg-[#0A0A0A]/95 backdrop-blur-sm shadow-2xl">
+    <div className="fixed bottom-6 right-6 z-40 w-[340px] max-w-[calc(100vw-2rem)] border border-white/[0.10] bg-[#121316]/95 backdrop-blur-sm shadow-2xl">
       <button
         type="button"
         onClick={() => setOpen((prev) => !prev)}
         className="w-full flex items-center justify-between px-4 py-3 border-b border-white/[0.08]"
       >
-        <span className="inline-flex items-center gap-2 text-[11px] tracking-[0.12em] uppercase text-[#E2B93B]/85 font-['Instrument_Sans']">
+        <span className="inline-flex items-center gap-2 text-[11px] tracking-[0.12em] uppercase text-[#ECFF95]/85 font-['Instrument_Sans']">
           <BookOpen size={12} />
           How This Feature Works
         </span>

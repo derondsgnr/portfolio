@@ -48,7 +48,7 @@ const TOOL_BTN =
   "px-2 py-1 text-[10px] font-mono tracking-widest uppercase transition-colors duration-150 border";
 const active = (on: boolean) =>
   on
-    ? "border-[#E2B93B] text-[#E2B93B] bg-[#E2B93B]/10"
+    ? "border-[#ECFF95] text-[#ECFF95] bg-[#ECFF95]/10"
     : "border-transparent text-white/40 hover:text-white/70 hover:border-white/20";
 
 function Toolbar({ editor, compact = false }: { editor: Editor | null; compact?: boolean }) {
@@ -151,7 +151,7 @@ function Toolbar({ editor, compact = false }: { editor: Editor | null; compact?:
         style={{
           background: "#111",
           borderColor: "rgba(255,255,255,0.12)",
-          color: currentFontSize ? "#E2B93B" : "rgba(255,255,255,0.4)",
+          color: currentFontSize ? "#ECFF95" : "rgba(255,255,255,0.4)",
           outline: "none",
         }}
         onChange={(e) => {
@@ -222,7 +222,7 @@ export function RichTextEditor({
   return (
     <div
       className="overflow-hidden"
-      style={{ border: "1px solid rgba(255,255,255,0.08)", background: "#0d0d0d" }}
+      style={{ border: "1px solid rgba(255,255,255,0.08)", background: "#16171B" }}
     >
       <Toolbar editor={editor} compact={compact} />
       <EditorContent editor={editor} />

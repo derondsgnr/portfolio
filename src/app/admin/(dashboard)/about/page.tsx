@@ -12,7 +12,7 @@ export default async function AdminAboutPage() {
         Edit the About page — copy, films, games, and which sections are shown.
       </p>
       <p className="text-white/35 font-mono text-xs mb-8">
-        Wrap a word in *asterisks* to render it gold (e.g. <span className="text-[#E2B93B]/80">I build so *fewer people* get left.</span>).
+        Wrap a word in *asterisks* to render it gold (e.g. <span className="text-[#ECFF95]/80">I build so *fewer people* get left.</span>).
         Toggle sections on/off at the bottom — hidden sections vanish from the page.
       </p>
       <AboutForm initial={initial} />

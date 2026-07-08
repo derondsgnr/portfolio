@@ -45,7 +45,7 @@ function PhoneMockup({ children, className = "" }: { children: React.ReactNode; 
         {/* Notch */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[35%] h-[1.5rem] bg-[#111] rounded-b-2xl z-10" />
         {/* Screen — children fill entirely via [&_img]:object-cover */}
-        <div className="relative rounded-[2rem] overflow-hidden bg-[#0a0a0a] aspect-[9/19.5] [&_img]:w-full [&_img]:h-full [&_img]:object-cover">
+        <div className="relative rounded-[2rem] overflow-hidden bg-[#121316] aspect-[9/19.5] [&_img]:w-full [&_img]:h-full [&_img]:object-cover">
           {children}
         </div>
         {/* Bottom indicator */}
@@ -68,20 +68,20 @@ function BrowserMockup({ children, className = "" }: { children: React.ReactNode
         }}
       >
         {/* Browser chrome */}
-        <div className="flex items-center gap-2 px-4 py-2.5 border-b border-[#1a1a1a] bg-[#0f0f0f]">
+        <div className="flex items-center gap-2 px-4 py-2.5 border-b border-[#1D1E24] bg-[#16171B]">
           <div className="flex gap-1.5">
             <div className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" />
             <div className="w-2.5 h-2.5 rounded-full bg-[#febc2e]" />
             <div className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
           </div>
           <div className="flex-1 mx-8">
-            <div className="bg-[#1a1a1a] rounded-md px-3 py-1 text-[10px] text-[#666] font-mono text-center truncate">
+            <div className="bg-[#1D1E24] rounded-md px-3 py-1 text-[10px] text-[#666] font-mono text-center truncate">
               {url}
             </div>
           </div>
         </div>
         {/* Content */}
-        <div className="relative bg-[#0a0a0a]">
+        <div className="relative bg-[#121316]">
           {children}
         </div>
       </div>
@@ -98,7 +98,7 @@ function TabletMockup({ children, className = "" }: { children: React.ReactNode;
           boxShadow: "0 0 0 1px rgba(255,255,255,0.05), 0 25px 50px -12px rgba(0,0,0,0.8)",
         }}
       >
-        <div className="relative rounded-[1rem] overflow-hidden bg-[#0a0a0a] aspect-[4/3]">
+        <div className="relative rounded-[1rem] overflow-hidden bg-[#121316] aspect-[4/3]">
           {children}
         </div>
       </div>
@@ -110,7 +110,7 @@ function WatchMockup({ children, className = "" }: { children: React.ReactNode; 
   return (
     <div className={`inline-flex flex-col items-center ${className}`}>
       {/* Watch band top hint */}
-      <div className="w-[60%] h-3 bg-[#1a1a1a] rounded-t-lg" />
+      <div className="w-[60%] h-3 bg-[#1D1E24] rounded-t-lg" />
       <div
         className="relative rounded-[2rem] border-[3px] border-[#2a2a2a] bg-[#111] p-1.5 shadow-2xl"
         style={{
@@ -119,11 +119,11 @@ function WatchMockup({ children, className = "" }: { children: React.ReactNode; 
       >
         {/* Crown button */}
         <div className="absolute -right-[6px] top-[30%] w-[4px] h-[16px] bg-[#333] rounded-r" />
-        <div className="relative rounded-[1.5rem] overflow-hidden bg-[#0a0a0a] aspect-square w-full">
+        <div className="relative rounded-[1.5rem] overflow-hidden bg-[#121316] aspect-square w-full">
           {children}
         </div>
       </div>
-      <div className="w-[60%] h-3 bg-[#1a1a1a] rounded-b-lg" />
+      <div className="w-[60%] h-3 bg-[#1D1E24] rounded-b-lg" />
     </div>
   );
 }

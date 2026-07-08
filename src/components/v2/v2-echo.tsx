@@ -17,7 +17,7 @@ function EchoLoader({ onComplete }: { onComplete: () => void }) {
 
   return (
     <motion.div
-      className="fixed inset-0 z-[100] bg-[#0A0A0A] flex items-center justify-center"
+      className="fixed inset-0 z-[100] bg-[#121316] flex items-center justify-center"
       exit={{ opacity: 0 }}
       transition={{ duration: 0.6 }}
     >
@@ -26,7 +26,7 @@ function EchoLoader({ onComplete }: { onComplete: () => void }) {
         <motion.div
           key={i}
           className="absolute rounded-full border"
-          style={{ borderColor: "rgba(226,185,59,0.15)" }}
+          style={{ borderColor: "rgba(236, 255, 149,0.15)" }}
           initial={{ width: 0, height: 0, opacity: 1 }}
           animate={{
             width: [0, 400],
@@ -49,7 +49,7 @@ function EchoLoader({ onComplete }: { onComplete: () => void }) {
           fontFamily: "'Instrument Sans', sans-serif",
           fontSize: "12px",
           letterSpacing: "0.5em",
-          color: "rgba(226,185,59,0.5)",
+          color: "rgba(236, 255, 149,0.5)",
           textTransform: "uppercase",
         }}
       >
@@ -120,7 +120,7 @@ export function EchoHero() {
                 fontSize: "13px",
                 letterSpacing: "0.3em",
                 textTransform: "uppercase",
-                color: `rgba(226,185,59,${op})`,
+                color: `rgba(236, 255, 149,${op})`,
                 display: "block",
                 transform: `translateY(${(i - 2) * 3}px) scale(${1 + (2 - i) * 0.02})`,
               }}
@@ -198,7 +198,7 @@ export function EchoProcess() {
                 lineHeight: 1,
                 letterSpacing: "-0.02em",
                 textTransform: "uppercase",
-                color: i === 2 ? "#E2B93B" : "rgba(255,255,255,0.6)",
+                color: i === 2 ? "#ECFF95" : "rgba(255,255,255,0.6)",
                 display: "inline-block",
               }}
             >
@@ -299,7 +299,7 @@ export function EchoWork({ projects }: { projects?: WorkProject[] } = {}) {
               <div
                 className="absolute inset-0"
                 style={{
-                  background: "linear-gradient(to top, rgba(10,10,10,0.8) 0%, transparent 50%)",
+                  background: "linear-gradient(to top, rgba(18, 19, 22,0.8) 0%, transparent 50%)",
                 }}
               />
               <div className="absolute bottom-0 left-0 right-0 p-6">
@@ -333,7 +333,7 @@ export function EchoWork({ projects }: { projects?: WorkProject[] } = {}) {
                 style={{
                   fontFamily: "'Instrument Sans', sans-serif",
                   fontSize: "11px",
-                  color: "#E2B93B",
+                  color: "#ECFF95",
                   letterSpacing: "0.1em",
                 }}
               >
@@ -363,7 +363,7 @@ export function EchoPhilosophy() {
           style={{
             width: `${i * 300 + 200}px`,
             height: `${i * 300 + 200}px`,
-            borderColor: "rgba(226,185,59,0.2)",
+            borderColor: "rgba(236, 255, 149,0.2)",
           }}
         />
       ))}
@@ -385,12 +385,12 @@ export function EchoPhilosophy() {
           }}
         >
           Good design{" "}
-          <span style={{ fontStyle: "italic", color: "#E2B93B" }}>resonates</span>.
+          <span style={{ fontStyle: "italic", color: "#ECFF95" }}>resonates</span>.
           <br />
           It echoes in how users feel,
           <br />
           how teams build, how products{" "}
-          <span style={{ fontStyle: "italic", color: "#E2B93B" }}>endure</span>.
+          <span style={{ fontStyle: "italic", color: "#ECFF95" }}>endure</span>.
         </p>
       </motion.div>
     </section>
@@ -437,7 +437,7 @@ export function EchoTestimonials() {
             >
               Trusted by
               <br />
-              <span style={{ color: "#E2B93B" }}>Builders</span>
+              <span style={{ color: "#ECFF95" }}>Builders</span>
             </span>
           </motion.div>
 
@@ -481,7 +481,7 @@ export function EchoTestimonials() {
                         fontFamily: "'Instrument Sans', sans-serif",
                         fontSize: "11px",
                         fontWeight: 600,
-                        color: "#E2B93B",
+                        color: "#ECFF95",
                       }}
                     >
                       {t.name}
@@ -519,7 +519,7 @@ export function EchoCTA() {
           style={{
             width: 200 + i * 80,
             height: 200 + i * 80,
-            border: "1px solid rgba(226,185,59,0.06)",
+            border: "1px solid rgba(236, 255, 149,0.06)",
           }}
           animate={{ scale: [1, 1.05, 1] }}
           transition={{
@@ -586,7 +586,7 @@ export function EchoVariation() {
   const [loaded, setLoaded] = useState(false);
 
   return (
-    <main className="relative bg-[#0A0A0A]">
+    <main className="relative bg-[#121316]">
       <AnimatePresence>
         {!loaded && <EchoLoader onComplete={() => setLoaded(true)} />}
       </AnimatePresence>

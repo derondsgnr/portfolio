@@ -18,7 +18,7 @@ import { DEFAULT_ABOUT } from "@/lib/content/defaults";
    are visible-by-default so the page can never blank out.
    ═══════════════════════════════════════════════════════════════ */
 
-const GOLD = "#E2B93B";
+const GOLD = "#ECFF95";
 
 /** Render text with *wrapped* spans in gold. */
 function Highlighted({ text }: { text: string }) {
@@ -129,26 +129,26 @@ export function AboutV2({
   const s = c.sections;
 
   return (
-    <main className="relative" style={{ background: "#0A0A0A", minHeight: "100vh", overflowX: "hidden" }}>
+    <main className="relative" style={{ background: "#121316", minHeight: "100vh", overflowX: "hidden" }}>
       {/* microinteractions (CSS — hydration-safe) */}
       <style>{`
         .ab-life { transition: transform .25s ease; }
         .ab-life:hover { transform: translateX(5px); }
         .ab-life:hover .ab-life-name { color: #F2F0EC; }
-        .ab-life:hover .ab-life-no { color: #E2B93B; }
+        .ab-life:hover .ab-life-no { color: #ECFF95; }
         .ab-cta { transition: transform .2s ease, box-shadow .2s ease, background .2s ease; }
-        .ab-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(226,185,59,0.28); background: #f0cf57; }
+        .ab-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(236, 255, 149,0.28); background: #f0cf57; }
         .ab-cta .ab-cta-arrow { display:inline-block; transition: transform .2s ease; }
         .ab-cta:hover .ab-cta-arrow { transform: translateX(4px); }
         .ab-social { transition: color .2s ease; }
         .ab-social .ab-arrow { display:inline-block; transition: transform .2s ease; }
         .ab-social:hover .ab-arrow { transform: translate(3px,-3px); }
         .ab-genre { transition: border-color .2s ease, color .2s ease; }
-        .ab-genre:hover { border-color: rgba(226,185,59,0.5); color: #F0F0F0; }
+        .ab-genre:hover { border-color: rgba(236, 255, 149,0.5); color: #F0F0F0; }
       `}</style>
 
       {/* warm glow */}
-      <div aria-hidden style={{ position: "absolute", top: 0, left: 0, right: 0, height: 680, background: "radial-gradient(70% 100% at 15% 0%, rgba(226,185,59,0.09), transparent 60%)", pointerEvents: "none" }} />
+      <div aria-hidden style={{ position: "absolute", top: 0, left: 0, right: 0, height: 680, background: "radial-gradient(70% 100% at 15% 0%, rgba(236, 255, 149,0.09), transparent 60%)", pointerEvents: "none" }} />
 
       <div className="relative px-6 sm:px-8 md:px-12" style={{ maxWidth: 1180, margin: "0 auto", paddingTop: 120, paddingBottom: 120 }}>
         {/* ── Opening ─────────────────────────────────────────── */}
@@ -196,7 +196,7 @@ export function AboutV2({
               <ul className="flex flex-wrap" style={{ listStyle: "none", padding: 0, margin: 0, gap: "10px 22px", maxWidth: "46ch" }}>
                 {c.lives.map((l, i) => (
                   <li key={i} className="ab-life" style={{ display: "flex", alignItems: "baseline", gap: 8, cursor: "default" }}>
-                    <span className="ab-life-no" style={{ fontFamily: "monospace", fontSize: "9px", color: "rgba(226,185,59,0.7)", transition: "color .25s" }}>{String(i + 1).padStart(2, "0")}</span>
+                    <span className="ab-life-no" style={{ fontFamily: "monospace", fontSize: "9px", color: "rgba(236, 255, 149,0.7)", transition: "color .25s" }}>{String(i + 1).padStart(2, "0")}</span>
                     <span className="ab-life-name" style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "clamp(1rem, 1.4vw, 1.25rem)", color: "rgba(255,255,255,0.62)", transition: "color .25s" }}>{l}</span>
                   </li>
                 ))}
@@ -313,7 +313,7 @@ export function AboutV2({
             <Highlighted text={c.signoff} />
           </p>
           <div className="flex flex-wrap items-center" style={{ gap: 14, marginBottom: 28 }}>
-            <Link href="/#contact" className="ab-cta" style={{ fontFamily: "monospace", fontSize: "10px", letterSpacing: "0.18em", textTransform: "uppercase", color: "#0A0A0A", background: GOLD, padding: "14px 30px", display: "inline-block" }}>
+            <Link href="/#contact" className="ab-cta" style={{ fontFamily: "monospace", fontSize: "10px", letterSpacing: "0.18em", textTransform: "uppercase", color: "#121316", background: GOLD, padding: "14px 30px", display: "inline-block" }}>
               Let&apos;s talk <span className="ab-cta-arrow">→</span>
             </Link>
           </div>

@@ -20,7 +20,7 @@ export const DARA_CASE_STUDY: CaseStudy = {
     cover: daraHero,
     summary:
       "Dara turns bank and fintech alerts into filing signal: scan email, run Gemini, you classify into buckets, the system learns, then it aggregates toward what you owe and when. Extraction is still patchy by provider—I am not dressing that up. Long posts unpack prompts, tax content, and what broke in beta.",
-    color: "#E2B93B",
+    color: "#ECFF95",
   },
   template: "full-product",
   liveDemoUrl: "https://mydara.co",

@@ -34,7 +34,7 @@ function BroadcastTopBar() {
       className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8"
       style={{
         height: 52,
-        background: "rgba(10,10,10,0.95)",
+        background: "rgba(18, 19, 22,0.95)",
         backdropFilter: "blur(8px)",
         borderBottom: "1px solid rgba(255,255,255,0.05)",
       }}
@@ -45,7 +45,7 @@ function BroadcastTopBar() {
             fontFamily: "'Anton', sans-serif",
             fontSize: "15px",
             letterSpacing: "0.1em",
-            color: "#E2B93B",
+            color: "#ECFF95",
             textTransform: "uppercase",
           }}
         >
@@ -100,7 +100,7 @@ function DisciplineScramble() {
         fontSize: "10px",
         letterSpacing: "0.2em",
         textTransform: "uppercase",
-        color: "#E2B93B",
+        color: "#ECFF95",
       }}
     >
       {display}
@@ -121,7 +121,7 @@ function BroadcastLeft({
       style={{
         width: "42vw",
         paddingTop: 52,
-        background: "#0A0A0A",
+        background: "#121316",
         borderRight: "1px solid rgba(255,255,255,0.06)",
         zIndex: 30,
       }}
@@ -165,7 +165,7 @@ function BroadcastLeft({
                   fontSize: "8px",
                   letterSpacing: "0.2em",
                   textTransform: "uppercase",
-                  color: "#E2B93B",
+                  color: "#ECFF95",
                   display: "block",
                   marginBottom: 8,
                 }}
@@ -193,7 +193,7 @@ function BroadcastLeft({
                   fontSize: "9px",
                   letterSpacing: "0.16em",
                   textTransform: "uppercase",
-                  color: "#E2B93B",
+                  color: "#ECFF95",
                 }}
               >
                 Open case study →
@@ -245,7 +245,7 @@ function BroadcastLeft({
                 left: 0,
                 top: 0,
                 height: "100%",
-                background: "#E2B93B",
+                background: "#ECFF95",
                 width: `${progress * 100}%`,
               }}
             />
@@ -347,7 +347,7 @@ function BroadcastProjectCard({
         {!project.image && (
           <div
             className="absolute inset-0 flex items-center justify-center"
-            style={{ background: "#111111" }}
+            style={{ background: "#17181C" }}
           >
             <span
               style={{
@@ -380,7 +380,7 @@ function BroadcastProjectCard({
       <div
         className="px-8 py-7 flex items-end justify-between"
         style={{
-          background: "#0D0D0D",
+          background: "#16171B",
           borderBottom: "1px solid rgba(255,255,255,0.05)",
         }}
       >
@@ -426,9 +426,9 @@ function BroadcastProjectCard({
             fontSize: 16,
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.background = "#E2B93B";
-            e.currentTarget.style.borderColor = "#E2B93B";
-            e.currentTarget.style.color = "#0A0A0A";
+            e.currentTarget.style.background = "#ECFF95";
+            e.currentTarget.style.borderColor = "#ECFF95";
+            e.currentTarget.style.color = "#121316";
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.background = "transparent";
@@ -475,7 +475,7 @@ function BroadcastRight({
       <div
         id="contact"
         className="px-8 py-24"
-        style={{ background: "#0A0A0A", borderTop: "1px solid rgba(255,255,255,0.06)" }}
+        style={{ background: "#121316", borderTop: "1px solid rgba(255,255,255,0.06)" }}
       >
         <span
           style={{
@@ -511,8 +511,8 @@ function BroadcastRight({
             fontSize: "10px",
             letterSpacing: "0.18em",
             textTransform: "uppercase",
-            color: "#0A0A0A",
-            background: "#E2B93B",
+            color: "#121316",
+            background: "#ECFF95",
             padding: "14px 32px",
             display: "inline-block",
           }}
@@ -544,7 +544,7 @@ export function BroadcastVariation({ projects }: { projects: Project[] }) {
   }, []);
 
   return (
-    <div className="bg-[#0A0A0A] min-h-screen lg:h-screen lg:overflow-hidden">
+    <div className="bg-[#121316] min-h-screen lg:h-screen lg:overflow-hidden">
       <style>{`@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }`}</style>
 
       <BroadcastTopBar />
@@ -573,7 +573,7 @@ export function BroadcastVariation({ projects }: { projects: Project[] }) {
         <div
           id="contact"
           className="px-8 py-24"
-          style={{ background: "#0A0A0A", borderTop: "1px solid rgba(255,255,255,0.06)" }}
+          style={{ background: "#121316", borderTop: "1px solid rgba(255,255,255,0.06)" }}
         >
           <span
             style={{
@@ -609,8 +609,8 @@ export function BroadcastVariation({ projects }: { projects: Project[] }) {
               fontSize: "10px",
               letterSpacing: "0.18em",
               textTransform: "uppercase",
-              color: "#0A0A0A",
-              background: "#E2B93B",
+              color: "#121316",
+              background: "#ECFF95",
               padding: "14px 32px",
               display: "inline-block",
             }}

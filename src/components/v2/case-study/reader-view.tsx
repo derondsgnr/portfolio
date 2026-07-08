@@ -10,6 +10,7 @@ import { CommentsSection } from "./comments-section";
 import { CaseStudyCTA } from "./case-study-cta";
 import { CaseStudyMediaProvider } from "./case-study-media-context";
 import { CaseStudyMediaLightbox } from "../shared/case-study-media-lightbox";
+import { pillFor } from "@/lib/pill-palette";
 
 /**
  * READER VIEW — Continuous scroll mode (default)
@@ -96,7 +97,7 @@ export function ReaderView({
 
   return (
     <CaseStudyMediaProvider slides={allSlides}>
-    <div ref={containerRef} className="relative min-h-screen bg-[#0A0A0A] pb-28 md:pb-24">
+    <div ref={containerRef} className="relative min-h-screen bg-[#121316] pb-28 md:pb-24">
       {/* ─── Signal grid + scan lines (Synthesis DNA) ──── */}
       <div
         className="fixed inset-0 pointer-events-none z-0"
@@ -111,10 +112,10 @@ export function ReaderView({
 
       {/* ─── Sticky header bar (minimal) ─────────────── */}
       {/* Offset to the content column on lg+ so it doesn't cover the global sidebar/logo. */}
-      <div className="fixed top-[60px] lg:top-0 left-0 lg:left-[260px] right-0 z-40 bg-[#0A0A0A]/90 backdrop-blur-sm border-b border-[#1a1a1a]">
+      <div className="fixed top-[60px] lg:top-0 left-0 lg:left-[260px] right-0 z-40 bg-[#121316]/90 backdrop-blur-sm border-b border-[#1D1E24]">
         {/* Gold progress bar — overlaid on nav bar top edge */}
         <motion.div
-          className="absolute top-0 left-0 right-0 h-[3px] bg-[#E2B93B] z-50 origin-left"
+          className="absolute top-0 left-0 right-0 h-[3px] bg-[#ECFF95] z-50 origin-left"
           style={{ scaleX }}
         />
         <div className="flex items-center justify-between px-4 md:px-8 py-3">
@@ -127,7 +128,7 @@ export function ReaderView({
             >
               &larr;
             </SafeLink>
-            <span className="truncate min-w-0 text-[10px] text-[#E2B93B]" style={{ fontFamily: "monospace", letterSpacing: "var(--meta-tracking, 0.15em)" }}>
+            <span className="truncate min-w-0 text-[10px] text-[#ECFF95]" style={{ fontFamily: "monospace", letterSpacing: "var(--meta-tracking, 0.15em)" }}>
               {caseStudy.meta.title}
             </span>
           </div>
@@ -137,7 +138,7 @@ export function ReaderView({
             {allCaseStudies.length > 1 && (
               <button
                 onClick={() => setShowProjectNav(!showProjectNav)}
-                className="hidden md:block text-[10px] tracking-[0.15em] text-[#555] hover:text-[#E2B93B] transition-colors px-2 py-1 border border-[#222] hover:border-[#E2B93B]/30"
+                className="hidden md:block text-[10px] tracking-[0.15em] text-[#555] hover:text-[#ECFF95] transition-colors px-2 py-1 border border-[#222] hover:border-[#ECFF95]/30"
                 style={{ fontFamily: "monospace" }}
               >
                 SWITCH
@@ -155,7 +156,7 @@ export function ReaderView({
                 onClick={() => actRefs.current[i]?.scrollIntoView({ behavior: "smooth" })}
                 className={`flex-shrink-0 text-[9px] tracking-[0.15em] px-3 py-1 border transition-colors ${
                   activeAct === i
-                    ? "text-[#E2B93B] border-[#E2B93B]/50 bg-transparent"
+                    ? "text-[#ECFF95] border-[#ECFF95]/50 bg-transparent"
                     : "text-[#555] border-[#222] bg-transparent"
                 }`}
                 style={{ fontFamily: "monospace" }}
@@ -169,14 +170,14 @@ export function ReaderView({
 
       {/* ─── Act side nav (desktop) ──────────────────── */}
       {/* No card or glass panel — labels sit directly on the page. A soft
-          vignette behind them (invisible on the flat #0A0A0A background)
+          vignette behind them (invisible on the flat #121316 background)
           adds contrast only where media scrolls underneath. Mobile keeps
           the act pills in the sticky header above. */}
       {hasMultipleActs && (
         <>
           <div
             className="hidden md:block fixed inset-y-0 right-0 w-56 z-30 pointer-events-none"
-            style={{ background: "linear-gradient(to left, rgba(10,10,10,0.6), transparent 75%)" }}
+            style={{ background: "linear-gradient(to left, rgba(18, 19, 22,0.6), transparent 75%)" }}
             aria-hidden
           />
           <motion.nav
@@ -191,7 +192,7 @@ export function ReaderView({
                 key={i}
                 onClick={() => actRefs.current[i]?.scrollIntoView({ behavior: "smooth", block: "start" })}
                 className={`group flex cursor-pointer items-center gap-3 text-right text-[10px] tracking-[0.2em] uppercase transition-colors duration-300 ${
-                  activeAct === i ? "text-[#E2B93B]" : "text-white/35 hover:text-white/75"
+                  activeAct === i ? "text-[#ECFF95]" : "text-white/35 hover:text-white/75"
                 }`}
                 style={{ fontFamily: "monospace", filter: "drop-shadow(0 1px 5px rgba(0,0,0,0.6))" }}
                 aria-current={activeAct === i ? "true" : undefined}
@@ -202,7 +203,7 @@ export function ReaderView({
                   {activeAct === i && (
                     <motion.span
                       layoutId="act-side-nav-indicator"
-                      className="absolute inset-0 bg-[#E2B93B]"
+                      className="absolute inset-0 bg-[#ECFF95]"
                       transition={{ type: "spring", stiffness: 380, damping: 32 }}
                     />
                   )}
@@ -225,10 +226,10 @@ export function ReaderView({
             animate={{ y: 0 }}
             exit={{ y: "100%" }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="fixed bottom-0 left-0 right-0 z-50 bg-[#111] border-t border-[#E2B93B]/20 rounded-t-2xl max-h-[60vh] overflow-y-auto"
+            className="fixed bottom-0 left-0 right-0 z-50 bg-[#111] border-t border-[#ECFF95]/20 rounded-t-2xl max-h-[60vh] overflow-y-auto"
           >
             <div className="p-6">
-              <span className="text-[10px] tracking-[0.3em] text-[#E2B93B] block mb-4" style={{ fontFamily: "monospace" }}>
+              <span className="text-[10px] tracking-[0.3em] text-[#ECFF95] block mb-4" style={{ fontFamily: "monospace" }}>
                 CASE STUDIES
               </span>
               {allCaseStudies.map((cs) => (
@@ -238,8 +239,8 @@ export function ReaderView({
                     onSwitchCaseStudy?.(cs.slug);
                     setShowProjectNav(false);
                   }}
-                  className={`w-full text-left p-3 border-b border-[#1a1a1a] flex items-center gap-4 hover:bg-[#1a1a1a] transition-colors ${
-                    cs.slug === caseStudy.slug ? "bg-[#E2B93B]/5" : ""
+                  className={`w-full text-left p-3 border-b border-[#1D1E24] flex items-center gap-4 hover:bg-[#1D1E24] transition-colors ${
+                    cs.slug === caseStudy.slug ? "bg-[#ECFF95]/5" : ""
                   }`}
                 >
                   <img
@@ -248,7 +249,7 @@ export function ReaderView({
                     className="w-12 h-12 object-cover rounded"
                   />
                   <div>
-                    <span className={`text-sm block ${cs.slug === caseStudy.slug ? "text-[#E2B93B]" : "text-white"}`}>
+                    <span className={`text-sm block ${cs.slug === caseStudy.slug ? "text-[#ECFF95]" : "text-white"}`}>
                       {cs.meta.title}
                     </span>
                     <span className="text-[10px] text-[#666]" style={{ fontFamily: "monospace" }}>
@@ -256,7 +257,7 @@ export function ReaderView({
                     </span>
                   </div>
                   {cs.slug === caseStudy.slug && (
-                    <span className="ml-auto text-[10px] text-[#E2B93B]" style={{ fontFamily: "monospace" }}>
+                    <span className="ml-auto text-[10px] text-[#ECFF95]" style={{ fontFamily: "monospace" }}>
                       CURRENT
                     </span>
                   )}
@@ -268,10 +269,10 @@ export function ReaderView({
       )}
 
       {/* ─── Case study meta header ──────────────────── */}
-      <div className="pt-32 md:pt-40 px-6 md:px-16 lg:px-24 pb-8 border-b border-[#1a1a1a]">
+      <div className="pt-32 md:pt-40 px-6 md:px-16 lg:px-24 pb-8 border-b border-[#1D1E24]">
         <div className="max-w-5xl">
           <div className="flex flex-wrap items-center gap-4 mb-4">
-            <span className="text-[10px] text-[#E2B93B]" style={{ fontFamily: "monospace", letterSpacing: "var(--meta-tracking, 0.15em)" }}>
+            <span className="text-[10px] text-[#ECFF95]" style={{ fontFamily: "monospace", letterSpacing: "var(--meta-tracking, 0.15em)" }}>
               {caseStudy.meta.client}
             </span>
             {caseStudy.meta.role && (
@@ -308,21 +309,24 @@ export function ReaderView({
           </RevealText>
 
           <div className="flex flex-wrap gap-2 mt-6">
-            {caseStudy.meta.tags.map((tag) => (
-              <span
-                key={tag}
-                className="text-[9px] text-[#555] border border-[#222] px-2 py-1"
-                style={{ fontFamily: "monospace", letterSpacing: "var(--meta-tracking, 0.15em)" }}
-              >
-                {tag}
-              </span>
-            ))}
+            {caseStudy.meta.tags.map((tag) => {
+              const hue = pillFor(tag);
+              return (
+                <span
+                  key={tag}
+                  className="text-[9px] border px-2 py-1"
+                  style={{ fontFamily: "monospace", letterSpacing: "var(--meta-tracking, 0.15em)", color: hue, borderColor: `${hue}40` }}
+                >
+                  {tag}
+                </span>
+              );
+            })}
           </div>
         </div>
 
         {/* Hero visual (lifted from the cover slide; cover slide itself is skipped below) */}
         {heroImage && (
-          <div className="max-w-6xl mt-10 relative overflow-hidden border border-[#1a1a1a]">
+          <div className="max-w-6xl mt-10 relative overflow-hidden border border-[#1D1E24]">
             <img
               src={heroImage}
               alt={caseStudy.meta.title}
@@ -350,7 +354,7 @@ export function ReaderView({
                   <SlideRenderer slide={slide} browserUrl={browserUrl} />
                   {/* Divider between slides */}
                   <div className="mx-6 md:mx-16 lg:mx-24">
-                    <div className="h-px bg-gradient-to-r from-transparent via-[#1a1a1a] to-transparent" />
+                    <div className="h-px bg-gradient-to-r from-transparent via-[#1D1E24] to-transparent" />
                   </div>
                 </div>
               ))}
@@ -360,13 +364,13 @@ export function ReaderView({
 
       {/* ─── Outcome section ─────────────────────────── */}
       {caseStudy.outcome && (
-        <div className="relative z-10 px-6 md:px-16 lg:px-24 py-20 border-t border-[#1a1a1a]">
+        <div className="relative z-10 px-6 md:px-16 lg:px-24 py-20 border-t border-[#1D1E24]">
           <div className="max-w-4xl">
             <ScrambleHeading text="OUTCOME" className="text-3xl md:text-5xl mb-12" />
 
             <div className="grid grid-cols-2 md:grid-cols-3 gap-8 mb-16">
               {caseStudy.outcome.metrics.map((m) => (
-                <div key={m.label} className="min-w-0 border-t border-[#E2B93B]/30 pt-4">
+                <div key={m.label} className="min-w-0 border-t border-[#ECFF95]/30 pt-4">
                   <span
                     className="text-3xl md:text-4xl text-white block mb-1 break-words [overflow-wrap:anywhere]"
                     style={{ letterSpacing: "-0.02em" }}
@@ -381,7 +385,7 @@ export function ReaderView({
             </div>
 
             {caseStudy.outcome.testimonial && (
-              <div className="border-l-2 border-[#E2B93B]/40 pl-6">
+              <div className="border-l-2 border-[#ECFF95]/40 pl-6">
                 <p
                   className="text-lg md:text-xl text-[#ccc] mb-4"
                   style={{ fontFamily: "'Instrument Sans', sans-serif", lineHeight: 1.6, fontStyle: "italic" }}
@@ -409,7 +413,7 @@ export function ReaderView({
           <button
             type="button"
             onClick={onSwitchToCinematic}
-            className="flex items-center gap-2 border border-[#E2B93B]/40 bg-[#0A0A0A]/90 px-4 py-2 text-[10px] tracking-[0.2em] text-[#E2B93B] backdrop-blur-sm transition-colors hover:border-[#E2B93B]/70 hover:bg-[#E2B93B]/5"
+            className="flex items-center gap-2 border border-[#ECFF95]/40 bg-[#121316]/90 px-4 py-2 text-[10px] tracking-[0.2em] text-[#ECFF95] backdrop-blur-sm transition-colors hover:border-[#ECFF95]/70 hover:bg-[#ECFF95]/5"
             style={{ fontFamily: "monospace" }}
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
@@ -424,7 +428,7 @@ export function ReaderView({
             href={caseStudy.liveDemoUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="border border-[#E2B93B]/40 bg-[#0A0A0A]/90 px-4 py-2 text-[10px] tracking-[0.2em] text-[#E2B93B] backdrop-blur-sm transition-colors hover:border-[#E2B93B]/70 hover:bg-[#E2B93B]/5"
+            className="border border-[#ECFF95]/40 bg-[#121316]/90 px-4 py-2 text-[10px] tracking-[0.2em] text-[#ECFF95] backdrop-blur-sm transition-colors hover:border-[#ECFF95]/70 hover:bg-[#ECFF95]/5"
             style={{ fontFamily: "monospace" }}
           >
             LIVE DEMO &rarr;
@@ -484,7 +488,7 @@ function NextCaseStudyFooter({
   if (picks.length === 0) return null;
 
   return (
-    <div className="relative z-10 border-t border-[#1a1a1a] px-6 md:px-16 lg:px-24 py-16 md:py-24">
+    <div className="relative z-10 border-t border-[#1D1E24] px-6 md:px-16 lg:px-24 py-16 md:py-24">
       <span className="text-[10px] tracking-[0.3em] text-[#555] block mb-8" style={{ fontFamily: "monospace" }}>
         {picks.length > 1 ? "NEXT CASE STUDIES" : "NEXT CASE STUDY"}
       </span>
@@ -495,7 +499,7 @@ function NextCaseStudyFooter({
             onClick={() => onNavigate?.(cs.slug)}
             className="group text-left block"
           >
-            <div className="relative overflow-hidden border border-[#1a1a1a] aspect-[16/10] bg-[#111]">
+            <div className="relative overflow-hidden border border-[#1D1E24] aspect-[16/10] bg-[#111]">
               {cs.meta.cover && (
                 <img
                   src={cs.meta.cover}
@@ -504,12 +508,12 @@ function NextCaseStudyFooter({
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
               )}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A]/85 to-transparent opacity-60 group-hover:opacity-40 transition-opacity" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#121316]/85 to-transparent opacity-60 group-hover:opacity-40 transition-opacity" />
             </div>
             <div className="mt-4 flex items-start justify-between gap-4">
               <div className="min-w-0">
                 <h3
-                  className="text-2xl md:text-3xl text-white group-hover:text-[#E2B93B] transition-colors"
+                  className="text-2xl md:text-3xl text-white group-hover:text-[#ECFF95] transition-colors"
                   style={{ letterSpacing: "-0.02em" }}
                 >
                   {cs.meta.title}
@@ -522,7 +526,7 @@ function NextCaseStudyFooter({
                 </p>
               </div>
               <span
-                className="shrink-0 mt-2 text-[#555] transition-all group-hover:text-[#E2B93B] group-hover:translate-x-1"
+                className="shrink-0 mt-2 text-[#555] transition-all group-hover:text-[#ECFF95] group-hover:translate-x-1"
                 aria-hidden
               >
                 &rarr;

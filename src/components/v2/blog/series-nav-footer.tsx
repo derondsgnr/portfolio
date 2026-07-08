@@ -29,7 +29,7 @@ export function SeriesNavFooter({
       initial={{ opacity: 0, y: 30 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.7 }}
-      className="border border-[#1a1a1a] mt-16"
+      className="border border-[#1D1E24] mt-16"
     >
       {/* Header */}
       <div className="px-6 md:px-8 py-4 border-b border-[#111] flex items-center justify-between">
@@ -41,7 +41,7 @@ export function SeriesNavFooter({
         </span>
         <Link
           href={`/blog/series/${series.slug}`}
-          className="text-[9px] tracking-[0.15em] text-[#E2B93B]/50 hover:text-[#E2B93B] transition-colors"
+          className="text-[9px] tracking-[0.15em] text-[#ECFF95]/50 hover:text-[#ECFF95] transition-colors"
           style={{ fontFamily: "monospace", textDecoration: "none" }}
         >
           VIEW ALL {series.posts.length} PARTS →
@@ -55,12 +55,12 @@ export function SeriesNavFooter({
         {prev && (
           <Link
             href={`/blog/${prev.slug}`}
-            className={`group block p-6 md:p-8 ${next ? "md:border-r border-[#111]" : ""} hover:bg-[#0d0d0d] transition-colors`}
+            className={`group block p-6 md:p-8 ${next ? "md:border-r border-[#111]" : ""} hover:bg-[#16171B] transition-colors`}
             style={{ textDecoration: "none" }}
           >
             <div className="flex items-center gap-2 mb-3">
               <span
-                className="text-[9px] tracking-[0.1em] text-[#555] group-hover:text-[#E2B93B] transition-colors"
+                className="text-[9px] tracking-[0.1em] text-[#555] group-hover:text-[#ECFF95] transition-colors"
                 style={{ fontFamily: "monospace" }}
               >
                 ←
@@ -73,7 +73,7 @@ export function SeriesNavFooter({
               </span>
             </div>
             <h4
-              className="text-white text-lg md:text-xl uppercase leading-tight group-hover:text-[#E2B93B] transition-colors duration-300 mb-2"
+              className="text-white text-lg md:text-xl uppercase leading-tight group-hover:text-[#ECFF95] transition-colors duration-300 mb-2"
               style={{
                 fontFamily: "var(--font-heading)",
                 letterSpacing: "-0.02em",
@@ -93,7 +93,7 @@ export function SeriesNavFooter({
         {next && (
           <Link
             href={`/blog/${next.slug}`}
-            className="group block p-6 md:p-8 hover:bg-[#0d0d0d] transition-colors"
+            className="group block p-6 md:p-8 hover:bg-[#16171B] transition-colors"
             style={{ textDecoration: "none" }}
           >
             <div className="flex items-center gap-2 mb-3 md:justify-end">
@@ -104,14 +104,14 @@ export function SeriesNavFooter({
                 PART {currentPosition + 1} OF {series.posts.length}
               </span>
               <span
-                className="text-[9px] tracking-[0.1em] text-[#555] group-hover:text-[#E2B93B] transition-colors"
+                className="text-[9px] tracking-[0.1em] text-[#555] group-hover:text-[#ECFF95] transition-colors"
                 style={{ fontFamily: "monospace" }}
               >
                 →
               </span>
             </div>
             <h4
-              className="text-white text-lg md:text-xl uppercase leading-tight group-hover:text-[#E2B93B] transition-colors duration-300 mb-2 md:text-right"
+              className="text-white text-lg md:text-xl uppercase leading-tight group-hover:text-[#ECFF95] transition-colors duration-300 mb-2 md:text-right"
               style={{
                 fontFamily: "var(--font-heading)",
                 letterSpacing: "-0.02em",

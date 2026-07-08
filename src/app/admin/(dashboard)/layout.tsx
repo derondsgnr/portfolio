@@ -11,7 +11,7 @@ export default function AdminDashboardLayout({
     <AdminProvider>
       <AdminSidebar />
       <MobileAdminNav />
-      <main className="lg:pl-[220px] min-h-screen pt-14 lg:pt-0 bg-[#0A0A0A]">
+      <main className="lg:pl-[220px] min-h-screen pt-14 lg:pt-0 bg-[#121316]">
         <div className="p-6 lg:p-8">{children}</div>
         <AdminFeatureGuide />
       </main>

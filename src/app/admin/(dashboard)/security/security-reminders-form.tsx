@@ -89,7 +89,7 @@ export function SecurityRemindersForm({ initial }: { initial: AdminRemindersConf
           className={`text-sm font-['Instrument_Sans'] px-4 py-2 ${
             notice.kind === "error"
               ? "text-red-300 border border-red-500/30 bg-red-500/10"
-              : "text-[#E2B93B]/90 border border-[#E2B93B]/25 bg-[#E2B93B]/5"
+              : "text-[#ECFF95]/90 border border-[#ECFF95]/25 bg-[#ECFF95]/5"
           }`}
         >
           {notice.text}
@@ -106,11 +106,11 @@ export function SecurityRemindersForm({ initial }: { initial: AdminRemindersConf
         return (
           <div key={key} className="border border-white/[0.08] bg-white/[0.02] p-4 space-y-4">
             <div>
-              <p className="text-[11px] font-mono uppercase tracking-[0.14em] text-[#E2B93B]/80">{title}</p>
+              <p className="text-[11px] font-mono uppercase tracking-[0.14em] text-[#ECFF95]/80">{title}</p>
               <p className="text-xs text-white/40 font-['Instrument_Sans'] mt-1 leading-relaxed">{description}</p>
             </div>
 
-            <div className="rounded border border-white/[0.06] p-3 bg-[#0A0A0A]/60 space-y-1">
+            <div className="rounded border border-white/[0.06] p-3 bg-[#121316]/60 space-y-1">
               <p className="text-[11px] text-white/50 font-['Instrument_Sans']">
                 {lastRotatedDate ? `Last logged rotation date: ${lastRotatedDate}` : "No date logged yet."}
               </p>
@@ -155,7 +155,7 @@ export function SecurityRemindersForm({ initial }: { initial: AdminRemindersConf
                     [key]: { ...config[key], lastRotatedIso: todayReminderIso() },
                   })
                 }
-                className="px-4 py-2.5 bg-[#E2B93B] text-[#0A0A0A] font-['Anton'] text-[11px] tracking-[0.1em] hover:bg-white transition-colors disabled:opacity-40"
+                className="px-4 py-2.5 bg-[#ECFF95] text-[#121316] font-['Anton'] text-[11px] tracking-[0.1em] hover:bg-white transition-colors disabled:opacity-40"
               >
                 MARK ROTATED TODAY
               </button>

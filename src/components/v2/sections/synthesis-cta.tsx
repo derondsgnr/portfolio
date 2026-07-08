@@ -45,7 +45,7 @@ export function SynthesisCTASection({
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse 60% 50% at 50% 40%, rgba(226,185,59,0.06) 0%, transparent 70%)",
+            "radial-gradient(ellipse 60% 50% at 50% 40%, rgba(236, 255, 149,0.06) 0%, transparent 70%)",
         }}
       />
 
@@ -61,7 +61,7 @@ export function SynthesisCTASection({
               fontFamily: "monospace",
               fontSize: "9px",
               letterSpacing: "0.3em",
-              color: "rgba(226,185,59,0.3)",
+              color: "rgba(236, 255, 149,0.3)",
             }}
           >
             {label}
@@ -100,7 +100,7 @@ export function SynthesisCTASection({
           <button
             onClick={withSound(() => open("book"))}
             onMouseEnter={onHover}
-            className="text-[11px] tracking-[0.2em] text-[#0A0A0A] bg-[#E2B93B] px-8 py-3.5 hover:bg-white transition-colors duration-300"
+            className="text-[11px] tracking-[0.2em] text-[#121316] bg-[#ECFF95] px-8 py-3.5 hover:bg-white transition-colors duration-300"
             style={{ fontFamily: "monospace" }}
           >
             {ctaPrimary}
@@ -108,7 +108,7 @@ export function SynthesisCTASection({
           <button
             onClick={withSound(() => open("message"))}
             onMouseEnter={onHover}
-            className="text-[11px] tracking-[0.2em] text-[#E2B93B] border border-[#E2B93B]/30 px-8 py-3.5 hover:bg-[#E2B93B]/10 transition-colors duration-300"
+            className="text-[11px] tracking-[0.2em] text-[#ECFF95] border border-[#ECFF95]/30 px-8 py-3.5 hover:bg-[#ECFF95]/10 transition-colors duration-300"
             style={{ fontFamily: "monospace" }}
           >
             {ctaSecondary}
@@ -120,7 +120,7 @@ export function SynthesisCTASection({
               target="_blank"
               rel="noopener noreferrer"
               onMouseEnter={onHover}
-              className="text-[11px] tracking-[0.2em] text-[#E2B93B]/70 hover:text-[#E2B93B] px-8 py-3.5 transition-colors duration-300"
+              className="text-[11px] tracking-[0.2em] text-[#ECFF95]/70 hover:text-[#ECFF95] px-8 py-3.5 transition-colors duration-300"
               style={{ fontFamily: "monospace" }}
             >
               DOWNLOAD CV
@@ -135,7 +135,7 @@ export function SynthesisCTASection({
           transition={{ delay: 0.5, duration: 1.5, ease: [0.77, 0, 0.175, 1] }}
           className="h-px origin-center mt-10 mx-auto"
           style={{
-            background: "linear-gradient(90deg, transparent, rgba(226,185,59,0.4), transparent)",
+            background: "linear-gradient(90deg, transparent, rgba(236, 255, 149,0.4), transparent)",
             maxWidth: 300,
           }}
         />
@@ -215,7 +215,7 @@ export function SynthesisCTASection({
               target="_blank"
               rel="noopener noreferrer"
               onMouseEnter={onHover}
-              className="hover:text-[#E2B93B] transition-colors"
+              className="hover:text-[#ECFF95] transition-colors"
               style={{
                 fontFamily: "monospace",
                 fontSize: "9px",

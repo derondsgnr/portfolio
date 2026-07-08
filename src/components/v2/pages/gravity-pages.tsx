@@ -11,7 +11,7 @@ import { ToolBadge } from "@/components/tool-badge";
 /* ─── WORK PAGE ──────────────────────────────────────────────── */
 export function GravityWorkPage() {
   return (
-    <main className="relative bg-[#0A0A0A] min-h-screen">
+    <main className="relative bg-[#121316] min-h-screen">
       {/* Hero — drops with weight */}
       <section className="relative h-[70vh] flex flex-col justify-end overflow-hidden pb-16 px-8">
         <motion.div
@@ -29,7 +29,7 @@ export function GravityWorkPage() {
           transition={{ type: "spring", stiffness: 100, damping: 15, mass: 1.5, delay: 0.8 }}
           className="mt-4 flex items-center gap-6"
         >
-          <div style={{ width: 80, height: 3, background: "#E2B93B" }} />
+          <div style={{ width: 80, height: 3, background: "#ECFF95" }} />
           <span style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "clamp(0.9rem, 1.5vw, 1.2rem)", fontWeight: 500, letterSpacing: "0.15em", textTransform: "uppercase", color: "rgba(255,255,255,0.5)" }}>
             {V2_PROJECTS.length} Selected Projects
           </span>
@@ -39,7 +39,7 @@ export function GravityWorkPage() {
           animate={{ scaleX: 1 }}
           transition={{ delay: 1.2, duration: 1.5, ease: [0.77, 0, 0.175, 1] }}
           className="absolute bottom-0 left-0 right-0 h-1 origin-left"
-          style={{ background: "#E2B93B" }}
+          style={{ background: "#ECFF95" }}
         />
       </section>
 
@@ -62,7 +62,7 @@ export function GravityWorkPage() {
                 className="w-full h-full object-cover"
                 style={{ filter: "grayscale(0.3) brightness(0.6)" }}
               />
-              <div className="absolute bottom-0 left-0 right-0 p-8 flex justify-between items-end" style={{ background: "linear-gradient(to top, rgba(10,10,10,0.95), transparent)" }}>
+              <div className="absolute bottom-0 left-0 right-0 p-8 flex justify-between items-end" style={{ background: "linear-gradient(to top, rgba(18, 19, 22,0.95), transparent)" }}>
                 <div>
                   <span style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(2rem, 4vw, 3.5rem)", lineHeight: 1, letterSpacing: "-0.02em", textTransform: "uppercase", color: "#f0f0f0", display: "block" }}>
                     {project.title}
@@ -75,8 +75,8 @@ export function GravityWorkPage() {
                   </p>
                 </div>
                 <div className="flex items-center gap-3">
-                  <span style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "10px", color: "#E2B93B", letterSpacing: "0.1em" }}>{project.year}</span>
-                  <div style={{ width: 40, height: 3, background: "#E2B93B" }} />
+                  <span style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "10px", color: "#ECFF95", letterSpacing: "0.1em" }}>{project.year}</span>
+                  <div style={{ width: 40, height: 3, background: "#ECFF95" }} />
                 </div>
               </div>
             </motion.div>
@@ -96,7 +96,7 @@ export function GravityWorkPage() {
 /* ─── CRAFT PAGE ─────────────────────────────────────────────── */
 export function GravityCraftPage() {
   return (
-    <main className="relative bg-[#0A0A0A] min-h-screen">
+    <main className="relative bg-[#121316] min-h-screen">
       {/* Hero */}
       <section className="relative h-[50vh] flex flex-col justify-end pb-16 px-8">
         <motion.div
@@ -114,7 +114,7 @@ export function GravityCraftPage() {
           transition={{ type: "spring", stiffness: 100, damping: 15, delay: 0.5 }}
           className="mt-4 flex items-center gap-6"
         >
-          <div style={{ width: 60, height: 3, background: "#E2B93B" }} />
+          <div style={{ width: 60, height: 3, background: "#ECFF95" }} />
           <span style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "0.85rem", fontWeight: 300, fontStyle: "italic", color: "rgba(255,255,255,0.3)" }}>
             Side explorations with weight
           </span>
@@ -124,7 +124,7 @@ export function GravityCraftPage() {
           animate={{ scaleX: 1 }}
           transition={{ delay: 1, duration: 1.5, ease: [0.77, 0, 0.175, 1] }}
           className="absolute bottom-0 left-0 right-0 h-0.5 origin-left"
-          style={{ background: "#E2B93B" }}
+          style={{ background: "#ECFF95" }}
         />
       </section>
 
@@ -148,8 +148,8 @@ export function GravityCraftPage() {
                   style={{ filter: "grayscale(0.3) brightness(0.7)" }}
                 />
               </div>
-              <div className="mt-3 pb-3" style={{ borderBottom: "2px solid rgba(226,185,59,0.15)" }}>
-                <span style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "10px", letterSpacing: "0.1em", color: "#E2B93B" }}>{item.category}</span>
+              <div className="mt-3 pb-3" style={{ borderBottom: "2px solid rgba(236, 255, 149,0.15)" }}>
+                <span style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "10px", letterSpacing: "0.1em", color: "#ECFF95" }}>{item.category}</span>
                 <span className="block mt-1" style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "0.85rem", color: "rgba(255,255,255,0.5)" }}>{item.title}</span>
               </div>
             </motion.div>
@@ -172,7 +172,7 @@ export function GravityAboutPage() {
   const bgY = useTransform(scrollYProgress, [0, 1], [80, -80]);
 
   return (
-    <main className="relative bg-[#0A0A0A] min-h-screen">
+    <main className="relative bg-[#121316] min-h-screen">
       {/* Hero — name drops with weight */}
       <section className="relative h-screen flex flex-col justify-end overflow-hidden pb-16 px-8">
         <motion.div
@@ -190,7 +190,7 @@ export function GravityAboutPage() {
           transition={{ type: "spring", stiffness: 100, damping: 15, mass: 1.5, delay: 0.8 }}
           className="mt-4 flex items-center gap-6"
         >
-          <div style={{ width: 80, height: 3, background: "#E2B93B" }} />
+          <div style={{ width: 80, height: 3, background: "#ECFF95" }} />
           <span style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "clamp(0.9rem, 1.5vw, 1.2rem)", fontWeight: 500, letterSpacing: "0.15em", textTransform: "uppercase", color: "rgba(255,255,255,0.5)" }}>
             {V2_ABOUT.title}
           </span>
@@ -200,7 +200,7 @@ export function GravityAboutPage() {
           animate={{ scaleX: 1 }}
           transition={{ delay: 1.2, duration: 1.5, ease: [0.77, 0, 0.175, 1] }}
           className="absolute bottom-0 left-0 right-0 h-1 origin-left"
-          style={{ background: "#E2B93B" }}
+          style={{ background: "#ECFF95" }}
         />
       </section>
 
@@ -229,7 +229,7 @@ export function GravityAboutPage() {
             <div className="space-y-10">
               {/* Location */}
               <div>
-                <span style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "10px", letterSpacing: "0.2em", color: "#E2B93B", textTransform: "uppercase" }}>Based in</span>
+                <span style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "10px", letterSpacing: "0.2em", color: "#ECFF95", textTransform: "uppercase" }}>Based in</span>
                 <span className="block mt-2" style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(1.5rem, 3vw, 2.5rem)", lineHeight: 1, letterSpacing: "-0.02em", textTransform: "uppercase", color: "rgba(255,255,255,0.6)" }}>
                   {V2_ABOUT.location}
                 </span>
@@ -245,7 +245,7 @@ export function GravityAboutPage() {
                     viewport={{ once: true }}
                     transition={{ type: "spring", stiffness: 120, damping: 12, mass: 2, delay: i * 0.15 }}
                   >
-                    <span style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(2rem, 4vw, 3.5rem)", lineHeight: 1, color: "#E2B93B", display: "block" }}>{stat.value}</span>
+                    <span style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(2rem, 4vw, 3.5rem)", lineHeight: 1, color: "#ECFF95", display: "block" }}>{stat.value}</span>
                     <span className="block mt-2" style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "10px", letterSpacing: "0.15em", color: "rgba(255,255,255,0.2)", textTransform: "uppercase" }}>{stat.label}</span>
                   </motion.div>
                 ))}
@@ -253,7 +253,7 @@ export function GravityAboutPage() {
 
               {/* Tools */}
               <div>
-                <span style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "10px", letterSpacing: "0.2em", color: "#E2B93B", textTransform: "uppercase" }}>Tools</span>
+                <span style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "10px", letterSpacing: "0.2em", color: "#ECFF95", textTransform: "uppercase" }}>Tools</span>
                 <div className="flex flex-wrap gap-2 mt-3">
                   {V2_ABOUT.tools.map((tool) => (
                     <span key={tool} className="inline-flex items-center gap-1.5" style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "0.8rem", color: "rgba(255,255,255,0.3)", padding: "4px 12px", border: "1px solid rgba(255,255,255,0.06)" }}>
@@ -282,7 +282,7 @@ export function GravityAboutPage() {
             <span style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(3rem, 8vw, 7rem)", lineHeight: 0.95, letterSpacing: "-0.03em", textTransform: "uppercase", color: "rgba(255,255,255,0.8)", display: "block" }}>
               Products with
               <br />
-              <span style={{ color: "#E2B93B" }}>Gravitational</span>
+              <span style={{ color: "#ECFF95" }}>Gravitational</span>
               <br />
               Pull
             </span>
@@ -298,14 +298,14 @@ export function GravityAboutPage() {
           viewport={{ once: true }}
           transition={{ type: "spring", stiffness: 80, damping: 15, mass: 3 }}
           className="max-w-6xl mx-auto p-16 text-center"
-          style={{ background: "#E2B93B" }}
+          style={{ background: "#ECFF95" }}
         >
-          <span style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(2rem, 5vw, 4rem)", lineHeight: 0.95, letterSpacing: "-0.03em", textTransform: "uppercase", color: "#0A0A0A", display: "block" }}>
+          <span style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(2rem, 5vw, 4rem)", lineHeight: 0.95, letterSpacing: "-0.03em", textTransform: "uppercase", color: "#121316", display: "block" }}>
             Let&rsquo;s Build
           </span>
           <div className="flex justify-center gap-8 mt-6">
             {V2_ABOUT.socials.map((s) => (
-              <a key={s.label} href={s.url} style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "11px", fontWeight: 500, letterSpacing: "0.1em", color: "rgba(10,10,10,0.5)", textTransform: "uppercase" }}>
+              <a key={s.label} href={s.url} style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "11px", fontWeight: 500, letterSpacing: "0.1em", color: "rgba(18, 19, 22,0.5)", textTransform: "uppercase" }}>
                 {s.label}
               </a>
             ))}

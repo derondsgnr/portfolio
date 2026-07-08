@@ -39,7 +39,7 @@ function CipherLoader({ onComplete }: { onComplete: () => void }) {
 
   return (
     <motion.div
-      className="fixed inset-0 z-[100] bg-[#0A0A0A] flex items-center justify-center p-8"
+      className="fixed inset-0 z-[100] bg-[#121316] flex items-center justify-center p-8"
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
     >
@@ -55,7 +55,7 @@ function CipherLoader({ onComplete }: { onComplete: () => void }) {
                 c === " "
                   ? "transparent"
                   : i < 11
-                  ? "#E2B93B"
+                  ? "#ECFF95"
                   : "rgba(255,255,255,0.3)",
               width: "12px",
               textAlign: "center",
@@ -138,7 +138,7 @@ export function CipherHero() {
             <ScrambleText
               text="PRODUCT DESIGNER & BUILDER"
               speed={25}
-              style={{ color: "#E2B93B" }}
+              style={{ color: "#ECFF95" }}
             />
           </span>
         </motion.div>
@@ -176,7 +176,7 @@ export function CipherHero() {
               fontFamily: "monospace",
               fontSize: "9px",
               letterSpacing: "0.2em",
-              color: "rgba(226,185,59,0.3)",
+              color: "rgba(236, 255, 149,0.3)",
             }}
           >
             [STATUS: DECRYPTED]
@@ -203,7 +203,7 @@ export function CipherServices() {
               fontFamily: "monospace",
               fontSize: "10px",
               letterSpacing: "0.3em",
-              color: "#E2B93B",
+              color: "#ECFF95",
             }}
           >
             [CAPABILITIES.DECRYPT()]
@@ -248,7 +248,7 @@ export function CipherServices() {
                 style={{
                   fontFamily: "monospace",
                   fontSize: "9px",
-                  color: "rgba(226,185,59,0.3)",
+                  color: "rgba(236, 255, 149,0.3)",
                 }}
               >
                 [ACTIVE]
@@ -279,7 +279,7 @@ export function CipherWork({ projects = V2_PROJECTS }: { projects?: typeof V2_PR
             fontFamily: "monospace",
             fontSize: "10px",
             letterSpacing: "0.3em",
-            color: "#E2B93B",
+            color: "#ECFF95",
           }}
         >
           [PROJECTS.DECODE()]
@@ -294,7 +294,7 @@ export function CipherWork({ projects = V2_PROJECTS }: { projects?: typeof V2_PR
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: i * 0.1, duration: 0.6 }}
-            className="relative group cursor-pointer bg-[#0A0A0A]"
+            className="relative group cursor-pointer bg-[#121316]"
             style={{ aspectRatio: "4/3" }}
             onMouseEnter={() => setHoveredId(project.id)}
             onMouseLeave={() => setHoveredId(null)}
@@ -317,7 +317,7 @@ export function CipherWork({ projects = V2_PROJECTS }: { projects?: typeof V2_PR
               style={{
                 opacity: hoveredId === project.id ? 0 : 0.6,
                 background:
-                  "repeating-linear-gradient(0deg, transparent 0px, transparent 2px, rgba(10,10,10,0.5) 2px, rgba(10,10,10,0.5) 4px)",
+                  "repeating-linear-gradient(0deg, transparent 0px, transparent 2px, rgba(18, 19, 22,0.5) 2px, rgba(18, 19, 22,0.5) 4px)",
               }}
             />
 
@@ -327,7 +327,7 @@ export function CipherWork({ projects = V2_PROJECTS }: { projects?: typeof V2_PR
                   style={{
                     fontFamily: "monospace",
                     fontSize: "9px",
-                    color: "#E2B93B",
+                    color: "#ECFF95",
                     letterSpacing: "0.1em",
                   }}
                 >
@@ -355,7 +355,7 @@ export function CipherWork({ projects = V2_PROJECTS }: { projects?: typeof V2_PR
                     textTransform: "uppercase",
                     color:
                       hoveredId === project.id
-                        ? "#E2B93B"
+                        ? "#ECFF95"
                         : "rgba(255,255,255,0.7)",
                     display: "block",
                   }}
@@ -399,7 +399,7 @@ export function CipherPhilosophy() {
               fontFamily: "monospace",
               fontSize: "9px",
               letterSpacing: "0.2em",
-              color: "rgba(226,185,59,0.3)",
+              color: "rgba(236, 255, 149,0.3)",
               display: "block",
               marginBottom: "2rem",
             }}
@@ -428,7 +428,7 @@ export function CipherPhilosophy() {
           viewport={{ once: true }}
           transition={{ delay: 0.5, duration: 1.5, ease: [0.77, 0, 0.175, 1] }}
           className="h-px origin-left mt-12"
-          style={{ background: "rgba(226,185,59,0.15)" }}
+          style={{ background: "rgba(236, 255, 149,0.15)" }}
         />
 
         <motion.div
@@ -451,7 +451,7 @@ export function CipherPhilosophy() {
                   fontFamily: "'Anton', sans-serif",
                   fontSize: "clamp(2rem, 4vw, 3rem)",
                   lineHeight: 1,
-                  color: "#E2B93B",
+                  color: "#ECFF95",
                   display: "block",
                 }}
               />
@@ -491,7 +491,7 @@ export function CipherTestimonials() {
               fontFamily: "monospace",
               fontSize: "10px",
               letterSpacing: "0.3em",
-              color: "#E2B93B",
+              color: "#ECFF95",
             }}
           >
             [TESTIMONIALS.DECRYPT()]
@@ -517,7 +517,7 @@ export function CipherTestimonials() {
                   style={{
                     fontFamily: "monospace",
                     fontSize: "9px",
-                    color: "#E2B93B",
+                    color: "#ECFF95",
                     letterSpacing: "0.1em",
                   }}
                 >
@@ -590,7 +590,7 @@ export function CipherCTA() {
             fontFamily: "monospace",
             fontSize: "9px",
             letterSpacing: "0.3em",
-            color: "rgba(226,185,59,0.3)",
+            color: "rgba(236, 255, 149,0.3)",
             display: "block",
             marginBottom: "1.5rem",
           }}
@@ -643,7 +643,7 @@ export function CipherVariation() {
   const [loaded, setLoaded] = useState(false);
 
   return (
-    <main className="relative bg-[#0A0A0A]">
+    <main className="relative bg-[#121316]">
       <AnimatePresence>
         {!loaded && <CipherLoader onComplete={() => setLoaded(true)} />}
       </AnimatePresence>

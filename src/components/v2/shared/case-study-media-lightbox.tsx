@@ -66,7 +66,7 @@ export function CaseStudyMediaLightbox() {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.22 }}
           className="fixed inset-0 z-[300] flex items-center justify-center px-4 py-6 md:px-12 md:py-10"
-          style={{ background: "rgba(10,10,10,0.97)", backdropFilter: "blur(12px)" }}
+          style={{ background: "rgba(18, 19, 22,0.97)", backdropFilter: "blur(12px)" }}
           onClick={() => media.close()}
           role="dialog"
           aria-modal="true"
@@ -90,7 +90,7 @@ export function CaseStudyMediaLightbox() {
               media.close();
             }}
             aria-label="Close"
-            className="absolute top-4 right-4 md:top-6 md:right-6 z-[320] flex items-center gap-2 border border-[#E2B93B]/40 bg-[#0A0A0A]/80 px-3 py-2 text-[#E2B93B] backdrop-blur-sm transition-colors hover:bg-[#E2B93B] hover:text-[#0A0A0A]"
+            className="absolute top-4 right-4 md:top-6 md:right-6 z-[320] flex items-center gap-2 border border-[#ECFF95]/40 bg-[#121316]/80 px-3 py-2 text-[#ECFF95] backdrop-blur-sm transition-colors hover:bg-[#ECFF95] hover:text-[#121316]"
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
               <path d="M18 6 6 18M6 6l12 12" />
@@ -111,7 +111,7 @@ export function CaseStudyMediaLightbox() {
                     media.prev();
                   }}
                   aria-label="Previous image"
-                  className="hidden md:flex absolute left-4 lg:left-8 top-1/2 -translate-y-1/2 z-[320] h-11 w-11 items-center justify-center border border-white/10 text-white/50 transition-colors hover:border-[#E2B93B] hover:text-[#E2B93B]"
+                  className="hidden md:flex absolute left-4 lg:left-8 top-1/2 -translate-y-1/2 z-[320] h-11 w-11 items-center justify-center border border-white/10 text-white/50 transition-colors hover:border-[#ECFF95] hover:text-[#ECFF95]"
                 >
                   &#8592;
                 </button>
@@ -123,7 +123,7 @@ export function CaseStudyMediaLightbox() {
                   media.next();
                 }}
                 aria-label="Next image"
-                className="hidden md:flex absolute right-4 lg:right-8 top-1/2 -translate-y-1/2 z-[320] h-11 w-11 items-center justify-center border border-white/10 text-white/50 transition-colors hover:border-[#E2B93B] hover:text-[#E2B93B]"
+                className="hidden md:flex absolute right-4 lg:right-8 top-1/2 -translate-y-1/2 z-[320] h-11 w-11 items-center justify-center border border-white/10 text-white/50 transition-colors hover:border-[#ECFF95] hover:text-[#ECFF95]"
               >
                 &#8594;
               </button>

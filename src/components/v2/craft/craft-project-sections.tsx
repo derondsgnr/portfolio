@@ -34,7 +34,7 @@ export function CraftLightbox({
       transition={{ duration: 0.22 }}
       className="fixed inset-0 z-[200] flex items-center justify-center"
       style={{
-        background: "rgba(10,10,10,0.96)",
+        background: "rgba(18, 19, 22,0.96)",
         backdropFilter: "blur(10px)",
         pointerEvents: "auto",
       }}
@@ -104,7 +104,7 @@ export function CraftLightbox({
               fontSize: "9px",
               letterSpacing: "0.2em",
               textTransform: "uppercase",
-              color: "#E2B93B",
+              color: "#ECFF95",
               display: "block",
               marginBottom: 6,
             }}
@@ -193,7 +193,7 @@ function ClickableMedia({
             letterSpacing: "0.2em",
             textTransform: "uppercase",
             color: "rgba(255,255,255,0.7)",
-            background: "rgba(10,10,10,0.6)",
+            background: "rgba(18, 19, 22,0.6)",
             padding: "5px 10px",
             backdropFilter: "blur(4px)",
           }}
@@ -254,11 +254,11 @@ function EditorialCoverSection({
                 className="pointer-events-none absolute inset-0"
                 style={{
                   background:
-                    "repeating-linear-gradient(0deg, transparent 0px, transparent 3px, rgba(10,10,10,0.2) 3px, rgba(10,10,10,0.2) 4px)",
+                    "repeating-linear-gradient(0deg, transparent 0px, transparent 3px, rgba(18, 19, 22,0.2) 3px, rgba(18, 19, 22,0.2) 4px)",
                 }}
               />
               <div className="absolute top-4 left-4 pointer-events-none">
-                <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#E2B93B", letterSpacing: "0.1em" }}>
+                <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#ECFF95", letterSpacing: "0.1em" }}>
                   EXP_{item.id.replace("c-", "")}
                 </span>
               </div>
@@ -269,7 +269,7 @@ function EditorialCoverSection({
                   fontFamily: "monospace",
                   fontSize: "9px",
                   letterSpacing: "0.15em",
-                  color: "rgba(226,185,59,0.4)",
+                  color: "rgba(236, 255, 149,0.4)",
                   textTransform: "uppercase",
                 }}
               >
@@ -329,7 +329,7 @@ function MasonrySection({
             transition={{ duration: 0.55, ease: EASE }}
             className="mb-2.5 break-inside-avoid"
           >
-            <div className="border border-[rgba(255,255,255,0.08)] rounded-[0.625rem] overflow-hidden bg-[#0a0a0a]">
+            <div className="border border-[rgba(255,255,255,0.08)] rounded-[0.625rem] overflow-hidden bg-[#121316]">
               <div
                 className="relative overflow-hidden cursor-pointer"
                 onClick={() => onSelect(item)}
@@ -365,7 +365,7 @@ function MasonrySection({
                       fontFamily: "monospace", fontSize: "8px",
                       letterSpacing: "0.2em", textTransform: "uppercase",
                       color: "rgba(255,255,255,0.7)",
-                      background: "rgba(10,10,10,0.6)",
+                      background: "rgba(18, 19, 22,0.6)",
                       padding: "5px 10px", backdropFilter: "blur(4px)",
                     }}
                   >
@@ -377,7 +377,7 @@ function MasonrySection({
                 <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
                   <span
                     className="tabular-nums"
-                    style={{ fontFamily: "monospace", fontSize: "9px", color: "#E2B93B", letterSpacing: "0.1em" }}
+                    style={{ fontFamily: "monospace", fontSize: "9px", color: "#ECFF95", letterSpacing: "0.1em" }}
                   >
                     [{item.category}]
                   </span>
@@ -386,7 +386,7 @@ function MasonrySection({
                       href={item.videoUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="font-mono text-[9px] text-[#E2B93B]/85 hover:text-[#E2B93B] underline underline-offset-2"
+                      className="font-mono text-[9px] text-[#ECFF95]/85 hover:text-[#ECFF95] underline underline-offset-2"
                       onClick={(e) => e.stopPropagation()}
                     >
                       ▶ Video
@@ -514,10 +514,10 @@ function SectionHeading({ section }: { section: CraftSection }) {
   if (!section.title?.trim()) return null;
   return (
     <div className="max-w-6xl mx-auto mb-8 px-1">
-      <h2 className="font-mono text-[10px] uppercase tracking-[0.22em]" style={{ color: "rgba(226,185,59,0.55)" }}>
+      <h2 className="font-mono text-[10px] uppercase tracking-[0.22em]" style={{ color: "rgba(236, 255, 149,0.55)" }}>
         {section.title}
       </h2>
-      <div className="mt-3 h-px max-w-xl" style={{ background: "rgba(226,185,59,0.12)" }} />
+      <div className="mt-3 h-px max-w-xl" style={{ background: "rgba(236, 255, 149,0.12)" }} />
     </div>
   );
 }

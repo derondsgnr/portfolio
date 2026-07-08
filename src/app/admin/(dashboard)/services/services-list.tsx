@@ -73,10 +73,10 @@ function SortableServiceRow({
         if (event.target !== event.currentTarget) return;
         openOnKeyboard(event, onEdit);
       }}
-      className={`group flex items-start justify-between gap-4 border p-4 cursor-pointer transition-colors focus:outline-none focus:border-[#E2B93B]/50 ${
+      className={`group flex items-start justify-between gap-4 border p-4 cursor-pointer transition-colors focus:outline-none focus:border-[#ECFF95]/50 ${
         selected
-          ? "border-[#E2B93B]/50 bg-[#E2B93B]/[0.06]"
-          : "border-white/10 bg-white/[0.02] hover:border-[#E2B93B]/25 hover:bg-white/[0.035]"
+          ? "border-[#ECFF95]/50 bg-[#ECFF95]/[0.06]"
+          : "border-white/10 bg-white/[0.02] hover:border-[#ECFF95]/25 hover:bg-white/[0.035]"
       } ${isDragging ? "opacity-60" : ""}`}
       title="Double-click or press Enter to edit"
     >
@@ -87,7 +87,7 @@ function SortableServiceRow({
           onChange={(event) => onSelect(event.target.checked)}
           onClick={(event) => event.stopPropagation()}
           onKeyDown={(event) => event.stopPropagation()}
-          className="mt-1 h-4 w-4 shrink-0 accent-[#E2B93B]"
+          className="mt-1 h-4 w-4 shrink-0 accent-[#ECFF95]"
           aria-label={`Select ${service.name}`}
         />
         <button
@@ -95,7 +95,7 @@ function SortableServiceRow({
           {...attributes}
           {...listeners}
           onClick={(event) => event.stopPropagation()}
-          className="mt-0.5 shrink-0 cursor-grab px-2 py-1 font-mono text-xs text-white/30 transition-colors hover:text-[#E2B93B] active:cursor-grabbing"
+          className="mt-0.5 shrink-0 cursor-grab px-2 py-1 font-mono text-xs text-white/30 transition-colors hover:text-[#ECFF95] active:cursor-grabbing"
           aria-label={`Drag ${service.name} to reorder`}
         >
           ::
@@ -110,7 +110,7 @@ function SortableServiceRow({
             {service.featured ? " · Featured" : ""}
             {service.pinned ? " · Pinned" : ""}
             {" · "}
-            <span className={mediaCount ? "text-[#E2B93B]/70" : "text-white/25"}>
+            <span className={mediaCount ? "text-[#ECFF95]/70" : "text-white/25"}>
               {mediaCount} media
             </span>
           </p>
@@ -122,7 +122,7 @@ function SortableServiceRow({
                   className="relative block h-8 w-8 overflow-hidden rounded border border-white/10 bg-black/40"
                 >
                   {m.type === "lottie" ? (
-                    <span className="flex h-full w-full items-center justify-center bg-[#161616] font-mono text-[7px] uppercase text-[#E2B93B]/80">◇</span>
+                    <span className="flex h-full w-full items-center justify-center bg-[#161616] font-mono text-[7px] uppercase text-[#ECFF95]/80">◇</span>
                   ) : m.type === "video" ? (
                     <video src={m.url} muted playsInline preload="metadata" className="h-full w-full object-cover" />
                   ) : (
@@ -147,7 +147,7 @@ function SortableServiceRow({
             event.stopPropagation();
             onEdit();
           }}
-          className="p-2 text-white/40 transition-colors hover:text-[#E2B93B]"
+          className="p-2 text-white/40 transition-colors hover:text-[#ECFF95]"
           aria-label={`Edit ${service.name}`}
         >
           <Pencil size={14} />
@@ -320,7 +320,7 @@ export function ServicesList({ initial, library }: Props) {
     <div className="space-y-6">
       <div className="flex flex-col gap-4 border border-white/10 bg-white/[0.02] p-4 lg:flex-row lg:items-center lg:justify-between">
         <div>
-          <span className="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.16em] text-[#E2B93B]">
+          <span className="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.16em] text-[#ECFF95]">
             <Briefcase size={14} />
             Services console
           </span>
@@ -334,7 +334,7 @@ export function ServicesList({ initial, library }: Props) {
         </div>
         <button
           onClick={handleAdd}
-          className="flex items-center gap-2 px-4 py-2 bg-[#E2B93B] text-[#0A0A0A] font-mono text-xs tracking-wider uppercase transition-colors hover:bg-white active:scale-[0.98]"
+          className="flex items-center gap-2 px-4 py-2 bg-[#ECFF95] text-[#121316] font-mono text-xs tracking-wider uppercase transition-colors hover:bg-white active:scale-[0.98]"
         >
           <Plus size={14} />
           Add service
@@ -363,13 +363,13 @@ export function ServicesList({ initial, library }: Props) {
 
       {services.length > 0 ? (
         <div className="space-y-3">
-          <div className="flex flex-col gap-3 border border-white/10 bg-[#0d0d0d] p-3 lg:flex-row lg:items-center lg:justify-between">
+          <div className="flex flex-col gap-3 border border-white/10 bg-[#16171B] p-3 lg:flex-row lg:items-center lg:justify-between">
             <label className="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.12em] text-white/60">
               <input
                 type="checkbox"
                 checked={allSelected}
                 onChange={(event) => toggleSelectAll(event.target.checked)}
-                className="h-4 w-4 accent-[#E2B93B]"
+                className="h-4 w-4 accent-[#ECFF95]"
               />
               {selectedIds.size ? `${selectedIds.size} selected` : "Select all"}
             </label>
@@ -378,21 +378,21 @@ export function ServicesList({ initial, library }: Props) {
                 <button
                   type="button"
                   onClick={() => handleBulkStatus("published")}
-                  className="border border-white/10 px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.12em] text-white/60 transition-colors hover:border-[#E2B93B]/40 hover:text-[#E2B93B]"
+                  className="border border-white/10 px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.12em] text-white/60 transition-colors hover:border-[#ECFF95]/40 hover:text-[#ECFF95]"
                 >
                   Publish
                 </button>
                 <button
                   type="button"
                   onClick={() => handleBulkStatus("draft")}
-                  className="border border-white/10 px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.12em] text-white/60 transition-colors hover:border-[#E2B93B]/40 hover:text-[#E2B93B]"
+                  className="border border-white/10 px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.12em] text-white/60 transition-colors hover:border-[#ECFF95]/40 hover:text-[#ECFF95]"
                 >
                   Draft
                 </button>
                 <button
                   type="button"
                   onClick={() => handleBulkStatus("archived")}
-                  className="border border-white/10 px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.12em] text-white/60 transition-colors hover:border-[#E2B93B]/40 hover:text-[#E2B93B]"
+                  className="border border-white/10 px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.12em] text-white/60 transition-colors hover:border-[#ECFF95]/40 hover:text-[#ECFF95]"
                 >
                   Archive
                 </button>
@@ -443,8 +443,8 @@ export function ServicesList({ initial, library }: Props) {
           </DndContext>
         </div>
       ) : (
-        <div className="border border-dashed border-[#E2B93B]/30 bg-[#E2B93B]/[0.04] p-8">
-          <p className="font-mono text-sm uppercase tracking-[0.16em] text-[#E2B93B]">No services yet</p>
+        <div className="border border-dashed border-[#ECFF95]/30 bg-[#ECFF95]/[0.04] p-8">
+          <p className="font-mono text-sm uppercase tracking-[0.16em] text-[#ECFF95]">No services yet</p>
           <p className="mt-3 max-w-xl font-mono text-sm text-white/55">
             Add a service with a name, &quot;what you get&quot; bullets, a scope line, and media pulled
             from your existing case studies and craft.
@@ -452,7 +452,7 @@ export function ServicesList({ initial, library }: Props) {
           <button
             type="button"
             onClick={handleAdd}
-            className="mt-5 flex items-center gap-2 px-4 py-2 bg-[#E2B93B] text-[#0A0A0A] font-mono text-xs uppercase tracking-wider transition-colors hover:bg-white active:scale-[0.98]"
+            className="mt-5 flex items-center gap-2 px-4 py-2 bg-[#ECFF95] text-[#121316] font-mono text-xs uppercase tracking-wider transition-colors hover:bg-white active:scale-[0.98]"
           >
             <Plus size={14} />
             Add first service

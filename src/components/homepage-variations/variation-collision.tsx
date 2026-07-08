@@ -57,7 +57,7 @@ function HeroCollision() {
       <div className="relative z-10 pt-24 md:pt-28 px-6 md:px-10 flex items-center justify-between">
         <Reveal delay={0.6}>
           <p
-            className="text-[#e2b93b]"
+            className="text-[#ECFF95]"
             style={{
               fontFamily: "var(--font-body)",
               fontSize: "0.8rem",
@@ -70,7 +70,7 @@ function HeroCollision() {
         </Reveal>
         <Reveal delay={0.8}>
           <div className="flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#e2b93b] animate-pulse" />
+            <span className="w-1.5 h-1.5 rounded-full bg-[#ECFF95] animate-pulse" />
             <span
               className="text-white/50 hidden sm:inline"
               style={{
@@ -119,7 +119,7 @@ function HeroCollision() {
               fontSize: "clamp(3.5rem, 11vw, 10rem)",
               letterSpacing: "-0.05em",
               lineHeight: 0.85,
-              WebkitTextStroke: "2px rgba(226,185,59,0.4)",
+              WebkitTextStroke: "2px rgba(236, 255, 149,0.4)",
               color: "transparent",
             }}
           >
@@ -135,7 +135,7 @@ function HeroCollision() {
             initial={{ scaleX: 0 }}
             animate={{ scaleX: 1 }}
             transition={{ duration: 1, delay: 0.8, ease: [0.77, 0, 0.175, 1] }}
-            className="h-[2px] bg-[#e2b93b]/30 origin-right mb-4"
+            className="h-[2px] bg-[#ECFF95]/30 origin-right mb-4"
           />
           <Reveal delay={0.9}>
             <p
@@ -174,7 +174,7 @@ function ProcessCollision() {
           style={{
             fontFamily: "var(--font-heading)",
             fontSize: "clamp(10rem, 20vw, 25rem)",
-            color: "rgba(226,185,59,0.04)",
+            color: "rgba(236, 255, 149,0.04)",
           }}
         >
           &rarr;
@@ -185,7 +185,7 @@ function ProcessCollision() {
             <Reveal key={word} delay={i * 0.1}>
               <span className="flex items-end gap-2">
                 <span
-                  className="text-[#e2b93b]/40"
+                  className="text-[#ECFF95]/40"
                   style={{
                     fontFamily: "var(--font-body)",
                     fontSize: "0.7rem",
@@ -208,7 +208,7 @@ function ProcessCollision() {
                 </span>
                 {i < PROCESS_WORDS.length - 1 && (
                   <span
-                    className="text-[#e2b93b]/20"
+                    className="text-[#ECFF95]/20"
                     style={{ fontFamily: "var(--font-body)", fontSize: "1.5rem", fontWeight: 300 }}
                   >
                     /
@@ -232,7 +232,7 @@ function WorkCollision() {
         <div className="mb-16 md:mb-28">
           <Reveal>
             <p
-              className="text-[#e2b93b]"
+              className="text-[#ECFF95]"
               style={{
                 fontFamily: "var(--font-body)",
                 fontSize: "0.8rem",
@@ -289,7 +289,7 @@ function WorkCollision() {
                     {/* Info overlay — brutalist stacked label */}
                     <div className="absolute bottom-0 left-0 p-5 md:p-6">
                       <span
-                        className="text-[#e2b93b]/60 block mb-1"
+                        className="text-[#ECFF95]/60 block mb-1"
                         style={{
                           fontFamily: "var(--font-body)",
                           fontSize: "0.7rem",
@@ -315,7 +315,7 @@ function WorkCollision() {
                     {/* Arrow — top right */}
                     <div className="absolute top-5 right-5 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                       <ArrowUpRight
-                        className="w-6 h-6 text-[#e2b93b]"
+                        className="w-6 h-6 text-[#ECFF95]"
                         strokeWidth={1.5}
                       />
                     </div>
@@ -329,7 +329,7 @@ function WorkCollision() {
         <Reveal delay={0.3} className="mt-16 md:mt-24">
           <SafeLink
             href="/work"
-            className="text-white/50 hover:text-[#e2b93b] transition-colors duration-300 inline-flex items-center gap-2"
+            className="text-white/50 hover:text-[#ECFF95] transition-colors duration-300 inline-flex items-center gap-2"
             style={{
               fontFamily: "var(--font-body)",
               fontSize: "0.8rem",
@@ -352,7 +352,7 @@ function PhilosophyCollision() {
       <section className="py-24 md:py-40 px-6 md:px-10">
         <Reveal>
           <p
-            className="text-[#e2b93b] mb-16 md:mb-24"
+            className="text-[#ECFF95] mb-16 md:mb-24"
             style={{
               fontFamily: "var(--font-body)",
               fontSize: "0.8rem",
@@ -421,7 +421,7 @@ function PhilosophyCollision() {
                   </Reveal>
                   <Reveal delay={0.35 + i * 0.05}>
                     <span
-                      className="text-[#e2b93b] mt-5 inline-flex items-center gap-2"
+                      className="text-[#ECFF95] mt-5 inline-flex items-center gap-2"
                       style={{
                         fontFamily: "var(--font-body)",
                         fontSize: "0.75rem",
@@ -472,7 +472,7 @@ function AboutCollision() {
           <div className="md:col-span-7">
             <Reveal>
               <p
-                className="text-[#e2b93b] mb-6"
+                className="text-[#ECFF95] mb-6"
                 style={{
                   fontFamily: "var(--font-body)",
                   fontSize: "0.8rem",
@@ -505,7 +505,7 @@ function AboutCollision() {
                   fontSize: "clamp(2.5rem, 6vw, 6rem)",
                   lineHeight: 0.9,
                   letterSpacing: "-0.04em",
-                  WebkitTextStroke: "2px rgba(226,185,59,0.4)",
+                  WebkitTextStroke: "2px rgba(236, 255, 149,0.4)",
                   color: "transparent",
                 }}
               >
@@ -547,7 +547,7 @@ function AboutCollision() {
             <Reveal delay={0.5}>
               <SafeLink
                 href="/about"
-                className="inline-flex items-center gap-2 text-[#e2b93b]/70 hover:text-[#e2b93b] transition-colors duration-300"
+                className="inline-flex items-center gap-2 text-[#ECFF95]/70 hover:text-[#ECFF95] transition-colors duration-300"
               >
                 <span
                   style={{
@@ -590,7 +590,7 @@ function TestimonialsCollision() {
             fontSize: "clamp(15rem, 30vw, 40rem)",
             lineHeight: 0.7,
             letterSpacing: "-0.05em",
-            color: "rgba(226,185,59,0.03)",
+            color: "rgba(236, 255, 149,0.03)",
           }}
         >
           "
@@ -748,7 +748,7 @@ function FooterCollision() {
         <div className="mb-16 md:mb-24">
           <Reveal>
             <p
-              className="text-[#e2b93b] mb-8"
+              className="text-[#ECFF95] mb-8"
               style={{
                 fontFamily: "var(--font-body)",
                 fontSize: "0.8rem",
@@ -795,7 +795,7 @@ function FooterCollision() {
             <Reveal delay={0.4} className="mt-8 md:mt-0 shrink-0">
               <button
                 onClick={() => open("book")}
-                className="inline-block px-8 py-4 bg-[#e2b93b] text-[#0a0a0a] hover:bg-[#e2b93b]/80 transition-colors duration-300 cursor-pointer"
+                className="inline-block px-8 py-4 bg-[#ECFF95] text-[#121316] hover:bg-[#ECFF95]/80 transition-colors duration-300 cursor-pointer"
                 style={{
                   fontFamily: "var(--font-body)",
                   fontSize: "0.85rem",
@@ -817,7 +817,7 @@ function FooterCollision() {
               <li key={link.label}>
                 <a
                   href={link.url}
-                  className="text-white/35 hover:text-[#e2b93b] transition-colors duration-300"
+                  className="text-white/35 hover:text-[#ECFF95] transition-colors duration-300"
                   style={{
                     fontFamily: "var(--font-body)",
                     fontSize: "0.75rem",

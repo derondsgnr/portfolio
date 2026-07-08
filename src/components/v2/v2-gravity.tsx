@@ -19,7 +19,7 @@ function GravityLoader({ onComplete }: { onComplete: () => void }) {
 
   return (
     <motion.div
-      className="fixed inset-0 z-[100] bg-[#0A0A0A] flex items-center justify-center"
+      className="fixed inset-0 z-[100] bg-[#121316] flex items-center justify-center"
       exit={{ y: "100%" }}
       transition={{ duration: 0.8, ease: [0.77, 0, 0.175, 1] }}
     >
@@ -37,7 +37,7 @@ function GravityLoader({ onComplete }: { onComplete: () => void }) {
           width: 16,
           height: 16,
           borderRadius: "50%",
-          background: "#E2B93B",
+          background: "#ECFF95",
         }}
       />
       {/* Impact ripple */}
@@ -48,7 +48,7 @@ function GravityLoader({ onComplete }: { onComplete: () => void }) {
           transition={{ duration: 1, ease: "easeOut" }}
           className="absolute"
           style={{
-            background: "rgba(226,185,59,0.4)",
+            background: "rgba(236, 255, 149,0.4)",
             borderRadius: "50%",
             top: "calc(50% + 8px)",
           }}
@@ -104,7 +104,7 @@ export function GravityHero() {
           className="mt-4 flex items-center gap-6"
         >
           <div
-            style={{ width: 80, height: 3, background: "#E2B93B" }}
+            style={{ width: 80, height: 3, background: "#ECFF95" }}
           />
           <span
             style={{
@@ -149,7 +149,7 @@ export function GravityHero() {
         animate={{ scaleX: 1 }}
         transition={{ delay: 1.2, duration: 1.5, ease: [0.77, 0, 0.175, 1] }}
         className="absolute bottom-0 left-0 right-0 h-1 origin-left"
-        style={{ background: "#E2B93B" }}
+        style={{ background: "#ECFF95" }}
       />
     </section>
   );
@@ -182,7 +182,7 @@ export function GravityProcess() {
                 lineHeight: 1,
                 letterSpacing: "-0.02em",
                 textTransform: "uppercase",
-                color: i === 2 ? "#E2B93B" : "rgba(255,255,255,0.15)",
+                color: i === 2 ? "#ECFF95" : "rgba(255,255,255,0.15)",
                 display: "block",
               }}
             >
@@ -197,7 +197,7 @@ export function GravityProcess() {
               style={{
                 background:
                   i === 2
-                    ? "rgba(226,185,59,0.5)"
+                    ? "rgba(236, 255, 149,0.5)"
                     : "rgba(255,255,255,0.06)",
               }}
             />
@@ -244,7 +244,7 @@ export function GravityWork({ projects }: { projects?: WorkProject[] } = {}) {
             color: "rgba(255,255,255,0.3)",
           }}
         >
-          Selected <span style={{ color: "#E2B93B" }}>Work</span>
+          Selected <span style={{ color: "#ECFF95" }}>Work</span>
         </span>
       </motion.div>
 
@@ -278,7 +278,7 @@ export function GravityWork({ projects }: { projects?: WorkProject[] } = {}) {
             <div
               className="absolute bottom-0 left-0 right-0 p-8 flex justify-between items-end"
               style={{
-                background: "linear-gradient(to top, rgba(10,10,10,0.95), transparent)",
+                background: "linear-gradient(to top, rgba(18, 19, 22,0.95), transparent)",
               }}
             >
               <div>
@@ -313,7 +313,7 @@ export function GravityWork({ projects }: { projects?: WorkProject[] } = {}) {
                   style={{
                     fontFamily: "'Instrument Sans', sans-serif",
                     fontSize: "10px",
-                    color: "#E2B93B",
+                    color: "#ECFF95",
                     letterSpacing: "0.1em",
                   }}
                 >
@@ -323,7 +323,7 @@ export function GravityWork({ projects }: { projects?: WorkProject[] } = {}) {
                   style={{
                     width: 40,
                     height: 3,
-                    background: "#E2B93B",
+                    background: "#ECFF95",
                   }}
                 />
               </div>
@@ -384,7 +384,7 @@ export function GravityPhilosophy() {
           >
             Products with
             <br />
-            <span style={{ color: "#E2B93B" }}>Gravitational</span>
+            <span style={{ color: "#ECFF95" }}>Gravitational</span>
             <br />
             Pull
           </span>
@@ -456,7 +456,7 @@ export function GravityTestimonials() {
               className="p-8"
               style={{
                 background: "#111",
-                borderBottom: "3px solid #E2B93B",
+                borderBottom: "3px solid #ECFF95",
               }}
             >
               <p
@@ -480,7 +480,7 @@ export function GravityTestimonials() {
                     fontFamily: "'Instrument Sans', sans-serif",
                     fontSize: "12px",
                     fontWeight: 600,
-                    color: "#E2B93B",
+                    color: "#ECFF95",
                     display: "block",
                   }}
                 >
@@ -523,7 +523,7 @@ export function GravityCTA() {
         }}
         className="max-w-6xl mx-auto p-16 text-center"
         style={{
-          background: "#E2B93B",
+          background: "#ECFF95",
         }}
       >
         <span
@@ -533,7 +533,7 @@ export function GravityCTA() {
             lineHeight: 0.95,
             letterSpacing: "-0.03em",
             textTransform: "uppercase",
-            color: "#0A0A0A",
+            color: "#121316",
             display: "block",
           }}
         >
@@ -546,7 +546,7 @@ export function GravityCTA() {
             fontSize: "13px",
             fontWeight: 500,
             letterSpacing: "0.15em",
-            color: "rgba(10,10,10,0.6)",
+            color: "rgba(18, 19, 22,0.6)",
             textTransform: "uppercase",
           }}
         >
@@ -581,7 +581,7 @@ export function GravityVariation() {
   const [loaded, setLoaded] = useState(false);
 
   return (
-    <main className="relative bg-[#0A0A0A]">
+    <main className="relative bg-[#121316]">
       <AnimatePresence>
         {!loaded && <GravityLoader onComplete={() => setLoaded(true)} />}
       </AnimatePresence>

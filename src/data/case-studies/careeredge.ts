@@ -47,7 +47,7 @@ export const CAREEREDGE_CASE_STUDY: CaseStudy = {
     cover: ph16x10("CareerEdge · IMG-01 cover hero"),
     summary:
       "Redesigned an 8-user career platform — navigation, AI layer, and full frontend build — without removing a single feature. Sophia went from a chat button to the contextual intelligence running the entire product.",
-    color: "#E2B93B",
+    color: "#ECFF95",
   },
   template: "full-product",
   liveDemoUrl: "https://careeredged.com",

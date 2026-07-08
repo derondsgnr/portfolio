@@ -139,7 +139,7 @@ export function ContactsList({ initial, initialError = null }: Props) {
                 <div className="min-w-0 flex-1">
                   <p className="font-mono text-sm text-white/90 truncate">
                     {c.name || "Anonymous"} — {c.email}
-                    {!c.read ? <span className="ml-2 text-[#E2B93B]">●</span> : null}
+                    {!c.read ? <span className="ml-2 text-[#ECFF95]">●</span> : null}
                   </p>
                   <p className="font-mono text-xs text-white/40 mt-0.5">
                     {formatDate(c.createdAt as string)}
@@ -188,7 +188,7 @@ export function ContactsList({ initial, initialError = null }: Props) {
                       {c.message}
                     </p>
                     <p className="font-mono text-[10px] text-white/30 mt-3">
-                      Reply to: <a href={`mailto:${c.email}`} className="text-[#E2B93B]/70 hover:underline">{c.email}</a>
+                      Reply to: <a href={`mailto:${c.email}`} className="text-[#ECFF95]/70 hover:underline">{c.email}</a>
                     </p>
                   </motion.div>
                 )}

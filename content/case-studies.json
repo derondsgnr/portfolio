@@ -19,7 +19,7 @@
       ],
       "cover": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1778162482/Cover_photo_behl7l.png",
       "summary": "Redesigned an 8-user career platform — navigation, AI layer, and full frontend build — without removing a single feature. Sophia went from a chat button to the contextual intelligence running the entire product.",
-      "color": "#E2B93B"
+      "color": "#ECFF95"
     },
     "template": "full-product",
     "liveDemoUrl": "https://careeredged.com",
@@ -1067,7 +1067,7 @@
       ],
       "cover": "https://res.cloudinary.com/da6wyupbv/image/upload/q_auto/f_auto/v1779487297/Banner_uejnz9.png",
       "summary": "Dara turns bank and fintech alerts into filing signal: scan email, run Gemini, you classify into buckets, the system learns, then it aggregates toward what you owe and when. Extraction is still patchy by provider—I am not dressing that up. Long posts unpack prompts, tax content, and what broke in beta.",
-      "color": "#E2B93B"
+      "color": "#ECFF95"
     },
     "template": "full-product",
     "liveDemoUrl": "https://mydara.co",

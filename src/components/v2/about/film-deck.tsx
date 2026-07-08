@@ -20,7 +20,7 @@ function PosterFace({ show, active }: { show: FilmShow; active: boolean }) {
         borderRadius: 10,
         overflow: "hidden",
         background: "#161616",
-        border: active ? "1px solid rgba(226,185,59,0.5)" : "1px solid rgba(255,255,255,0.1)",
+        border: active ? "1px solid rgba(236, 255, 149,0.5)" : "1px solid rgba(255,255,255,0.1)",
         boxShadow: active ? "0 24px 60px rgba(0,0,0,0.55)" : "0 12px 30px rgba(0,0,0,0.4)",
       }}
     >
@@ -46,7 +46,7 @@ function PosterFace({ show, active }: { show: FilmShow; active: boolean }) {
             alignItems: "center",
             justifyContent: "center",
             padding: 14,
-            background: "radial-gradient(120% 80% at 50% 0%, rgba(226,185,59,0.12), transparent 60%), #141414",
+            background: "radial-gradient(120% 80% at 50% 0%, rgba(236, 255, 149,0.12), transparent 60%), #141414",
           }}
         >
           <span
@@ -198,8 +198,8 @@ export function FilmDeck({ shows }: { shows: FilmShow[] }) {
                 transition: "all 0.2s",
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.color = "#E2B93B";
-                e.currentTarget.style.borderColor = "rgba(226,185,59,0.5)";
+                e.currentTarget.style.color = "#ECFF95";
+                e.currentTarget.style.borderColor = "rgba(236, 255, 149,0.5)";
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.color = "rgba(255,255,255,0.6)";

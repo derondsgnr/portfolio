@@ -48,7 +48,7 @@ export default function AdminGrowthPage() {
             <div className="flex items-baseline gap-3 mb-4">
               <h2 className="font-['Anton'] text-lg tracking-[0.08em] text-white uppercase">Today Queue</h2>
               <span className="h-px flex-1 bg-white/[0.06]" />
-              <Link href="/admin/content-queue" className="text-[10px] text-[#E2B93B]/60 hover:text-[#E2B93B] font-['Instrument_Sans'] tracking-[0.16em] uppercase">
+              <Link href="/admin/content-queue" className="text-[10px] text-[#ECFF95]/60 hover:text-[#ECFF95] font-['Instrument_Sans'] tracking-[0.16em] uppercase">
                 View all
               </Link>
             </div>
@@ -133,7 +133,7 @@ export default function AdminGrowthPage() {
                   },
                 }));
               }}
-              className="flex items-center justify-center gap-1.5 px-3 py-2 border border-[#E2B93B]/30 text-[#E2B93B]/80 hover:text-[#E2B93B] transition-colors text-[10px] font-['Instrument_Sans'] tracking-[0.14em] uppercase"
+              className="flex items-center justify-center gap-1.5 px-3 py-2 border border-[#ECFF95]/30 text-[#ECFF95]/80 hover:text-[#ECFF95] transition-colors text-[10px] font-['Instrument_Sans'] tracking-[0.14em] uppercase"
             >
               <PlayCircle size={12} />
               Resume

@@ -17,7 +17,7 @@ export function Footer() {
       <div className="mb-16 md:mb-24">
         <Reveal>
           <p
-            className="text-[#e2b93b] text-[0.75rem] uppercase tracking-[0.3em] mb-8"
+            className="text-[#ECFF95] text-[0.75rem] uppercase tracking-[0.3em] mb-8"
             style={{ fontFamily: "var(--font-body)" }}
           >
             Let's build something
@@ -65,14 +65,14 @@ export function Footer() {
           <div className="mt-12 md:mt-16 flex flex-col sm:flex-row items-start gap-4">
             <button
               onClick={() => open("book")}
-              className="inline-block text-[0.85rem] uppercase tracking-[0.15em] px-8 py-4 bg-[#e2b93b] text-[#0a0a0a] hover:bg-[#e2b93b]/80 transition-colors duration-300"
+              className="inline-block text-[0.85rem] uppercase tracking-[0.15em] px-8 py-4 bg-[#ECFF95] text-[#121316] hover:bg-[#ECFF95]/80 transition-colors duration-300"
               style={{ fontFamily: "var(--font-body)" }}
             >
               {global.ctaButtonLabel || "Book a call"}
             </button>
             <button
               onClick={() => open("message")}
-              className="inline-block text-[0.85rem] uppercase tracking-[0.15em] px-8 py-4 border border-[#e2b93b]/30 text-[#e2b93b] hover:bg-[#e2b93b]/10 transition-colors duration-300"
+              className="inline-block text-[0.85rem] uppercase tracking-[0.15em] px-8 py-4 border border-[#ECFF95]/30 text-[#ECFF95] hover:bg-[#ECFF95]/10 transition-colors duration-300"
               style={{ fontFamily: "var(--font-body)" }}
             >
               Send a message
@@ -99,7 +99,7 @@ export function Footer() {
                   href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-white/40 hover:text-[#e2b93b] transition-colors duration-300 text-[0.8rem] uppercase tracking-[0.15em]"
+                  className="text-white/40 hover:text-[#ECFF95] transition-colors duration-300 text-[0.8rem] uppercase tracking-[0.15em]"
                   style={{ fontFamily: "var(--font-body)" }}
                   whileHover={{ y: -2 }}
                   transition={{ type: "spring", stiffness: 300 }}

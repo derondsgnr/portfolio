@@ -38,7 +38,7 @@ function SignalLoader({ onComplete }: { onComplete: () => void }) {
 
   return (
     <motion.div
-      className="fixed inset-0 z-[100] bg-[#0A0A0A] flex items-end p-8"
+      className="fixed inset-0 z-[100] bg-[#121316] flex items-end p-8"
       exit={{ clipPath: "inset(0 0 100% 0)" }}
       transition={{ duration: 0.8, ease: [0.77, 0, 0.175, 1] }}
     >
@@ -47,7 +47,7 @@ function SignalLoader({ onComplete }: { onComplete: () => void }) {
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(226,185,59,0.03) 2px, rgba(226,185,59,0.03) 4px)",
+            "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(236, 255, 149,0.03) 2px, rgba(236, 255, 149,0.03) 4px)",
         }}
       />
       <div>
@@ -62,7 +62,7 @@ function SignalLoader({ onComplete }: { onComplete: () => void }) {
               letterSpacing: "0.1em",
               color:
                 line === "READY"
-                  ? "#E2B93B"
+                  ? "#ECFF95"
                   : "rgba(255,255,255,0.4)",
               lineHeight: 2,
             }}
@@ -76,7 +76,7 @@ function SignalLoader({ onComplete }: { onComplete: () => void }) {
           style={{
             fontFamily: "monospace",
             fontSize: "11px",
-            color: "#E2B93B",
+            color: "#ECFF95",
           }}
         >
           _
@@ -112,7 +112,7 @@ export function SignalHero() {
       {/* Scan line */}
       <motion.div
         className="absolute left-0 right-0 h-px z-10"
-        style={{ top: scanY, background: "rgba(226,185,59,0.4)" }}
+        style={{ top: scanY, background: "rgba(236, 255, 149,0.4)" }}
       />
 
       {/* Coordinates */}
@@ -167,7 +167,7 @@ export function SignalHero() {
               fontFamily: "monospace",
               fontSize: "12px",
               letterSpacing: "0.5em",
-              color: "#E2B93B",
+              color: "#ECFF95",
               textTransform: "uppercase",
             }}
           >
@@ -231,7 +231,7 @@ export function SignalProcess() {
                 letterSpacing: "0.3em",
                 color:
                   i % 4 === 0
-                    ? "#E2B93B"
+                    ? "#ECFF95"
                     : "rgba(255,255,255,0.15)",
                 textTransform: "uppercase",
               }}
@@ -255,7 +255,7 @@ export function SignalProcess() {
         transition={{ duration: 2, ease: [0.77, 0, 0.175, 1] }}
         style={{
           background:
-            "linear-gradient(90deg, transparent, rgba(226,185,59,0.3), transparent)",
+            "linear-gradient(90deg, transparent, rgba(236, 255, 149,0.3), transparent)",
           originX: 0,
         }}
       />
@@ -278,7 +278,7 @@ export function SignalWork({ projects = V2_PROJECTS }: { projects?: typeof V2_PR
             fontFamily: "monospace",
             fontSize: "10px",
             letterSpacing: "0.3em",
-            color: "#E2B93B",
+            color: "#ECFF95",
           }}
         >
           &gt; SELECTED_TRANSMISSIONS
@@ -321,7 +321,7 @@ export function SignalWork({ projects = V2_PROJECTS }: { projects?: typeof V2_PR
                   style={{
                     fontFamily: "monospace",
                     fontSize: "9px",
-                    color: "#E2B93B",
+                    color: "#ECFF95",
                     letterSpacing: "0.1em",
                   }}
                 >
@@ -389,7 +389,7 @@ export function SignalServices() {
               fontFamily: "monospace",
               fontSize: "10px",
               letterSpacing: "0.3em",
-              color: "#E2B93B",
+              color: "#ECFF95",
             }}
           >
             &gt; CAPABILITIES_INDEX
@@ -426,7 +426,7 @@ export function SignalServices() {
                 {String(i + 1).padStart(2, "0")}
               </span>
               <span
-                className="group-hover:text-[#E2B93B] transition-colors duration-300"
+                className="group-hover:text-[#ECFF95] transition-colors duration-300"
                 style={{
                   fontFamily: "'Instrument Sans', sans-serif",
                   fontSize: "clamp(1rem, 2vw, 1.5rem)",
@@ -443,7 +443,7 @@ export function SignalServices() {
                 style={{
                   fontFamily: "monospace",
                   fontSize: "9px",
-                  color: "#E2B93B",
+                  color: "#ECFF95",
                 }}
               >
                 ACTIVE &gt;
@@ -477,7 +477,7 @@ export function SignalTestimonials() {
               fontFamily: "monospace",
               fontSize: "10px",
               letterSpacing: "0.3em",
-              color: "#E2B93B",
+              color: "#ECFF95",
             }}
           >
             &gt; INCOMING_SIGNALS
@@ -493,7 +493,7 @@ export function SignalTestimonials() {
             transition={{ delay: i * 0.2, duration: 0.6 }}
             className="mb-16 last:mb-0"
             style={{
-              borderLeft: "1px solid rgba(226,185,59,0.2)",
+              borderLeft: "1px solid rgba(236, 255, 149,0.2)",
               paddingLeft: "2rem",
             }}
           >
@@ -559,7 +559,7 @@ export function SignalCTA() {
             fontFamily: "monospace",
             fontSize: "clamp(1.5rem, 4vw, 3rem)",
             letterSpacing: "0.1em",
-            color: "#E2B93B",
+            color: "#ECFF95",
           }}
         >
           &gt; TRANSMIT
@@ -599,7 +599,7 @@ export function SignalVariation() {
   const [loaded, setLoaded] = useState(false);
 
   return (
-    <main className="relative bg-[#0A0A0A]">
+    <main className="relative bg-[#121316]">
       <AnimatePresence>
         {!loaded && <SignalLoader onComplete={() => setLoaded(true)} />}
       </AnimatePresence>

@@ -72,7 +72,7 @@ export function TestimonialForm({ testimonial, onSave, onCancel }: Props) {
   }, [testimonial]);
 
   const inputClass =
-    "w-full px-4 py-2 bg-[#111] border border-white/10 text-white placeholder:text-white/40 font-mono text-sm focus:outline-none focus:border-[#E2B93B]/50";
+    "w-full px-4 py-2 bg-[#111] border border-white/10 text-white placeholder:text-white/40 font-mono text-sm focus:outline-none focus:border-[#ECFF95]/50";
   const labelClass = "block font-mono text-xs text-white/60 mb-1";
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -89,7 +89,7 @@ export function TestimonialForm({ testimonial, onSave, onCancel }: Props) {
         {testimonial ? "Edit testimonial" : "Add testimonial"}
       </h3>
       {hasUnsavedChanges ? (
-        <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-[#E2B93B]/75">
+        <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-[#ECFF95]/75">
           Unsaved changes · Cmd/Ctrl+S saves · Esc closes when not typing
         </p>
       ) : null}
@@ -171,7 +171,7 @@ export function TestimonialForm({ testimonial, onSave, onCancel }: Props) {
               type="checkbox"
               checked={featured}
               onChange={(e) => setFeatured(e.target.checked)}
-              className="h-4 w-4 accent-[#E2B93B]"
+              className="h-4 w-4 accent-[#ECFF95]"
             />
             Featured
           </label>
@@ -180,14 +180,14 @@ export function TestimonialForm({ testimonial, onSave, onCancel }: Props) {
               type="checkbox"
               checked={pinned}
               onChange={(e) => setPinned(e.target.checked)}
-              className="h-4 w-4 accent-[#E2B93B]"
+              className="h-4 w-4 accent-[#ECFF95]"
             />
             Pinned
           </label>
         </div>
       </div>
-      <div className="rounded border border-[#E2B93B]/25 bg-[#E2B93B]/[0.05] px-3 py-2">
-        <p className="font-mono text-[11px] text-[#E2B93B]/85">
+      <div className="rounded border border-[#ECFF95]/25 bg-[#ECFF95]/[0.05] px-3 py-2">
+        <p className="font-mono text-[11px] text-[#ECFF95]/85">
           Image fields are here: add profile photo in Avatar URL and brand mark in Company logo URL.
         </p>
       </div>
@@ -238,7 +238,7 @@ export function TestimonialForm({ testimonial, onSave, onCancel }: Props) {
       <div className="flex gap-3 pt-2">
         <button
           type="submit"
-          className="px-6 py-2 bg-[#E2B93B] text-[#0A0A0A] font-mono text-xs tracking-wider uppercase hover:bg-white transition-colors"
+          className="px-6 py-2 bg-[#ECFF95] text-[#121316] font-mono text-xs tracking-wider uppercase hover:bg-white transition-colors"
         >
           Save
         </button>

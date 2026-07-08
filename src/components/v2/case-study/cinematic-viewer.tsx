@@ -196,7 +196,7 @@ export function CinematicViewer({
     <CaseStudyMediaProvider slides={allMediaSlides}>
     <div
       ref={containerRef}
-      className="fixed inset-0 z-[100] bg-[#0A0A0A] flex flex-col"
+      className="fixed inset-0 z-[100] bg-[#121316] flex flex-col"
       role="dialog"
       aria-modal="true"
       aria-label={`${caseStudy.meta.title} — Cinematic view`}
@@ -204,10 +204,10 @@ export function CinematicViewer({
       onTouchEnd={handleTouchEnd}
     >
       {/* ─── Top bar ─────────────────────────────────── */}
-      <div className="relative z-50 flex items-center justify-between px-4 md:px-8 py-3 border-b border-[#1a1a1a] bg-[#0A0A0A]/95 backdrop-blur-sm">
+      <div className="relative z-50 flex items-center justify-between px-4 md:px-8 py-3 border-b border-[#1D1E24] bg-[#121316]/95 backdrop-blur-sm">
         {/* Gold progress bar — overlaid on top bar */}
         <motion.div
-          className="absolute top-0 left-0 h-[3px] bg-[#E2B93B] z-10"
+          className="absolute top-0 left-0 h-[3px] bg-[#ECFF95] z-10"
           animate={{ width: `${progress}%` }}
           transition={{ duration: 0.4, ease: "easeOut" }}
         />
@@ -223,18 +223,18 @@ export function CinematicViewer({
           {/* Switch to full reader */}
           <button
             onClick={onExit}
-            className="text-[10px] tracking-[0.15em] text-[#555] hover:text-[#E2B93B] transition-colors border border-[#222] hover:border-[#E2B93B]/30 px-2 py-1"
+            className="text-[10px] tracking-[0.15em] text-[#555] hover:text-[#ECFF95] transition-colors border border-[#222] hover:border-[#ECFF95]/30 px-2 py-1"
             style={{ fontFamily: "monospace" }}
           >
             FULL STORY
           </button>
-          <span className="text-[10px] tracking-[0.2em] text-[#E2B93B] hidden md:block" style={{ fontFamily: "monospace" }}>
+          <span className="text-[10px] tracking-[0.2em] text-[#ECFF95] hidden md:block" style={{ fontFamily: "monospace" }}>
             {caseStudy.meta.title}
           </span>
         </div>
 
         {/* Center: counter */}
-        <span className="text-[10px] tracking-[0.2em] text-[#E2B93B]" style={{ fontFamily: "monospace" }}>
+        <span className="text-[10px] tracking-[0.2em] text-[#ECFF95]" style={{ fontFamily: "monospace" }}>
           {String(currentIndex + 1).padStart(2, "0")} / {String(allSlides.length).padStart(2, "0")}
         </span>
 
@@ -247,7 +247,7 @@ export function CinematicViewer({
           {/* Desktop sidebar toggle */}
           <button
             onClick={() => setShowSidebar(!showSidebar)}
-            className="hidden md:block text-[10px] tracking-[0.1em] text-[#555] hover:text-[#E2B93B] transition-colors border border-[#222] px-2 py-1"
+            className="hidden md:block text-[10px] tracking-[0.1em] text-[#555] hover:text-[#ECFF95] transition-colors border border-[#222] px-2 py-1"
             style={{ fontFamily: "monospace" }}
           >
             {showSidebar ? "HIDE" : "LIST"}
@@ -291,7 +291,7 @@ export function CinematicViewer({
                   transition={{ duration: 0.35, delay: 0.2 }}
                   className="absolute bottom-0 left-0 right-0 px-6 pb-6 pt-16 pointer-events-none"
                   style={{
-                    background: "linear-gradient(to top, rgba(10,10,10,0.92) 0%, rgba(10,10,10,0.4) 60%, transparent 100%)",
+                    background: "linear-gradient(to top, rgba(18, 19, 22,0.92) 0%, rgba(18, 19, 22,0.4) 60%, transparent 100%)",
                   }}
                 >
                   <p
@@ -310,7 +310,7 @@ export function CinematicViewer({
             <button
               onClick={() => navigate(-1)}
               disabled={currentIndex === 0}
-              className="w-10 h-10 border border-[#333] flex items-center justify-center text-[#666] hover:border-[#E2B93B] hover:text-[#E2B93B] disabled:opacity-20 disabled:hover:border-[#333] disabled:hover:text-[#666] transition-colors"
+              className="w-10 h-10 border border-[#333] flex items-center justify-center text-[#666] hover:border-[#ECFF95] hover:text-[#ECFF95] disabled:opacity-20 disabled:hover:border-[#333] disabled:hover:text-[#666] transition-colors"
               aria-label="Previous slide"
             >
               &#8593;
@@ -318,7 +318,7 @@ export function CinematicViewer({
             <button
               onClick={() => navigate(1)}
               disabled={currentIndex === allSlides.length - 1}
-              className="w-10 h-10 border border-[#333] flex items-center justify-center text-[#666] hover:border-[#E2B93B] hover:text-[#E2B93B] disabled:opacity-20 disabled:hover:border-[#333] disabled:hover:text-[#666] transition-colors"
+              className="w-10 h-10 border border-[#333] flex items-center justify-center text-[#666] hover:border-[#ECFF95] hover:text-[#ECFF95] disabled:opacity-20 disabled:hover:border-[#333] disabled:hover:text-[#666] transition-colors"
               aria-label="Next slide"
             >
               &#8595;
@@ -349,7 +349,7 @@ export function CinematicViewer({
               animate={{ width: 280, opacity: 1 }}
               exit={{ width: 0, opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="hidden md:block border-l border-[#1a1a1a] bg-[#0A0A0A] overflow-hidden"
+              className="hidden md:block border-l border-[#1D1E24] bg-[#121316] overflow-hidden"
             >
               <div
                 data-sidebar-list
@@ -361,7 +361,7 @@ export function CinematicViewer({
                   return (
                     <div key={actIdx}>
                       <span
-                        className="text-[9px] tracking-[0.3em] text-[#E2B93B] block py-2 px-2"
+                        className="text-[9px] tracking-[0.3em] text-[#ECFF95] block py-2 px-2"
                         style={{ fontFamily: "monospace" }}
                       >
                         {act.title}
@@ -378,7 +378,7 @@ export function CinematicViewer({
                             onClick={() => goToSlide(globalIdx)}
                             className={`w-full text-left px-2 py-1.5 text-[11px] transition-colors flex items-center gap-2 ${
                               isActive
-                                ? "text-[#E2B93B] bg-[#E2B93B]/5"
+                                ? "text-[#ECFF95] bg-[#ECFF95]/5"
                                 : "text-[#666] hover:text-[#999] hover:bg-[#111]"
                             }`}
                             style={{ fontFamily: "monospace" }}
@@ -403,7 +403,7 @@ export function CinematicViewer({
       </div>
 
       {/* ─── Mobile bottom bar ───────────────────────── */}
-      <div className="md:hidden border-t border-[#1a1a1a] bg-[#0A0A0A] px-4 py-3">
+      <div className="md:hidden border-t border-[#1D1E24] bg-[#121316] px-4 py-3">
         <div className="flex items-center justify-between">
           <span className="text-[10px] text-[#666] truncate flex-1" style={{ fontFamily: "monospace", textTransform: "none" }}>
             {"headline" in currentSlide ? (currentSlide as any).headline?.substring(0, 40) : `Slide ${currentIndex + 1}`}
@@ -446,11 +446,11 @@ export function CinematicViewer({
               animate={{ y: 0 }}
               exit={{ y: "100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="fixed bottom-0 left-0 right-0 z-[120] bg-[#111] border-t border-[#E2B93B]/20 rounded-t-2xl max-h-[70vh] overflow-y-auto"
+              className="fixed bottom-0 left-0 right-0 z-[120] bg-[#111] border-t border-[#ECFF95]/20 rounded-t-2xl max-h-[70vh] overflow-y-auto"
             >
               <div className="p-4">
                 <div className="flex items-center justify-between mb-4">
-                  <span className="text-[10px] tracking-[0.3em] text-[#E2B93B]" style={{ fontFamily: "monospace" }}>
+                  <span className="text-[10px] tracking-[0.3em] text-[#ECFF95]" style={{ fontFamily: "monospace" }}>
                     SLIDES
                   </span>
                   <button
@@ -466,7 +466,7 @@ export function CinematicViewer({
                   if (actSlides.length === 0) return null;
                   return (
                     <div key={actIdx} className="mb-3">
-                      <span className="text-[9px] tracking-[0.2em] text-[#E2B93B] block mb-1 px-2" style={{ fontFamily: "monospace" }}>
+                      <span className="text-[9px] tracking-[0.2em] text-[#ECFF95] block mb-1 px-2" style={{ fontFamily: "monospace" }}>
                         {act.title}
                       </span>
                       {actSlides.map((slide) => {
@@ -483,7 +483,7 @@ export function CinematicViewer({
                               setShowMobileList(false);
                             }}
                             className={`w-full text-left px-2 py-2 text-sm flex items-center gap-3 ${
-                              isActive ? "text-[#E2B93B] bg-[#E2B93B]/5" : "text-[#888]"
+                              isActive ? "text-[#ECFF95] bg-[#ECFF95]/5" : "text-[#888]"
                             }`}
                             style={{ fontFamily: "monospace", textTransform: "none" }}
                           >

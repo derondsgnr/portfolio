@@ -93,7 +93,7 @@ export function CommentsSection({ slug }: CommentsSectionProps) {
   return (
     <div
       ref={sectionRef}
-      className="relative z-10 px-6 md:px-16 lg:px-24 py-16 border-t border-[#1a1a1a]"
+      className="relative z-10 px-6 md:px-16 lg:px-24 py-16 border-t border-[#1D1E24]"
     >
       <div className="max-w-3xl">
         {/* Header */}
@@ -105,7 +105,7 @@ export function CommentsSection({ slug }: CommentsSectionProps) {
         >
           <div>
             <span
-              className="text-[10px] tracking-[0.3em] text-[#E2B93B] block mb-2"
+              className="text-[10px] tracking-[0.3em] text-[#ECFF95] block mb-2"
               style={{ fontFamily: "monospace" }}
             >
               COMMENTS
@@ -122,7 +122,7 @@ export function CommentsSection({ slug }: CommentsSectionProps) {
             <button
               type="button"
               onClick={() => setShowForm(true)}
-              className="border border-[#E2B93B]/40 bg-transparent px-4 py-2 text-[10px] tracking-[0.15em] text-[#E2B93B] transition-colors hover:border-[#E2B93B]/70 hover:bg-[#E2B93B]/5"
+              className="border border-[#ECFF95]/40 bg-transparent px-4 py-2 text-[10px] tracking-[0.15em] text-[#ECFF95] transition-colors hover:border-[#ECFF95]/70 hover:bg-[#ECFF95]/5"
               style={{ fontFamily: "monospace" }}
             >
               LEAVE A COMMENT
@@ -137,10 +137,10 @@ export function CommentsSection({ slug }: CommentsSectionProps) {
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
-              className="mb-6 border border-[#E2B93B]/30 bg-[#E2B93B]/5 px-4 py-3"
+              className="mb-6 border border-[#ECFF95]/30 bg-[#ECFF95]/5 px-4 py-3"
             >
               <span
-                className="text-[11px] text-[#E2B93B]"
+                className="text-[11px] text-[#ECFF95]"
                 style={{ fontFamily: "monospace" }}
               >
                 Comment posted. Thanks for the feedback.
@@ -171,7 +171,7 @@ export function CommentsSection({ slug }: CommentsSectionProps) {
               onSubmit={handleSubmit}
               className="mb-10 overflow-hidden"
             >
-              <div className="border border-[#222] bg-[#0f0f0f] p-5 space-y-4">
+              <div className="border border-[#222] bg-[#16171B] p-5 space-y-4">
                 {/* Name field */}
                 <div>
                   <label
@@ -185,7 +185,7 @@ export function CommentsSection({ slug }: CommentsSectionProps) {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="Anonymous"
-                    className="w-full bg-[#0A0A0A] border border-[#222] px-3 py-2 text-sm text-white placeholder-[#333] focus:border-[#E2B93B]/40 focus:outline-none transition-colors"
+                    className="w-full bg-[#121316] border border-[#222] px-3 py-2 text-sm text-white placeholder-[#333] focus:border-[#ECFF95]/40 focus:outline-none transition-colors"
                     style={{ fontFamily: "'Instrument Sans', sans-serif" }}
                   />
                 </div>
@@ -203,7 +203,7 @@ export function CommentsSection({ slug }: CommentsSectionProps) {
                     onChange={(e) => setText(e.target.value)}
                     placeholder="What did you think? Questions? Ways I could have done it better?"
                     rows={4}
-                    className="w-full bg-[#0A0A0A] border border-[#222] px-3 py-2 text-sm text-white placeholder-[#333] focus:border-[#E2B93B]/40 focus:outline-none transition-colors resize-none"
+                    className="w-full bg-[#121316] border border-[#222] px-3 py-2 text-sm text-white placeholder-[#333] focus:border-[#ECFF95]/40 focus:outline-none transition-colors resize-none"
                     style={{ fontFamily: "'Instrument Sans', sans-serif", lineHeight: 1.7 }}
                     required
                   />
@@ -225,7 +225,7 @@ export function CommentsSection({ slug }: CommentsSectionProps) {
                   <button
                     type="submit"
                     disabled={submitting || !text.trim()}
-                    className="border border-[#E2B93B]/40 bg-transparent px-4 py-2 text-[10px] tracking-[0.15em] text-[#E2B93B] transition-colors hover:border-[#E2B93B]/70 hover:bg-[#E2B93B]/5 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent"
+                    className="border border-[#ECFF95]/40 bg-transparent px-4 py-2 text-[10px] tracking-[0.15em] text-[#ECFF95] transition-colors hover:border-[#ECFF95]/70 hover:bg-[#ECFF95]/5 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent"
                     style={{ fontFamily: "monospace" }}
                   >
                     {submitting ? "POSTING..." : "POST"}
@@ -259,7 +259,7 @@ export function CommentsSection({ slug }: CommentsSectionProps) {
             initial={{ opacity: 0 }}
             animate={inView ? { opacity: 1 } : {}}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="py-8 border-t border-[#1a1a1a]"
+            className="py-8 border-t border-[#1D1E24]"
           >
             <p
               className="text-[#333] text-sm"
@@ -276,11 +276,11 @@ export function CommentsSection({ slug }: CommentsSectionProps) {
                 initial={{ opacity: 0, y: 15 }}
                 animate={inView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.5, delay: 0.1 + i * 0.05 }}
-                className="border-t border-[#1a1a1a] py-5"
+                className="border-t border-[#1D1E24] py-5"
               >
                 <div className="flex items-baseline justify-between mb-2">
                   <span
-                    className="text-[11px] text-[#E2B93B]"
+                    className="text-[11px] text-[#ECFF95]"
                     style={{ fontFamily: "monospace" }}
                   >
                     {comment.name}

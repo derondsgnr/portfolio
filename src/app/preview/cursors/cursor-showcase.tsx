@@ -23,17 +23,17 @@ function CursorDotRing() {
       <motion.div className="fixed top-0 left-0 pointer-events-none z-[9999]"
         animate={{ x: pos.x - 4, y: pos.y - 4 }}
         transition={{ type: "spring", stiffness: 600, damping: 32, mass: 0.2 }}
-        style={{ width: 8, height: 8, borderRadius: "50%", background: "#E2B93B" }} />
+        style={{ width: 8, height: 8, borderRadius: "50%", background: "#ECFF95" }} />
       <motion.div className="fixed top-0 left-0 pointer-events-none z-[9998]"
         animate={{ x: pos.x - (hovered ? 22 : 16), y: pos.y - (hovered ? 22 : 16), width: hovered ? 44 : 32, height: hovered ? 44 : 32, opacity: hovered ? 0.6 : 0.22 }}
         transition={{ type: "spring", stiffness: 180, damping: 24, mass: 0.6 }}
-        style={{ borderRadius: "50%", border: "1px solid #E2B93B" }} />
+        style={{ borderRadius: "50%", border: "1px solid #ECFF95" }} />
       <AnimatePresence>
         {label && (
           <motion.div key={label} className="fixed top-0 left-0 pointer-events-none z-[9999]"
             initial={{ opacity: 0, scale: 0.85 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.85 }}
             transition={{ duration: 0.15 }}
-            style={{ transform: `translate(${pos.x + 18}px, ${pos.y - 14}px)`, fontFamily: "monospace", fontSize: "7px", letterSpacing: "0.22em", textTransform: "uppercase", color: "#E2B93B", background: "rgba(10,10,10,0.92)", padding: "3px 7px", border: "1px solid rgba(226,185,59,0.28)", whiteSpace: "nowrap" }}>
+            style={{ transform: `translate(${pos.x + 18}px, ${pos.y - 14}px)`, fontFamily: "monospace", fontSize: "7px", letterSpacing: "0.22em", textTransform: "uppercase", color: "#ECFF95", background: "rgba(18, 19, 22,0.92)", padding: "3px 7px", border: "1px solid rgba(236, 255, 149,0.28)", whiteSpace: "nowrap" }}>
             {label}
           </motion.div>
         )}
@@ -61,7 +61,7 @@ function CursorCrosshair() {
     <motion.div className="fixed top-0 left-0 pointer-events-none z-[9999]"
       animate={{ x: pos.x, y: pos.y }} transition={{ type: "spring", stiffness: 400, damping: 28, mass: 0.3 }}
       style={{ position: "fixed" }}>
-      <div style={{ position: "absolute", width: 3, height: 3, borderRadius: "50%", background: "#E2B93B", transform: "translate(-1.5px,-1.5px)" }} />
+      <div style={{ position: "absolute", width: 3, height: 3, borderRadius: "50%", background: "#ECFF95", transform: "translate(-1.5px,-1.5px)" }} />
       {[
         { top: -(arm + gap), left: -0.5, w: 1, h: arm },
         { top: gap, left: -0.5, w: 1, h: arm },
@@ -69,13 +69,13 @@ function CursorCrosshair() {
         { top: -0.5, left: gap, w: arm, h: 1 },
       ].map((s, i) => (
         <motion.div key={i} animate={{ width: s.w, height: s.h, top: s.top, left: s.left }} transition={{ type: "spring", stiffness: 300, damping: 22 }}
-          style={{ position: "absolute", background: "#E2B93B", opacity: 0.85 }} />
+          style={{ position: "absolute", background: "#ECFF95", opacity: 0.85 }} />
       ))}
       <AnimatePresence>
         {hovered && (
           <motion.div initial={{ opacity: 0, scale: 0.7 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.7 }}
             transition={{ duration: 0.15 }}
-            style={{ position: "absolute", width: 24, height: 24, top: -12, left: -12, border: "1px solid rgba(226,185,59,0.5)", borderRadius: 2 }} />
+            style={{ position: "absolute", width: 24, height: 24, top: -12, left: -12, border: "1px solid rgba(236, 255, 149,0.5)", borderRadius: 2 }} />
         )}
       </AnimatePresence>
     </motion.div>
@@ -104,7 +104,7 @@ function CursorGhostTrail() {
         const opacity = (1 - i / TRAIL) * (i === 0 ? 1 : 0.55);
         return (
           <div key={i} className="fixed top-0 left-0 pointer-events-none z-[9999]"
-            style={{ width: size, height: size, borderRadius: "50%", background: i === 0 ? "#E2B93B" : "rgba(226,185,59,0.7)", opacity, transform: `translate(${p.x - size / 2}px, ${p.y - size / 2}px)`, transition: i === 0 ? "none" : `transform ${i * 0.03}s linear` }} />
+            style={{ width: size, height: size, borderRadius: "50%", background: i === 0 ? "#ECFF95" : "rgba(236, 255, 149,0.7)", opacity, transform: `translate(${p.x - size / 2}px, ${p.y - size / 2}px)`, transition: i === 0 ? "none" : `transform ${i * 0.03}s linear` }} />
         );
       })}
     </>
@@ -146,11 +146,11 @@ function CursorMagneticBlob() {
   return (
     <>
       <div className="fixed top-0 left-0 pointer-events-none z-[9999]"
-        style={{ width: 6, height: 6, borderRadius: "50%", background: "#E2B93B", transform: `translate(${pos.x - 3}px, ${pos.y - 3}px)` }} />
+        style={{ width: 6, height: 6, borderRadius: "50%", background: "#ECFF95", transform: `translate(${pos.x - 3}px, ${pos.y - 3}px)` }} />
       <motion.div className="fixed top-0 left-0 pointer-events-none z-[9998]"
         animate={{ scaleX: hovered ? 1.8 : scale.x, scaleY: hovered ? 1.8 : scale.y, opacity: hovered ? 0.18 : 0.25 }}
         transition={{ type: "spring", stiffness: 160, damping: 18 }}
-        style={{ width: hovered ? 44 : 28, height: hovered ? 44 : 28, borderRadius: "50%", background: "rgba(226,185,59,0.35)", border: "1px solid rgba(226,185,59,0.5)", transform: `translate(${trail.x - (hovered ? 22 : 14)}px, ${trail.y - (hovered ? 22 : 14)}px)` }} />
+        style={{ width: hovered ? 44 : 28, height: hovered ? 44 : 28, borderRadius: "50%", background: "rgba(236, 255, 149,0.35)", border: "1px solid rgba(236, 255, 149,0.5)", transform: `translate(${trail.x - (hovered ? 22 : 14)}px, ${trail.y - (hovered ? 22 : 14)}px)` }} />
     </>
   );
 }
@@ -186,11 +186,11 @@ function CursorGlitch() {
       <motion.div className="fixed top-0 left-0 pointer-events-none z-[9999]"
         animate={{ x: pos.x - (hovered ? 6 : 4), y: pos.y - (hovered ? 6 : 4), width: hovered ? 12 : 8, height: hovered ? 12 : 8 }}
         transition={{ type: "spring", stiffness: 500, damping: 28 }}
-        style={{ borderRadius: "50%", background: "#E2B93B" }} />
+        style={{ borderRadius: "50%", background: "#ECFF95" }} />
       <motion.div className="fixed top-0 left-0 pointer-events-none z-[9998]"
-        animate={{ x: pos.x - (hovered ? 20 : 14), y: pos.y - (hovered ? 20 : 14), width: hovered ? 40 : 28, height: hovered ? 40 : 28, opacity: hovered ? 0.5 : 0.18, borderColor: glitching ? "rgba(50,200,255,0.8)" : "#E2B93B" }}
+        animate={{ x: pos.x - (hovered ? 20 : 14), y: pos.y - (hovered ? 20 : 14), width: hovered ? 40 : 28, height: hovered ? 40 : 28, opacity: hovered ? 0.5 : 0.18, borderColor: glitching ? "rgba(50,200,255,0.8)" : "#ECFF95" }}
         transition={{ type: "spring", stiffness: 150, damping: 22 }}
-        style={{ borderRadius: "50%", border: "1px solid #E2B93B" }} />
+        style={{ borderRadius: "50%", border: "1px solid #ECFF95" }} />
     </>
   );
 }
@@ -209,7 +209,7 @@ export function CursorShowcase() {
   const ActiveCursor = CURSORS.find(c => c.id === active)!.Component;
 
   return (
-    <div style={{ background: "#0A0A0A", minHeight: "100vh", cursor: "none" }}>
+    <div style={{ background: "#121316", minHeight: "100vh", cursor: "none" }}>
       <style>{`* { cursor: none !important; }`}</style>
       <ActiveCursor />
 
@@ -224,7 +224,7 @@ export function CursorShowcase() {
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 64 }}>
           {CURSORS.map(c => (
             <button key={c.id} onClick={() => setActive(c.id)} data-cursor="true"
-              style={{ padding: "10px 20px", border: `1px solid ${active === c.id ? "#E2B93B" : "rgba(255,255,255,0.1)"}`, background: active === c.id ? "rgba(226,185,59,0.08)" : "transparent", color: active === c.id ? "#E2B93B" : "rgba(255,255,255,0.4)", fontFamily: "monospace", fontSize: 11, letterSpacing: "0.14em", textTransform: "uppercase", transition: "all 0.2s" }}>
+              style={{ padding: "10px 20px", border: `1px solid ${active === c.id ? "#ECFF95" : "rgba(255,255,255,0.1)"}`, background: active === c.id ? "rgba(236, 255, 149,0.08)" : "transparent", color: active === c.id ? "#ECFF95" : "rgba(255,255,255,0.4)", fontFamily: "monospace", fontSize: 11, letterSpacing: "0.14em", textTransform: "uppercase", transition: "all 0.2s" }}>
               {c.label}
             </button>
           ))}
@@ -246,7 +246,7 @@ export function CursorShowcase() {
             {["View project", "Read case study", "Book a call", "See all work"].map(label => (
               <button key={label} data-cursor="true" data-cursor-label={label.toUpperCase().split(" ")[0]}
                 style={{ padding: "14px 28px", border: "1px solid rgba(255,255,255,0.12)", background: "transparent", color: "rgba(255,255,255,0.6)", fontFamily: "'Instrument Sans', sans-serif", fontSize: 13, transition: "all 0.2s" }}
-                onMouseEnter={e => { e.currentTarget.style.borderColor = "#E2B93B"; e.currentTarget.style.color = "#F0F0F0"; }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor = "#ECFF95"; e.currentTarget.style.color = "#F0F0F0"; }}
                 onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.12)"; e.currentTarget.style.color = "rgba(255,255,255,0.6)"; }}>
                 {label}
               </button>
@@ -255,15 +255,15 @@ export function CursorShowcase() {
 
           <div data-cursor="true" data-cursor-label="OPEN"
             style={{ border: "1px solid rgba(255,255,255,0.06)", padding: "32px", background: "#111", marginBottom: 24 }}
-            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(226,185,59,0.2)"; }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(236, 255, 149,0.2)"; }}
             onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.06)"; }}>
-            <p style={{ fontFamily: "monospace", fontSize: 9, letterSpacing: "0.16em", color: "#E2B93B", textTransform: "uppercase", marginBottom: 8 }}>PRODUCT DESIGN</p>
+            <p style={{ fontFamily: "monospace", fontSize: 9, letterSpacing: "0.16em", color: "#ECFF95", textTransform: "uppercase", marginBottom: 8 }}>PRODUCT DESIGN</p>
             <p style={{ fontFamily: "'Anton', sans-serif", fontSize: 28, color: "#F0F0F0", textTransform: "uppercase", letterSpacing: "0.04em" }}>SAMPLE PROJECT CARD</p>
             <p style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: 13, color: "rgba(255,255,255,0.4)", marginTop: 8 }}>Hover this card — it counts as an interactive element.</p>
           </div>
 
           <a href="#" data-cursor-label="LINK"
-            style={{ fontFamily: "monospace", fontSize: 11, color: "#E2B93B", letterSpacing: "0.14em", textTransform: "uppercase", borderBottom: "1px solid rgba(226,185,59,0.3)", paddingBottom: 2 }}
+            style={{ fontFamily: "monospace", fontSize: 11, color: "#ECFF95", letterSpacing: "0.14em", textTransform: "uppercase", borderBottom: "1px solid rgba(236, 255, 149,0.3)", paddingBottom: 2 }}
             onClick={e => e.preventDefault()}>
             Sample link — hover me
           </a>

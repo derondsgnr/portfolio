@@ -50,7 +50,7 @@ function HeroOrbit() {
         transition={{ duration: 2, delay: 1 }}
         className="absolute top-[20%] right-[15%] hidden md:block pointer-events-none"
       >
-        <div className="w-px h-24 bg-gradient-to-b from-[#e2b93b]/20 to-transparent" />
+        <div className="w-px h-24 bg-gradient-to-b from-[#ECFF95]/20 to-transparent" />
       </motion.div>
       <motion.div
         initial={{ opacity: 0 }}
@@ -67,7 +67,7 @@ function HeroOrbit() {
         className="absolute bottom-[30%] right-[8%] hidden md:block pointer-events-none"
       >
         <span
-          className="text-[#e2b93b]/10 text-[0.6rem] uppercase tracking-[0.4em]"
+          className="text-[#ECFF95]/10 text-[0.6rem] uppercase tracking-[0.4em]"
           style={{ fontFamily: "var(--font-body)" }}
         >
           2025
@@ -78,7 +78,7 @@ function HeroOrbit() {
       <div className="absolute top-24 md:top-28 left-6 md:left-10 z-10">
         <Reveal delay={0.5}>
           <p
-            className="text-[#e2b93b]/70"
+            className="text-[#ECFF95]/70"
             style={{
               fontFamily: "var(--font-body)",
               fontSize: "0.75rem",
@@ -96,7 +96,7 @@ function HeroOrbit() {
       <div className="absolute top-24 md:top-28 right-6 md:right-10 z-10">
         <Reveal delay={0.7}>
           <div className="flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#e2b93b] animate-pulse" />
+            <span className="w-1.5 h-1.5 rounded-full bg-[#ECFF95] animate-pulse" />
             <span
               className="text-white/25 hidden sm:inline"
               style={{
@@ -155,7 +155,7 @@ function HeroOrbit() {
                 lineHeight: 0.9,
                 letterSpacing: "-0.02em",
                 textTransform: "lowercase",
-                WebkitTextStroke: "1px rgba(226,185,59,0.25)",
+                WebkitTextStroke: "1px rgba(236, 255, 149,0.25)",
                 color: "transparent",
               }}
             >
@@ -248,7 +248,7 @@ function ProcessOrbit() {
                 style={positions[i]}
               >
                 <span
-                  className="text-[#e2b93b]/8 block mb-1"
+                  className="text-[#ECFF95]/8 block mb-1"
                   style={{ fontFamily: "var(--font-body)", fontSize: "0.5rem", letterSpacing: "0.15em", fontWeight: 300, fontStyle: "italic" }}
                 >
                   {String(i + 1).padStart(2, "0")}
@@ -282,7 +282,7 @@ function WorkOrbit() {
           <div>
             <Reveal>
               <p
-                className="text-[#e2b93b]/60 mb-3"
+                className="text-[#ECFF95]/60 mb-3"
                 style={{ fontFamily: "var(--font-body)", fontSize: "0.7rem", letterSpacing: "0.1em", fontWeight: 300, fontStyle: "italic" }}
               >
                 Selected Projects
@@ -295,7 +295,7 @@ function WorkOrbit() {
           <Reveal delay={0.2}>
             <SafeLink
               href="/work"
-              className="text-white/30 hover:text-[#e2b93b] transition-colors duration-300 flex items-center gap-2"
+              className="text-white/30 hover:text-[#ECFF95] transition-colors duration-300 flex items-center gap-2"
               style={{ fontFamily: "var(--font-body)", fontSize: "0.7rem", letterSpacing: "0.08em", fontWeight: 300, fontStyle: "italic" }}
             >
               All work
@@ -320,18 +320,18 @@ function WorkOrbit() {
                 />
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-500" />
                 <div className="absolute top-5 right-5 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                  <ArrowUpRight className="w-6 h-6 text-[#e2b93b]" strokeWidth={1} />
+                  <ArrowUpRight className="w-6 h-6 text-[#ECFF95]" strokeWidth={1} />
                 </div>
               </div>
               <div className="mt-4 flex items-baseline justify-between">
                 <div className="flex items-baseline gap-3">
                   <span
-                    className="text-[#e2b93b]/40 text-[0.65rem] tracking-[0.2em]"
+                    className="text-[#ECFF95]/40 text-[0.65rem] tracking-[0.2em]"
                     style={{ fontFamily: "var(--font-body)" }}
                   >
                     {PROJECTS[0].id}
                   </span>
-                  <h3 className="text-white group-hover:text-[#e2b93b] transition-colors duration-300">
+                  <h3 className="text-white group-hover:text-[#ECFF95] transition-colors duration-300">
                     {PROJECTS[0].title}
                   </h3>
                 </div>
@@ -360,17 +360,17 @@ function WorkOrbit() {
                 />
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-500" />
                 <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                  <ArrowUpRight className="w-5 h-5 text-[#e2b93b]" strokeWidth={1} />
+                  <ArrowUpRight className="w-5 h-5 text-[#ECFF95]" strokeWidth={1} />
                 </div>
               </div>
               <div className="mt-4">
                 <span
-                  className="text-[#e2b93b]/40 text-[0.65rem] tracking-[0.2em]"
+                  className="text-[#ECFF95]/40 text-[0.65rem] tracking-[0.2em]"
                   style={{ fontFamily: "var(--font-body)" }}
                 >
                   {PROJECTS[1].id}
                 </span>
-                <h3 className="text-white group-hover:text-[#e2b93b] transition-colors duration-300 mt-1">
+                <h3 className="text-white group-hover:text-[#ECFF95] transition-colors duration-300 mt-1">
                   {PROJECTS[1].title}
                 </h3>
               </div>
@@ -392,18 +392,18 @@ function WorkOrbit() {
                 />
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-500" />
                 <div className="absolute top-5 right-5 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                  <ArrowUpRight className="w-6 h-6 text-[#e2b93b]" strokeWidth={1} />
+                  <ArrowUpRight className="w-6 h-6 text-[#ECFF95]" strokeWidth={1} />
                 </div>
               </div>
               <div className="mt-4 flex items-baseline justify-between">
                 <div className="flex items-baseline gap-3">
                   <span
-                    className="text-[#e2b93b]/40 text-[0.65rem] tracking-[0.2em]"
+                    className="text-[#ECFF95]/40 text-[0.65rem] tracking-[0.2em]"
                     style={{ fontFamily: "var(--font-body)" }}
                   >
                     {PROJECTS[2].id}
                   </span>
-                  <h3 className="text-white group-hover:text-[#e2b93b] transition-colors duration-300">
+                  <h3 className="text-white group-hover:text-[#ECFF95] transition-colors duration-300">
                     {PROJECTS[2].title}
                   </h3>
                 </div>
@@ -429,7 +429,7 @@ function PhilosophyOrbit() {
       <section className="py-24 md:py-40 px-6 md:px-10 relative">
         <Reveal>
           <p
-            className="text-[#e2b93b]/60 mb-16 md:mb-24"
+            className="text-[#ECFF95]/60 mb-16 md:mb-24"
             style={{ fontFamily: "var(--font-body)", fontSize: "0.75rem", letterSpacing: "0.08em", fontWeight: 300, fontStyle: "italic" }}
           >
             Philosophy & Services
@@ -455,7 +455,7 @@ function PhilosophyOrbit() {
                     <div className="md:w-1/2">
                       <div className="flex items-start gap-4">
                         <span
-                          className="text-[#e2b93b]/20 text-[0.65rem] tracking-[0.3em] mt-2 shrink-0"
+                          className="text-[#ECFF95]/20 text-[0.65rem] tracking-[0.3em] mt-2 shrink-0"
                           style={{ fontFamily: "var(--font-body)" }}
                         >
                           {p.number}
@@ -489,10 +489,10 @@ function PhilosophyOrbit() {
                       </Reveal>
                       <Reveal delay={0.3}>
                         <span
-                          className="text-[#e2b93b] text-[0.65rem] uppercase tracking-[0.15em] mt-4 inline-flex items-center gap-3"
+                          className="text-[#ECFF95] text-[0.65rem] uppercase tracking-[0.15em] mt-4 inline-flex items-center gap-3"
                           style={{ fontFamily: "var(--font-body)" }}
                         >
-                          <span className="w-4 h-px bg-[#e2b93b]/30" />
+                          <span className="w-4 h-px bg-[#ECFF95]/30" />
                           {p.service}
                         </span>
                       </Reveal>
@@ -506,7 +506,7 @@ function PhilosophyOrbit() {
 
         <Reveal delay={0.2}>
           <p
-            className="text-[#e2b93b]/50 text-[0.7rem] uppercase tracking-[0.25em] mt-10 md:text-right"
+            className="text-[#ECFF95]/50 text-[0.7rem] uppercase tracking-[0.25em] mt-10 md:text-right"
             style={{ fontFamily: "var(--font-body)" }}
           >
             Design + Strategy + Psychology + Execution.
@@ -530,7 +530,7 @@ function AboutOrbit() {
           transition={{ duration: 1.5 }}
           className="absolute top-[15%] right-[12%] pointer-events-none select-none hidden md:block"
         >
-          <div className="w-px h-32 bg-gradient-to-b from-[#e2b93b]/15 to-transparent" />
+          <div className="w-px h-32 bg-gradient-to-b from-[#ECFF95]/15 to-transparent" />
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
@@ -538,7 +538,7 @@ function AboutOrbit() {
           <div className="md:col-span-8 md:col-start-2">
             <Reveal>
               <p
-                className="text-[#e2b93b]/60 mb-6"
+                className="text-[#ECFF95]/60 mb-6"
                 style={{ fontFamily: "var(--font-body)", fontSize: "0.75rem", letterSpacing: "0.08em", fontWeight: 300, fontStyle: "italic" }}
               >
                 About
@@ -555,7 +555,7 @@ function AboutOrbit() {
                 className="md:ml-[10%]"
                 style={{
                   fontFamily: "var(--font-heading)", fontSize: "clamp(2.5rem, 6vw, 6rem)", lineHeight: 1, letterSpacing: "-0.02em", textTransform: "lowercase",
-                  WebkitTextStroke: "1px rgba(226,185,59,0.25)",
+                  WebkitTextStroke: "1px rgba(236, 255, 149,0.25)",
                   color: "transparent",
                 }}
               >
@@ -582,7 +582,7 @@ function AboutOrbit() {
             <Reveal delay={0.5}>
               <SafeLink
                 href="/about"
-                className="inline-flex items-center gap-2 text-[#e2b93b]/60 hover:text-[#e2b93b] transition-colors duration-300"
+                className="inline-flex items-center gap-2 text-[#ECFF95]/60 hover:text-[#ECFF95] transition-colors duration-300"
               >
                 <span
                   className="text-[0.7rem] uppercase tracking-[0.2em]"
@@ -623,7 +623,7 @@ function TestimonialsOrbit() {
               <span
                 key={`${tm.id}-${i}`}
                 className={`text-[0.65rem] uppercase tracking-[0.2em] whitespace-nowrap ${
-                  tm.id === t.id ? "text-[#e2b93b]/40" : "text-white/[0.06]"
+                  tm.id === t.id ? "text-[#ECFF95]/40" : "text-white/[0.06]"
                 }`}
                 style={{ fontFamily: "var(--font-body)" }}
               >
@@ -758,7 +758,7 @@ function FooterOrbit() {
           <div className="md:col-span-7">
             <Reveal>
               <p
-                className="text-[#e2b93b]/60 mb-8"
+                className="text-[#ECFF95]/60 mb-8"
                 style={{ fontFamily: "var(--font-body)", fontSize: "0.75rem", letterSpacing: "0.08em", fontWeight: 300, fontStyle: "italic" }}
               >
                 Let's build something
@@ -787,7 +787,7 @@ function FooterOrbit() {
             <Reveal delay={0.3}>
               <button
                 onClick={() => open("book")}
-                className="inline-block text-[0.85rem] uppercase tracking-[0.15em] px-8 py-4 bg-[#e2b93b] text-[#0a0a0a] hover:bg-[#e2b93b]/80 transition-colors duration-300 cursor-pointer"
+                className="inline-block text-[0.85rem] uppercase tracking-[0.15em] px-8 py-4 bg-[#ECFF95] text-[#121316] hover:bg-[#ECFF95]/80 transition-colors duration-300 cursor-pointer"
                 style={{ fontFamily: "var(--font-body)" }}
               >
                 Book a call
@@ -803,7 +803,7 @@ function FooterOrbit() {
               <li key={link.label}>
                 <a
                   href={link.url}
-                  className="text-white/30 hover:text-[#e2b93b] transition-colors duration-300 text-[0.75rem] uppercase tracking-[0.15em]"
+                  className="text-white/30 hover:text-[#ECFF95] transition-colors duration-300 text-[0.75rem] uppercase tracking-[0.15em]"
                   style={{ fontFamily: "var(--font-body)" }}
                 >
                   {link.label}

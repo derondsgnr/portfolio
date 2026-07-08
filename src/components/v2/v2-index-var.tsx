@@ -33,7 +33,7 @@ function IndexTopBar() {
       className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-10"
       style={{
         height: 56,
-        background: "rgba(10,10,10,0.92)",
+        background: "rgba(18, 19, 22,0.92)",
         backdropFilter: "blur(12px)",
         borderBottom: "1px solid rgba(255,255,255,0.05)",
       }}
@@ -44,7 +44,7 @@ function IndexTopBar() {
             fontFamily: "'Anton', sans-serif",
             fontSize: "16px",
             letterSpacing: "0.12em",
-            color: "#E2B93B",
+            color: "#ECFF95",
             textTransform: "uppercase",
           }}
         >
@@ -123,7 +123,7 @@ function IndexHeader() {
               fontSize: "10px",
               letterSpacing: "0.2em",
               textTransform: "uppercase",
-              color: "#E2B93B",
+              color: "#ECFF95",
             }}
           >
             {DISCIPLINES[discIdx]}
@@ -265,7 +265,7 @@ function ProjectRow({
           style={{
             fontFamily: "monospace",
             fontSize: "10px",
-            color: hovered ? "#E2B93B" : "rgba(255,255,255,0.2)",
+            color: hovered ? "#ECFF95" : "rgba(255,255,255,0.2)",
             letterSpacing: "0.1em",
             transition: "color 0.2s",
           }}
@@ -304,7 +304,7 @@ function ProjectRow({
             fontFamily: "monospace",
             fontSize: "9px",
             letterSpacing: "0.12em",
-            color: hovered ? "#E2B93B" : "rgba(255,255,255,0.18)",
+            color: hovered ? "#ECFF95" : "rgba(255,255,255,0.18)",
             transition: "color 0.2s",
             whiteSpace: "nowrap",
           }}
@@ -320,7 +320,7 @@ function IndexImagePanel({ project }: { project: Project | null }) {
   return (
     <div
       className="sticky top-0 h-screen flex items-center justify-center"
-      style={{ background: "#0D0D0D" }}
+      style={{ background: "#16171B" }}
     >
       <AnimatePresence mode="wait">
         {project ? (
@@ -345,7 +345,7 @@ function IndexImagePanel({ project }: { project: Project | null }) {
               className="absolute bottom-0 left-0 right-0 p-6"
               style={{
                 background:
-                  "linear-gradient(transparent, rgba(10,10,10,0.85))",
+                  "linear-gradient(transparent, rgba(18, 19, 22,0.85))",
               }}
             >
               <span
@@ -354,7 +354,7 @@ function IndexImagePanel({ project }: { project: Project | null }) {
                   fontSize: "8px",
                   letterSpacing: "0.2em",
                   textTransform: "uppercase",
-                  color: "#E2B93B",
+                  color: "#ECFF95",
                   display: "block",
                   marginBottom: 4,
                 }}
@@ -457,8 +457,8 @@ function IndexCTA() {
             fontSize: "10px",
             letterSpacing: "0.18em",
             textTransform: "uppercase",
-            color: "#0A0A0A",
-            background: "#E2B93B",
+            color: "#121316",
+            background: "#ECFF95",
             padding: "14px 32px",
             display: "inline-block",
           }}
@@ -474,7 +474,7 @@ export function IndexVariation({ projects }: { projects: Project[] }) {
   const [hoveredProject, setHoveredProject] = useState<Project | null>(null);
 
   return (
-    <div style={{ background: "#0A0A0A", minHeight: "100vh" }}>
+    <div style={{ background: "#121316", minHeight: "100vh" }}>
       <IndexTopBar />
 
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_420px]">

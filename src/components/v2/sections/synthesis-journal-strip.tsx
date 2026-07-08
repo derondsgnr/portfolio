@@ -57,7 +57,7 @@ export function SynthesisJournalStrip({
                 fontFamily: "monospace",
                 fontSize: "10px",
                 letterSpacing: "0.28em",
-                color: "#E2B93B",
+                color: "#ECFF95",
               }}
             >
               {label}
@@ -86,7 +86,7 @@ export function SynthesisJournalStrip({
             <div className="mt-8">
               <Link
                 href="/blog"
-                className="group inline-flex items-center gap-2 border border-[rgba(255,255,255,0.12)] bg-[rgba(255,255,255,0.02)] px-4 py-2.5 transition-colors hover:border-[#E2B93B]/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#E2B93B]"
+                className="group inline-flex items-center gap-2 border border-[rgba(255,255,255,0.12)] bg-[rgba(255,255,255,0.02)] px-4 py-2.5 transition-colors hover:border-[#ECFF95]/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ECFF95]"
                 style={{
                   fontFamily: "monospace",
                   fontSize: "10px",
@@ -96,8 +96,8 @@ export function SynthesisJournalStrip({
                 onClick={withSound(() => {})}
                 onMouseEnter={onRowHover}
               >
-                <span className="group-hover:text-[#E2B93B] transition-colors">{archiveLabel}</span>
-                <span aria-hidden className="text-[#E2B93B] opacity-80 transition-transform group-hover:translate-x-0.5">
+                <span className="group-hover:text-[#ECFF95] transition-colors">{archiveLabel}</span>
+                <span aria-hidden className="text-[#ECFF95] opacity-80 transition-transform group-hover:translate-x-0.5">
                   →
                 </span>
               </Link>
@@ -111,7 +111,7 @@ export function SynthesisJournalStrip({
                   <li key={post.slug} className="border-b border-[rgba(255,255,255,0.06)] last:border-b-0">
                     <Link
                       href={`/blog/${post.slug}`}
-                      className="group flex flex-col gap-1 px-5 py-5 transition-colors hover:bg-[rgba(255,255,255,0.03)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[#E2B93B]"
+                      className="group flex flex-col gap-1 px-5 py-5 transition-colors hover:bg-[rgba(255,255,255,0.03)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[#ECFF95]"
                       onClick={withSound(() => {})}
                       onMouseEnter={onRowHover}
                     >
@@ -129,7 +129,7 @@ export function SynthesisJournalStrip({
                         ) : null}
                       </span>
                       <span
-                        className="text-[#F0F0F0] transition-colors group-hover:text-[#E2B93B]"
+                        className="text-[#F0F0F0] transition-colors group-hover:text-[#ECFF95]"
                         style={{
                           fontFamily: "'Instrument Sans', sans-serif",
                           fontSize: "1.05rem",

@@ -39,7 +39,7 @@ function Thumb({ type, url }: { type: ServiceMediaRef["type"]; url: string }) {
   if (type === "lottie") {
     return (
       <div className="flex h-full w-full items-center justify-center bg-[#161616]">
-        <span className="font-mono text-[9px] uppercase tracking-[0.12em] text-[#E2B93B]/80">◇ Lottie</span>
+        <span className="font-mono text-[9px] uppercase tracking-[0.12em] text-[#ECFF95]/80">◇ Lottie</span>
       </div>
     );
   }
@@ -132,7 +132,7 @@ export function MediaLibraryPicker({ library, value, onChange }: Props) {
           onDragLeave={() => setDragOver(false)}
           onDrop={handleDropFromLibrary}
           className={`min-h-[92px] rounded border border-dashed p-2 transition-colors ${
-            dragOver ? "border-[#E2B93B]/60 bg-[#E2B93B]/[0.06]" : "border-white/15 bg-[#111]"
+            dragOver ? "border-[#ECFF95]/60 bg-[#ECFF95]/[0.06]" : "border-white/15 bg-[#111]"
           }`}
         >
           {value.length === 0 ? (
@@ -148,7 +148,7 @@ export function MediaLibraryPicker({ library, value, onChange }: Props) {
                 >
                   <div className="relative h-[60px] w-full bg-black/60">
                     <Thumb type={m.type} url={m.url} />
-                    <span className="absolute left-1 top-1 rounded bg-black/70 px-1 font-mono text-[8px] uppercase tracking-[0.1em] text-[#E2B93B]">
+                    <span className="absolute left-1 top-1 rounded bg-black/70 px-1 font-mono text-[8px] uppercase tracking-[0.1em] text-[#ECFF95]">
                       {m.type}
                     </span>
                     <button
@@ -165,7 +165,7 @@ export function MediaLibraryPicker({ library, value, onChange }: Props) {
                       type="button"
                       onClick={() => move(i, -1)}
                       disabled={i === 0}
-                      className="font-mono text-[11px] text-white/40 enabled:hover:text-[#E2B93B] disabled:opacity-25"
+                      className="font-mono text-[11px] text-white/40 enabled:hover:text-[#ECFF95] disabled:opacity-25"
                       aria-label="Move earlier"
                     >
                       ‹
@@ -175,7 +175,7 @@ export function MediaLibraryPicker({ library, value, onChange }: Props) {
                       type="button"
                       onClick={() => move(i, 1)}
                       disabled={i === value.length - 1}
-                      className="font-mono text-[11px] text-white/40 enabled:hover:text-[#E2B93B] disabled:opacity-25"
+                      className="font-mono text-[11px] text-white/40 enabled:hover:text-[#ECFF95] disabled:opacity-25"
                       aria-label="Move later"
                     >
                       ›
@@ -197,7 +197,7 @@ export function MediaLibraryPicker({ library, value, onChange }: Props) {
             addByUrl(e.target.value);
             e.currentTarget.selectedIndex = 0;
           }}
-          className="w-full bg-[#111] px-3 py-2 font-mono text-xs text-white/80 border border-white/10 focus:border-[#E2B93B]/50 focus:outline-none"
+          className="w-full bg-[#111] px-3 py-2 font-mono text-xs text-white/80 border border-white/10 focus:border-[#ECFF95]/50 focus:outline-none"
         >
           <option value="">Add from library…</option>
           {library
@@ -231,7 +231,7 @@ export function MediaLibraryPicker({ library, value, onChange }: Props) {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search library…"
-            className="flex-1 min-w-[140px] bg-[#111] px-3 py-1.5 font-mono text-xs text-white/80 border border-white/10 placeholder:text-white/30 focus:border-[#E2B93B]/50 focus:outline-none"
+            className="flex-1 min-w-[140px] bg-[#111] px-3 py-1.5 font-mono text-xs text-white/80 border border-white/10 placeholder:text-white/30 focus:border-[#ECFF95]/50 focus:outline-none"
           />
           <div className="flex gap-1">
             {(["all", "image", "video", "lottie"] as TypeFilter[]).map((t) => (
@@ -241,7 +241,7 @@ export function MediaLibraryPicker({ library, value, onChange }: Props) {
                 onClick={() => setTypeFilter(t)}
                 className={`px-2.5 py-1.5 font-mono text-[10px] uppercase tracking-[0.12em] border transition-colors ${
                   typeFilter === t
-                    ? "border-[#E2B93B]/50 bg-[#E2B93B]/10 text-[#E2B93B]"
+                    ? "border-[#ECFF95]/50 bg-[#ECFF95]/10 text-[#ECFF95]"
                     : "border-white/10 text-white/40 hover:text-white/70"
                 }`}
               >
@@ -270,7 +270,7 @@ export function MediaLibraryPicker({ library, value, onChange }: Props) {
                     onClick={() => toggle(item)}
                     title={item.label}
                     className={`group relative block aspect-square w-full overflow-hidden rounded border text-left transition-colors ${
-                      on ? "border-[#E2B93B]" : "border-white/10 hover:border-white/30"
+                      on ? "border-[#ECFF95]" : "border-white/10 hover:border-white/30"
                     }`}
                   >
                     <Thumb type={item.type} url={item.url} />
@@ -281,7 +281,7 @@ export function MediaLibraryPicker({ library, value, onChange }: Props) {
                       <GripVertical size={11} />
                     </span>
                     {on ? (
-                      <span className="absolute inset-x-0 bottom-0 bg-[#E2B93B] py-0.5 text-center font-mono text-[8px] uppercase tracking-[0.12em] text-[#0A0A0A]">
+                      <span className="absolute inset-x-0 bottom-0 bg-[#ECFF95] py-0.5 text-center font-mono text-[8px] uppercase tracking-[0.12em] text-[#121316]">
                         Added
                       </span>
                     ) : null}

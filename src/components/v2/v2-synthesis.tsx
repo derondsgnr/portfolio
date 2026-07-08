@@ -74,7 +74,7 @@ function SynthesisLoader({ onComplete }: { onComplete: () => void }) {
 
   return (
     <motion.div
-      className="fixed inset-0 z-[100] bg-[#0A0A0A] flex items-center justify-center"
+      className="fixed inset-0 z-[100] bg-[#121316] flex items-center justify-center"
       exit={{ x: "100%" }}
       transition={{ duration: 0.8, ease: [0.77, 0, 0.175, 1] }}
     >
@@ -83,7 +83,7 @@ function SynthesisLoader({ onComplete }: { onComplete: () => void }) {
         animate={{ x: "100vw" }}
         transition={{ duration: 1.2, ease: [0.25, 0.46, 0.45, 0.94] }}
         className="absolute top-1/2 h-px w-full"
-        style={{ background: "linear-gradient(90deg, transparent, #E2B93B, transparent)" }}
+        style={{ background: "linear-gradient(90deg, transparent, #ECFF95, transparent)" }}
       />
       <motion.span
         initial={{ opacity: 0 }}
@@ -119,7 +119,7 @@ export function SynthesisProcess() {
               fontFamily: "monospace",
               fontSize: "10px",
               letterSpacing: "0.3em",
-              color: "#E2B93B",
+              color: "#ECFF95",
               margin: 0,
             }}
           >
@@ -171,7 +171,7 @@ export function SynthesisProcess() {
                     lineHeight: 1,
                     letterSpacing: "-0.02em",
                     textTransform: "uppercase",
-                    color: i === 2 ? "#E2B93B" : "rgba(255,255,255,0.6)",
+                    color: i === 2 ? "#ECFF95" : "rgba(255,255,255,0.6)",
                   }}
                 >
                   <ScrambleText text={phase.word} speed={25} />
@@ -184,7 +184,7 @@ export function SynthesisProcess() {
                     fontFamily: "monospace",
                     fontSize: "9px",
                     letterSpacing: "0.2em",
-                    color: "#E2B93B",
+                    color: "#ECFF95",
                     display: "block",
                     marginBottom: "0.75rem",
                   }}
@@ -280,7 +280,7 @@ export function SynthesisCapabilities() {
               fontFamily: "monospace",
               fontSize: "10px",
               letterSpacing: "0.3em",
-              color: "#E2B93B",
+              color: "#ECFF95",
               margin: 0,
             }}
           >
@@ -323,7 +323,7 @@ export function SynthesisCapabilities() {
                   {String(i).padStart(2, "0")}
                 </span>
                 {/* Service icon */}
-                <span className="text-[#E2B93B]/40 group-hover:text-[#E2B93B] transition-colors flex-shrink-0">
+                <span className="text-[#ECFF95]/40 group-hover:text-[#ECFF95] transition-colors flex-shrink-0">
                   {SERVICE_ICONS[service.icon] || null}
                 </span>
                 <div>
@@ -359,7 +359,7 @@ export function SynthesisCapabilities() {
                 style={{
                   fontFamily: "monospace",
                   fontSize: "9px",
-                  color: "#E2B93B",
+                  color: "#ECFF95",
                 }}
               >
                 ACTIVE &gt;
@@ -391,7 +391,7 @@ export function SynthesisWork({ projects = V2_PROJECTS }: { projects?: typeof V2
             fontFamily: "monospace",
             fontSize: "10px",
             letterSpacing: "0.3em",
-            color: "#E2B93B",
+            color: "#ECFF95",
             margin: 0,
           }}
         >
@@ -421,7 +421,7 @@ export function SynthesisWork({ projects = V2_PROJECTS }: { projects?: typeof V2
                     fontFamily: "monospace",
                     fontSize: "9px",
                     letterSpacing: "0.2em",
-                    color: hoveredIdx === i ? "#E2B93B" : "rgba(255,255,255,0.15)",
+                    color: hoveredIdx === i ? "#ECFF95" : "rgba(255,255,255,0.15)",
                     transition: "color 0.3s",
                   }}
                 >
@@ -434,7 +434,7 @@ export function SynthesisWork({ projects = V2_PROJECTS }: { projects?: typeof V2
                     lineHeight: 1,
                     letterSpacing: "-0.02em",
                     textTransform: "uppercase",
-                    color: hoveredIdx === i ? "#E2B93B" : "rgba(255,255,255,0.8)",
+                    color: hoveredIdx === i ? "#ECFF95" : "rgba(255,255,255,0.8)",
                     transition: "color 0.5s ease",
                   }}
                 >
@@ -473,7 +473,7 @@ export function SynthesisWork({ projects = V2_PROJECTS }: { projects?: typeof V2
                       className="absolute inset-0 pointer-events-none"
                       style={{
                         background:
-                          "repeating-linear-gradient(0deg, transparent 0px, transparent 2px, rgba(10,10,10,0.4) 2px, rgba(10,10,10,0.4) 4px)",
+                          "repeating-linear-gradient(0deg, transparent 0px, transparent 2px, rgba(18, 19, 22,0.4) 2px, rgba(18, 19, 22,0.4) 4px)",
                       }}
                     />
                     <div className="absolute top-4 left-4">
@@ -481,7 +481,7 @@ export function SynthesisWork({ projects = V2_PROJECTS }: { projects?: typeof V2
                         style={{
                           fontFamily: "monospace",
                           fontSize: "9px",
-                          color: "#E2B93B",
+                          color: "#ECFF95",
                           letterSpacing: "0.1em",
                         }}
                       >
@@ -553,14 +553,14 @@ export function SynthesisNavStrip() {
               <Link
                 href={link.href}
                 onMouseEnter={onHover}
-                className="group flex items-center gap-3 border border-white/5 px-5 py-3 hover:border-[#E2B93B]/30 hover:bg-[#E2B93B]/5 transition-all duration-300"
+                className="group flex items-center gap-3 border border-white/5 px-5 py-3 hover:border-[#ECFF95]/30 hover:bg-[#ECFF95]/5 transition-all duration-300"
               >
                 <span style={{ fontFamily: "monospace", fontSize: "9px", color: "rgba(255,255,255,0.2)", letterSpacing: "0.1em" }}>
                   [{link.id}]
                 </span>
                 <div>
                   <span
-                    className="block group-hover:text-[#E2B93B] transition-colors duration-300"
+                    className="block group-hover:text-[#ECFF95] transition-colors duration-300"
                     style={{ fontFamily: "monospace", fontSize: "11px", letterSpacing: "0.15em", color: "rgba(255,255,255,0.6)" }}
                   >
                     {link.label}
@@ -571,7 +571,7 @@ export function SynthesisNavStrip() {
                 </div>
                 <span
                   className="opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                  style={{ fontFamily: "monospace", fontSize: "9px", color: "#E2B93B" }}
+                  style={{ fontFamily: "monospace", fontSize: "9px", color: "#ECFF95" }}
                 >
                   /
                 </span>
@@ -624,7 +624,7 @@ export function SynthesisPhilosophy() {
               fontFamily: "monospace",
               fontSize: "9px",
               letterSpacing: "0.2em",
-              color: "rgba(226,185,59,0.3)",
+              color: "rgba(236, 255, 149,0.3)",
               margin: 0,
             }}
           >
@@ -653,7 +653,7 @@ export function SynthesisPhilosophy() {
               text="I break things apart so they can come together"
               speed={8}
             />{" "}
-            <span style={{ color: "#E2B93B" }}>
+            <span style={{ color: "#ECFF95" }}>
               <ScrambleText text="better" speed={8} />
             </span>
             .
@@ -689,7 +689,7 @@ export function SynthesisPhilosophy() {
           viewport={{ once: true }}
           transition={{ delay: 0.5, duration: 1.5, ease: [0.77, 0, 0.175, 1] }}
           className="h-px origin-left mt-16"
-          style={{ background: "rgba(226,185,59,0.15)" }}
+          style={{ background: "rgba(236, 255, 149,0.15)" }}
         />
       </div>
     </section>
@@ -713,7 +713,7 @@ export function SynthesisTestimonials() {
               fontFamily: "monospace",
               fontSize: "10px",
               letterSpacing: "0.3em",
-              color: "#E2B93B",
+              color: "#ECFF95",
               margin: 0,
             }}
           >
@@ -730,7 +730,7 @@ export function SynthesisTestimonials() {
             transition={{ delay: i * 0.2, duration: 0.6 }}
             className="mb-16 last:mb-0"
             style={{
-              borderLeft: "1px solid rgba(226,185,59,0.2)",
+              borderLeft: "1px solid rgba(236, 255, 149,0.2)",
               paddingLeft: "2rem",
             }}
           >
@@ -786,7 +786,7 @@ export function SynthesisTestimonials() {
                     />
                   ) : (
                     <span
-                      className="inline-flex items-center justify-center w-4 h-4 bg-[#E2B93B]/10 border border-[#E2B93B]/20 text-[#E2B93B] text-[7px]"
+                      className="inline-flex items-center justify-center w-4 h-4 bg-[#ECFF95]/10 border border-[#ECFF95]/20 text-[#ECFF95] text-[7px]"
                       style={{ fontFamily: "monospace" }}
                     >
                       {t.company.charAt(0)}
@@ -823,7 +823,7 @@ export function SynthesisVariation({ projects, landing }: { projects?: typeof V2
   const [loaded, setLoaded] = useState(false);
 
   return (
-    <main className="relative bg-[#0A0A0A]">
+    <main className="relative bg-[#121316]">
       {/* Signal global textures */}
       <SignalGrid />
       <ScanLineOverlay />

@@ -195,7 +195,7 @@ function TransmissionCursor() {
               width: size,
               height: size,
               borderRadius: "50%",
-              background: "#E2B93B",
+              background: "#ECFF95",
               opacity,
               transform: "translate(-200px, -200px)",
             }}
@@ -209,7 +209,7 @@ function TransmissionCursor() {
         style={{ x: sx, y: sy }}
       >
         {/* Center dot */}
-        <div style={{ position: "absolute", width: 3, height: 3, borderRadius: "50%", background: "#E2B93B", transform: "translate(-1.5px,-1.5px)" }} />
+        <div style={{ position: "absolute", width: 3, height: 3, borderRadius: "50%", background: "#ECFF95", transform: "translate(-1.5px,-1.5px)" }} />
         {/* Arms */}
         {([
           { top: -(arm + gap), left: -0.5, w: 1, h: arm },
@@ -221,7 +221,7 @@ function TransmissionCursor() {
             key={i}
             animate={{ width: s.w, height: s.h, top: s.top, left: s.left }}
             transition={{ type: "spring", stiffness: 320, damping: 22 }}
-            style={{ position: "absolute", background: "#E2B93B", opacity: 0.88 }}
+            style={{ position: "absolute", background: "#ECFF95", opacity: 0.88 }}
           />
         ))}
         {/* Hover bracket */}
@@ -232,7 +232,7 @@ function TransmissionCursor() {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.7 }}
               transition={{ duration: 0.15 }}
-              style={{ position: "absolute", width: 24, height: 24, top: -12, left: -12, border: "1px solid rgba(226,185,59,0.5)", borderRadius: 2 }}
+              style={{ position: "absolute", width: 24, height: 24, top: -12, left: -12, border: "1px solid rgba(236, 255, 149,0.5)", borderRadius: 2 }}
             />
           )}
         </AnimatePresence>
@@ -259,10 +259,10 @@ function TransmissionCursor() {
                 fontSize: "7px",
                 letterSpacing: "0.22em",
                 textTransform: "uppercase",
-                color: "#E2B93B",
-                background: "rgba(10,10,10,0.92)",
+                color: "#ECFF95",
+                background: "rgba(18, 19, 22,0.92)",
                 padding: "3px 7px",
-                border: "1px solid rgba(226,185,59,0.28)",
+                border: "1px solid rgba(236, 255, 149,0.28)",
                 whiteSpace: "nowrap",
               }}
             >
@@ -344,8 +344,8 @@ function TransmissionHero({ projects, heroCopy }: { projects: Project[]; heroCop
           className="absolute inset-0"
           style={{
             background: [
-              "linear-gradient(to top, rgba(10,10,10,0.92) 0%, rgba(10,10,10,0.7) 22%, rgba(10,10,10,0.28) 48%, rgba(10,10,10,0) 72%)",
-              "linear-gradient(to right, rgba(10,10,10,0.45) 0%, rgba(10,10,10,0) 38%)",
+              "linear-gradient(to top, rgba(18, 19, 22,0.92) 0%, rgba(18, 19, 22,0.7) 22%, rgba(18, 19, 22,0.28) 48%, rgba(18, 19, 22,0) 72%)",
+              "linear-gradient(to right, rgba(18, 19, 22,0.45) 0%, rgba(18, 19, 22,0) 38%)",
             ].join(", "),
           }}
         />
@@ -367,13 +367,13 @@ function TransmissionHero({ projects, heroCopy }: { projects: Project[]; heroCop
                 fontSize: "9px",
                 letterSpacing: "0.22em",
                 textTransform: "uppercase",
-                color: "#E2B93B",
+                color: "#ECFF95",
                 display: "inline-flex",
                 alignItems: "center",
                 gap: 8,
               }}
             >
-              <span style={{ color: "#E2B93B", display: "flex", alignItems: "center" }}>
+              <span style={{ color: "#ECFF95", display: "flex", alignItems: "center" }}>
                 {ctx.icon}
               </span>
               {ctx.label}
@@ -431,13 +431,13 @@ function TransmissionHero({ projects, heroCopy }: { projects: Project[]; heroCop
               fontSize: "9px",
               letterSpacing: "0.18em",
               textTransform: "uppercase",
-              color: "#0A0A0A",
+              color: "#121316",
               background: "#F0F0F0",
               padding: "12px 28px",
               display: "inline-block",
               transition: "background 0.2s",
             }}
-            onMouseEnter={(e) => (e.currentTarget.style.background = "#E2B93B")}
+            onMouseEnter={(e) => (e.currentTarget.style.background = "#ECFF95")}
             onMouseLeave={(e) => (e.currentTarget.style.background = "#F0F0F0")}
           >
             See all work
@@ -538,7 +538,7 @@ function TransmissionProjectRow({
         ) : (
           <div
             className="absolute inset-0 flex items-center justify-center"
-            style={{ background: "#111111" }}
+            style={{ background: "#17181C" }}
           >
             <span
               style={{
@@ -557,7 +557,7 @@ function TransmissionProjectRow({
       {/* Metadata column */}
       <div
         className="flex flex-col justify-between px-6 py-8 md:px-10 md:py-10"
-        style={{ background: "#0D0D0D" }}
+        style={{ background: "#16171B" }}
       >
         <div>
           {/* Index + category with icon */}
@@ -583,10 +583,10 @@ function TransmissionProjectRow({
                 fontSize: "7.5px",
                 letterSpacing: "0.16em",
                 textTransform: "uppercase",
-                color: "#E2B93B",
+                color: "#ECFF95",
               }}
             >
-              <span style={{ color: "#E2B93B", display: "flex", alignItems: "center" }}>
+              <span style={{ color: "#ECFF95", display: "flex", alignItems: "center" }}>
                 {catIcon}
               </span>
               {project.category}
@@ -641,7 +641,7 @@ function TransmissionProjectRow({
               fontSize: "11px",
               letterSpacing: "0.16em",
               textTransform: "uppercase",
-              color: "#E2B93B",
+              color: "#ECFF95",
               display: "flex",
               alignItems: "center",
               gap: 6,
@@ -714,7 +714,7 @@ function TransmissionAbout({ aboutCopy, showFullStory = true }: { aboutCopy: Abo
             }}
           >
             {aboutCopy.headline ?? "Designer who"}{" "}
-            <span style={{ color: "#E2B93B" }}>{aboutCopy.headlineAccent ?? "ships"}</span>
+            <span style={{ color: "#ECFF95" }}>{aboutCopy.headlineAccent ?? "ships"}</span>
             {". Based in Nigeria, building for the world."}
           </p>
 
@@ -842,9 +842,9 @@ function TransmissionTestimonials({ testimonials }: { testimonials: TestimonialI
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7, delay: i * 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
             style={{
-              background: "#0D0D0D",
+              background: "#16171B",
               padding: "32px 30px",
-              borderLeft: i === 0 ? "2px solid #E2B93B" : "2px solid rgba(255,255,255,0.05)",
+              borderLeft: i === 0 ? "2px solid #ECFF95" : "2px solid rgba(255,255,255,0.05)",
             }}
           >
             {/* Open-quote mark */}
@@ -852,7 +852,7 @@ function TransmissionTestimonials({ testimonials }: { testimonials: TestimonialI
               style={{
                 fontFamily: "'Anton', sans-serif",
                 fontSize: "32px",
-                color: "rgba(226,185,59,0.25)",
+                color: "rgba(236, 255, 149,0.25)",
                 lineHeight: 1,
                 display: "block",
                 marginBottom: 10,
@@ -945,7 +945,7 @@ function TransmissionWriting({ posts }: { posts: BlogMeta[] }) {
             color: "rgba(255,255,255,0.45)",
             transition: "color 0.2s",
           }}
-          onMouseEnter={(e) => (e.currentTarget.style.color = "#E2B93B")}
+          onMouseEnter={(e) => (e.currentTarget.style.color = "#ECFF95")}
           onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.28)")}
         >
           All posts →
@@ -986,7 +986,7 @@ function TransmissionWriting({ posts }: { posts: BlogMeta[] }) {
                     fontSize: "7.5px",
                     letterSpacing: "0.14em",
                     textTransform: "uppercase",
-                    color: "#E2B93B",
+                    color: "#ECFF95",
                     flexShrink: 0,
                   }}
                 >
@@ -1064,7 +1064,7 @@ function TransmissionCraft({ items }: { items: CraftItem[] }) {
             color: "rgba(255,255,255,0.45)",
             transition: "color 0.2s",
           }}
-          onMouseEnter={(e) => (e.currentTarget.style.color = "#E2B93B")}
+          onMouseEnter={(e) => (e.currentTarget.style.color = "#ECFF95")}
           onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.28)")}
         >
           View all →
@@ -1088,7 +1088,7 @@ function TransmissionCraft({ items }: { items: CraftItem[] }) {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
             className="fixed inset-0 z-[200] flex items-center justify-center"
-            style={{ background: "rgba(10,10,10,0.96)", backdropFilter: "blur(8px)" }}
+            style={{ background: "rgba(18, 19, 22,0.96)", backdropFilter: "blur(8px)" }}
             onClick={() => setSelected(null)}
           >
             <motion.div
@@ -1143,7 +1143,7 @@ function TransmissionCraft({ items }: { items: CraftItem[] }) {
                     fontSize: "9px",
                     letterSpacing: "0.2em",
                     textTransform: "uppercase",
-                    color: "#E2B93B",
+                    color: "#ECFF95",
                     display: "block",
                     marginBottom: 6,
                   }}
@@ -1191,7 +1191,7 @@ function CraftTile({ item, index, inView, onSelect }: { item: CraftItem; index: 
         position: "relative",
         cursor: "none",
         overflow: "hidden",
-        background: "#111111",
+        background: "#17181C",
       }}
     >
       <div style={{ display: "block", position: "relative" }}>
@@ -1232,7 +1232,7 @@ function CraftTile({ item, index, inView, onSelect }: { item: CraftItem; index: 
           ) : (
             <div
               className="absolute inset-0 flex items-center justify-center"
-              style={{ background: "#1A1A1A" }}
+              style={{ background: "#1D1E24" }}
             >
               <span style={{ fontFamily: "'Anton', sans-serif", fontSize: "24px", color: "rgba(255,255,255,0.06)" }}>
                 {item.category}
@@ -1250,7 +1250,7 @@ function CraftTile({ item, index, inView, onSelect }: { item: CraftItem; index: 
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
               className="absolute inset-0 flex flex-col justify-end"
-              style={{ padding: "12px", background: "linear-gradient(to top, rgba(10,10,10,0.85) 0%, transparent 60%)" }}
+              style={{ padding: "12px", background: "linear-gradient(to top, rgba(18, 19, 22,0.85) 0%, transparent 60%)" }}
             >
               <span
                 style={{
@@ -1258,7 +1258,7 @@ function CraftTile({ item, index, inView, onSelect }: { item: CraftItem; index: 
                   fontSize: "6.5px",
                   letterSpacing: "0.18em",
                   textTransform: "uppercase",
-                  color: "#E2B93B",
+                  color: "#ECFF95",
                   display: "block",
                   marginBottom: 3,
                 }}
@@ -1337,8 +1337,8 @@ function TransmissionCTA({ ctaCopy, ctaLabel }: { ctaCopy: CtaCopy; ctaLabel: st
             fontSize: "9.5px",
             letterSpacing: "0.18em",
             textTransform: "uppercase",
-            color: "#0A0A0A",
-            background: "#E2B93B",
+            color: "#121316",
+            background: "#ECFF95",
             padding: "14px 32px",
             display: "inline-block",
             transition: "opacity 0.2s",
@@ -1365,8 +1365,8 @@ function TransmissionCTA({ ctaCopy, ctaLabel }: { ctaCopy: CtaCopy; ctaLabel: st
             transition: "all 0.2s",
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.color = "#E2B93B";
-            e.currentTarget.style.borderColor = "#E2B93B";
+            e.currentTarget.style.color = "#ECFF95";
+            e.currentTarget.style.borderColor = "#ECFF95";
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.color = "rgba(255,255,255,0.7)";
@@ -1411,7 +1411,7 @@ export function TransmissionVariation({
   const personalProjects = projects.filter((p) => p.projectType === "personal");
 
   return (
-    <div style={{ background: "#0A0A0A", minHeight: "100vh", cursor: "none" }}>
+    <div style={{ background: "#121316", minHeight: "100vh", cursor: "none" }}>
       <style>{`
         @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
         .transmission-root * { cursor: none !important; }
@@ -1451,7 +1451,7 @@ export function TransmissionVariation({
                   color: "rgba(255,255,255,0.28)",
                   transition: "color 0.2s",
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = "#E2B93B")}
+                onMouseEnter={(e) => (e.currentTarget.style.color = "#ECFF95")}
                 onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.28)")}
               >
                 See all →

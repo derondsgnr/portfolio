@@ -43,7 +43,7 @@ function ServiceDetail({ service, showHeading = true }: { service: ServiceItem; 
           fontSize: "10px",
           letterSpacing: "0.24em",
           textTransform: "uppercase",
-          color: "#E2B93B",
+          color: "#ECFF95",
           display: "block",
           marginBottom: 14,
         }}
@@ -65,7 +65,7 @@ function ServiceDetail({ service, showHeading = true }: { service: ServiceItem; 
               padding: "5px 0",
             }}
           >
-            <span style={{ color: "rgba(226,185,59,0.7)", fontFamily: "monospace", fontSize: "12px" }}>
+            <span style={{ color: "rgba(236, 255, 149,0.7)", fontFamily: "monospace", fontSize: "12px" }}>
               →
             </span>
             {g}
@@ -174,7 +174,7 @@ export function TransmissionServicesIndex({ services }: { services?: ServiceItem
                       fontFamily: "monospace",
                       fontSize: "10px",
                       letterSpacing: "0.1em",
-                      color: on ? "#E2B93B" : "rgba(255,255,255,0.28)",
+                      color: on ? "#ECFF95" : "rgba(255,255,255,0.28)",
                       transition: "color 0.25s",
                       width: 22,
                     }}
@@ -196,7 +196,7 @@ export function TransmissionServicesIndex({ services }: { services?: ServiceItem
                   </span>
                   <motion.span
                     aria-hidden
-                    animate={{ rotate: on ? 90 : 0, color: on ? "#E2B93B" : "rgba(255,255,255,0.3)" }}
+                    animate={{ rotate: on ? 90 : 0, color: on ? "#ECFF95" : "rgba(255,255,255,0.3)" }}
                     transition={{ duration: 0.25 }}
                     style={{ marginLeft: "auto", fontSize: "13px", lineHeight: 1 }}
                   >
@@ -258,7 +258,7 @@ export function TransmissionServicesIndex({ services }: { services?: ServiceItem
                       fontFamily: "monospace",
                       fontSize: "10px",
                       letterSpacing: "0.1em",
-                      color: on ? "#E2B93B" : "rgba(255,255,255,0.28)",
+                      color: on ? "#ECFF95" : "rgba(255,255,255,0.28)",
                       transition: "color 0.25s",
                       width: 22,
                     }}
@@ -282,7 +282,7 @@ export function TransmissionServicesIndex({ services }: { services?: ServiceItem
                     aria-hidden
                     animate={{ opacity: on ? 1 : 0, x: on ? 0 : -6 }}
                     transition={{ duration: 0.25 }}
-                    style={{ marginLeft: "auto", color: "#E2B93B", fontSize: "12px" }}
+                    style={{ marginLeft: "auto", color: "#ECFF95", fontSize: "12px" }}
                   >
                     ◂
                   </motion.span>

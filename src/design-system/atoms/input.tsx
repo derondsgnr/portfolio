@@ -9,7 +9,7 @@ const variantStyles: Record<InputVariant, string> = {
   default:
     "bg-input-background border-input text-foreground placeholder:text-muted-foreground focus-visible:border-ring",
   admin:
-    "w-full px-4 py-3 bg-white/[0.03] border border-white/[0.08] text-white text-sm focus:outline-none focus:border-[#E2B93B]/50 transition-colors placeholder:text-white/20 font-['Instrument_Sans']",
+    "w-full px-4 py-3 bg-white/[0.03] border border-white/[0.08] text-white text-sm focus:outline-none focus:border-[#ECFF95]/50 transition-colors placeholder:text-white/20 font-['Instrument_Sans']",
 };
 
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {

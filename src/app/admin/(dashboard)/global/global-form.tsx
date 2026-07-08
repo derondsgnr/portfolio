@@ -62,7 +62,7 @@ export function GlobalForm({ initial }: Props) {
   }
 
   const inputClass =
-    "w-full px-4 py-2 bg-[#111] border border-white/10 text-white placeholder:text-white/40 font-mono text-sm focus:outline-none focus:border-[#E2B93B]/50";
+    "w-full px-4 py-2 bg-[#111] border border-white/10 text-white placeholder:text-white/40 font-mono text-sm focus:outline-none focus:border-[#ECFF95]/50";
   const labelClass = "block font-mono text-xs text-white/60 mb-1";
 
   return (
@@ -103,7 +103,7 @@ export function GlobalForm({ initial }: Props) {
           <button
             type="button"
             onClick={addSocialLink}
-            className="font-mono text-xs text-[#E2B93B] hover:text-white"
+            className="font-mono text-xs text-[#ECFF95] hover:text-white"
           >
             + Add link
           </button>
@@ -208,7 +208,7 @@ export function GlobalForm({ initial }: Props) {
         </h2>
         <p className="font-mono text-[10px] text-white/40 mb-3 leading-relaxed">
           Upload a PDF, or paste a link — a direct file URL, a{" "}
-          <span className="text-[#E2B93B]/80">Google Drive</span> or Dropbox share link works too
+          <span className="text-[#ECFF95]/80">Google Drive</span> or Dropbox share link works too
           (we convert it to a direct download). When set, a "Download CV" CTA appears alongside the
           booking CTAs on case studies and the homepage. Leave blank to hide it.
         </p>
@@ -235,7 +235,7 @@ export function GlobalForm({ initial }: Props) {
             href={cvUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-2 inline-block font-mono text-[10px] text-white/45 underline hover:text-[#E2B93B]"
+            className="mt-2 inline-block font-mono text-[10px] text-white/45 underline hover:text-[#ECFF95]"
           >
             Preview current CV ↗
           </a>
@@ -251,7 +251,7 @@ export function GlobalForm({ initial }: Props) {
             type="checkbox"
             checked={cinematicEnabled}
             onChange={(e) => setCinematicEnabled(e.target.checked)}
-            className="mt-0.5 h-4 w-4 shrink-0 accent-[#E2B93B]"
+            className="mt-0.5 h-4 w-4 shrink-0 accent-[#ECFF95]"
           />
           <span>
             <span className="block font-mono text-xs text-white/80">

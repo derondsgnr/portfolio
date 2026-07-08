@@ -24,13 +24,13 @@ export function SeriesBanner({
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.6 }}
-      className="border-y border-[#1a1a1a] bg-[#0d0d0d]"
+      className="border-y border-[#1D1E24] bg-[#16171B]"
     >
       <div className="px-6 md:px-14 lg:px-20 py-4 flex items-center justify-between gap-4">
         {/* Left: Series label + title */}
         <div className="flex items-center gap-3 min-w-0">
           <span
-            className="text-[9px] tracking-[0.25em] text-[#E2B93B] flex-shrink-0"
+            className="text-[9px] tracking-[0.25em] text-[#ECFF95] flex-shrink-0"
             style={{ fontFamily: "monospace" }}
           >
             SERIES
@@ -38,7 +38,7 @@ export function SeriesBanner({
           <span className="text-[#2a2a2a] flex-shrink-0">/</span>
           <Link
             href={`/blog/series/${series.slug}`}
-            className="text-[11px] tracking-[0.1em] text-[#777] hover:text-[#E2B93B] transition-colors truncate"
+            className="text-[11px] tracking-[0.1em] text-[#777] hover:text-[#ECFF95] transition-colors truncate"
             style={{ fontFamily: "monospace", textDecoration: "none" }}
           >
             {series.title.toUpperCase()}
@@ -64,9 +64,9 @@ export function SeriesBanner({
                   className="w-2 h-2 rounded-full transition-colors duration-300"
                   style={{
                     backgroundColor: isCurrent
-                      ? "#E2B93B"
+                      ? "#ECFF95"
                       : isPast
-                        ? "rgba(226,185,59,0.3)"
+                        ? "rgba(236, 255, 149,0.3)"
                         : "#333",
                   }}
                 />
@@ -86,7 +86,7 @@ export function SeriesBanner({
           {prev ? (
             <Link
               href={`/blog/${prev.slug}`}
-              className="text-[10px] tracking-[0.15em] text-[#555] hover:text-[#E2B93B] transition-colors"
+              className="text-[10px] tracking-[0.15em] text-[#555] hover:text-[#ECFF95] transition-colors"
               style={{ fontFamily: "monospace", textDecoration: "none" }}
             >
               ← PREV
@@ -102,7 +102,7 @@ export function SeriesBanner({
           {next ? (
             <Link
               href={`/blog/${next.slug}`}
-              className="text-[10px] tracking-[0.15em] text-[#555] hover:text-[#E2B93B] transition-colors"
+              className="text-[10px] tracking-[0.15em] text-[#555] hover:text-[#ECFF95] transition-colors"
               style={{ fontFamily: "monospace", textDecoration: "none" }}
             >
               NEXT →

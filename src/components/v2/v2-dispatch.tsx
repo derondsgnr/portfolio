@@ -45,7 +45,7 @@ function DispatchSidebar({ active }: { active: string }) {
       className="hidden lg:flex flex-col fixed top-0 left-0 h-screen z-40"
       style={{
         width: 260,
-        background: "#0A0A0A",
+        background: "#121316",
         borderRight: "1px solid rgba(255,255,255,0.06)",
       }}
     >
@@ -57,7 +57,7 @@ function DispatchSidebar({ active }: { active: string }) {
               fontFamily: "'Anton', sans-serif",
               fontSize: "22px",
               letterSpacing: "0.08em",
-              color: "#E2B93B",
+              color: "#ECFF95",
               textTransform: "uppercase",
             }}
           >
@@ -158,7 +158,7 @@ function DispatchSidebar({ active }: { active: string }) {
                 color: "rgba(255,255,255,0.25)",
                 transition: "color 0.2s",
               }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = "#E2B93B")}
+              onMouseEnter={(e) => (e.currentTarget.style.color = "#ECFF95")}
               onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.25)")}
             >
               {s.label}
@@ -199,7 +199,7 @@ function DispatchHero({ projects }: { projects: Project[] }) {
           className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(135deg, rgba(10,10,10,0.9) 0%, rgba(10,10,10,0.3) 60%, rgba(10,10,10,0.7) 100%)",
+              "linear-gradient(135deg, rgba(18, 19, 22,0.9) 0%, rgba(18, 19, 22,0.3) 60%, rgba(18, 19, 22,0.7) 100%)",
           }}
         />
       </div>
@@ -225,7 +225,7 @@ function DispatchHero({ projects }: { projects: Project[] }) {
                 fontSize: "10px",
                 letterSpacing: "0.2em",
                 textTransform: "uppercase",
-                color: "#E2B93B",
+                color: "#ECFF95",
               }}
             >
               {CONTEXT_LINES[contextIdx]}
@@ -282,13 +282,13 @@ function DispatchHero({ projects }: { projects: Project[] }) {
               fontSize: "10px",
               letterSpacing: "0.18em",
               textTransform: "uppercase",
-              color: "#0A0A0A",
+              color: "#121316",
               background: "#F0F0F0",
               padding: "12px 28px",
               display: "inline-block",
               transition: "background 0.2s",
             }}
-            onMouseEnter={(e) => (e.currentTarget.style.background = "#E2B93B")}
+            onMouseEnter={(e) => (e.currentTarget.style.background = "#ECFF95")}
             onMouseLeave={(e) => (e.currentTarget.style.background = "#F0F0F0")}
           >
             See all work
@@ -382,7 +382,7 @@ function DispatchProjectRow({ project, index }: { project: Project; index: numbe
         {!project.image && (
           <div
             className="absolute inset-0 flex items-center justify-center"
-            style={{ background: "#111111" }}
+            style={{ background: "#17181C" }}
           >
             <span
               style={{
@@ -401,7 +401,7 @@ function DispatchProjectRow({ project, index }: { project: Project; index: numbe
       {/* Metadata */}
       <div
         className="flex flex-col justify-between px-12 py-10"
-        style={{ background: "#0D0D0D" }}
+        style={{ background: "#16171B" }}
       >
         <div>
           <span
@@ -410,7 +410,7 @@ function DispatchProjectRow({ project, index }: { project: Project; index: numbe
               fontSize: "9px",
               letterSpacing: "0.2em",
               textTransform: "uppercase",
-              color: "#E2B93B",
+              color: "#ECFF95",
               display: "block",
               marginBottom: 16,
             }}
@@ -464,7 +464,7 @@ function DispatchProjectRow({ project, index }: { project: Project; index: numbe
               fontSize: "9px",
               letterSpacing: "0.16em",
               textTransform: "uppercase",
-              color: "#E2B93B",
+              color: "#ECFF95",
               display: "flex",
               alignItems: "center",
               gap: 8,
@@ -520,8 +520,8 @@ function DispatchCTA() {
           fontSize: "10px",
           letterSpacing: "0.18em",
           textTransform: "uppercase",
-          color: "#0A0A0A",
-          background: "#E2B93B",
+          color: "#121316",
+          background: "#ECFF95",
           padding: "14px 32px",
           display: "inline-block",
           transition: "opacity 0.2s",
@@ -538,7 +538,7 @@ function DispatchCTA() {
 export function DispatchVariation({ projects }: { projects: Project[] }) {
   const workHidden = useIsHidden("/work");
   return (
-    <div style={{ background: "#0A0A0A", minHeight: "100vh" }}>
+    <div style={{ background: "#121316", minHeight: "100vh" }}>
       <style>{`@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }`}</style>
 
       <DispatchSidebar active="Home" />
@@ -576,7 +576,7 @@ export function DispatchVariation({ projects }: { projects: Project[] }) {
                   color: "rgba(255,255,255,0.35)",
                   transition: "color 0.2s",
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = "#E2B93B")}
+                onMouseEnter={(e) => (e.currentTarget.style.color = "#ECFF95")}
                 onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.35)")}
               >
                 See all →

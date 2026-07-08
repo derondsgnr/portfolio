@@ -72,18 +72,18 @@ function SectionCard({
     >
       <Link
         href={section.path}
-        className="group block relative p-4 bg-white/[0.02] border border-white/[0.06] hover:border-[#E2B93B]/20 hover:bg-white/[0.04] transition-all duration-200"
+        className="group block relative p-4 bg-white/[0.02] border border-white/[0.06] hover:border-[#ECFF95]/20 hover:bg-white/[0.04] transition-all duration-200"
       >
         <div className="flex items-start justify-between mb-3">
           <div className="flex items-center gap-2">
-            <Icon size={13} className="text-white/30 group-hover:text-[#E2B93B]/60 transition-colors" />
+            <Icon size={13} className="text-white/30 group-hover:text-[#ECFF95]/60 transition-colors" />
             <span className="text-[9px] tracking-[0.2em] text-white/20 font-['Instrument_Sans'] uppercase">
               {String(section.index).padStart(2, "0")}
             </span>
           </div>
           <ArrowUpRight
             size={11}
-            className="text-white/10 group-hover:text-[#E2B93B]/40 transition-colors"
+            className="text-white/10 group-hover:text-[#ECFF95]/40 transition-colors"
           />
         </div>
         <p className="text-[13px] font-['Instrument_Sans'] tracking-[0.04em] text-white/80 group-hover:text-white transition-colors mb-0.5">
@@ -91,14 +91,14 @@ function SectionCard({
         </p>
         <p className="text-[10px] text-white/25 font-['Instrument_Sans']">{section.desc}</p>
         {lastSaved && (
-          <p className="mt-3 text-[9px] text-[#E2B93B]/40 font-['Instrument_Sans'] tracking-wider">
+          <p className="mt-3 text-[9px] text-[#ECFF95]/40 font-['Instrument_Sans'] tracking-wider">
             Saved {formatHistoryTime(lastSaved)}
           </p>
         )}
         <div
           className={`
             absolute top-3 right-8 text-[8px] tracking-[0.15em] uppercase font-['Instrument_Sans']
-            ${section.group === "content" ? "text-white/10" : section.group === "growth" ? "text-[#E2B93B]/30" : section.group === "style" ? "text-purple-400/20" : "text-blue-400/20"}
+            ${section.group === "content" ? "text-white/10" : section.group === "growth" ? "text-[#ECFF95]/30" : section.group === "style" ? "text-purple-400/20" : "text-blue-400/20"}
           `}
         >
           {GROUP_LABELS[section.group]}
@@ -160,7 +160,7 @@ function ChangeLog() {
               </span>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-1.5 mb-0.5">
-                  <span className="text-[8px] tracking-[0.15em] bg-[#E2B93B]/10 text-[#E2B93B]/70 font-['Instrument_Sans'] uppercase px-1.5 py-0.5">
+                  <span className="text-[8px] tracking-[0.15em] bg-[#ECFF95]/10 text-[#ECFF95]/70 font-['Instrument_Sans'] uppercase px-1.5 py-0.5">
                     {entry.sectionLabel}
                   </span>
                 </div>
@@ -171,7 +171,7 @@ function ChangeLog() {
               <button
                 onClick={() => revertTo(entry, navigate)}
                 title={`Revert to: ${entry.label}`}
-                className="shrink-0 opacity-0 group-hover:opacity-100 flex items-center gap-1 text-[9px] font-['Instrument_Sans'] tracking-wider text-white/30 hover:text-[#E2B93B]/70 transition-all"
+                className="shrink-0 opacity-0 group-hover:opacity-100 flex items-center gap-1 text-[9px] font-['Instrument_Sans'] tracking-wider text-white/30 hover:text-[#ECFF95]/70 transition-all"
               >
                 <RotateCcw size={10} />
                 <span className="uppercase tracking-[0.1em]">Revert</span>
@@ -244,7 +244,7 @@ export function AdminDashboardClient({
             >
               CONTROL
               <br />
-              <span className="text-[#E2B93B]">ROOM</span>
+              <span className="text-[#ECFF95]">ROOM</span>
             </motion.h1>
             <motion.p
               initial={{ opacity: 0 }}
@@ -290,10 +290,10 @@ export function AdminDashboardClient({
       {recentEditor ? (
         <Link
           href={recentEditor.href}
-          className="mb-6 flex items-center justify-between border border-[#E2B93B]/20 bg-[#E2B93B]/[0.04] px-4 py-3 transition-colors hover:border-[#E2B93B]/35"
+          className="mb-6 flex items-center justify-between border border-[#ECFF95]/20 bg-[#ECFF95]/[0.04] px-4 py-3 transition-colors hover:border-[#ECFF95]/35"
         >
           <div>
-            <p className="text-[9px] uppercase tracking-[0.16em] text-[#E2B93B]/70 font-['Instrument_Sans']">
+            <p className="text-[9px] uppercase tracking-[0.16em] text-[#ECFF95]/70 font-['Instrument_Sans']">
               Continue editing
             </p>
             <p className="mt-1 text-sm text-white/75 font-['Instrument_Sans']">
@@ -354,7 +354,7 @@ export function AdminDashboardClient({
               </Link>
               <Link
                 href="/admin/growth"
-                className="flex items-center gap-2 px-4 py-2.5 border border-[#E2B93B]/25 text-[#E2B93B]/65 hover:text-[#E2B93B] hover:border-[#E2B93B]/45 transition-all text-[11px] font-['Instrument_Sans'] tracking-wider uppercase"
+                className="flex items-center gap-2 px-4 py-2.5 border border-[#ECFF95]/25 text-[#ECFF95]/65 hover:text-[#ECFF95] hover:border-[#ECFF95]/45 transition-all text-[11px] font-['Instrument_Sans'] tracking-wider uppercase"
               >
                 <Rocket size={11} />
                 Open Growth OS

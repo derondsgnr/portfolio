@@ -19,7 +19,7 @@ export function DriftWorkPage() {
   const scrollX = useTransform(scrollYProgress, [0, 1], ["5%", "-65%"]);
 
   return (
-    <main className="relative bg-[#0A0A0A] min-h-screen">
+    <main className="relative bg-[#121316] min-h-screen">
       {/* Hero — drifting title */}
       <section ref={heroRef} className="relative h-[70vh] overflow-hidden flex items-center">
         <div className="w-full">
@@ -52,7 +52,7 @@ export function DriftWorkPage() {
                 fontWeight: 300,
                 fontStyle: "italic",
                 letterSpacing: "0.05em",
-                color: "#E2B93B",
+                color: "#ECFF95",
                 whiteSpace: "nowrap",
               }}
             >
@@ -101,7 +101,7 @@ export function DriftWorkPage() {
                       {project.description}
                     </p>
                   </div>
-                  <span style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "10px", color: "#E2B93B", letterSpacing: "0.1em" }}>
+                  <span style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "10px", color: "#ECFF95", letterSpacing: "0.1em" }}>
                     {project.year}
                   </span>
                 </div>
@@ -127,7 +127,7 @@ export function DriftCraftPage() {
   const x = useTransform(scrollYProgress, [0, 1], ["0%", "-60%"]);
 
   return (
-    <main className="relative bg-[#0A0A0A] min-h-screen">
+    <main className="relative bg-[#121316] min-h-screen">
       {/* Hero */}
       <section className="relative h-[50vh] overflow-hidden flex items-center">
         <div className="w-full px-8">
@@ -157,7 +157,7 @@ export function DriftCraftPage() {
               fontSize: "clamp(0.8rem, 1.5vw, 1.2rem)",
               fontWeight: 300,
               fontStyle: "italic",
-              color: "#E2B93B",
+              color: "#ECFF95",
             }}
           >
             Experiments in motion &rarr;
@@ -182,7 +182,7 @@ export function DriftCraftPage() {
                   />
                 </div>
                 <div className="mt-4">
-                  <span style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "10px", letterSpacing: "0.15em", color: "#E2B93B" }}>
+                  <span style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "10px", letterSpacing: "0.15em", color: "#ECFF95" }}>
                     {item.category}
                   </span>
                   <span className="block mt-1" style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "0.9rem", color: "rgba(255,255,255,0.5)" }}>
@@ -214,7 +214,7 @@ export function DriftAboutPage() {
   const titleX = useTransform(scrollYProgress, [0, 1], [0, 300]);
 
   return (
-    <main className="relative bg-[#0A0A0A] min-h-screen">
+    <main className="relative bg-[#121316] min-h-screen">
       {/* Hero — name drifts */}
       <section ref={heroRef} className="relative h-screen overflow-hidden flex items-center">
         <div className="w-full">
@@ -248,7 +248,7 @@ export function DriftAboutPage() {
                 fontWeight: 300,
                 fontStyle: "italic",
                 letterSpacing: "0.05em",
-                color: "#E2B93B",
+                color: "#ECFF95",
               }}
             >
               {V2_ABOUT.title}
@@ -313,7 +313,7 @@ export function DriftAboutPage() {
               transition={{ duration: 0.8, delay: i * 0.15, ease: [0.25, 0.46, 0.45, 0.94] }}
               className="text-center"
             >
-              <span style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(2rem, 5vw, 4rem)", lineHeight: 1, color: "#E2B93B", display: "block" }}>
+              <span style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(2rem, 5vw, 4rem)", lineHeight: 1, color: "#ECFF95", display: "block" }}>
                 {stat.value}
               </span>
               <span className="block mt-2" style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "10px", letterSpacing: "0.15em", color: "rgba(255,255,255,0.2)", textTransform: "uppercase" }}>
@@ -338,7 +338,7 @@ export function DriftAboutPage() {
               style={{ borderBottom: "1px solid rgba(255,255,255,0.04)" }}
             >
               <div className="flex items-center justify-between">
-                <span style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(1.5rem, 3vw, 2.5rem)", lineHeight: 1, letterSpacing: "-0.02em", textTransform: "uppercase", color: i === 2 ? "#E2B93B" : "rgba(255,255,255,0.5)" }}>
+                <span style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(1.5rem, 3vw, 2.5rem)", lineHeight: 1, letterSpacing: "-0.02em", textTransform: "uppercase", color: i === 2 ? "#ECFF95" : "rgba(255,255,255,0.5)" }}>
                   {value.word}
                 </span>
                 <span style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "0.8rem", fontWeight: 300, fontStyle: "italic", color: "rgba(255,255,255,0.2)", maxWidth: "300px", textAlign: "right" }}>
@@ -361,7 +361,7 @@ export function DriftAboutPage() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1, duration: 0.6 }}
-              className="hover:text-[#E2B93B] transition-colors duration-300"
+              className="hover:text-[#ECFF95] transition-colors duration-300"
               style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "0.9rem", letterSpacing: "0.1em", color: "rgba(255,255,255,0.3)", textTransform: "uppercase" }}
             >
               {s.label} &rarr;

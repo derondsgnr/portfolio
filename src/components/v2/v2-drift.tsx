@@ -17,7 +17,7 @@ function DriftLoader({ onComplete }: { onComplete: () => void }) {
 
   return (
     <motion.div
-      className="fixed inset-0 z-[100] bg-[#0A0A0A] flex items-center justify-center"
+      className="fixed inset-0 z-[100] bg-[#121316] flex items-center justify-center"
       exit={{ x: "100%" }}
       transition={{ duration: 0.8, ease: [0.77, 0, 0.175, 1] }}
     >
@@ -27,7 +27,7 @@ function DriftLoader({ onComplete }: { onComplete: () => void }) {
         animate={{ x: "100vw" }}
         transition={{ duration: 1.2, ease: [0.25, 0.46, 0.45, 0.94] }}
         className="absolute top-1/2 h-px w-full"
-        style={{ background: "linear-gradient(90deg, transparent, #E2B93B, transparent)" }}
+        style={{ background: "linear-gradient(90deg, transparent, #ECFF95, transparent)" }}
       />
       <motion.span
         initial={{ opacity: 0 }}
@@ -97,7 +97,7 @@ export function DriftHero() {
               fontWeight: 300,
               fontStyle: "italic",
               letterSpacing: "0.05em",
-              color: "#E2B93B",
+              color: "#ECFF95",
               whiteSpace: "nowrap",
             }}
           >
@@ -178,7 +178,7 @@ export function DriftProcess() {
               lineHeight: 1,
               letterSpacing: "-0.02em",
               textTransform: "uppercase",
-              color: i === 2 ? "#E2B93B" : "rgba(255,255,255,0.06)",
+              color: i === 2 ? "#ECFF95" : "rgba(255,255,255,0.06)",
               whiteSpace: "nowrap",
             }}
           >
@@ -278,7 +278,7 @@ export function DriftWork({ projects }: { projects?: WorkProject[] } = {}) {
                   style={{
                     fontFamily: "'Instrument Sans', sans-serif",
                     fontSize: "10px",
-                    color: "#E2B93B",
+                    color: "#ECFF95",
                     letterSpacing: "0.1em",
                   }}
                 >
@@ -316,7 +316,7 @@ export function DriftPhilosophy() {
           >
             Design is
             <br />
-            <span style={{ color: "#E2B93B" }}>momentum</span>
+            <span style={{ color: "#ECFF95" }}>momentum</span>
           </span>
         </motion.div>
 
@@ -405,7 +405,7 @@ export function DriftTestimonials() {
                   fontFamily: "'Instrument Sans', sans-serif",
                   fontSize: "11px",
                   fontWeight: 600,
-                  color: "#E2B93B",
+                  color: "#ECFF95",
                   letterSpacing: "0.05em",
                 }}
               >
@@ -467,7 +467,7 @@ export function DriftCTA() {
               lineHeight: 0.95,
               letterSpacing: "-0.03em",
               textTransform: "uppercase",
-              color: "#E2B93B",
+              color: "#ECFF95",
               display: "block",
             }}
           >
@@ -482,7 +482,7 @@ export function DriftCTA() {
           transition={{ delay: 0.5, duration: 1.5, ease: [0.77, 0, 0.175, 1] }}
           className="h-px origin-left mt-8 mx-auto"
           style={{
-            background: "linear-gradient(90deg, transparent, rgba(226,185,59,0.4), transparent)",
+            background: "linear-gradient(90deg, transparent, rgba(236, 255, 149,0.4), transparent)",
             maxWidth: 300,
           }}
         />
@@ -527,7 +527,7 @@ export function DriftVariation() {
   const [loaded, setLoaded] = useState(false);
 
   return (
-    <main className="relative bg-[#0A0A0A]">
+    <main className="relative bg-[#121316]">
       <AnimatePresence>
         {!loaded && <DriftLoader onComplete={() => setLoaded(true)} />}
       </AnimatePresence>

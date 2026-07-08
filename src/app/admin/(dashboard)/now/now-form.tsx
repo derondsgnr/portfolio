@@ -122,7 +122,7 @@ export function AdminNowForm({ initial }: { initial: NowConfig }) {
                     onClick={() => set("status", s)}
                     className={`flex items-center gap-2 px-3 py-2.5 border text-[11px] font-['Instrument_Sans'] tracking-wider uppercase transition-all ${
                       config.status === s
-                        ? "border-[#E2B93B]/40 bg-[#E2B93B]/[0.06] text-white"
+                        ? "border-[#ECFF95]/40 bg-[#ECFF95]/[0.06] text-white"
                         : "border-white/[0.06] text-white/30 hover:border-white/[0.15]"
                     }`}
                   >
@@ -194,7 +194,7 @@ export function AdminNowForm({ initial }: { initial: NowConfig }) {
             use them for non-GitHub work (design, writing, planning).
           </p>
           <div className="flex justify-end mb-2">
-            <button type="button" onClick={addActivity} className="flex items-center gap-1.5 text-[10px] font-['Instrument_Sans'] tracking-wider uppercase text-[#E2B93B]/60 hover:text-[#E2B93B] transition-colors">
+            <button type="button" onClick={addActivity} className="flex items-center gap-1.5 text-[10px] font-['Instrument_Sans'] tracking-wider uppercase text-[#ECFF95]/60 hover:text-[#ECFF95] transition-colors">
               <Plus size={11} /> Add Entry
             </button>
           </div>
@@ -214,7 +214,7 @@ export function AdminNowForm({ initial }: { initial: NowConfig }) {
                   <div className="grid grid-cols-2 gap-2">
                     <input type="date" className={adminCx.input} value={entry.date} onChange={(e) => updateActivity(entry.id, "date", e.target.value)} />
                     <select className={adminCx.select} value={entry.type} onChange={(e) => updateActivity(entry.id, "type", e.target.value)}>
-                      {ACTIVITY_TYPES.map((t) => <option key={t} value={t} style={{ background: "#0A0A0A" }}>{t}</option>)}
+                      {ACTIVITY_TYPES.map((t) => <option key={t} value={t} style={{ background: "#121316" }}>{t}</option>)}
                     </select>
                   </div>
                   <input className={adminCx.input} value={entry.description} onChange={(e) => updateActivity(entry.id, "description", e.target.value)} placeholder="What did you work on?" />
@@ -230,7 +230,7 @@ export function AdminNowForm({ initial }: { initial: NowConfig }) {
 
         <FieldGroup legend="Today's Schedule">
           <div className="flex justify-end mb-2">
-            <button type="button" onClick={addTodo} className="flex items-center gap-1.5 text-[10px] font-['Instrument_Sans'] tracking-wider uppercase text-[#E2B93B]/60 hover:text-[#E2B93B] transition-colors">
+            <button type="button" onClick={addTodo} className="flex items-center gap-1.5 text-[10px] font-['Instrument_Sans'] tracking-wider uppercase text-[#ECFF95]/60 hover:text-[#ECFF95] transition-colors">
               <Plus size={11} /> Add Block
             </button>
           </div>
@@ -240,9 +240,9 @@ export function AdminNowForm({ initial }: { initial: NowConfig }) {
                 <button
                   type="button"
                   onClick={() => updateTodo(todo.id, "completed", !todo.completed)}
-                  className={`shrink-0 w-4 h-4 border flex items-center justify-center transition-colors ${todo.completed ? "bg-[#E2B93B] border-[#E2B93B]" : "border-white/20"}`}
+                  className={`shrink-0 w-4 h-4 border flex items-center justify-center transition-colors ${todo.completed ? "bg-[#ECFF95] border-[#ECFF95]" : "border-white/20"}`}
                 >
-                  {todo.completed && <Check size={10} className="text-[#0A0A0A]" />}
+                  {todo.completed && <Check size={10} className="text-[#121316]" />}
                 </button>
                 <input
                   className="flex-1 bg-transparent text-[12px] font-['Instrument_Sans'] text-white/60 focus:outline-none placeholder:text-white/20"
@@ -255,7 +255,7 @@ export function AdminNowForm({ initial }: { initial: NowConfig }) {
                   <span className="text-white/15 text-[10px]">→</span>
                   <input className="w-16 bg-transparent border-b border-white/[0.08] text-[10px] font-['Instrument_Sans'] text-white/25 focus:outline-none text-center" value={todo.endTime ?? ""} onChange={(e) => updateTodo(todo.id, "endTime", e.target.value)} placeholder="11:00" />
                   <select className="bg-transparent text-[9px] font-['Instrument_Sans'] text-white/20 focus:outline-none cursor-pointer" value={todo.category} onChange={(e) => updateTodo(todo.id, "category", e.target.value)}>
-                    {TODO_CATEGORIES.map((c) => <option key={c} value={c} style={{ background: "#0A0A0A" }}>{c}</option>)}
+                    {TODO_CATEGORIES.map((c) => <option key={c} value={c} style={{ background: "#121316" }}>{c}</option>)}
                   </select>
                   <button type="button" onClick={() => removeTodo(todo.id)} className="opacity-0 group-hover:opacity-100 text-white/15 hover:text-red-400/60 transition-colors">
                     <Trash2 size={11} />

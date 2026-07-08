@@ -19,7 +19,7 @@ export function EchoWorkPage() {
   ];
 
   return (
-    <main className="relative bg-[#0A0A0A] min-h-screen">
+    <main className="relative bg-[#121316] min-h-screen">
       {/* Hero — echoed title */}
       <section ref={ref} className="relative h-[70vh] flex items-center justify-center overflow-hidden">
         <div className="relative">
@@ -62,7 +62,7 @@ export function EchoWorkPage() {
                   fontSize: "13px",
                   letterSpacing: "0.3em",
                   textTransform: "uppercase",
-                  color: `rgba(226,185,59,${op})`,
+                  color: `rgba(236, 255, 149,${op})`,
                   display: "block",
                   transform: `translateY(${(i - 2) * 3}px)`,
                 }}
@@ -97,7 +97,7 @@ export function EchoWorkPage() {
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   style={{ filter: "grayscale(0.4)" }}
                 />
-                <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(10,10,10,0.8) 0%, transparent 50%)" }} />
+                <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(18, 19, 22,0.8) 0%, transparent 50%)" }} />
                 <div className="absolute bottom-0 left-0 right-0 p-6">
                   <span style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(1.5rem, 2.5vw, 2rem)", lineHeight: 1, letterSpacing: "-0.02em", textTransform: "uppercase", color: "#f0f0f0" }}>
                     {project.title}
@@ -111,7 +111,7 @@ export function EchoWorkPage() {
                 <span style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "11px", color: "rgba(255,255,255,0.25)", letterSpacing: "0.1em" }}>
                   {project.category}
                 </span>
-                <span style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "11px", color: "#E2B93B", letterSpacing: "0.1em" }}>
+                <span style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "11px", color: "#ECFF95", letterSpacing: "0.1em" }}>
                   {project.year}
                 </span>
               </div>
@@ -132,7 +132,7 @@ export function EchoWorkPage() {
 /* ─── CRAFT PAGE ─────────────────────────────────────────────── */
 export function EchoCraftPage() {
   return (
-    <main className="relative bg-[#0A0A0A] min-h-screen">
+    <main className="relative bg-[#121316] min-h-screen">
       {/* Hero with rings */}
       <section className="relative h-[60vh] flex items-center justify-center">
         {[1, 2, 3].map((i) => (
@@ -142,7 +142,7 @@ export function EchoCraftPage() {
             animate={{ opacity: 0.04, scale: 1 }}
             transition={{ delay: i * 0.2, duration: 1 }}
             className="absolute rounded-full border"
-            style={{ width: `${i * 200 + 100}px`, height: `${i * 200 + 100}px`, borderColor: "rgba(226,185,59,0.2)" }}
+            style={{ width: `${i * 200 + 100}px`, height: `${i * 200 + 100}px`, borderColor: "rgba(236, 255, 149,0.2)" }}
           />
         ))}
         <motion.div
@@ -184,7 +184,7 @@ export function EchoCraftPage() {
                 />
               </div>
               <div className="mt-4">
-                <span style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "10px", letterSpacing: "0.15em", color: "#E2B93B" }}>
+                <span style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "10px", letterSpacing: "0.15em", color: "#ECFF95" }}>
                   {item.category}
                 </span>
                 <span className="block mt-1" style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "0.85rem", color: "rgba(255,255,255,0.4)" }}>
@@ -210,7 +210,7 @@ export function EchoCraftPage() {
 /* ─── ABOUT PAGE ─────────────────────────────────────────────── */
 export function EchoAboutPage() {
   return (
-    <main className="relative bg-[#0A0A0A] min-h-screen">
+    <main className="relative bg-[#121316] min-h-screen">
       {/* Hero — echoed name */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
         {[0.02, 0.04, 0.07, 1].map((op, i) => (
@@ -249,7 +249,7 @@ export function EchoAboutPage() {
                 fontSize: "13px",
                 letterSpacing: "0.3em",
                 textTransform: "uppercase",
-                color: `rgba(226,185,59,${op})`,
+                color: `rgba(236, 255, 149,${op})`,
                 display: "block",
                 transform: `translateY(${(i - 2) * 3}px)`,
               }}
@@ -270,7 +270,7 @@ export function EchoAboutPage() {
             viewport={{ once: true }}
             transition={{ delay: i * 0.2, duration: 1 }}
             className="absolute rounded-full border"
-            style={{ width: `${i * 300 + 200}px`, height: `${i * 300 + 200}px`, borderColor: "rgba(226,185,59,0.2)" }}
+            style={{ width: `${i * 300 + 200}px`, height: `${i * 300 + 200}px`, borderColor: "rgba(236, 255, 149,0.2)" }}
           />
         ))}
 
@@ -314,11 +314,11 @@ export function EchoAboutPage() {
               {/* Echo behind */}
               <span
                 className="absolute inset-0 flex items-center justify-center"
-                style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(3rem, 6vw, 5rem)", lineHeight: 1, color: "rgba(226,185,59,0.05)", transform: "scale(1.2)" }}
+                style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(3rem, 6vw, 5rem)", lineHeight: 1, color: "rgba(236, 255, 149,0.05)", transform: "scale(1.2)" }}
               >
                 {stat.value}
               </span>
-              <span style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(2rem, 4vw, 3.5rem)", lineHeight: 1, color: "#E2B93B", display: "block", position: "relative" }}>
+              <span style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(2rem, 4vw, 3.5rem)", lineHeight: 1, color: "#ECFF95", display: "block", position: "relative" }}>
                 {stat.value}
               </span>
               <span className="block mt-2" style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "10px", letterSpacing: "0.15em", color: "rgba(255,255,255,0.2)", textTransform: "uppercase" }}>
@@ -365,7 +365,7 @@ export function EchoAboutPage() {
                   fontSize: "clamp(2rem, 4vw, 3rem)",
                   lineHeight: 1,
                   textTransform: "uppercase",
-                  color: i === 1 ? "#E2B93B" : "rgba(255,255,255,0.5)",
+                  color: i === 1 ? "#ECFF95" : "rgba(255,255,255,0.5)",
                   display: "inline-block",
                 }}
               >
@@ -383,7 +383,7 @@ export function EchoAboutPage() {
       <section className="relative py-24 px-8 text-center">
         <div className="flex justify-center gap-10">
           {V2_ABOUT.socials.map((s) => (
-            <a key={s.label} href={s.url} className="hover:text-[#E2B93B] transition-colors duration-300" style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "11px", letterSpacing: "0.15em", color: "rgba(255,255,255,0.25)", textTransform: "uppercase" }}>
+            <a key={s.label} href={s.url} className="hover:text-[#ECFF95] transition-colors duration-300" style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "11px", letterSpacing: "0.15em", color: "rgba(255,255,255,0.25)", textTransform: "uppercase" }}>
               {s.label}
             </a>
           ))}

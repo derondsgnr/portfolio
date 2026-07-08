@@ -29,7 +29,7 @@ export function PhilosophySection() {
       <div className="mb-16 md:mb-24">
         <Reveal>
           <p
-            className="text-[#e2b93b] text-[0.75rem] uppercase tracking-[0.3em] mb-4"
+            className="text-[#ECFF95] text-[0.75rem] uppercase tracking-[0.3em] mb-4"
             style={{ fontFamily: "var(--font-body)" }}
           >
             Philosophy & Services
@@ -99,10 +99,10 @@ export function PhilosophySection() {
                 </Reveal>
                 <Reveal delay={0.3 + i * 0.1}>
                   <span
-                    className="text-[#e2b93b] text-[0.75rem] uppercase tracking-[0.15em] inline-flex items-center gap-2"
+                    className="text-[#ECFF95] text-[0.75rem] uppercase tracking-[0.15em] inline-flex items-center gap-2"
                     style={{ fontFamily: "var(--font-body)" }}
                   >
-                    <span className="w-4 h-px bg-[#e2b93b]/40" />
+                    <span className="w-4 h-px bg-[#ECFF95]/40" />
                     {principle.service}
                   </span>
                 </Reveal>
@@ -116,7 +116,7 @@ export function PhilosophySection() {
       {/* Design + Strategy + Psychology + Execution accent tag */}
       <Reveal delay={0.4}>
         <p
-          className="text-[#e2b93b] text-[0.8rem] uppercase tracking-[0.2em] mt-12 md:mt-16 md:text-right"
+          className="text-[#ECFF95] text-[0.8rem] uppercase tracking-[0.2em] mt-12 md:mt-16 md:text-right"
           style={{ fontFamily: "var(--font-body)" }}
         >
           Design + Strategy + Psychology + Execution.

@@ -54,16 +54,16 @@ export function ProjectForm({ project, onSave, onCancel }: Props) {
     submitForm();
   }
 
-  const inputClass = "w-full px-4 py-2 bg-[#111] border border-white/10 text-white placeholder:text-white/40 font-mono text-sm focus:outline-none focus:border-[#E2B93B]/50";
+  const inputClass = "w-full px-4 py-2 bg-[#111] border border-white/10 text-white placeholder:text-white/40 font-mono text-sm focus:outline-none focus:border-[#ECFF95]/50";
   const labelClass = "block font-mono text-xs text-white/60 mb-1";
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-2xl space-y-4 p-4 border border-[#E2B93B]/30 bg-[#0d0d0d]">
-      <h2 className="font-mono text-sm text-[#E2B93B]">
+    <form onSubmit={handleSubmit} className="max-w-2xl space-y-4 p-4 border border-[#ECFF95]/30 bg-[#16171B]">
+      <h2 className="font-mono text-sm text-[#ECFF95]">
         {project ? "Edit project" : "New project"}
       </h2>
       {hasUnsavedChanges ? (
-        <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-[#E2B93B]/75">
+        <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-[#ECFF95]/75">
           Unsaved changes · Cmd/Ctrl+S saves · Esc closes when not typing
         </p>
       ) : null}
@@ -129,7 +129,7 @@ export function ProjectForm({ project, onSave, onCancel }: Props) {
               type="checkbox"
               checked={Boolean(form.featured)}
               onChange={(e) => setForm((f) => ({ ...f, featured: e.target.checked }))}
-              className="h-4 w-4 accent-[#E2B93B]"
+              className="h-4 w-4 accent-[#ECFF95]"
             />
             Featured
           </label>
@@ -138,7 +138,7 @@ export function ProjectForm({ project, onSave, onCancel }: Props) {
               type="checkbox"
               checked={Boolean(form.pinned)}
               onChange={(e) => setForm((f) => ({ ...f, pinned: e.target.checked }))}
-              className="h-4 w-4 accent-[#E2B93B]"
+              className="h-4 w-4 accent-[#ECFF95]"
             />
             Pinned
           </label>
@@ -178,7 +178,7 @@ export function ProjectForm({ project, onSave, onCancel }: Props) {
       <div className="flex gap-3">
         <button
           type="submit"
-          className="px-4 py-2 bg-[#E2B93B] text-[#0A0A0A] font-mono text-xs tracking-wider uppercase hover:bg-white"
+          className="px-4 py-2 bg-[#ECFF95] text-[#121316] font-mono text-xs tracking-wider uppercase hover:bg-white"
         >
           Save
         </button>

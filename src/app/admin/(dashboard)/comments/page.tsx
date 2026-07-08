@@ -47,7 +47,7 @@ function timeAgo(dateStr: string): string {
 // ─── Status badge ──────────────────────────────────────────────────
 function StatusBadge({ status }: { status: CommentStatus }) {
   const cfg: Record<CommentStatus, { label: string; cls: string }> = {
-    pending:  { label: "Pending",  cls: "bg-[#E2B93B]/10 text-[#E2B93B]/70 border-[#E2B93B]/20" },
+    pending:  { label: "Pending",  cls: "bg-[#ECFF95]/10 text-[#ECFF95]/70 border-[#ECFF95]/20" },
     approved: { label: "Approved", cls: "bg-green-500/10 text-green-400/70 border-green-500/20" },
     spam:     { label: "Spam",     cls: "bg-red-500/10 text-red-400/70 border-red-500/20" },
   };
@@ -82,7 +82,7 @@ function CommentCard({
       exit={{ opacity: 0, scale: 0.97 }}
       className={`group p-5 border transition-colors ${
         status === "pending"
-          ? "border-[#E2B93B]/15 bg-[#E2B93B]/[0.01]"
+          ? "border-[#ECFF95]/15 bg-[#ECFF95]/[0.01]"
           : status === "spam"
           ? "border-red-500/10 bg-red-500/[0.01]"
           : "border-white/[0.06]"
@@ -270,7 +270,7 @@ function AdminCommentsPage() {
           <button
             key={s}
             onClick={() => setStatusFilter(s)}
-            className={`p-3 border text-left transition-all ${statusFilter === s ? "border-[#E2B93B]/30 bg-[#E2B93B]/[0.04]" : "border-white/[0.06] hover:border-white/[0.12]"}`}
+            className={`p-3 border text-left transition-all ${statusFilter === s ? "border-[#ECFF95]/30 bg-[#ECFF95]/[0.04]" : "border-white/[0.06] hover:border-white/[0.12]"}`}
           >
             <p className="font-['Anton'] text-2xl text-white">{counts[s]}</p>
             <p className="text-[9px] tracking-[0.15em] uppercase font-['Instrument_Sans'] text-white/30 mt-0.5">{s}</p>

@@ -19,8 +19,8 @@
 These are the non-negotiable visual and interaction principles. Every change must respect them.
 
 ### Visual Language
-- **Dark-first.** Background `#0A0A0A`, foreground `#F0F0F0`. No light mode. No gray washes.
-- **Gold accent only.** `#E2B93B` for CTAs, focus states, highlights, active tabs. No other accent colors.
+- **Dark-first.** Background `#121316`, foreground `#F0F0F0`. No light mode. No gray washes. (Panels/cards sit *above* the page — `#16171B`/`#17181C`; never darker than the background.)
+- **Spline palette — lime primary + rotating accents.** Primary accent is lime `#ECFF95` (CTAs, focus states, highlights, active tabs, links) with purple `#904FD3` as the secondary brand / gradient partner. Three pill colors — orange `#E5A94E`, mint `#95FFA5`, pink `#D34F79` — rotate across repeating chips (categories, tags, labels, metrics) via `src/lib/pill-palette.ts` (`pillAt(index)` / `pillFor(key)`). Restrained canvas, colorful accents — do **not** tint large surfaces or body text; color lives in the accents, not the background. (Superseded the gold-only rule; see Decisions Log 2026-07.)
 - **Brutalist editorial.** Clean, high-contrast, controlled tension. No rounded-everything, no soft gradients, no pastel.
 - **Typography hierarchy:** Anton (heading, display, uppercase) + Instrument Sans (body, UI). These are the primary pair. Inter/Playfair and Space/DM are alternates selectable via admin.
 - **Monospace for system text.** Labels, metadata, timestamps, categories, admin UI — always monospace, uppercase, tight tracking (`0.12em–0.18em`).
@@ -35,13 +35,21 @@ These are the non-negotiable visual and interaction principles. Every change mus
 
 ### Color Tokens (CSS Variables)
 ```
---background: #0A0A0A       --foreground: #F0F0F0
---accent: #E2B93B           --accent-foreground: #0A0A0A
---card: #111111             --secondary: #1A1A1A
---muted: #1A1A1A            --muted-foreground: #6B6B6B
+--background: #121316       --foreground: #F0F0F0
+--accent: #ECFF95           --accent-foreground: #121316   (lime, primary)
+--accent-2: #904FD3         --accent-2-foreground: #F0F0F0 (purple, secondary brand)
+--card: #17181C            --secondary: #1D1E24
+--muted: #1D1E24            --muted-foreground: #6B6B6B
+--pill-lime: #ECFF95   --pill-purple: #904FD3   --pill-orange: #E5A94E
+--pill-mint: #95FFA5   --pill-pink: #D34F79
 --border: rgba(255,255,255,0.08)
 --destructive: #D4183D
 ```
+Tokens live in `globals.css` `:root` (base) and are re-injected at runtime from
+`content/theme.json` in `layout.tsx` (admin-editable `--accent`/`--background`).
+Change a brand color in **both** places (plus `theme.ts` `DEFAULT`) or the runtime
+injection silently overrides the CSS. The `--pill-*` set + `src/lib/pill-palette.ts`
+are the source of truth for rotating chip colors — mirror any change across both.
 
 ### Spacing & Layout
 - Mobile padding: `px-6` (24px). Desktop: `px-10` (40px).
@@ -335,6 +343,7 @@ ADMIN_CONTENT_SECRET               → Optional limited admin password (content 
 | 2026-06 | Hide-a-page via a `hidden` flag on nav items | Needed to pull a page (e.g. Writing) off the public site while reworking it, without deleting content | `NavItem` gains `hidden?: boolean` (`content/nav.json`). One source of truth, three effects: (1) `getNav()` strips hidden items so they vanish from sidebar/navbar/footer — pass `{ includeHidden: true }` for the admin editor; (2) `isPathHidden(pathname)` gates routes — each public page (`/work`, `/blog`+`[slug]`+series, `/craft`, `/about`, `/now`, `/work/[slug]`) calls `notFound()` when its section is hidden, covering sub-routes; (3) homepage previews + the sitemap suppress hidden sections (`TransmissionVariation` takes `hiddenPaths`; `sitemap.ts` filters via `getHiddenNavPaths()`). Admin Nav editor has a per-item Show/Hide toggle (`handleEdit` preserves the flag). The home route `/` is never hideable |
 | 2026-06 | Hidden = invisible everywhere (no dangling links/previews to a hidden page) | Hiding a page must remove **every** visible route to it across the UI — not just the nav item | `hiddenPaths` is exposed site-wide via `SiteConfigContext` (sourced from `getHiddenNavPaths()` in `layout.tsx` → `Providers`). Two primitives in `contexts/site-config-context.tsx`: `useIsHidden(path)` / `isHiddenPath(path, hiddenPaths)` (exact match covers anchors like `/#services`; subtree match covers `/blog/x`). **`<SafeLink href>` (`components/safe-link.tsx`) is the rule:** any internal link to a nav-managed section (`/work`, `/blog`, `/about`, `/craft`, `/now`, `/#services`) must use it (renders its `fallback`, default nothing, when the target is hidden) — applied to blog-reader, case-study reader-view, series back-link, transmission/dispatch hero CTAs, and the 4 named variations. Whole **preview blocks** call `useIsHidden(...)` and return `null` / gate (`about-preview`, `synthesis-journal-strip`, transmission + dispatch work/blog/craft/about sections). **When adding any internal link or preview section for a nav page, use `<SafeLink>` or gate on `useIsHidden` — never a bare `<Link>`** |
 | 2026-06 | CV accepts Drive/Dropbox links + direct upload; Services media gains upload + Lottie | CV field was paste-a-URL only; Services media was reference-only (image/video) | `toDownloadableUrl()` (`lib/download-url.ts`) converts Google Drive / Dropbox share links to direct-download URLs — applied where the CV CTA renders (`case-study-cta`, `synthesis-cta`). `CloudinaryUploadField` gained `accept`/`label` props; `uploadFileToCloudinary` routes PDFs + Lottie to `/raw/upload`. Admin **Global** form now has a PDF uploader for the CV. **Services media** now supports **Lottie**: `ServiceMediaRef.type`/`LibraryMediaItem.type` add `"lottie"`, `media-library.ts` gathers `.json/.lottie` (craft `lottieUrl` + `lottie` slides), `ServicesMediaMarquee` renders it via `lottie-web` (`path:` → host must be in CSP `connect-src`), and `MediaLibraryPicker` adds a lottie filter, placeholder thumb, and a **direct upload** (image/video/Lottie) that attaches to the service |
+| 2026-07 | "Spline" color refresh — new dark canvas + lime primary + rotating pill accents (supersedes gold-only) | Site read as monochrome gold-on-near-black; wanted it to feel more alive and colorful (Spline energy) without changing any layout | Background `#0A0A0A → #121316`; accent gold `#E2B93B → #ECFF95` (lime) across all ~1,600 hardcoded spots + `theme.json`/`theme.ts`/`globals.css` tokens; near-black panels (`#0D0D0D`/`#0F0F0F`) lifted to `#16171B` so cards float above the lighter page; grays `#111111→#17181C`, `#1A1A1A→#1D1E24`. Added `--accent-2` (purple `#904FD3`) + `--pill-{lime,purple,orange,mint,pink}` tokens and `src/lib/pill-palette.ts` (`pillAt`/`pillFor`). Rotating accents wired into the most visible repeating chips: blog category filter + card category badges (`blog-page-client`), case-study meta tags (`reader-view`) and section/metric tags (`slide-renderer`). Canvas stays restrained — color lives in accents, not surfaces or body text |
 
 ---
 

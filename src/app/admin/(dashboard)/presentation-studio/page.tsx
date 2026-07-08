@@ -115,7 +115,7 @@ function BookmarkPicker({
       ))}
       <button
         type="button"
-        className="w-full py-2 text-[11px] text-[#E2B93B] uppercase tracking-wider"
+        className="w-full py-2 text-[11px] text-[#ECFF95] uppercase tracking-wider"
         onClick={() => onConfirm(Object.keys(sel).filter((id) => sel[id]))}
       >
         Add selected to queue
@@ -266,7 +266,7 @@ export default function PresentationStudioPage() {
           const blob = await toBlob(node, {
             pixelRatio: 1,
             cacheBust: true,
-            backgroundColor: "#0A0A0A",
+            backgroundColor: "#121316",
           });
           if (!blob) continue;
           const name = `slide-${String(s + 1).padStart(2, "0")}_${fmt.id.replace(":", "x")}.png`;
@@ -305,7 +305,7 @@ export default function PresentationStudioPage() {
       />
 
       {exportMsg ? (
-        <p className="text-sm font-['Instrument_Sans'] text-[#E2B93B]/90 border border-[#E2B93B]/25 px-4 py-2 bg-[#E2B93B]/5">
+        <p className="text-sm font-['Instrument_Sans'] text-[#ECFF95]/90 border border-[#ECFF95]/25 px-4 py-2 bg-[#ECFF95]/5">
           {exportMsg}
         </p>
       ) : null}
@@ -313,7 +313,7 @@ export default function PresentationStudioPage() {
       <div className="grid xl:grid-cols-[1fr_340px] gap-6">
         <div className="space-y-6">
           <div className="border border-white/[0.08] bg-white/[0.02] p-4 space-y-3">
-            <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.14em] text-[#E2B93B]/80 font-['Instrument_Sans']">
+            <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.14em] text-[#ECFF95]/80 font-['Instrument_Sans']">
               <Layers size={14} /> Deck
             </div>
             <FormField label="Deck title">
@@ -343,7 +343,7 @@ export default function PresentationStudioPage() {
                   }));
                   setSlideIndex(deck.slides.length);
                 }}
-                className="px-3 py-2 border border-white/[0.12] text-[11px] font-['Instrument_Sans'] uppercase tracking-wider text-white/70 hover:border-[#E2B93B]/40"
+                className="px-3 py-2 border border-white/[0.12] text-[11px] font-['Instrument_Sans'] uppercase tracking-wider text-white/70 hover:border-[#ECFF95]/40"
               >
                 Add slide
               </button>
@@ -369,7 +369,7 @@ export default function PresentationStudioPage() {
                   type="button"
                   onClick={() => setSlideIndex(i)}
                   className={`px-2.5 py-1 text-[10px] font-mono uppercase tracking-wider border ${
-                    i === slideIndex ? "border-[#E2B93B] text-[#E2B93B]" : "border-white/[0.08] text-white/35"
+                    i === slideIndex ? "border-[#ECFF95] text-[#ECFF95]" : "border-white/[0.08] text-white/35"
                   }`}
                 >
                   {i + 1}
@@ -380,7 +380,7 @@ export default function PresentationStudioPage() {
 
           {slide ? (
             <div className="border border-white/[0.08] bg-white/[0.02] p-4 space-y-4">
-              <p className="text-[11px] uppercase tracking-[0.14em] text-[#E2B93B]/80 font-['Instrument_Sans']">
+              <p className="text-[11px] uppercase tracking-[0.14em] text-[#ECFF95]/80 font-['Instrument_Sans']">
                 Slide {slideIndex + 1} — content & engine
               </p>
               <div className="grid sm:grid-cols-2 gap-3">
@@ -391,7 +391,7 @@ export default function PresentationStudioPage() {
                     onChange={(e) => updateSlide({ templateId: e.target.value as SlideTemplateId })}
                   >
                     {TEMPLATE_OPTIONS.map((t) => (
-                      <option key={t.id} value={t.id} style={{ background: "#0A0A0A" }}>
+                      <option key={t.id} value={t.id} style={{ background: "#121316" }}>
                         {t.label}
                       </option>
                     ))}
@@ -409,10 +409,10 @@ export default function PresentationStudioPage() {
                       });
                     }}
                   >
-                    <option value="composite-scene" style={{ background: "#0A0A0A" }}>
+                    <option value="composite-scene" style={{ background: "#121316" }}>
                       Photoreal scene (hands / desk / laptop / monitor)
                     </option>
-                    <option value="css-device" style={{ background: "#0A0A0A" }}>
+                    <option value="css-device" style={{ background: "#121316" }}>
                       CSS frames only (quick / legacy)
                     </option>
                   </select>
@@ -431,7 +431,7 @@ export default function PresentationStudioPage() {
                         {Object.entries(scenePresetsByCategory()).map(([cat, presets]) => (
                           <optgroup key={cat} label={SCENE_CATEGORY_LABELS[cat as keyof typeof SCENE_CATEGORY_LABELS]}>
                             {presets.map((p) => (
-                              <option key={p.id} value={p.id} style={{ background: "#0A0A0A" }}>
+                              <option key={p.id} value={p.id} style={{ background: "#121316" }}>
                                 {p.label}
                               </option>
                             ))}
@@ -446,7 +446,7 @@ export default function PresentationStudioPage() {
                         onChange={(e) => updateSlide({ gradingPresetId: e.target.value as GradingPresetId })}
                       >
                         {(Object.keys(GRADING_PRESETS) as GradingPresetId[]).map((k) => (
-                          <option key={k} value={k} style={{ background: "#0A0A0A" }}>
+                          <option key={k} value={k} style={{ background: "#121316" }}>
                             {GRADING_PRESETS[k].label}
                           </option>
                         ))}
@@ -485,7 +485,7 @@ export default function PresentationStudioPage() {
                       onChange={(e) => updateSlide({ device: e.target.value as DeviceType })}
                     >
                       {(["phone", "browser", "tablet", "watch", "none"] as const).map((d) => (
-                        <option key={d} value={d} style={{ background: "#0A0A0A" }}>
+                        <option key={d} value={d} style={{ background: "#121316" }}>
                           {d}
                         </option>
                       ))}
@@ -498,7 +498,7 @@ export default function PresentationStudioPage() {
                       onChange={(e) => updateSlide({ cameraPresetId: e.target.value as CameraPresetId })}
                     >
                       {(Object.keys(CAMERA_PRESETS) as CameraPresetId[]).map((k) => (
-                        <option key={k} value={k} style={{ background: "#0A0A0A" }}>
+                        <option key={k} value={k} style={{ background: "#121316" }}>
                           {CAMERA_PRESETS[k].label}
                         </option>
                       ))}
@@ -511,7 +511,7 @@ export default function PresentationStudioPage() {
                       onChange={(e) => updateSlide({ gradingPresetId: e.target.value as GradingPresetId })}
                     >
                       {(Object.keys(GRADING_PRESETS) as GradingPresetId[]).map((k) => (
-                        <option key={k} value={k} style={{ background: "#0A0A0A" }}>
+                        <option key={k} value={k} style={{ background: "#121316" }}>
                           {GRADING_PRESETS[k].label}
                         </option>
                       ))}
@@ -565,7 +565,7 @@ export default function PresentationStudioPage() {
               {slide.mockupSource === "composite-scene" ? (
                 <div className="border border-white/[0.06] p-3 text-[11px] text-white/35 font-['Instrument_Sans'] leading-relaxed">
                   Photoreal presets map your screenshot into a calibrated screen region on the base photo. Swap in{" "}
-                  <span className="text-[#E2B93B]/80">your</span> hand / desk / monitor assets by overriding the scene URL
+                  <span className="text-[#ECFF95]/80">your</span> hand / desk / monitor assets by overriding the scene URL
                   or editing <code className="text-white/50">scene-presets.ts</code> (rect + intrinsic size).
                 </div>
               ) : null}
@@ -590,7 +590,7 @@ export default function PresentationStudioPage() {
               type="button"
               disabled={exporting || !slide || activeFormats.length === 0}
               onClick={runExport}
-              className="inline-flex items-center gap-2 px-5 py-3 bg-[#E2B93B] text-[#0A0A0A] font-['Anton'] text-[12px] tracking-[0.12em] hover:bg-white transition-colors disabled:opacity-40"
+              className="inline-flex items-center gap-2 px-5 py-3 bg-[#ECFF95] text-[#121316] font-['Anton'] text-[12px] tracking-[0.12em] hover:bg-white transition-colors disabled:opacity-40"
             >
               <Download size={16} />
               {exporting ? "EXPORTING…" : "DOWNLOAD ZIP (PNG)"}
@@ -603,7 +603,7 @@ export default function PresentationStudioPage() {
 
         <div className="space-y-4">
           <div className="border border-white/[0.08] bg-white/[0.02] p-4 space-y-3">
-            <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.14em] text-[#E2B93B]/80 font-['Instrument_Sans']">
+            <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.14em] text-[#ECFF95]/80 font-['Instrument_Sans']">
               <ImagePlus size={14} /> Inspiration queue
             </div>
             <p className="text-xs text-white/35 font-['Instrument_Sans']">
@@ -632,7 +632,7 @@ export default function PresentationStudioPage() {
                 queue.map((r) => (
                   <div
                     key={`${r.provenance}-${r.id}`}
-                    className="flex gap-2 items-start border border-white/[0.06] p-2 bg-[#0A0A0A]/80"
+                    className="flex gap-2 items-start border border-white/[0.06] p-2 bg-[#121316]/80"
                   >
                     {r.thumbnailUrl ? (
                       <img src={r.thumbnailUrl} alt="" className="w-14 h-10 object-cover shrink-0 border border-white/[0.08]" />
@@ -648,14 +648,14 @@ export default function PresentationStudioPage() {
                         <button
                           type="button"
                           onClick={() => applyPlateFromRef(r)}
-                          className="text-[10px] uppercase tracking-wider text-[#E2B93B] hover:underline"
+                          className="text-[10px] uppercase tracking-wider text-[#ECFF95] hover:underline"
                         >
                           Plate
                         </button>
                         <button
                           type="button"
                           onClick={() => applySceneBaseFromRef(r)}
-                          className="text-[10px] uppercase tracking-wider text-white/50 hover:text-[#E2B93B] hover:underline"
+                          className="text-[10px] uppercase tracking-wider text-white/50 hover:text-[#ECFF95] hover:underline"
                         >
                           Scene base
                         </button>
@@ -678,7 +678,7 @@ export default function PresentationStudioPage() {
           </div>
 
           <div className="border border-dashed border-white/[0.1] p-4 text-xs text-white/30 font-['Instrument_Sans'] leading-relaxed">
-            <Clapperboard className="inline mb-1 text-[#E2B93B]/50" size={14} />{" "}
+            <Clapperboard className="inline mb-1 text-[#ECFF95]/50" size={14} />{" "}
             Default path: <span className="text-white/45">photoreal scene presets</span> (hands, desk, laptop, monitor) with
             screen insertion. CSS frames remain for quick tests. Add your own angles in{" "}
             <code className="text-white/40">scene-presets.ts</code> or override the scene URL per slide.

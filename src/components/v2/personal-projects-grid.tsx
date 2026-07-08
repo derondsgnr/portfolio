@@ -26,12 +26,12 @@ export function PersonalProjectsGrid({
             fontSize: "9px",
             letterSpacing: "0.22em",
             textTransform: "uppercase",
-            color: "rgba(226,185,59,0.6)",
+            color: "rgba(236, 255, 149,0.6)",
           }}
         >
           Personal Projects
         </span>
-        <div className="flex-1 h-px" style={{ background: "rgba(226,185,59,0.1)" }} />
+        <div className="flex-1 h-px" style={{ background: "rgba(236, 255, 149,0.1)" }} />
         <span
           style={{
             fontFamily: "monospace",
@@ -94,7 +94,7 @@ export function PersonalProjectsGrid({
                 className="absolute inset-0 pointer-events-none"
                 style={{
                   background:
-                    "linear-gradient(to top, rgba(10,10,10,0.88) 0%, rgba(10,10,10,0.3) 45%, rgba(10,10,10,0) 70%)",
+                    "linear-gradient(to top, rgba(18, 19, 22,0.88) 0%, rgba(18, 19, 22,0.3) 45%, rgba(18, 19, 22,0) 70%)",
                 }}
               />
 
@@ -119,7 +119,7 @@ export function PersonalProjectsGrid({
                     fontFamily: "monospace",
                     fontSize: "9px",
                     letterSpacing: "0.16em",
-                    color: "rgba(226,185,59,0.75)",
+                    color: "rgba(236, 255, 149,0.75)",
                     textTransform: "uppercase",
                   }}
                 >
@@ -133,8 +133,8 @@ export function PersonalProjectsGrid({
                 style={{
                   width: 16,
                   height: 16,
-                  borderTop: "1.5px solid #E2B93B",
-                  borderRight: "1.5px solid #E2B93B",
+                  borderTop: "1.5px solid #ECFF95",
+                  borderRight: "1.5px solid #ECFF95",
                 }}
               />
             </div>

@@ -32,7 +32,7 @@ export function GlobalSidebar() {
         className="hidden lg:flex flex-col fixed top-0 left-0 h-screen z-40"
         style={{
           width: SIDEBAR_WIDTH,
-          background: "#0A0A0A",
+          background: "#121316",
           borderRight: "1px solid rgba(255,255,255,0.055)",
         }}
       >
@@ -51,7 +51,7 @@ export function GlobalSidebar() {
                   fontFamily: "'Anton', sans-serif",
                   fontSize: "22px",
                   letterSpacing: "0.08em",
-                  color: "#E2B93B",
+                  color: "#ECFF95",
                   textTransform: "uppercase",
                 }}
               >
@@ -75,13 +75,13 @@ export function GlobalSidebar() {
                   fontSize: "11px",
                   letterSpacing: "0.14em",
                   textTransform: "uppercase",
-                  color: active ? "#E2B93B" : "rgba(255,255,255,0.28)",
+                  color: active ? "#ECFF95" : "rgba(255,255,255,0.28)",
                   padding: "10px 0",
                   display: "flex",
                   alignItems: "center",
                   gap: 8,
                   transition: "color 0.2s",
-                  borderLeft: active ? "2px solid #E2B93B" : "2px solid transparent",
+                  borderLeft: active ? "2px solid #ECFF95" : "2px solid transparent",
                   paddingLeft: active ? 10 : 0,
                 }}
                 onMouseEnter={(e) => {
@@ -133,7 +133,7 @@ export function GlobalSidebar() {
                 width: 38,
                 height: 38,
                 borderRadius: "50%",
-                background: "#1A1A1A",
+                background: "#1D1E24",
                 border: "1px solid rgba(255,255,255,0.1)",
                 display: "flex",
                 alignItems: "center",
@@ -156,7 +156,7 @@ export function GlobalSidebar() {
                   style={{
                     fontFamily: "'Anton', sans-serif",
                     fontSize: "14px",
-                    color: "#E2B93B",
+                    color: "#ECFF95",
                     letterSpacing: "0.04em",
                   }}
                 >
@@ -207,8 +207,8 @@ export function GlobalSidebar() {
               transition: "all 0.2s",
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.color = "#E2B93B";
-              e.currentTarget.style.borderColor = "#E2B93B";
+              e.currentTarget.style.color = "#ECFF95";
+              e.currentTarget.style.borderColor = "#ECFF95";
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.color = "rgba(255,255,255,0.45)";
@@ -245,9 +245,9 @@ export function GlobalSidebar() {
                     flexShrink: 0,
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.color = "#E2B93B";
-                    e.currentTarget.style.borderColor = "#E2B93B";
-                    e.currentTarget.style.background = "rgba(226,185,59,0.06)";
+                    e.currentTarget.style.color = "#ECFF95";
+                    e.currentTarget.style.borderColor = "#ECFF95";
+                    e.currentTarget.style.background = "rgba(236, 255, 149,0.06)";
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.color = "rgba(255,255,255,0.4)";

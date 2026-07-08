@@ -49,13 +49,13 @@ export function MarqueeStrip({ className }: { className?: string }) {
               fontSize: "clamp(2.5rem, 5vw, 5rem)",
               textTransform: "uppercase",
               letterSpacing: "-0.02em",
-              color: i % 2 === 0 ? "rgba(255,255,255,0.08)" : "rgba(226,185,59,0.12)",
+              color: i % 2 === 0 ? "rgba(255,255,255,0.08)" : "rgba(236, 255, 149,0.12)",
             }}
           >
             {w}
           </span>
           <span
-            className="text-[#e2b93b]/20 text-[1.5rem]"
+            className="text-[#ECFF95]/20 text-[1.5rem]"
             style={{ fontFamily: "var(--font-body)" }}
           >
             →

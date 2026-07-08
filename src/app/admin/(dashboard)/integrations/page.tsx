@@ -28,16 +28,16 @@ export default async function AdminIntegrationsPage() {
         API secrets stay in env; only non-secret IDs are stored here.
       </p>
       <p className="text-white/40 font-mono text-xs mb-8 border border-white/[0.08] bg-white/[0.02] px-3 py-2 max-w-2xl">
-        Admin content saves use <code className="text-[#E2B93B]/80">GITHUB_TOKEN</code> in Vercel — not stored here.
+        Admin content saves use <code className="text-[#ECFF95]/80">GITHUB_TOKEN</code> in Vercel — not stored here.
         {" "}
-        <Link href="/admin/security" className="text-[#E2B93B]/90 underline-offset-2 hover:underline">
+        <Link href="/admin/security" className="text-[#ECFF95]/90 underline-offset-2 hover:underline">
           Security → GitHub PAT rotation reminder
         </Link>
         {" "}
         (default every 7 days; log when you rotate).
       </p>
       <div className="mb-8 max-w-2xl border border-white/[0.08] bg-white/[0.02] px-4 py-3">
-        <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#E2B93B]/70">
+        <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#ECFF95]/70">
           Substack distribution
         </p>
         <p className="mt-2 font-mono text-xs leading-relaxed text-white/45">
