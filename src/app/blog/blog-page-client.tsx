@@ -245,7 +245,7 @@ export default function BlogPageClient({ copy, categories, posts, series }: Blog
               initial={{ opacity: 0, y: 30 }}
               animate={heroInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.1 }}
-              className="text-7xl md:text-[9rem] lg:text-[12rem] uppercase leading-none text-white"
+              className="gradient-display text-7xl md:text-[9rem] lg:text-[12rem] uppercase leading-none"
               style={{
                 fontFamily: "var(--font-heading)",
                 letterSpacing: "-0.04em",
@@ -272,7 +272,7 @@ export default function BlogPageClient({ copy, categories, posts, series }: Blog
           initial={{ scaleX: 0 }}
           animate={heroInView ? { scaleX: 1 } : {}}
           transition={{ duration: 1.2, delay: 0.4 }}
-          className="mt-8 h-px bg-gradient-to-r from-[#ECFF95] via-[#333] to-transparent origin-left"
+          className="mt-8 h-px bg-gradient-to-r from-[#ECFF95] via-[#904FD3] to-transparent origin-left"
         />
       </div>
 

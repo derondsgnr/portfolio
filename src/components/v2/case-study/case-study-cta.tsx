@@ -87,7 +87,7 @@ export function CaseStudyCTA() {
               download
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[10px] tracking-[0.2em] text-[#ECFF95]/70 hover:text-[#ECFF95] transition-colors duration-300"
+              className="text-[10px] tracking-[0.2em] text-[#B98ADF] border border-[#904FD3]/60 px-6 py-3 hover:bg-[#904FD3] hover:text-white hover:border-[#904FD3] transition-colors duration-300"
               style={{ fontFamily: "monospace" }}
             >
               DOWNLOAD CV

@@ -67,6 +67,15 @@
     outline-color: rgba(255, 255, 255, 0.2);
   }
 
+  /* Display headings — white → lime → purple (secondary brand) gradient wash.
+     Apply only to single-node headings (not per-char SplitText spans). */
+  .gradient-display {
+    background: linear-gradient(105deg, var(--foreground) 28%, var(--accent) 58%, var(--accent-2) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-body);

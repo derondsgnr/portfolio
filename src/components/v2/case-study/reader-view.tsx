@@ -113,10 +113,10 @@ export function ReaderView({
       {/* ─── Sticky header bar (minimal) ─────────────── */}
       {/* Offset to the content column on lg+ so it doesn't cover the global sidebar/logo. */}
       <div className="fixed top-[60px] lg:top-0 left-0 lg:left-[260px] right-0 z-40 bg-[#121316]/90 backdrop-blur-sm border-b border-[#1D1E24]">
-        {/* Gold progress bar — overlaid on nav bar top edge */}
+        {/* Reading progress — lime → purple (secondary brand), overlaid on nav bar top edge */}
         <motion.div
-          className="absolute top-0 left-0 right-0 h-[3px] bg-[#ECFF95] z-50 origin-left"
-          style={{ scaleX }}
+          className="absolute top-0 left-0 right-0 h-[3px] z-50 origin-left"
+          style={{ scaleX, background: "linear-gradient(to right, #ECFF95, #904FD3)" }}
         />
         <div className="flex items-center justify-between px-4 md:px-8 py-3">
           {/* Left: back + title */}

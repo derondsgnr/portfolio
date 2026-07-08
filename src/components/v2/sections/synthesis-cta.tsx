@@ -120,7 +120,7 @@ export function SynthesisCTASection({
               target="_blank"
               rel="noopener noreferrer"
               onMouseEnter={onHover}
-              className="text-[11px] tracking-[0.2em] text-[#ECFF95]/70 hover:text-[#ECFF95] px-8 py-3.5 transition-colors duration-300"
+              className="text-[11px] tracking-[0.2em] text-[#B98ADF] border border-[#904FD3]/60 hover:bg-[#904FD3] hover:text-white hover:border-[#904FD3] px-8 py-3.5 transition-colors duration-300"
               style={{ fontFamily: "monospace" }}
             >
               DOWNLOAD CV

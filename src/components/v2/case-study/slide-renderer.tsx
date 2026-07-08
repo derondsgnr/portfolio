@@ -1016,8 +1016,8 @@ function SectionBreakSlideComponent({ slide }: { slide: Extract<Slide, { type: "
     <div ref={ref} className="min-h-[50vh] flex items-center justify-center px-6 py-20 relative">
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
         <span
-          className="text-[15vw] text-[#111] select-none"
-          style={{ letterSpacing: "-0.04em" }}
+          className="text-[15vw] select-none"
+          style={{ letterSpacing: "-0.04em", color: "rgba(144, 79, 211, 0.12)" }}
         >
           {String(slide.actNumber).padStart(2, "0")}
         </span>
