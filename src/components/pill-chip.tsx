@@ -6,11 +6,12 @@ import { pillIconFor } from "@/lib/pill-icons";
 type Variant = "chip" | "tag";
 
 /**
- * Rounded dark chip + filled Phosphor icon (colored) + neutral label.
- * - `chip`  → label-size, solid surface-4, sentence case (nav/dashboard pills)
- * - `tag`   → mono uppercase, surface-3 + border (categories, tags, metadata)
- * When `active` is false (filter rest state) the icon + text desaturate; an
- * active tag also gains a thin ring in its own accent color.
+ * Rounded dark chip + filled Phosphor icon (colored) + neutral white label.
+ * No outline — just a solid surface, a colored icon, and white text.
+ * - `chip` → label-size, surface-4, sentence case (nav/dashboard pills)
+ * - `tag`  → mono uppercase, surface-3 (categories, tags, metadata)
+ * State reads through color, not a border: when `active` is false (filter rest
+ * state) the icon + label desaturate; the chip surface stays the same.
  */
 export function PillChip({
   label,
@@ -33,9 +34,7 @@ export function PillChip({
     alignItems: "center",
     gap: mono ? 7 : 9,
     background: mono ? "var(--surface-3, #1e1f22)" : "var(--surface-4, #212225)",
-    border: mono
-      ? `1px solid ${active ? `${color}55` : "var(--border, rgba(255,255,255,0.06))"}`
-      : "none",
+    border: "none",
     borderRadius: 999,
     padding: mono ? "6px 12px" : "9px 15px 9px 12px",
     fontFamily: mono ? "monospace" : "var(--font-body)",
@@ -43,7 +42,7 @@ export function PillChip({
     fontWeight: mono ? 400 : 600,
     letterSpacing: mono ? "0.13em" : undefined,
     textTransform: mono ? "uppercase" : "none",
-    color: active ? (mono ? "var(--text-2, #b8b9ba)" : "var(--text-1, #f0f0f0)") : "var(--text-3, #6b6b6b)",
+    color: active ? "var(--text-1, #f0f0f0)" : "var(--text-3, #6b6b6b)",
     lineHeight: 1,
     whiteSpace: "nowrap",
   };

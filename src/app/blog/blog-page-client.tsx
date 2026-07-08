@@ -100,9 +100,7 @@ function FeaturedCard({ post }: { post: BlogPost }) {
             <div className="flex items-end justify-between mt-10">
               <div className="flex flex-wrap gap-2">
                 {post.meta.tags.slice(0, 3).map((tag) => (
-                  <span key={tag} className="text-[9px] tracking-[0.12em] px-2 py-1 border border-[#1D1E24] text-[#333]" style={{ fontFamily: "monospace" }}>
-                    {tag}
-                  </span>
+                  <PillChip key={tag} variant="tag" label={tag} />
                 ))}
               </div>
               <span className="text-[11px] tracking-[0.15em] text-[#ECFF95] group-hover:gap-3 transition-all flex items-center gap-2" style={{ fontFamily: "monospace" }}>
@@ -181,9 +179,7 @@ function PostCard({
 
         <div className="flex flex-wrap gap-1.5">
           {post.meta.tags.slice(0, 3).map((tag) => (
-            <span key={tag} className="text-[8px] tracking-[0.1em] px-2 py-0.5 border border-[#1D1E24] text-[#333]" style={{ fontFamily: "monospace" }}>
-              {tag}
-            </span>
+            <PillChip key={tag} variant="tag" label={tag} />
           ))}
         </div>
       </Link>

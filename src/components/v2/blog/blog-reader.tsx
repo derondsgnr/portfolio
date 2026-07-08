@@ -6,6 +6,7 @@ import { SplitText, RevealText } from "../shared/split-text";
 import Link from "next/link";
 import Image from "next/image";
 import { SafeLink } from "@/components/safe-link";
+import { PillChip } from "@/components/pill-chip";
 import type { BlogPost } from "@/types/blog";
 import type { BlogSeries } from "@/types/blog";
 import type { Slide } from "@/types/case-study";
@@ -485,13 +486,7 @@ export function BlogReader({
 
             <div className="flex flex-wrap items-center gap-2 md:ml-auto flex-shrink-0">
               {post.meta.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="text-[9px] tracking-[0.15em] px-2.5 py-1 border border-[#1D1E24] text-[#444]"
-                  style={{ fontFamily: "monospace" }}
-                >
-                  {tag}
-                </span>
+                <PillChip key={tag} variant="tag" label={tag} />
               ))}
               <ShareButton title={post.meta.title} slug={post.slug} size="md" />
             </div>
