@@ -10,7 +10,7 @@ import type { Exploration } from "@/lib/content/explorations";
 import type { MediaConfig } from "@/lib/content/media";
 import type { PageCopy } from "@/lib/content/copy";
 import { useBooking } from "../booking-context";
-import { ToolBadge, ToolBadges } from "@/components/tool-badge";
+import { ToolBadges, ToolChip } from "@/components/tool-badge";
 import { VideoEmbedFrame } from "../shared/youtube-video-frame";
 import { getVideoEmbedUrl } from "@/lib/media-url";
 import { PersonalProjectsGrid } from "../personal-projects-grid";
@@ -1764,9 +1764,7 @@ export function SynthesisAboutPage({ copy }: { copy?: PageCopy } = {}) {
               <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#ECFF95", letterSpacing: "0.15em" }}>[TOOLS.LIST()]</span>
               <div className="flex flex-wrap gap-2 mt-3">
                 {V2_ABOUT.tools.map((tool) => (
-                  <span key={tool} className="inline-flex items-center gap-1.5" style={{ fontFamily: "monospace", fontSize: "10px", color: "rgba(255,255,255,0.3)", border: "1px solid rgba(255,255,255,0.06)", padding: "4px 10px" }}>
-                    <ToolBadge tool={tool} size={14} showLabel />
-                  </span>
+                  <ToolChip key={tool} tool={tool} />
                 ))}
               </div>
             </div>
