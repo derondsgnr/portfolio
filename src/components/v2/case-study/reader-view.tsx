@@ -10,7 +10,7 @@ import { CommentsSection } from "./comments-section";
 import { CaseStudyCTA } from "./case-study-cta";
 import { CaseStudyMediaProvider } from "./case-study-media-context";
 import { CaseStudyMediaLightbox } from "../shared/case-study-media-lightbox";
-import { pillFor } from "@/lib/pill-palette";
+import { PillChip } from "@/components/pill-chip";
 
 /**
  * READER VIEW — Continuous scroll mode (default)
@@ -309,18 +309,9 @@ export function ReaderView({
           </RevealText>
 
           <div className="flex flex-wrap gap-2 mt-6">
-            {caseStudy.meta.tags.map((tag) => {
-              const hue = pillFor(tag);
-              return (
-                <span
-                  key={tag}
-                  className="text-[9px] border px-2 py-1"
-                  style={{ fontFamily: "monospace", letterSpacing: "var(--meta-tracking, 0.15em)", color: hue, borderColor: `${hue}40` }}
-                >
-                  {tag}
-                </span>
-              );
-            })}
+            {caseStudy.meta.tags.map((tag) => (
+              <PillChip key={tag} variant="tag" label={tag} />
+            ))}
           </div>
         </div>
 

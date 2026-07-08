@@ -6,7 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import type { BlogPost, BlogCategory, BlogSeries } from "@/types/blog";
 import { SeriesBadge } from "@/components/v2/blog/series-badge";
-import { pillAt, pillFor } from "@/lib/pill-palette";
+import { PillChip } from "@/components/pill-chip";
 
 /* ─── Types ──────────────────────────────────────────────────── */
 
@@ -74,12 +74,7 @@ function FeaturedCard({ post }: { post: BlogPost }) {
           <div className="bg-[#16171B] border border-[#1D1E24] border-l-0 md:border-l-0 p-8 md:p-12 flex flex-col justify-between group-hover:border-[#ECFF95]/20 transition-colors duration-500">
             <div>
               <div className="flex items-center gap-3 mb-8">
-                <span
-                  className="text-[10px] tracking-[0.2em]"
-                  style={{ fontFamily: "monospace", color: pillFor(post.meta.category) }}
-                >
-                  {post.meta.category.toUpperCase()}
-                </span>
+                <PillChip variant="tag" label={post.meta.category} />
                 <span className="text-[#2a2a2a]">·</span>
                 <span className="text-[10px] tracking-[0.1em] text-[#444]" style={{ fontFamily: "monospace" }}>
                   {formatDate(post.meta.date)}
@@ -153,12 +148,7 @@ function PostCard({
             className="object-cover opacity-50 group-hover:opacity-80 transition-opacity duration-500 scale-100 group-hover:scale-105 transition-transform duration-700"
           />
           <div className="absolute top-3 left-3">
-            <span
-              className="text-[9px] tracking-[0.2em] px-2.5 py-1 bg-[#121316]/80 border"
-              style={{ fontFamily: "monospace", color: pillFor(post.meta.category), borderColor: `${pillFor(post.meta.category)}4d` }}
-            >
-              {post.meta.category.toUpperCase()}
-            </span>
+            <PillChip variant="tag" label={post.meta.category} />
           </div>
           <div className="absolute bottom-3 right-3">
             <span className="text-[9px] tracking-[0.1em] px-2 py-1 bg-[#121316]/60 text-[#555]" style={{ fontFamily: "monospace" }}>
@@ -293,11 +283,10 @@ export default function BlogPageClient({ copy, categories, posts, series }: Blog
       {/* ── Filter bar ─────────────────────────────────────────── */}
       <div className="relative z-10 px-6 md:px-14 lg:px-20 pb-6">
         <div className="flex items-center gap-2 flex-wrap">
-          {categories.map((cat, ci) => {
+          {categories.map((cat) => {
             const hasPost = cat === "All" || posts.some((p) => p.meta.category === cat);
             if (!hasPost) return null;
             const active = filterMode === "category" && activeCategory === cat;
-            const hue = pillAt(ci);
             return (
               <motion.button
                 key={cat}
@@ -308,15 +297,9 @@ export default function BlogPageClient({ copy, categories, posts, series }: Blog
                 }}
                 whileHover={{ y: -1 }}
                 whileTap={{ y: 0 }}
-                className="text-[10px] tracking-[0.15em] px-4 py-2 border transition-all duration-200"
-                style={{
-                  fontFamily: "monospace",
-                  borderColor: active ? hue : "#1D1E24",
-                  color: active ? hue : "#444",
-                  background: active ? `${hue}14` : "transparent",
-                }}
+                style={{ background: "none", border: "none", padding: 0, cursor: "pointer" }}
               >
-                {cat.toUpperCase()}
+                <PillChip variant="tag" label={cat} active={active} />
               </motion.button>
             );
           })}

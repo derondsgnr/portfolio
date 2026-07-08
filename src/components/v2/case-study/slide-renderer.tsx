@@ -8,7 +8,7 @@ import { LottiePlayer } from "../shared/lottie-player";
 import { useCaseStudyMedia } from "./case-study-media-context";
 import { VideoEmbedFrame } from "../shared/youtube-video-frame";
 import { normalizeCloudinaryVideoUrl, getVideoEmbedUrl } from "@/lib/media-url";
-import { pillAt } from "@/lib/pill-palette";
+import { PillChip } from "@/components/pill-chip";
 import parseHtml from "html-react-parser";
 
 /* ─── Shared content widths ──────────────────────────────────────────────────
@@ -261,18 +261,9 @@ function CoverSlideComponent({ slide }: { slide: Extract<Slide, { type: "cover" 
             transition={{ duration: 0.6 }}
             className="flex flex-wrap gap-3 mb-8"
           >
-            {slide.tags.map((tag, ti) => {
-              const hue = pillAt(ti);
-              return (
-                <span
-                  key={tag}
-                  className="text-[10px] tracking-[0.2em] border px-3 py-1"
-                  style={{ fontFamily: "monospace", color: hue, borderColor: `${hue}4d` }}
-                >
-                  {tag}
-                </span>
-              );
-            })}
+            {slide.tags.map((tag) => (
+              <PillChip key={tag} variant="tag" label={tag} />
+            ))}
           </motion.div>
         )}
 

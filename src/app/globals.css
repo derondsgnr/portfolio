@@ -46,6 +46,19 @@
   --pill-orange: #e5a94e;
   --pill-mint: #95ffa5;
   --pill-pink: #d34f79;
+
+  /* ── Surface elevation scale (above --background) ──
+     Chips, cards, raised wells. Never darker than the page. */
+  --surface-1: #191a1d;   /* row hover / subtle raise */
+  --surface-2: #1c1c1c;
+  --surface-3: #1e1f22;   /* card / tag chip */
+  --surface-4: #212225;   /* raised chip / input */
+
+  /* ── Text scale ── */
+  --text-1: #f0f0f0;      /* primary */
+  --text-2: #b8b9ba;      /* secondary */
+  --text-3: #919293;      /* muted */
+  --text-4: #8d8d8e;      /* faint / meta */
 }
 
 @layer base {
