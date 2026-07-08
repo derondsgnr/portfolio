@@ -141,7 +141,7 @@ function NavItem({
       {isActive && (
         <motion.span
           layoutId="sidebar-active-bar"
-          className="absolute left-0 top-1 bottom-1 w-[2px] bg-[#E2B93B]"
+          className="absolute left-0 top-1 bottom-1 w-[2px] bg-[#ECFF95]"
           transition={{ type: "spring", stiffness: 400, damping: 35 }}
         />
       )}
@@ -155,7 +155,7 @@ function NavItem({
       <span
         className={`
           relative text-[9px] font-['Instrument_Sans'] tracking-widest w-4 shrink-0 text-right
-          ${isActive ? "text-[#E2B93B]/60" : "text-white/15 group-hover:text-white/25"}
+          ${isActive ? "text-[#ECFF95]/60" : "text-white/15 group-hover:text-white/25"}
         `}
       >
         {String(item.number).padStart(2, "0")}
@@ -164,7 +164,7 @@ function NavItem({
       {/* Icon */}
       <Icon
         size={13}
-        className={`relative shrink-0 ${isActive ? "text-[#E2B93B]" : ""}`}
+        className={`relative shrink-0 ${isActive ? "text-[#ECFF95]" : ""}`}
       />
 
       {/* Label */}
@@ -178,7 +178,7 @@ function NavItem({
       </span>
 
       {attentionCount && attentionCount > 0 ? (
-        <span className="relative ml-auto inline-flex min-w-[20px] items-center justify-center border border-[#E2B93B]/35 bg-[#E2B93B]/12 px-1.5 py-0.5 text-[9px] font-['Instrument_Sans'] tracking-[0.08em] text-[#E2B93B]">
+        <span className="relative ml-auto inline-flex min-w-[20px] items-center justify-center border border-[#ECFF95]/35 bg-[#ECFF95]/12 px-1.5 py-0.5 text-[9px] font-['Instrument_Sans'] tracking-[0.08em] text-[#ECFF95]">
           {formatCount(attentionCount)}
         </span>
       ) : null}
@@ -287,7 +287,7 @@ function SidebarContent({ onClose }: { onClose?: () => void }) {
         {visibleGroups.map((group) => (
           <div key={group.id} className="mb-5">
             {/* Group label */}
-            <p className="px-3 mb-1.5 text-[8px] tracking-[0.35em] text-[#E2B93B]/40 uppercase font-['Instrument_Sans']">
+            <p className="px-3 mb-1.5 text-[8px] tracking-[0.35em] text-[#ECFF95]/40 uppercase font-['Instrument_Sans']">
               {group.label}
             </p>
 
@@ -359,7 +359,7 @@ function SidebarContent({ onClose }: { onClose?: () => void }) {
 // ─── AdminSidebar (desktop) ────────────────────────────────────────
 export function AdminSidebar() {
   return (
-    <aside className="fixed left-0 top-0 h-full w-[220px] bg-[#0A0A0A] border-r border-white/[0.06] z-40 hidden lg:flex flex-col">
+    <aside className="fixed left-0 top-0 h-full w-[220px] bg-[#121316] border-r border-white/[0.06] z-40 hidden lg:flex flex-col">
       <SidebarContent />
     </aside>
   );
@@ -372,7 +372,7 @@ export function MobileAdminNav() {
   return (
     <>
       {/* Mobile top bar */}
-      <div className="lg:hidden fixed top-0 left-0 right-0 h-14 bg-[#0A0A0A] border-b border-white/[0.06] flex items-center justify-between px-4 z-40">
+      <div className="lg:hidden fixed top-0 left-0 right-0 h-14 bg-[#121316] border-b border-white/[0.06] flex items-center justify-between px-4 z-40">
         <button
           onClick={() => setOpen(true)}
           className="text-white/50 hover:text-white transition-colors"
@@ -406,7 +406,7 @@ export function MobileAdminNav() {
               animate={{ x: 0 }}
               exit={{ x: -220 }}
               transition={{ type: "spring", stiffness: 400, damping: 35 }}
-              className="fixed left-0 top-0 h-full w-[220px] bg-[#0A0A0A] border-r border-white/[0.06] z-50 flex flex-col lg:hidden"
+              className="fixed left-0 top-0 h-full w-[220px] bg-[#121316] border-r border-white/[0.06] z-50 flex flex-col lg:hidden"
             >
               <SidebarContent onClose={() => setOpen(false)} />
             </motion.aside>

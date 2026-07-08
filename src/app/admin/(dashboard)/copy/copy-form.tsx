@@ -30,7 +30,7 @@ export function CopyForm({ initial }: Props) {
     }
   }
 
-  const inputClass = "w-full px-4 py-2 bg-[#111] border border-white/10 text-white placeholder:text-white/40 font-mono text-sm focus:outline-none focus:border-[#E2B93B]/50";
+  const inputClass = "w-full px-4 py-2 bg-[#111] border border-white/10 text-white placeholder:text-white/40 font-mono text-sm focus:outline-none focus:border-[#ECFF95]/50";
   const labelClass = "block font-mono text-xs text-white/60 mb-1";
 
   const p = (form[activePage] ?? {}) as PageCopy;
@@ -46,8 +46,8 @@ export function CopyForm({ initial }: Props) {
             onClick={() => setActivePage(page)}
             className="px-3 py-1.5 font-mono text-xs tracking-wider uppercase transition-colors"
             style={{
-              color: activePage === page ? "#0A0A0A" : "rgba(255,255,255,0.5)",
-              background: activePage === page ? "#E2B93B" : "transparent",
+              color: activePage === page ? "#121316" : "rgba(255,255,255,0.5)",
+              background: activePage === page ? "#ECFF95" : "transparent",
             }}
           >
             {page}
@@ -59,7 +59,7 @@ export function CopyForm({ initial }: Props) {
       {activePage === "homepage" && (
         <div className="space-y-8">
           <fieldset className="space-y-4">
-            <legend className="font-mono text-sm text-[#E2B93B] mb-4">Hero</legend>
+            <legend className="font-mono text-sm text-[#ECFF95] mb-4">Hero</legend>
             <div>
               <label className={labelClass}>Name</label>
               <input
@@ -88,7 +88,7 @@ export function CopyForm({ initial }: Props) {
           </fieldset>
 
           <fieldset className="space-y-4">
-            <legend className="font-mono text-sm text-[#E2B93B] mb-4">About</legend>
+            <legend className="font-mono text-sm text-[#ECFF95] mb-4">About</legend>
             <div>
               <label className={labelClass}>Label</label>
               <input
@@ -132,7 +132,7 @@ export function CopyForm({ initial }: Props) {
           </fieldset>
 
           <fieldset className="space-y-4">
-            <legend className="font-mono text-sm text-[#E2B93B] mb-4">CTA</legend>
+            <legend className="font-mono text-sm text-[#ECFF95] mb-4">CTA</legend>
             <CtaFields form={form} setForm={setForm} page="homepage" p={p} inputClass={inputClass} labelClass={labelClass} showTagline />
           </fieldset>
         </div>
@@ -142,7 +142,7 @@ export function CopyForm({ initial }: Props) {
       {activePage === "work" && (
         <div className="space-y-8">
           <fieldset className="space-y-4">
-            <legend className="font-mono text-sm text-[#E2B93B] mb-4">Hero</legend>
+            <legend className="font-mono text-sm text-[#ECFF95] mb-4">Hero</legend>
             <div>
               <label className={labelClass}>Access label</label>
               <input
@@ -178,7 +178,7 @@ export function CopyForm({ initial }: Props) {
           </fieldset>
 
           <fieldset className="space-y-4">
-            <legend className="font-mono text-sm text-[#E2B93B] mb-4">CTA</legend>
+            <legend className="font-mono text-sm text-[#ECFF95] mb-4">CTA</legend>
             <CtaFields form={form} setForm={setForm} page="work" p={p} inputClass={inputClass} labelClass={labelClass} />
           </fieldset>
         </div>
@@ -188,7 +188,7 @@ export function CopyForm({ initial }: Props) {
       {activePage === "about" && (
         <div className="space-y-8">
           <fieldset className="space-y-4">
-            <legend className="font-mono text-sm text-[#E2B93B] mb-4">Hero</legend>
+            <legend className="font-mono text-sm text-[#ECFF95] mb-4">Hero</legend>
             <div>
               <label className={labelClass}>Label</label>
               <input
@@ -216,7 +216,7 @@ export function CopyForm({ initial }: Props) {
           </fieldset>
 
           <fieldset className="space-y-4">
-            <legend className="font-mono text-sm text-[#E2B93B] mb-4">CTA</legend>
+            <legend className="font-mono text-sm text-[#ECFF95] mb-4">CTA</legend>
             <CtaFields form={form} setForm={setForm} page="about" p={p} inputClass={inputClass} labelClass={labelClass} />
           </fieldset>
         </div>
@@ -226,7 +226,7 @@ export function CopyForm({ initial }: Props) {
       {activePage === "craft" && (
         <div className="space-y-8">
           <fieldset className="space-y-4">
-            <legend className="font-mono text-sm text-[#E2B93B] mb-4">Hero</legend>
+            <legend className="font-mono text-sm text-[#ECFF95] mb-4">Hero</legend>
             <div>
               <label className={labelClass}>Label</label>
               <input
@@ -238,7 +238,7 @@ export function CopyForm({ initial }: Props) {
           </fieldset>
 
           <fieldset className="space-y-4">
-            <legend className="font-mono text-sm text-[#E2B93B] mb-4">CTA</legend>
+            <legend className="font-mono text-sm text-[#ECFF95] mb-4">CTA</legend>
             <CtaFields form={form} setForm={setForm} page="craft" p={p} inputClass={inputClass} labelClass={labelClass} />
           </fieldset>
         </div>

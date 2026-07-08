@@ -121,7 +121,7 @@ export const YOUR_PROJECT_CASE_STUDY: CaseStudy = {
     tags: ["Product Design", "Fintech"],      // REQUIRED: at least 1 tag
     cover: "https://images.unsplash.com/photo-placeholder",  // REQUIRED: cover image for cards/previews
     summary: "One or two sentences describing what this project is about.",  // REQUIRED
-    color: "#E2B93B",                         // optional: accent color override (default is gold)
+    color: "#ECFF95",                         // optional: accent color override (default is gold)
   },
 
   // ─── REQUIRED: Template type ──────────────────────────────────

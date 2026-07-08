@@ -39,8 +39,8 @@ export function CloudinaryUploadField({ onUploaded, busyNote = "Uploading…", a
     return (
       <p className="font-mono text-[10px] text-white/45 leading-relaxed mt-2">
         To upload files from here, add{" "}
-        <code className="text-[#E2B93B]/80">NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME</code> and{" "}
-        <code className="text-[#E2B93B]/80">NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET</code> (unsigned preset) to your env.
+        <code className="text-[#ECFF95]/80">NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME</code> and{" "}
+        <code className="text-[#ECFF95]/80">NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET</code> (unsigned preset) to your env.
         Until then, paste a hosted image or video URL in the fields below.
       </p>
     );
@@ -62,7 +62,7 @@ export function CloudinaryUploadField({ onUploaded, busyNote = "Uploading…", a
         type="button"
         disabled={busy}
         onClick={() => fileRef.current?.click()}
-        className="px-4 py-1.5 border border-[#E2B93B]/35 font-mono text-[10px] uppercase tracking-[0.12em] text-[#E2B93B] hover:bg-[#E2B93B]/10 transition-colors disabled:opacity-40"
+        className="px-4 py-1.5 border border-[#ECFF95]/35 font-mono text-[10px] uppercase tracking-[0.12em] text-[#ECFF95] hover:bg-[#ECFF95]/10 transition-colors disabled:opacity-40"
       >
         {busy ? busyNote : label}
       </button>

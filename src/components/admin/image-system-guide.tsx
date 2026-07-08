@@ -65,7 +65,7 @@ export function ImageRatioHint({
             className={cx(
               "inline-flex items-center gap-1 border px-2 py-1 text-[9px] uppercase tracking-[0.11em] font-['Instrument_Sans']",
               aspect.required
-                ? "border-[#E2B93B]/35 bg-[#E2B93B]/10 text-[#E2B93B]/85"
+                ? "border-[#ECFF95]/35 bg-[#ECFF95]/10 text-[#ECFF95]/85"
                 : "border-white/[0.08] bg-white/[0.025] text-white/45"
             )}
           >
@@ -129,8 +129,8 @@ function RatioPreview({
             <ImageIcon size={compact ? 14 : 18} className="text-white/15" />
           </div>
         )}
-        <div className="pointer-events-none absolute inset-[20%] border border-[#E2B93B]/30" />
-        <div className="pointer-events-none absolute left-2 top-2 bg-[#0A0A0A]/75 px-1.5 py-1 text-[8px] tracking-[0.14em] text-[#E2B93B]">
+        <div className="pointer-events-none absolute inset-[20%] border border-[#ECFF95]/30" />
+        <div className="pointer-events-none absolute left-2 top-2 bg-[#121316]/75 px-1.5 py-1 text-[8px] tracking-[0.14em] text-[#ECFF95]">
           {aspect.ratio.toUpperCase()}
         </div>
       </div>
@@ -140,7 +140,7 @@ function RatioPreview({
             {aspect.label}
           </p>
           {aspect.required ? (
-            <span className="border border-[#E2B93B]/25 bg-[#E2B93B]/10 px-1.5 py-0.5 text-[8px] uppercase tracking-[0.12em] text-[#E2B93B]/75">
+            <span className="border border-[#ECFF95]/25 bg-[#ECFF95]/10 px-1.5 py-0.5 text-[8px] uppercase tracking-[0.12em] text-[#ECFF95]/75">
               Required
             </span>
           ) : null}
@@ -181,8 +181,8 @@ export function ImageFieldGuide({
       <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
         <div>
           <div className="flex items-center gap-2">
-            <Crop size={13} className="text-[#E2B93B]/70" />
-            <p className="text-[10px] uppercase tracking-[0.18em] text-[#E2B93B]/75 font-['Instrument_Sans']">
+            <Crop size={13} className="text-[#ECFF95]/70" />
+            <p className="text-[10px] uppercase tracking-[0.18em] text-[#ECFF95]/75 font-['Instrument_Sans']">
               {spec.label}
             </p>
           </div>
@@ -233,7 +233,7 @@ function RoleSpecPanel({
       <section className="border border-white/[0.08] bg-white/[0.02] p-5">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
-            <p className="text-[10px] uppercase tracking-[0.18em] text-[#E2B93B]/70 font-['Instrument_Sans']">
+            <p className="text-[10px] uppercase tracking-[0.18em] text-[#ECFF95]/70 font-['Instrument_Sans']">
               {spec.shortLabel}
             </p>
             <h2 className="mt-2 font-['Anton'] text-3xl uppercase tracking-[0.04em] text-white">
@@ -255,18 +255,18 @@ function RoleSpecPanel({
         </p>
 
         <div className="mt-6 grid gap-4 md:grid-cols-2">
-          <div className="border border-white/[0.06] bg-[#0A0A0A] p-4">
+          <div className="border border-white/[0.06] bg-[#121316] p-4">
             <div className="flex items-center gap-2">
-              <Maximize2 size={13} className="text-[#E2B93B]/65" />
+              <Maximize2 size={13} className="text-[#ECFF95]/65" />
               <p className="text-[10px] uppercase tracking-[0.16em] text-white/45">Master Upload</p>
             </div>
             <p className="mt-3 text-xs leading-relaxed text-white/55 font-['Instrument_Sans']">
               {spec.master}
             </p>
           </div>
-          <div className="border border-white/[0.06] bg-[#0A0A0A] p-4">
+          <div className="border border-white/[0.06] bg-[#121316] p-4">
             <div className="flex items-center gap-2">
-              <Info size={13} className="text-[#E2B93B]/65" />
+              <Info size={13} className="text-[#ECFF95]/65" />
               <p className="text-[10px] uppercase tracking-[0.16em] text-white/45">Safe Zone</p>
             </div>
             <p className="mt-3 text-xs leading-relaxed text-white/55 font-['Instrument_Sans']">
@@ -291,7 +291,7 @@ function RoleSpecPanel({
           <div className="mt-3 space-y-2">
             {spec.usedIn.map((item) => (
               <div key={item} className="flex gap-2 text-xs text-white/55 font-['Instrument_Sans']">
-                <Check size={12} className="mt-0.5 shrink-0 text-[#E2B93B]/60" />
+                <Check size={12} className="mt-0.5 shrink-0 text-[#ECFF95]/60" />
                 <span>{item}</span>
               </div>
             ))}
@@ -303,15 +303,15 @@ function RoleSpecPanel({
           <div className="mt-3 space-y-2">
             {spec.designerChecklist.map((item) => (
               <div key={item} className="flex gap-2 text-xs leading-relaxed text-white/55 font-['Instrument_Sans']">
-                <span className="mt-1 h-1.5 w-1.5 shrink-0 bg-[#E2B93B]/60" />
+                <span className="mt-1 h-1.5 w-1.5 shrink-0 bg-[#ECFF95]/60" />
                 <span>{item}</span>
               </div>
             ))}
           </div>
         </div>
 
-        <div className="border border-[#E2B93B]/20 bg-[#E2B93B]/[0.035] p-4">
-          <p className="text-[10px] uppercase tracking-[0.16em] text-[#E2B93B]/70">Upload Notes</p>
+        <div className="border border-[#ECFF95]/20 bg-[#ECFF95]/[0.035] p-4">
+          <p className="text-[10px] uppercase tracking-[0.16em] text-[#ECFF95]/70">Upload Notes</p>
           <div className="mt-3 space-y-2">
             {spec.uploadNotes.map((item) => (
               <p key={item} className="text-xs leading-relaxed text-white/55 font-['Instrument_Sans']">
@@ -335,7 +335,7 @@ export function ImageSystemGuide() {
       <section className="border border-white/[0.08] bg-white/[0.02] p-5">
         <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <p className="text-[10px] uppercase tracking-[0.2em] text-[#E2B93B]/70 font-['Instrument_Sans']">
+            <p className="text-[10px] uppercase tracking-[0.2em] text-[#ECFF95]/70 font-['Instrument_Sans']">
               Image Operations
             </p>
             <h1 className="mt-2 font-['Anton'] text-4xl uppercase tracking-[0.04em] text-white">
@@ -352,7 +352,7 @@ export function ImageSystemGuide() {
             <input
               value={previewUrl}
               onChange={(e) => setPreviewUrl(e.target.value)}
-              className="mt-2 w-full border border-white/[0.10] bg-[#0A0A0A] px-3 py-2 text-sm text-white outline-none placeholder:text-white/20 focus:border-[#E2B93B]/45"
+              className="mt-2 w-full border border-white/[0.10] bg-[#121316] px-3 py-2 text-sm text-white outline-none placeholder:text-white/20 focus:border-[#ECFF95]/45"
               placeholder="https://..."
             />
           </div>
@@ -368,11 +368,11 @@ export function ImageSystemGuide() {
             className={cx(
               "border p-4 text-left transition-colors",
               selectedRole === spec.id
-                ? "border-[#E2B93B]/45 bg-[#E2B93B]/[0.055]"
+                ? "border-[#ECFF95]/45 bg-[#ECFF95]/[0.055]"
                 : "border-white/[0.07] bg-white/[0.015] hover:border-white/[0.14]"
             )}
           >
-            <p className="text-[9px] uppercase tracking-[0.16em] text-[#E2B93B]/55">
+            <p className="text-[9px] uppercase tracking-[0.16em] text-[#ECFF95]/55">
               {spec.behavior}
             </p>
             <p className="mt-2 text-sm text-white/80 font-['Instrument_Sans']">{spec.label}</p>

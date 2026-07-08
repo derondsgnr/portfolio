@@ -4,7 +4,7 @@ import * as React from "react";
 import { cn } from "@/components/ui/utils";
 
 const legendStyles =
-  "text-[11px] tracking-[0.2em] text-[#E2B93B] uppercase font-['Instrument_Sans'] font-medium";
+  "text-[11px] tracking-[0.2em] text-[#ECFF95] uppercase font-['Instrument_Sans'] font-medium";
 
 export interface FieldGroupProps {
   legend: string;

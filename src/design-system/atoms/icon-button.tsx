@@ -14,7 +14,7 @@ const variantStyles = {
     "border border-white/20 text-white/60 hover:text-white hover:border-white/40",
   ghost: "border-transparent text-white/40 hover:text-white/70",
   accent:
-    "border border-[#E2B93B]/40 text-[#E2B93B]/80 hover:text-[#E2B93B] hover:border-[#E2B93B]/60",
+    "border border-[#ECFF95]/40 text-[#ECFF95]/80 hover:text-[#ECFF95] hover:border-[#ECFF95]/60",
 } as const;
 
 const sizeStyles = {
@@ -33,7 +33,7 @@ export function IconButton({
     <button
       type="button"
       className={cn(
-        "inline-flex items-center justify-center shrink-0 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#E2B93B]/30 disabled:opacity-50 disabled:pointer-events-none",
+        "inline-flex items-center justify-center shrink-0 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#ECFF95]/30 disabled:opacity-50 disabled:pointer-events-none",
         variantStyles[variant],
         sizeStyles[size],
         className

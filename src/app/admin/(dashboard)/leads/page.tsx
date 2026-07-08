@@ -65,9 +65,9 @@ export default function AdminLeadsPage() {
               max={100}
               value={minScore}
               onChange={(event) => setMinScore(Number(event.target.value))}
-              className="w-24 accent-[#E2B93B]"
+              className="w-24 accent-[#ECFF95]"
             />
-            <span className="text-[10px] text-[#E2B93B]/70 font-['Instrument_Sans'] w-6 text-right">{minScore}</span>
+            <span className="text-[10px] text-[#ECFF95]/70 font-['Instrument_Sans'] w-6 text-right">{minScore}</span>
           </div>
         </div>
 
@@ -83,7 +83,7 @@ export default function AdminLeadsPage() {
                 </div>
                 <div className="flex items-center gap-2">
                   <StatusPill label={lead.stage} tone={STAGE_TONE[lead.stage]} />
-                  <span className="text-[10px] text-[#E2B93B]/75 font-['Instrument_Sans'] tracking-[0.14em] uppercase">
+                  <span className="text-[10px] text-[#ECFF95]/75 font-['Instrument_Sans'] tracking-[0.14em] uppercase">
                     Score {lead.score}
                   </span>
                 </div>

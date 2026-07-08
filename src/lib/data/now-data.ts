@@ -227,7 +227,7 @@ export const ACTIVITY_CONFIG: Record<
   ActivityType,
   { label: string; color: string; bg: string }
 > = {
-  design:   { label: "DESIGN",   color: "#E2B93B", bg: "rgba(226,185,59,0.12)" },
+  design:   { label: "DESIGN",   color: "#ECFF95", bg: "rgba(236, 255, 149,0.12)" },
   code:     { label: "CODE",     color: "#4DABF7", bg: "rgba(77,171,247,0.12)" },
   writing:  { label: "WRITING",  color: "#69DB7C", bg: "rgba(105,219,124,0.12)" },
   planning: { label: "PLANNING", color: "#DA77F2", bg: "rgba(218,119,242,0.12)" },
@@ -239,7 +239,7 @@ export const TODO_CONFIG: Record<
   TodoCategory,
   { label: string; color: string; bg: string }
 > = {
-  design:  { label: "DESIGN",  color: "#E2B93B", bg: "rgba(226,185,59,0.1)" },
+  design:  { label: "DESIGN",  color: "#ECFF95", bg: "rgba(236, 255, 149,0.1)" },
   code:    { label: "CODE",    color: "#4DABF7", bg: "rgba(77,171,247,0.1)" },
   writing: { label: "WRITING", color: "#69DB7C", bg: "rgba(105,219,124,0.1)" },
   admin:   { label: "ADMIN",   color: "#9CA3AF", bg: "rgba(156,163,175,0.1)" },

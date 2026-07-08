@@ -5,10 +5,10 @@
     "pair": "anton-instrument"
   },
   "colors": {
-    "primary": "#E2B93B",
-    "secondary": "#1a1a1a",
-    "accent": "#E2B93B",
-    "background": "#0A0A0A",
+    "primary": "#ECFF95",
+    "secondary": "#1d1e24",
+    "accent": "#ECFF95",
+    "background": "#121316",
     "text": "#f0f0f0"
   },
   "spacing": {

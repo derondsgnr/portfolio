@@ -9,32 +9,56 @@
   --font-heading: var(--font-anton, "Anton", sans-serif);
   --font-body: var(--font-instrument, "Instrument Sans", sans-serif);
 
-  --background: #0a0a0a;
+  --background: #121316;
   --foreground: #f0f0f0;
-  --card: #111111;
+  --card: #17181c;
   --card-foreground: #f0f0f0;
-  --popover: #111111;
+  --popover: #17181c;
   --popover-foreground: #f0f0f0;
   --primary: #f0f0f0;
-  --primary-foreground: #0a0a0a;
-  --secondary: #1a1a1a;
+  --primary-foreground: #121316;
+  --secondary: #1d1e24;
   --secondary-foreground: #f0f0f0;
-  --muted: #1a1a1a;
+  --muted: #1d1e24;
   --muted-foreground: #9a9a9a;
-  --accent: #e2b93b;
-  --accent-foreground: #0a0a0a;
+  --accent: #ecff95;
+  --accent-foreground: #121316;
   --destructive: #d4183d;
   --destructive-foreground: #ffffff;
   --border: rgba(255, 255, 255, 0.08);
   --input: transparent;
-  --input-background: #141414;
+  --input-background: #1a1b20;
   --switch-background: #333333;
   --font-weight-medium: 500;
   --font-weight-normal: 400;
   --ring: rgba(255, 255, 255, 0.2);
   --radius: 0.625rem;
-  --sidebar: #0f0f0f;
+  --sidebar: #141519;
   --sidebar-foreground: #f0f0f0;
+
+  /* ── Spline palette ──────────────────────────────────────────
+     Primary accent = lime (--accent). Secondary brand = purple.
+     Pill colors rotate across tags / badges / labels / metrics. */
+  --accent-2: #904fd3;              /* purple — secondary brand / gradient partner */
+  --accent-2-foreground: #f0f0f0;
+  --pill-lime: #ecff95;
+  --pill-purple: #904fd3;
+  --pill-orange: #e5a94e;
+  --pill-mint: #95ffa5;
+  --pill-pink: #d34f79;
+
+  /* ── Surface elevation scale (above --background) ──
+     Chips, cards, raised wells. Never darker than the page. */
+  --surface-1: #191a1d;   /* row hover / subtle raise */
+  --surface-2: #1c1c1c;
+  --surface-3: #1e1f22;   /* card / tag chip */
+  --surface-4: #212225;   /* raised chip / input */
+
+  /* ── Text scale ── */
+  --text-1: #f0f0f0;      /* primary */
+  --text-2: #b8b9ba;      /* secondary */
+  --text-3: #919293;      /* muted */
+  --text-4: #8d8d8e;      /* faint / meta */
 }
 
 @layer base {
@@ -72,7 +96,7 @@
   font-family: 'Instrument Sans', sans-serif;
   font-size: 14px;
   line-height: 1.75;
-  caret-color: #E2B93B;
+  caret-color: #ECFF95;
 }
 .prose-rte p { margin: 0 0 0.75em; }
 .prose-rte p:last-child { margin-bottom: 0; }

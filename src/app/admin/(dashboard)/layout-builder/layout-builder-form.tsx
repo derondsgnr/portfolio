@@ -68,7 +68,7 @@ function OverrideForm({
                 value={(overrides[field.key] as string) ?? ""}
                 onChange={(e) => handleChange(field.key, e.target.value)}
                 placeholder={String(field.default ?? "")}
-                className="w-full px-2 py-1.5 bg-[#0A0A0A] border border-white/10 text-white font-mono text-xs focus:outline-none focus:border-[#E2B93B]/50"
+                className="w-full px-2 py-1.5 bg-[#121316] border border-white/10 text-white font-mono text-xs focus:outline-none focus:border-[#ECFF95]/50"
               />
             </div>
           );
@@ -82,7 +82,7 @@ function OverrideForm({
                 onChange={(e) => handleChange(field.key, e.target.value)}
                 placeholder={String(field.default ?? "")}
                 rows={2}
-                className="w-full px-2 py-1.5 bg-[#0A0A0A] border border-white/10 text-white font-mono text-xs focus:outline-none focus:border-[#E2B93B]/50 resize-y"
+                className="w-full px-2 py-1.5 bg-[#121316] border border-white/10 text-white font-mono text-xs focus:outline-none focus:border-[#ECFF95]/50 resize-y"
               />
             </div>
           );
@@ -97,7 +97,7 @@ function OverrideForm({
                 value={str}
                 onChange={(e) => handleChange(field.key, e.target.value.split("\n").filter(Boolean))}
                 rows={3}
-                className="w-full px-2 py-1.5 bg-[#0A0A0A] border border-white/10 text-white font-mono text-xs focus:outline-none focus:border-[#E2B93B]/50 resize-y"
+                className="w-full px-2 py-1.5 bg-[#121316] border border-white/10 text-white font-mono text-xs focus:outline-none focus:border-[#ECFF95]/50 resize-y"
               />
             </div>
           );
@@ -122,7 +122,7 @@ function OverrideForm({
                 }}
                 rows={3}
                 placeholder={"YEARS:5+\nPROJECTS:40+\nCLIENTS:25+"}
-                className="w-full px-2 py-1.5 bg-[#0A0A0A] border border-white/10 text-white font-mono text-xs focus:outline-none focus:border-[#E2B93B]/50 resize-y"
+                className="w-full px-2 py-1.5 bg-[#121316] border border-white/10 text-white font-mono text-xs focus:outline-none focus:border-[#ECFF95]/50 resize-y"
               />
             </div>
           );
@@ -177,7 +177,7 @@ function SortableSection({
           <select
             value={section.variation}
             onChange={(e) => onVariationChange(index, e.target.value)}
-            className="px-3 py-1.5 bg-[#0A0A0A] border border-white/10 text-white font-mono text-xs focus:outline-none focus:border-[#E2B93B]/50"
+            className="px-3 py-1.5 bg-[#121316] border border-white/10 text-white font-mono text-xs focus:outline-none focus:border-[#ECFF95]/50"
           >
             {options.map((v) => (
               <option key={v} value={v}>
@@ -188,7 +188,7 @@ function SortableSection({
           {hasSchema && (
             <button
               onClick={() => setExpanded((e) => !e)}
-              className="font-mono text-xs text-white/40 hover:text-[#E2B93B] shrink-0"
+              className="font-mono text-xs text-white/40 hover:text-[#ECFF95] shrink-0"
             >
               {expanded ? "Hide edits" : "Edit"}
             </button>
@@ -225,7 +225,7 @@ function SectionPicker({
   const [variation, setVariation] = useState(options[0] ?? "synthesis");
 
   return (
-    <div className="p-4 border border-white/20 bg-[#0A0A0A] space-y-4">
+    <div className="p-4 border border-white/20 bg-[#121316] space-y-4">
       <p className="font-mono text-sm text-white">Add section</p>
       <div className="flex flex-wrap gap-4 items-end">
         <div>
@@ -263,7 +263,7 @@ function SectionPicker({
         </div>
         <button
           onClick={() => onAdd(id, variation)}
-          className="px-4 py-2 bg-[#E2B93B] text-[#0A0A0A] font-mono text-xs"
+          className="px-4 py-2 bg-[#ECFF95] text-[#121316] font-mono text-xs"
         >
           Add
         </button>
@@ -385,19 +385,19 @@ export function LayoutBuilderForm({ initial }: Props) {
               onClick={() => setHomepageTemplate(t.value)}
               className={`flex items-start gap-3 p-3 border text-left transition-colors ${
                 homepageTemplate === t.value
-                  ? "border-[#E2B93B]/60 bg-[#E2B93B]/5"
+                  ? "border-[#ECFF95]/60 bg-[#ECFF95]/5"
                   : "border-white/10 hover:border-white/20"
               }`}
             >
               <span
                 className={`mt-0.5 w-3 h-3 rounded-full border flex-shrink-0 ${
                   homepageTemplate === t.value
-                    ? "border-[#E2B93B] bg-[#E2B93B]"
+                    ? "border-[#ECFF95] bg-[#ECFF95]"
                     : "border-white/30"
                 }`}
               />
               <span className="space-y-0.5">
-                <span className={`block font-mono text-xs ${homepageTemplate === t.value ? "text-[#E2B93B]" : "text-white"}`}>
+                <span className={`block font-mono text-xs ${homepageTemplate === t.value ? "text-[#ECFF95]" : "text-white"}`}>
                   {t.label}
                 </span>
                 <span className="block font-mono text-[10px] text-white/40">{t.description}</span>
@@ -414,7 +414,7 @@ export function LayoutBuilderForm({ initial }: Props) {
             onClick={() => setActiveTab(key)}
             className={`px-4 py-2 font-mono text-sm ${
               activeTab === key
-                ? "text-[#E2B93B] border-b-2 border-[#E2B93B] -mb-px"
+                ? "text-[#ECFF95] border-b-2 border-[#ECFF95] -mb-px"
                 : "text-white/50 hover:text-white"
             }`}
           >
@@ -454,7 +454,7 @@ export function LayoutBuilderForm({ initial }: Props) {
         <button
           onClick={handleSave}
           disabled={status === "saving"}
-          className="px-6 py-2 bg-[#E2B93B] text-[#0A0A0A] font-mono text-xs tracking-wider uppercase hover:bg-white disabled:opacity-50"
+          className="px-6 py-2 bg-[#ECFF95] text-[#121316] font-mono text-xs tracking-wider uppercase hover:bg-white disabled:opacity-50"
         >
           {status === "saving" ? "Saving…" : status === "ok" ? "Saved" : "Save"}
         </button>

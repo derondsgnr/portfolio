@@ -19,7 +19,7 @@ export function VideoUrlHint({ url, className = "" }: { url?: string | null; cla
     file: { text: "Direct video file — will play inline.", color: "#7CC576" },
     unknown: {
       text: "This link may not play. Use a YouTube/Vimeo link, or a direct video file (Cloudinary /video/upload/… .mp4).",
-      color: "#E2B93B",
+      color: "#ECFF95",
     },
   };
   const { text, color } = map[kind];

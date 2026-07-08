@@ -64,15 +64,15 @@ function SortableNavItem({
     <li
       ref={setNodeRef}
       style={style}
-      className={`flex items-center gap-3 p-4 border bg-[#0A0A0A] ${isDragging ? "opacity-50" : ""} ${
-        item.hidden ? "border-[#E2B93B]/30" : "border-white/10"
+      className={`flex items-center gap-3 p-4 border bg-[#121316] ${isDragging ? "opacity-50" : ""} ${
+        item.hidden ? "border-[#ECFF95]/30" : "border-white/10"
       }`}
     >
       <button
         type="button"
         {...attributes}
         {...listeners}
-        className="cursor-grab active:cursor-grabbing p-2 text-white/25 hover:text-[#E2B93B]/70"
+        className="cursor-grab active:cursor-grabbing p-2 text-white/25 hover:text-[#ECFF95]/70"
         aria-label={`Drag ${item.label} to reorder`}
       >
         ⋮⋮
@@ -144,7 +144,7 @@ function SortableNavItem({
                   href: hrefInput?.value?.trim() || undefined,
                 });
               }}
-              className="px-3 py-1.5 bg-[#E2B93B] text-[#0A0A0A] font-mono text-xs uppercase"
+              className="px-3 py-1.5 bg-[#ECFF95] text-[#121316] font-mono text-xs uppercase"
             >
               Save
             </button>
@@ -166,7 +166,7 @@ function SortableNavItem({
             {item.path ?? item.href ?? "—"}
           </span>
           {item.hidden && (
-            <span className="ml-2 border border-[#E2B93B]/40 bg-[#E2B93B]/10 px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-[0.14em] text-[#E2B93B]">
+            <span className="ml-2 border border-[#ECFF95]/40 bg-[#ECFF95]/10 px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-[0.14em] text-[#ECFF95]">
               Hidden
             </span>
           )}
@@ -179,7 +179,7 @@ function SortableNavItem({
             type="button"
             onClick={onToggleHidden}
             className={`font-mono text-xs ${
-              item.hidden ? "text-[#E2B93B] hover:text-white" : "text-white/40 hover:text-[#E2B93B]"
+              item.hidden ? "text-[#ECFF95] hover:text-white" : "text-white/40 hover:text-[#ECFF95]"
             }`}
             title={item.hidden ? "Make this page public again" : "Hide this page from the site"}
           >
@@ -188,7 +188,7 @@ function SortableNavItem({
           <button
             type="button"
             onClick={onEditStart}
-            className="font-mono text-xs text-[#E2B93B] hover:text-white"
+            className="font-mono text-xs text-[#ECFF95] hover:text-white"
           >
             Edit
           </button>
@@ -312,7 +312,7 @@ export function NavForm({ initial }: Props) {
         <span className="font-mono text-xs text-white/50">{items.length} items</span>
         <button
           onClick={handleAdd}
-          className="px-4 py-2 bg-[#E2B93B] text-[#0A0A0A] font-mono text-xs tracking-wider uppercase hover:bg-white transition-colors"
+          className="px-4 py-2 bg-[#ECFF95] text-[#121316] font-mono text-xs tracking-wider uppercase hover:bg-white transition-colors"
         >
           Add item
         </button>

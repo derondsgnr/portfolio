@@ -29,7 +29,7 @@ function SimpleLoader({ onComplete }: { onComplete: () => void }) {
   }, [onComplete]);
   return (
     <motion.div
-      className="fixed inset-0 z-[100] bg-[#0A0A0A] flex items-center justify-center"
+      className="fixed inset-0 z-[100] bg-[#121316] flex items-center justify-center"
       exit={{ x: "100%" }}
       transition={{ duration: 0.8, ease: [0.77, 0, 0.175, 1] }}
     >
@@ -38,7 +38,7 @@ function SimpleLoader({ onComplete }: { onComplete: () => void }) {
         animate={{ x: "100vw" }}
         transition={{ duration: 1.2, ease: [0.25, 0.46, 0.45, 0.94] }}
         className="absolute top-1/2 h-px w-full"
-        style={{ background: "linear-gradient(90deg, transparent, #E2B93B, transparent)" }}
+        style={{ background: "linear-gradient(90deg, transparent, #ECFF95, transparent)" }}
       />
       <motion.span
         initial={{ opacity: 0 }}
@@ -70,7 +70,7 @@ export function PageBuilder({ pageConfig, projects, landing, pageCopy, latestPos
   const [loaded, setLoaded] = useState(false);
 
   return (
-    <main className="relative bg-[#0A0A0A]">
+    <main className="relative bg-[#121316]">
       <SignalGrid />
       <ScanLineOverlay />
       <CipherAmbientGrid />

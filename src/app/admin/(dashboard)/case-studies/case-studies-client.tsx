@@ -75,7 +75,7 @@ function StudyListItem({
       onDoubleClick={onClick}
       onKeyDown={(event) => openOnKeyboard(event, onClick)}
       className={`group w-full flex items-center gap-3 px-4 py-3 border-b border-white/[0.05] transition-all cursor-pointer focus:outline-none focus:bg-white/[0.03] ${
-        isActive ? "bg-[#E2B93B]/[0.06] border-l-2 border-l-[#E2B93B]" : "hover:bg-white/[0.02]"
+        isActive ? "bg-[#ECFF95]/[0.06] border-l-2 border-l-[#ECFF95]" : "hover:bg-white/[0.02]"
       }`}
       title="Double-click or press Enter to edit"
     >
@@ -91,15 +91,15 @@ function StudyListItem({
           <p className="text-[12px] font-['Instrument_Sans'] text-white/75 truncate">{study.meta.title}</p>
           <p className="text-[9px] text-white/25 font-['Instrument_Sans']">
             {study.meta.year} · {study.acts.length} acts · {slideCount} slides
-            {study.pinned && <span className="ml-1.5 text-[#E2B93B]/60">PINNED</span>}
-            {study.featured && <span className="ml-1.5 text-[#E2B93B]/45">FEATURED</span>}
+            {study.pinned && <span className="ml-1.5 text-[#ECFF95]/60">PINNED</span>}
+            {study.featured && <span className="ml-1.5 text-[#ECFF95]/45">FEATURED</span>}
             {study.projectType === "personal" && <span className="ml-1.5 text-white/40">PERSONAL</span>}
             {study.status === "draft" && <span className="ml-1.5 text-white/30">DRAFT</span>}
             {study.status === "archived" && <span className="ml-1.5 text-white/20">ARCHIVED</span>}
             <span className="ml-1.5 text-white/15 opacity-0 transition-opacity group-hover:opacity-100">OPEN</span>
           </p>
         </div>
-        <ChevronRight size={12} className={`shrink-0 transition-colors ${isActive ? "text-[#E2B93B]/60" : "text-white/15"}`} />
+        <ChevronRight size={12} className={`shrink-0 transition-colors ${isActive ? "text-[#ECFF95]/60" : "text-white/15"}`} />
       </button>
       <div className="flex items-center gap-1.5 shrink-0">
         <button
@@ -155,7 +155,7 @@ function ActPanel({
           type="button"
           {...attributes}
           {...listeners}
-          className="cursor-grab px-1 py-1 text-white/20 hover:text-[#E2B93B] active:cursor-grabbing transition-colors font-mono text-xs shrink-0"
+          className="cursor-grab px-1 py-1 text-white/20 hover:text-[#ECFF95] active:cursor-grabbing transition-colors font-mono text-xs shrink-0"
           aria-label={`Drag to reorder ${act.title || "act"}`}
         >
           ::
@@ -290,7 +290,7 @@ function StudyEditor({
             {form.meta.title}
           </h2>
           {hasUnsavedChanges ? (
-            <p className="mt-1 text-[9px] uppercase tracking-[0.16em] text-[#E2B93B]/70 font-['Instrument_Sans']">
+            <p className="mt-1 text-[9px] uppercase tracking-[0.16em] text-[#ECFF95]/70 font-['Instrument_Sans']">
               Unsaved changes · Cmd/Ctrl+S saves
             </p>
           ) : null}
@@ -304,8 +304,8 @@ function StudyEditor({
             className="text-[10px] font-['Instrument_Sans'] tracking-wider bg-white/[0.03] border border-white/[0.08] text-white/40 px-2 py-1.5 focus:outline-none cursor-pointer"
             title="Controls which section this project appears in"
           >
-            <option value="case-study" style={{ background: "#0A0A0A" }}>Case Study</option>
-            <option value="personal" style={{ background: "#0A0A0A" }}>Personal Project</option>
+            <option value="case-study" style={{ background: "#121316" }}>Case Study</option>
+            <option value="personal" style={{ background: "#121316" }}>Personal Project</option>
           </select>
           <select
             value={form.status ?? "published"}
@@ -314,9 +314,9 @@ function StudyEditor({
             }
             className="text-[10px] font-['Instrument_Sans'] tracking-wider bg-white/[0.03] border border-white/[0.08] text-white/40 px-2 py-1.5 focus:outline-none cursor-pointer"
           >
-            <option value="published" style={{ background: "#0A0A0A" }}>Published</option>
-            <option value="draft" style={{ background: "#0A0A0A" }}>Draft</option>
-            <option value="archived" style={{ background: "#0A0A0A" }}>Archived</option>
+            <option value="published" style={{ background: "#121316" }}>Published</option>
+            <option value="draft" style={{ background: "#121316" }}>Draft</option>
+            <option value="archived" style={{ background: "#121316" }}>Archived</option>
           </select>
           <a href={`/work/${study.slug}`} target="_blank" rel="noopener noreferrer"
             className="flex items-center gap-1.5 px-3 py-1.5 border border-white/[0.08] text-[10px] font-['Instrument_Sans'] tracking-wider uppercase text-white/25 hover:text-white/60 hover:border-white/20 transition-all">
@@ -325,7 +325,7 @@ function StudyEditor({
           <button
             onClick={() => onSave(form)}
             disabled={isSaving}
-            className="px-5 py-1.5 bg-[#E2B93B] text-[#0A0A0A] font-['Anton'] text-[11px] tracking-[0.12em] hover:bg-white transition-colors disabled:opacity-50"
+            className="px-5 py-1.5 bg-[#ECFF95] text-[#121316] font-['Anton'] text-[11px] tracking-[0.12em] hover:bg-white transition-colors disabled:opacity-50"
           >
             {isSaving ? "SAVING..." : "SAVE"}
           </button>
@@ -383,8 +383,8 @@ function StudyEditor({
                     </FormField>
                     <FormField label="Accent Color">
                       <div className="flex gap-2">
-                        <input type="color" value={form.meta.color ?? "#E2B93B"} onChange={(e) => setMeta("color", e.target.value)} className="h-10 w-12 border border-white/[0.08] bg-transparent p-1 cursor-pointer shrink-0" />
-                        <input className={adminCx.input} value={form.meta.color ?? ""} onChange={(e) => setMeta("color", e.target.value || undefined)} placeholder="#E2B93B" />
+                        <input type="color" value={form.meta.color ?? "#ECFF95"} onChange={(e) => setMeta("color", e.target.value)} className="h-10 w-12 border border-white/[0.08] bg-transparent p-1 cursor-pointer shrink-0" />
+                        <input className={adminCx.input} value={form.meta.color ?? ""} onChange={(e) => setMeta("color", e.target.value || undefined)} placeholder="#ECFF95" />
                       </div>
                     </FormField>
                   </div>
@@ -408,7 +408,7 @@ function StudyEditor({
                     <div className="grid grid-cols-2 gap-2">
                       {TEMPLATES.map((t) => (
                         <button key={t} type="button" onClick={() => setForm((f) => ({ ...f, template: t }))}
-                          className={`px-3 py-2 text-left border transition-all ${form.template === t ? "border-[#E2B93B]/40 bg-[#E2B93B]/[0.04] text-white" : "border-white/[0.07] text-white/30 hover:border-white/[0.14]"}`}>
+                          className={`px-3 py-2 text-left border transition-all ${form.template === t ? "border-[#ECFF95]/40 bg-[#ECFF95]/[0.04] text-white" : "border-white/[0.07] text-white/30 hover:border-white/[0.14]"}`}>
                           <p className="text-[11px] font-['Instrument_Sans']">{t}</p>
                           <p className="text-[9px] text-white/20 font-['Instrument_Sans'] mt-0.5">{TEMPLATE_DESCS[t]}</p>
                         </button>
@@ -423,7 +423,7 @@ function StudyEditor({
                         onChange={(e) =>
                           setForm((f) => ({ ...f, featured: e.target.checked }))
                         }
-                        className="h-4 w-4 accent-[#E2B93B]"
+                        className="h-4 w-4 accent-[#ECFF95]"
                       />
                       <span className="text-[11px] text-white/40 font-['Instrument_Sans'] tracking-wider uppercase">Featured study</span>
                     </label>
@@ -434,7 +434,7 @@ function StudyEditor({
                         onChange={(e) =>
                           setForm((f) => ({ ...f, pinned: e.target.checked }))
                         }
-                        className="h-4 w-4 accent-[#E2B93B]"
+                        className="h-4 w-4 accent-[#ECFF95]"
                       />
                       <span className="text-[11px] text-white/40 font-['Instrument_Sans'] tracking-wider uppercase">Pinned in priority order</span>
                     </label>
@@ -462,7 +462,7 @@ function StudyEditor({
                         <button type="button" onClick={() => { const ms = (form.outcome?.metrics ?? []).filter((_, idx) => idx !== i); setForm((f) => ({ ...f, outcome: { ...f.outcome, metrics: ms } })); }} className="mt-3 text-white/15 hover:text-red-400/60 transition-colors"><Trash2 size={12} /></button>
                       </div>
                     ))}
-                    <button type="button" onClick={() => { const ms = [...(form.outcome?.metrics ?? []), { label: "", value: "" }]; setForm((f) => ({ ...f, outcome: { ...f.outcome, metrics: ms } })); }} className="text-[10px] font-['Instrument_Sans'] tracking-wider uppercase text-[#E2B93B]/50 hover:text-[#E2B93B] transition-colors flex items-center gap-1.5"><Plus size={10} /> Add metric</button>
+                    <button type="button" onClick={() => { const ms = [...(form.outcome?.metrics ?? []), { label: "", value: "" }]; setForm((f) => ({ ...f, outcome: { ...f.outcome, metrics: ms } })); }} className="text-[10px] font-['Instrument_Sans'] tracking-wider uppercase text-[#ECFF95]/50 hover:text-[#ECFF95] transition-colors flex items-center gap-1.5"><Plus size={10} /> Add metric</button>
                   </div>
                   <FormField label="Testimonial" className="lg:col-span-2">
                     <textarea className={adminCx.textarea} rows={2} value={form.outcome?.testimonial ?? ""} onChange={(e) => setForm((f) => ({ ...f, outcome: { ...f.outcome, metrics: f.outcome?.metrics ?? [], testimonial: e.target.value || undefined } }))} placeholder="Quote from client…" />
@@ -481,7 +481,7 @@ function StudyEditor({
         <div className="px-6 py-5">
           <div className="flex items-center justify-between mb-4">
             <p className="text-[10px] tracking-[0.2em] text-white/35 font-['Instrument_Sans'] uppercase">Acts & Slides</p>
-            <button onClick={addAct} className="flex items-center gap-1.5 text-[10px] font-['Instrument_Sans'] tracking-wider uppercase text-[#E2B93B]/50 hover:text-[#E2B93B] transition-colors">
+            <button onClick={addAct} className="flex items-center gap-1.5 text-[10px] font-['Instrument_Sans'] tracking-wider uppercase text-[#ECFF95]/50 hover:text-[#ECFF95] transition-colors">
               <Plus size={11} /> Add Act
             </button>
           </div>
@@ -644,7 +644,7 @@ export function CaseStudiesClient({ initialStudies }: { initialStudies: CaseStud
             <span className="text-[10px] tracking-[0.15em] text-white/25 font-['Instrument_Sans'] uppercase">
               {studies.length} case stud{studies.length !== 1 ? "ies" : "y"}
             </span>
-            <button onClick={newStudy} className="flex items-center gap-2 px-4 py-2.5 bg-[#E2B93B] text-[#0A0A0A] font-['Anton'] text-[11px] tracking-[0.12em] hover:bg-white transition-colors">
+            <button onClick={newStudy} className="flex items-center gap-2 px-4 py-2.5 bg-[#ECFF95] text-[#121316] font-['Anton'] text-[11px] tracking-[0.12em] hover:bg-white transition-colors">
               <Plus size={13} /> NEW STUDY
             </button>
           </div>
@@ -671,7 +671,7 @@ export function CaseStudiesClient({ initialStudies }: { initialStudies: CaseStud
                 <button
                   type="button"
                   onClick={newStudy}
-                  className="mt-4 bg-[#E2B93B] px-4 py-2 text-[10px] uppercase tracking-[0.14em] text-[#0A0A0A] transition-colors hover:bg-white font-['Anton']"
+                  className="mt-4 bg-[#ECFF95] px-4 py-2 text-[10px] uppercase tracking-[0.14em] text-[#121316] transition-colors hover:bg-white font-['Anton']"
                 >
                   Create first study
                 </button>
@@ -706,7 +706,7 @@ export function CaseStudiesClient({ initialStudies }: { initialStudies: CaseStud
         </div>
       ) : (
         <div className="-mx-6 lg:-mx-8 -mt-6 lg:-mt-8 -mb-6 lg:-mb-8 h-[calc(100dvh-3.5rem)] lg:h-[100dvh] flex flex-col">
-          <div className="px-6 py-2.5 border-b border-white/[0.05] flex items-center gap-3 bg-[#0A0A0A] shrink-0 sticky top-0 z-20">
+          <div className="px-6 py-2.5 border-b border-white/[0.05] flex items-center gap-3 bg-[#121316] shrink-0 sticky top-0 z-20">
             <button data-unsaved-guard-trigger onClick={closeStudyEditor} className="text-[10px] font-['Instrument_Sans'] tracking-[0.15em] uppercase text-white/25 hover:text-white/60 transition-colors flex items-center gap-1.5">
               ← All Case Studies
             </button>

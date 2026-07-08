@@ -29,7 +29,7 @@ function VoidLoader({ onComplete }: { onComplete: () => void }) {
 
   return (
     <motion.div
-      className="fixed inset-0 z-[100] bg-[#0A0A0A] flex items-center justify-center"
+      className="fixed inset-0 z-[100] bg-[#121316] flex items-center justify-center"
       exit={{ opacity: 0 }}
       transition={{ duration: 0.8, ease: [0.77, 0, 0.175, 1] }}
     >
@@ -162,7 +162,7 @@ export function VoidHero() {
           width: 6,
           height: 6,
           borderRadius: "50%",
-          background: "#E2B93B",
+          background: "#ECFF95",
         }}
       />
     </section>
@@ -297,7 +297,7 @@ export function VoidWork({ projects = V2_PROJECTS }: { projects?: typeof V2_PROJ
                   textTransform: "uppercase",
                   color:
                     hoveredIdx === i
-                      ? "#E2B93B"
+                      ? "#ECFF95"
                       : "rgba(255,255,255,0.8)",
                   transition: "color 0.5s ease",
                 }}
@@ -381,7 +381,7 @@ export function VoidPhilosophy() {
               style={{
                 color:
                   word === "inevitable." || word === "Inevitable."
-                    ? "#E2B93B"
+                    ? "#ECFF95"
                     : undefined,
               }}
             >
@@ -427,7 +427,7 @@ export function VoidTestimonial() {
                 fontFamily: "'Anton', sans-serif",
                 fontSize: "8rem",
                 lineHeight: 0.5,
-                color: "rgba(226, 185, 59, 0.15)",
+                color: "rgba(236, 255, 149, 0.15)",
                 display: "block",
                 marginBottom: "2rem",
               }}
@@ -452,7 +452,7 @@ export function VoidTestimonial() {
                   fontFamily: "'Instrument Sans', sans-serif",
                   fontSize: "11px",
                   letterSpacing: "0.2em",
-                  color: "#E2B93B",
+                  color: "#ECFF95",
                   textTransform: "uppercase",
                 }}
               >
@@ -483,7 +483,7 @@ export function VoidTestimonial() {
               style={{
                 background:
                   i === current
-                    ? "#E2B93B"
+                    ? "#ECFF95"
                     : "rgba(255,255,255,0.1)",
               }}
             />
@@ -523,7 +523,7 @@ export function VoidCTA() {
           viewport={{ once: true }}
           transition={{ delay: 0.5, duration: 1.2, ease: [0.77, 0, 0.175, 1] }}
           className="h-0.5 origin-left mt-2"
-          style={{ background: "#E2B93B" }}
+          style={{ background: "#ECFF95" }}
         />
       </motion.div>
 
@@ -567,7 +567,7 @@ export function VoidVariation() {
   const [loaded, setLoaded] = useState(false);
 
   return (
-    <main className="relative bg-[#0A0A0A]">
+    <main className="relative bg-[#121316]">
       <AnimatePresence>
         {!loaded && <VoidLoader onComplete={() => setLoaded(true)} />}
       </AnimatePresence>

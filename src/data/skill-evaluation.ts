@@ -162,7 +162,7 @@
  * 5. TASTE STATED PLAINLY                                 ██████░ 6/10
  * ─────────────────────────────────────────────────────────────────
  * WHAT EXISTS:
- *   - The design system itself is a taste statement: #0A0A0A dark
+ *   - The design system itself is a taste statement: #121316 dark
  *     foundation, Anton uppercase headers, single gold accent,
  *     asymmetry, extreme scale contrast, elements that bleed containers.
  *   - "Awwwards-level aesthetic" is the stated ambition.

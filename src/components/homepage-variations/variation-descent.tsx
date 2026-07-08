@@ -56,7 +56,7 @@ function HeroDescent() {
       <div className="relative z-10 text-center px-6">
         <Reveal delay={0.3}>
           <p
-            className="text-[#e2b93b]/70 mb-12"
+            className="text-[#ECFF95]/70 mb-12"
             style={{
               fontFamily: "var(--font-body)",
               fontSize: "0.85rem",
@@ -98,7 +98,7 @@ function HeroDescent() {
                 letterSpacing: "-0.04em",
                 fontStyle: "italic",
                 fontWeight: 600,
-                WebkitTextStroke: "1.5px rgba(226,185,59,0.35)",
+                WebkitTextStroke: "1.5px rgba(236, 255, 149,0.35)",
                 color: "transparent",
               }}
             >
@@ -149,7 +149,7 @@ function ProcessDescent() {
             <Reveal key={word} delay={i * 0.12}>
               <div className="text-center">
                 <span
-                  className="text-[#e2b93b]/20 block mb-3"
+                  className="text-[#ECFF95]/20 block mb-3"
                   style={{
                     fontFamily: "var(--font-body)",
                     fontSize: "0.65rem",
@@ -191,7 +191,7 @@ function WorkDescent() {
         <div className="text-center mb-20 md:mb-28">
           <Reveal>
             <p
-              className="text-[#e2b93b]/60 mb-5"
+              className="text-[#ECFF95]/60 mb-5"
               style={{ fontFamily: "var(--font-body)", fontSize: "0.8rem", fontStyle: "italic", fontWeight: 400 }}
             >
               Selected Projects
@@ -228,7 +228,7 @@ function WorkDescent() {
                   />
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-700" />
                   <div className="absolute bottom-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                    <ArrowUpRight className="w-8 h-8 text-[#e2b93b]" strokeWidth={1} />
+                    <ArrowUpRight className="w-8 h-8 text-[#ECFF95]" strokeWidth={1} />
                   </div>
                 </div>
 
@@ -236,14 +236,14 @@ function WorkDescent() {
                 <div className="flex items-baseline justify-between mt-6 md:mt-7">
                   <div className="flex items-baseline gap-5">
                     <span
-                      className="text-[#e2b93b]/30"
+                      className="text-[#ECFF95]/30"
                       style={{ fontFamily: "var(--font-body)", fontSize: "0.65rem", fontStyle: "italic", fontWeight: 400 }}
                     >
                       {project.id}
                     </span>
                     {/* Title in Instrument Sans italic — editorial feel */}
                     <span
-                      className="text-white group-hover:text-[#e2b93b] transition-colors duration-300"
+                      className="text-white group-hover:text-[#ECFF95] transition-colors duration-300"
                       style={{
                         fontFamily: "var(--font-body)",
                         fontSize: "clamp(1.1rem, 1.5vw, 1.4rem)",
@@ -282,7 +282,7 @@ function WorkDescent() {
         <Reveal delay={0.3} className="text-center mt-16 md:mt-24">
           <SafeLink
             href="/work"
-            className="text-white/30 hover:text-[#e2b93b] transition-colors duration-300 inline-flex items-center gap-3"
+            className="text-white/30 hover:text-[#ECFF95] transition-colors duration-300 inline-flex items-center gap-3"
             style={{
               fontFamily: "var(--font-body)",
               fontSize: "0.75rem",
@@ -326,7 +326,7 @@ function PhilosophyDescent() {
         <div className="relative z-10">
           <Reveal>
             <p
-              className="text-[#e2b93b]/60 mb-4"
+              className="text-[#ECFF95]/60 mb-4"
               style={{ fontFamily: "var(--font-body)", fontSize: "0.8rem", fontStyle: "italic", fontWeight: 400 }}
             >
               Philosophy & Services
@@ -341,7 +341,7 @@ function PhilosophyDescent() {
                 <div className="py-14 md:py-20 grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div>
                     <span
-                      className="text-[#e2b93b]/20 block mb-5"
+                      className="text-[#ECFF95]/20 block mb-5"
                       style={{ fontFamily: "var(--font-body)", fontSize: "0.65rem", fontStyle: "italic", fontWeight: 400 }}
                     >
                       {p.number}
@@ -381,7 +381,7 @@ function PhilosophyDescent() {
                     </Reveal>
                     <Reveal delay={0.3 + i * 0.05}>
                       <span
-                        className="text-[#e2b93b]/50 inline-flex items-center gap-4"
+                        className="text-[#ECFF95]/50 inline-flex items-center gap-4"
                         style={{
                           fontFamily: "var(--font-body)",
                           fontSize: "0.7rem",
@@ -389,7 +389,7 @@ function PhilosophyDescent() {
                           fontWeight: 400,
                         }}
                       >
-                        <span className="w-8 h-px bg-[#e2b93b]/20" />
+                        <span className="w-8 h-px bg-[#ECFF95]/20" />
                         {p.service}
                       </span>
                     </Reveal>
@@ -413,7 +413,7 @@ function AboutDescent() {
         <div className="max-w-4xl mx-auto text-center">
           <Reveal>
             <p
-              className="text-[#e2b93b]/60 mb-10"
+              className="text-[#ECFF95]/60 mb-10"
               style={{ fontFamily: "var(--font-body)", fontSize: "0.8rem", fontStyle: "italic", fontWeight: 400 }}
             >
               About
@@ -446,7 +446,7 @@ function AboutDescent() {
                 letterSpacing: "-0.03em",
                 fontStyle: "italic",
                 fontWeight: 600,
-                WebkitTextStroke: "1px rgba(226,185,59,0.3)",
+                WebkitTextStroke: "1px rgba(236, 255, 149,0.3)",
                 color: "transparent",
               }}
             >
@@ -487,7 +487,7 @@ function AboutDescent() {
           <Reveal delay={0.6}>
             <SafeLink
               href="/about"
-              className="inline-flex items-center gap-4 text-[#e2b93b]/50 hover:text-[#e2b93b] transition-colors duration-300 mt-10"
+              className="inline-flex items-center gap-4 text-[#ECFF95]/50 hover:text-[#ECFF95] transition-colors duration-300 mt-10"
             >
               <span
                 style={{
@@ -624,7 +624,7 @@ function FooterDescent() {
         <div className="text-center mb-16 md:mb-24">
           <Reveal>
             <p
-              className="text-[#e2b93b]/60 mb-10"
+              className="text-[#ECFF95]/60 mb-10"
               style={{ fontFamily: "var(--font-body)", fontSize: "0.8rem", fontStyle: "italic", fontWeight: 400 }}
             >
               Let's build something
@@ -666,7 +666,7 @@ function FooterDescent() {
           <Reveal delay={0.4}>
             <button
               onClick={() => open("book")}
-              className="inline-block px-10 py-4 bg-[#e2b93b] text-[#0a0a0a] hover:bg-[#e2b93b]/80 transition-colors duration-300 mt-14 cursor-pointer"
+              className="inline-block px-10 py-4 bg-[#ECFF95] text-[#121316] hover:bg-[#ECFF95]/80 transition-colors duration-300 mt-14 cursor-pointer"
               style={{
                 fontFamily: "var(--font-body)",
                 fontSize: "0.75rem",
@@ -686,7 +686,7 @@ function FooterDescent() {
               <li key={link.label}>
                 <a
                   href={link.url}
-                  className="text-white/20 hover:text-[#e2b93b] transition-colors duration-300"
+                  className="text-white/20 hover:text-[#ECFF95] transition-colors duration-300"
                   style={{
                     fontFamily: "var(--font-body)",
                     fontSize: "0.7rem",

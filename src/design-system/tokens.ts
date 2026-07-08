@@ -6,16 +6,16 @@
 
 export const tokens = {
   colors: {
-    background: "#0a0a0a",
+    background: "#121316",
     foreground: "#f0f0f0",
-    card: "#111111",
+    card: "#17181C",
     "card-foreground": "#f0f0f0",
-    accent: "#e2b93b",
-    "accent-foreground": "#0a0a0a",
-    muted: "#1a1a1a",
+    accent: "#ECFF95",
+    "accent-foreground": "#121316",
+    muted: "#1D1E24",
     "muted-foreground": "#9a9a9a",
     // Text hierarchy — use these instead of raw rgba values
-    // All meet WCAG AA on #0a0a0a background
+    // All meet WCAG AA on #121316 background
     text: {
       primary: "#f0f0f0",                  // headings, main body
       secondary: "rgba(255,255,255,0.65)", // descriptions, important metadata
@@ -25,7 +25,7 @@ export const tokens = {
       disabled: "rgba(255,255,255,0.18)",  // disabled states only
     },
     border: "rgba(255, 255, 255, 0.08)",
-    "border-focus": "rgba(226, 185, 59, 0.5)",
+    "border-focus": "rgba(236, 255, 149, 0.5)",
     ring: "rgba(255, 255, 255, 0.2)",
     destructive: "#d4183d",
     input: {
@@ -36,12 +36,12 @@ export const tokens = {
     },
     status: {
       success: "#22c55e",
-      warning: "#e2b93b",
+      warning: "#E5A94E",
       error: "#ef4444",
       muted: "rgba(255, 255, 255, 0.2)",
     },
     sidebar: {
-      bg: "#0f0f0f",
+      bg: "#16171B",
       foreground: "#f0f0f0",
       border: "rgba(255, 255, 255, 0.08)",
     },

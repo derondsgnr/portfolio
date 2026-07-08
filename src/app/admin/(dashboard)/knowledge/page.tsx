@@ -203,7 +203,7 @@ export default function AdminKnowledgePage() {
           <div className="flex flex-wrap gap-2 items-center">
             <Link
               href="/admin/presentation-studio"
-              className="px-3 py-2 border border-[#E2B93B]/30 text-[#E2B93B]/90 text-xs inline-flex items-center gap-2 hover:bg-[#E2B93B]/10"
+              className="px-3 py-2 border border-[#ECFF95]/30 text-[#ECFF95]/90 text-xs inline-flex items-center gap-2 hover:bg-[#ECFF95]/10"
             >
               <Clapperboard size={12} /> Presentation Studio
             </Link>
@@ -241,19 +241,19 @@ export default function AdminKnowledgePage() {
       </div>
 
       <div className="border border-white/[0.08] bg-white/[0.01] p-4 space-y-3">
-        <p className="text-[11px] uppercase tracking-[0.14em] text-[#E2B93B]/70 font-['Instrument_Sans']">Backfill Onboarding</p>
+        <p className="text-[11px] uppercase tracking-[0.14em] text-[#ECFF95]/70 font-['Instrument_Sans']">Backfill Onboarding</p>
         <div className="grid md:grid-cols-3 gap-2">
-          <div className="border border-white/[0.07] p-3 bg-[#0A0A0A]/60">
+          <div className="border border-white/[0.07] p-3 bg-[#121316]/60">
             <p className="text-[10px] text-white/25 uppercase tracking-wider">1. Import / Queue</p>
             <p className="text-sm text-white/75 mt-1">Load URLs via JSON import or paste list in Batch Backfill.</p>
             <p className="text-xs text-white/40 mt-2">{items.length} total item(s)</p>
           </div>
-          <div className="border border-white/[0.07] p-3 bg-[#0A0A0A]/60">
+          <div className="border border-white/[0.07] p-3 bg-[#121316]/60">
             <p className="text-[10px] text-white/25 uppercase tracking-wider">2. Add Raw Text</p>
             <p className="text-sm text-white/75 mt-1">Paste extracted source text so queued items become process-ready.</p>
             <p className="text-xs text-white/40 mt-2">{queuedReadyCount}/{queuedCount} queued ready</p>
           </div>
-          <div className="border border-white/[0.07] p-3 bg-[#0A0A0A]/60">
+          <div className="border border-white/[0.07] p-3 bg-[#121316]/60">
             <p className="text-[10px] text-white/25 uppercase tracking-wider">3. Process + Review</p>
             <p className="text-sm text-white/75 mt-1">Run queued processing, retry failures, then mark reviewed.</p>
             <p className="text-xs text-white/40 mt-2">{failedCount} failed, {reviewedCount} reviewed</p>
@@ -267,31 +267,31 @@ export default function AdminKnowledgePage() {
           onClick={() => setShowGuide((prev) => !prev)}
           className="w-full flex items-center justify-between text-left"
         >
-          <span className="text-[11px] uppercase tracking-[0.14em] text-[#E2B93B]/70 font-['Instrument_Sans']">Feature Guide</span>
+          <span className="text-[11px] uppercase tracking-[0.14em] text-[#ECFF95]/70 font-['Instrument_Sans']">Feature Guide</span>
           <span className="text-white/45">{showGuide ? <ChevronUp size={14} /> : <ChevronDown size={14} />}</span>
         </button>
 
         {showGuide && (
           <div className="grid lg:grid-cols-2 gap-2">
-            <div className="border border-white/[0.07] p-3 bg-[#0A0A0A]/60">
+            <div className="border border-white/[0.07] p-3 bg-[#121316]/60">
               <p className="text-[10px] text-white/25 uppercase tracking-wider mb-2">What This Does</p>
               <p className="text-sm text-white/75 leading-relaxed">
                 This vault queues links, stores source notes, runs local AI extraction/synthesis, and lets you search by keywords or semantic embeddings.
               </p>
             </div>
-            <div className="border border-white/[0.07] p-3 bg-[#0A0A0A]/60">
+            <div className="border border-white/[0.07] p-3 bg-[#121316]/60">
               <p className="text-[10px] text-white/25 uppercase tracking-wider mb-2">What Is Still Manual</p>
               <p className="text-sm text-white/75 leading-relaxed">
                 You still manually capture/download media files. Add media links/paths yourself. Auto video/image ingestion is not wired yet.
               </p>
             </div>
-            <div className="border border-white/[0.07] p-3 bg-[#0A0A0A]/60">
+            <div className="border border-white/[0.07] p-3 bg-[#121316]/60">
               <p className="text-[10px] text-white/25 uppercase tracking-wider mb-2">Daily Workflow</p>
               <p className="text-sm text-white/75 leading-relaxed">
                 1) Queue links. 2) Paste raw text. 3) Test connection. 4) Process queued. 5) Retry failed. 6) Send good references to Studio.
               </p>
             </div>
-            <div className="border border-white/[0.07] p-3 bg-[#0A0A0A]/60">
+            <div className="border border-white/[0.07] p-3 bg-[#121316]/60">
               <p className="text-[10px] text-white/25 uppercase tracking-wider mb-2">Local vs Online</p>
               <p className="text-sm text-white/75 leading-relaxed">
                 Processing uses the configured Ollama URL. If it points to localhost, AI processing works on your machine where Ollama runs.
@@ -303,7 +303,7 @@ export default function AdminKnowledgePage() {
 
       <div className="grid lg:grid-cols-2 gap-3">
         <div className="border border-white/[0.08] bg-white/[0.01] p-4 space-y-3">
-          <p className="text-[11px] tracking-[0.14em] uppercase text-[#E2B93B]/70 font-['Instrument_Sans']">Batch Backfill</p>
+          <p className="text-[11px] tracking-[0.14em] uppercase text-[#ECFF95]/70 font-['Instrument_Sans']">Batch Backfill</p>
           <FormField label="Paste URLs (one per line)">
             <textarea className={adminCx.textarea} rows={6} value={bulkInput} onChange={(e) => setBulkInput(e.target.value)} placeholder="https://x.com/...&#10;https://..." />
           </FormField>
@@ -313,14 +313,14 @@ export default function AdminKnowledgePage() {
               setItems((p) => [...urls.map(makeItem), ...p]);
               setBulkInput("");
             }}
-            className="px-3 py-2 bg-[#E2B93B] text-[#0A0A0A] text-xs uppercase tracking-wider"
+            className="px-3 py-2 bg-[#ECFF95] text-[#121316] text-xs uppercase tracking-wider"
           >
             Queue URLs
           </button>
         </div>
 
         <div className="border border-white/[0.08] bg-white/[0.01] p-4 space-y-3">
-          <p className="text-[11px] tracking-[0.14em] uppercase text-[#E2B93B]/70 font-['Instrument_Sans']">Search & Selection</p>
+          <p className="text-[11px] tracking-[0.14em] uppercase text-[#ECFF95]/70 font-['Instrument_Sans']">Search & Selection</p>
           <FormField label="Search">
             <input className={adminCx.input} placeholder="Search URL, title, tags, text" value={search} onChange={(e) => setSearch(e.target.value)} />
           </FormField>
@@ -333,7 +333,7 @@ export default function AdminKnowledgePage() {
       </div>
 
       <div className="border border-white/[0.08] p-4 bg-white/[0.01] space-y-3">
-        <p className="text-[11px] uppercase tracking-[0.14em] text-[#E2B93B]/70 font-['Instrument_Sans']">Local AI Control Center</p>
+        <p className="text-[11px] uppercase tracking-[0.14em] text-[#ECFF95]/70 font-['Instrument_Sans']">Local AI Control Center</p>
         <div className="grid lg:grid-cols-3 gap-2">
           <FormField label="Ollama URL">
             <input className={adminCx.input} value={settings.ollamaBaseUrl} onChange={(e) => setSettings((s) => ({ ...s, ollamaBaseUrl: e.target.value }))} placeholder="http://localhost:11434" />
@@ -351,7 +351,7 @@ export default function AdminKnowledgePage() {
             Test connection
           </button>
           <button onClick={async () => { if (!search.trim()) return; setQueryEmbedding(await ollamaEmbed(search)); }} className="px-3 py-2 border border-white/[0.10] text-white/45 text-xs uppercase inline-flex items-center gap-2"><Search size={12} /> Embed query</button>
-          <button onClick={() => processIds(selected)} disabled={isProcessing || !selected.length} className="px-3 py-2 bg-[#E2B93B] text-[#0A0A0A] text-xs uppercase disabled:opacity-40">Process selected</button>
+          <button onClick={() => processIds(selected)} disabled={isProcessing || !selected.length} className="px-3 py-2 bg-[#ECFF95] text-[#121316] text-xs uppercase disabled:opacity-40">Process selected</button>
           <button
             type="button"
             onClick={() => {
@@ -369,7 +369,7 @@ export default function AdminKnowledgePage() {
               enqueueInspirationRefs(refs);
             }}
             disabled={!selected.length}
-            className="px-3 py-2 border border-[#E2B93B]/35 text-[#E2B93B]/90 text-xs uppercase inline-flex items-center gap-2 disabled:opacity-40"
+            className="px-3 py-2 border border-[#ECFF95]/35 text-[#ECFF95]/90 text-xs uppercase inline-flex items-center gap-2 disabled:opacity-40"
           >
             <Clapperboard size={12} /> Send selected to Studio
           </button>
@@ -387,7 +387,7 @@ export default function AdminKnowledgePage() {
         {(isProcessing || progress.total > 0) && (
           <div className="space-y-1">
             <div className="h-1.5 w-full bg-white/[0.06] overflow-hidden">
-              <div className="h-full bg-[#E2B93B] transition-all duration-150" style={{ width: `${progress.total ? Math.round((progress.done / progress.total) * 100) : 0}%` }} />
+              <div className="h-full bg-[#ECFF95] transition-all duration-150" style={{ width: `${progress.total ? Math.round((progress.done / progress.total) * 100) : 0}%` }} />
             </div>
             <p className="text-xs text-white/35 font-['Instrument_Sans'] truncate">{progress.current || "Idle"}</p>
           </div>
@@ -427,7 +427,7 @@ export default function AdminKnowledgePage() {
                         }),
                       ])
                     }
-                    className="text-xs text-[#E2B93B]/80 hover:text-[#E2B93B] inline-flex items-center gap-1"
+                    className="text-xs text-[#ECFF95]/80 hover:text-[#ECFF95] inline-flex items-center gap-1"
                   >
                     <Clapperboard size={11} /> Studio
                   </button>

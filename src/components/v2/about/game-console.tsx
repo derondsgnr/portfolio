@@ -26,7 +26,7 @@ export function GameConsole({ games }: { games: string[] }) {
         position: "relative",
         borderRadius: 16,
         padding: 14,
-        background: "linear-gradient(160deg, #1a1a1a, #0d0d0d)",
+        background: "linear-gradient(160deg, #1D1E24, #16171B)",
         border: "1px solid rgba(255,255,255,0.08)",
         boxShadow: "0 30px 60px rgba(0,0,0,0.5)",
       }}
@@ -39,8 +39,8 @@ export function GameConsole({ games }: { games: string[] }) {
           overflow: "hidden",
           padding: "20px 20px 18px",
           minHeight: 220,
-          background: "radial-gradient(120% 120% at 50% 0%, rgba(226,185,59,0.08), transparent 55%), #080808",
-          boxShadow: "inset 0 0 60px rgba(0,0,0,0.9), inset 0 0 0 1px rgba(226,185,59,0.12)",
+          background: "radial-gradient(120% 120% at 50% 0%, rgba(236, 255, 149,0.08), transparent 55%), #080808",
+          boxShadow: "inset 0 0 60px rgba(0,0,0,0.9), inset 0 0 0 1px rgba(236, 255, 149,0.12)",
         }}
       >
         {/* scanlines */}
@@ -56,11 +56,11 @@ export function GameConsole({ games }: { games: string[] }) {
         />
         {/* header */}
         <div className="flex items-center justify-between" style={{ marginBottom: 16 }}>
-          <span style={{ fontFamily: "monospace", fontSize: "10px", letterSpacing: "0.22em", color: "#E2B93B" }}>
+          <span style={{ fontFamily: "monospace", fontSize: "10px", letterSpacing: "0.22em", color: "#ECFF95" }}>
             GAME SELECT
           </span>
           <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
-            <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#E2B93B", boxShadow: "0 0 8px #E2B93B", opacity: blink ? 1 : 0.3 }} />
+            <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#ECFF95", boxShadow: "0 0 8px #ECFF95", opacity: blink ? 1 : 0.3 }} />
             <span style={{ fontFamily: "monospace", fontSize: "8px", letterSpacing: "0.18em", color: "rgba(255,255,255,0.3)" }}>PWR</span>
           </span>
         </div>
@@ -84,7 +84,7 @@ export function GameConsole({ games }: { games: string[] }) {
                   transition: "color 0.2s",
                 }}
               >
-                <span style={{ color: "#E2B93B", width: 12, opacity: on ? 1 : 0 }}>▸</span>
+                <span style={{ color: "#ECFF95", width: 12, opacity: on ? 1 : 0 }}>▸</span>
                 {g}
               </li>
             );
@@ -99,7 +99,7 @@ export function GameConsole({ games }: { games: string[] }) {
               fontSize: "10px",
               letterSpacing: "0.14em",
               textTransform: "uppercase",
-              color: blink ? "#E2B93B" : "rgba(226,185,59,0.4)",
+              color: blink ? "#ECFF95" : "rgba(236, 255, 149,0.4)",
               transition: "color 0.2s",
             }}
           >

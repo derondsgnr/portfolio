@@ -12,9 +12,9 @@ export interface SaveButtonProps {
 }
 
 const statusStyles: Record<SaveStatus, string> = {
-  idle: "bg-[#E2B93B] text-[#0A0A0A] hover:bg-white",
-  saving: "bg-[#E2B93B]/70 text-[#0A0A0A] cursor-wait",
-  ok: "bg-white text-[#0A0A0A]",
+  idle: "bg-[#ECFF95] text-[#121316] hover:bg-white",
+  saving: "bg-[#ECFF95]/70 text-[#121316] cursor-wait",
+  ok: "bg-white text-[#121316]",
   error: "bg-red-500/20 border border-red-500/40 text-red-400",
 };
 

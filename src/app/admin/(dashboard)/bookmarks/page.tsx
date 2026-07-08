@@ -61,7 +61,7 @@ const PLATFORMS: Record<Platform, { label: string; color: string; icon: React.El
 };
 
 const CATEGORIES: Record<BookmarkCategory, { label: string; color: string }> = {
-  "design-inspo": { label: "Design Inspo", color: "#E2B93B" },
+  "design-inspo": { label: "Design Inspo", color: "#ECFF95" },
   "typography":   { label: "Typography",   color: "#4DABF7" },
   "motion":       { label: "Motion",       color: "#DA77F2" },
   "products":     { label: "Products",     color: "#69DB7C" },
@@ -156,12 +156,12 @@ function QuickAddModal({
         exit={{ opacity: 0, scale: 0.96, y: 12 }}
         transition={{ duration: 0.2 }}
         onClick={(e) => e.stopPropagation()}
-        className="relative bg-[#0f0f0f] border border-white/[0.10] w-full max-w-lg max-h-[85dvh] overflow-y-auto shadow-2xl"
+        className="relative bg-[#16171B] border border-white/[0.10] w-full max-w-lg max-h-[85dvh] overflow-y-auto shadow-2xl"
       >
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.07]">
           <div className="flex items-center gap-2">
-            <Bookmark size={14} className="text-[#E2B93B]/60" />
+            <Bookmark size={14} className="text-[#ECFF95]/60" />
             <p className="font-['Anton'] text-sm tracking-[0.12em] text-white uppercase">
               {step === "url" ? "Add Bookmark" : "Details"}
             </p>
@@ -208,7 +208,7 @@ function QuickAddModal({
               <button
                 onClick={proceedToDetails}
                 disabled={!url.trim()}
-                className="w-full py-3 bg-[#E2B93B] text-[#0A0A0A] font-['Anton'] text-[12px] tracking-[0.12em] hover:bg-white transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                className="w-full py-3 bg-[#ECFF95] text-[#121316] font-['Anton'] text-[12px] tracking-[0.12em] hover:bg-white transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
               >
                 CONTINUE →
               </button>
@@ -234,7 +234,7 @@ function QuickAddModal({
                 <FormField label="Category">
                   <select className={adminCx.select} value={category} onChange={(e) => setCategory(e.target.value as BookmarkCategory)}>
                     {(Object.keys(CATEGORIES) as BookmarkCategory[]).map((c) => (
-                      <option key={c} value={c} style={{ background: "#0A0A0A" }}>{CATEGORIES[c].label}</option>
+                      <option key={c} value={c} style={{ background: "#121316" }}>{CATEGORIES[c].label}</option>
                     ))}
                   </select>
                 </FormField>
@@ -262,7 +262,7 @@ function QuickAddModal({
 
               <div className="flex gap-2 pt-1">
                 <button onClick={() => setStep("url")} className="px-4 py-2.5 border border-white/[0.08] text-[11px] font-['Instrument_Sans'] tracking-wider uppercase text-white/30 hover:text-white hover:border-white/20 transition-all">← Back</button>
-                <button onClick={handleAdd} className="flex-1 py-2.5 bg-[#E2B93B] text-[#0A0A0A] font-['Anton'] text-[12px] tracking-[0.12em] hover:bg-white transition-colors">SAVE BOOKMARK</button>
+                <button onClick={handleAdd} className="flex-1 py-2.5 bg-[#ECFF95] text-[#121316] font-['Anton'] text-[12px] tracking-[0.12em] hover:bg-white transition-colors">SAVE BOOKMARK</button>
               </div>
             </>
           )}
@@ -300,7 +300,7 @@ function EditModal({
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.96 }}
         onClick={(e) => e.stopPropagation()}
-        className="relative bg-[#0f0f0f] border border-white/[0.10] w-full max-w-lg max-h-[85dvh] overflow-y-auto shadow-2xl"
+        className="relative bg-[#16171B] border border-white/[0.10] w-full max-w-lg max-h-[85dvh] overflow-y-auto shadow-2xl"
       >
         <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.07]">
           <p className="font-['Anton'] text-sm tracking-[0.12em] text-white uppercase">Edit Bookmark</p>
@@ -319,12 +319,12 @@ function EditModal({
           <div className="grid grid-cols-2 gap-3">
             <FormField label="Platform">
               <select className={adminCx.select} value={form.platform} onChange={(e) => setForm((f) => ({ ...f, platform: e.target.value as Platform }))}>
-                {(Object.keys(PLATFORMS) as Platform[]).map((p) => <option key={p} value={p} style={{ background: "#0A0A0A" }}>{PLATFORMS[p].label}</option>)}
+                {(Object.keys(PLATFORMS) as Platform[]).map((p) => <option key={p} value={p} style={{ background: "#121316" }}>{PLATFORMS[p].label}</option>)}
               </select>
             </FormField>
             <FormField label="Category">
               <select className={adminCx.select} value={form.category} onChange={(e) => setForm((f) => ({ ...f, category: e.target.value as BookmarkCategory }))}>
-                {(Object.keys(CATEGORIES) as BookmarkCategory[]).map((c) => <option key={c} value={c} style={{ background: "#0A0A0A" }}>{CATEGORIES[c].label}</option>)}
+                {(Object.keys(CATEGORIES) as BookmarkCategory[]).map((c) => <option key={c} value={c} style={{ background: "#121316" }}>{CATEGORIES[c].label}</option>)}
               </select>
             </FormField>
           </div>
@@ -346,7 +346,7 @@ function EditModal({
           </FormField>
           <div className="flex gap-2 pt-1">
             <button onClick={onClose} className="px-4 py-2.5 border border-white/[0.08] text-[11px] font-['Instrument_Sans'] uppercase text-white/30 hover:text-white hover:border-white/20 transition-all">Cancel</button>
-            <button onClick={() => { onSave(form); onClose(); }} className="flex-1 py-2.5 bg-[#E2B93B] text-[#0A0A0A] font-['Anton'] text-[12px] tracking-[0.12em] hover:bg-white transition-colors">SAVE</button>
+            <button onClick={() => { onSave(form); onClose(); }} className="flex-1 py-2.5 bg-[#ECFF95] text-[#121316] font-['Anton'] text-[12px] tracking-[0.12em] hover:bg-white transition-colors">SAVE</button>
           </div>
         </div>
       </motion.div>
@@ -382,7 +382,7 @@ function BookmarkCard({
       onDoubleClick={onEdit}
       onKeyDown={(event) => openOnKeyboard(event, onEdit)}
       title="Double-click or press Enter to edit"
-      className="group relative border border-white/[0.07] hover:border-[#E2B93B]/25 bg-white/[0.01] transition-all overflow-hidden cursor-pointer focus:outline-none focus:border-[#E2B93B]/50"
+      className="group relative border border-white/[0.07] hover:border-[#ECFF95]/25 bg-white/[0.01] transition-all overflow-hidden cursor-pointer focus:outline-none focus:border-[#ECFF95]/50"
     >
       {/* Thumbnail */}
       <div className="aspect-[16/9] w-full overflow-hidden relative bg-white/[0.03]">
@@ -402,13 +402,13 @@ function BookmarkCard({
         {/* Overlay on hover */}
         <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1.5 flex-wrap px-1">
           <a href={bookmark.url} target="_blank" rel="noopener noreferrer"
-            className="flex items-center gap-1 px-3 py-1.5 bg-white text-[#0A0A0A] font-['Anton'] text-[10px] tracking-[0.1em] hover:bg-[#E2B93B] transition-colors">
+            className="flex items-center gap-1 px-3 py-1.5 bg-white text-[#121316] font-['Anton'] text-[10px] tracking-[0.1em] hover:bg-[#ECFF95] transition-colors">
             <ExternalLink size={11} /> OPEN
           </a>
           <button
             type="button"
             onClick={onSendToStudio}
-            className="flex items-center gap-1 px-2.5 py-1.5 bg-[#E2B93B]/90 text-[#0A0A0A] font-['Anton'] text-[9px] tracking-[0.1em] hover:bg-white transition-colors"
+            className="flex items-center gap-1 px-2.5 py-1.5 bg-[#ECFF95]/90 text-[#121316] font-['Anton'] text-[9px] tracking-[0.1em] hover:bg-white transition-colors"
             title="Send to Presentation Studio queue"
           >
             <Clapperboard size={11} /> STUDIO
@@ -552,13 +552,13 @@ function BookmarkRow({
         <button
           type="button"
           onClick={onSendToStudio}
-          className="p-1.5 text-[#E2B93B]/50 hover:text-[#E2B93B] transition-colors"
+          className="p-1.5 text-[#ECFF95]/50 hover:text-[#ECFF95] transition-colors"
           title="Presentation Studio"
         >
           <Clapperboard size={12} />
         </button>
         <a href={bookmark.url} target="_blank" rel="noopener noreferrer" className="p-1.5 text-white/20 hover:text-white/60 transition-colors"><ExternalLink size={12} /></a>
-        <button onClick={onEdit} className="p-1.5 text-[#E2B93B]/40 hover:text-[#E2B93B] transition-colors"><Edit3 size={12} /></button>
+        <button onClick={onEdit} className="p-1.5 text-[#ECFF95]/40 hover:text-[#ECFF95] transition-colors"><Edit3 size={12} /></button>
         <AdminConfirmAction
           title="Delete bookmark?"
           description={`Delete "${bookmark.title}" from your inspiration board.`}
@@ -708,14 +708,14 @@ function AdminBookmarksPage() {
             </p>
             <Link
               href="/admin/presentation-studio"
-              className="inline-flex items-center gap-1.5 mt-3 text-[11px] font-['Instrument_Sans'] uppercase tracking-wider text-[#E2B93B]/80 hover:text-[#E2B93B] border border-[#E2B93B]/25 px-3 py-1.5 w-fit"
+              className="inline-flex items-center gap-1.5 mt-3 text-[11px] font-['Instrument_Sans'] uppercase tracking-wider text-[#ECFF95]/80 hover:text-[#ECFF95] border border-[#ECFF95]/25 px-3 py-1.5 w-fit"
             >
               <Clapperboard size={12} /> Presentation Studio queue
             </Link>
           </div>
           <button
             onClick={() => setShowAddModal(true)}
-            className="shrink-0 flex items-center gap-2 px-5 py-3 bg-[#E2B93B] text-[#0A0A0A] font-['Anton'] text-[12px] tracking-[0.12em] hover:bg-white transition-colors"
+            className="shrink-0 flex items-center gap-2 px-5 py-3 bg-[#ECFF95] text-[#121316] font-['Anton'] text-[12px] tracking-[0.12em] hover:bg-white transition-colors"
           >
             <Plus size={14} /> ADD
           </button>
@@ -735,9 +735,9 @@ function AdminBookmarksPage() {
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
           >
-            <option value="newest" style={{ background: "#0A0A0A" }}>Newest first</option>
-            <option value="oldest" style={{ background: "#0A0A0A" }}>Oldest first</option>
-            <option value="title" style={{ background: "#0A0A0A" }}>A–Z</option>
+            <option value="newest" style={{ background: "#121316" }}>Newest first</option>
+            <option value="oldest" style={{ background: "#121316" }}>Oldest first</option>
+            <option value="title" style={{ background: "#121316" }}>A–Z</option>
           </select>
           <div className="flex gap-1 border border-white/[0.08]">
             <button onClick={() => setView("grid")} className={`p-2 transition-colors ${view === "grid" ? "bg-white/[0.08] text-white" : "text-white/25 hover:text-white/60"}`}><Grid size={14} /></button>
@@ -865,7 +865,7 @@ function AdminBookmarksPage() {
       {!showAddModal && !editingBookmark && (
         <button
           onClick={() => setShowAddModal(true)}
-          className="fixed bottom-8 right-8 w-12 h-12 bg-[#E2B93B] text-[#0A0A0A] flex items-center justify-center hover:bg-white hover:scale-110 transition-all shadow-lg z-30"
+          className="fixed bottom-8 right-8 w-12 h-12 bg-[#ECFF95] text-[#121316] flex items-center justify-center hover:bg-white hover:scale-110 transition-all shadow-lg z-30"
         >
           <Plus size={20} />
         </button>

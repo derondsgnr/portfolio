@@ -42,9 +42,9 @@ function ActivityHeatmap({ activity }: { activity: ActivityEntry[] }) {
   }
 
   const getColor = (entries: ActivityEntry[]): string => {
-    if (!entries.length) return "#1a1a1a";
+    if (!entries.length) return "#1D1E24";
     const types = entries.map((e) => e.type);
-    if (types.includes("design") && types.includes("code")) return "#E2B93B";
+    if (types.includes("design") && types.includes("code")) return "#ECFF95";
     const t = types[0];
     return ACTIVITY_CONFIG[t]?.color || "#333";
   };
@@ -149,7 +149,7 @@ function TimeBlocks({ todos }: { todos: TodoItem[] }) {
 
   return (
     <div ref={ref} className="relative">
-      <div className="absolute left-[76px] top-3 bottom-3 w-px bg-[#1a1a1a] hidden md:block" />
+      <div className="absolute left-[76px] top-3 bottom-3 w-px bg-[#1D1E24] hidden md:block" />
       <div className="space-y-0">
         {todos.map((todo, i) => {
           const cfg = TODO_CONFIG[todo.category];
@@ -226,15 +226,15 @@ function PinModal({ onSuccess, onClose }: { onSuccess: () => void; onClose: () =
   };
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[100] bg-[#0a0a0a]/80 backdrop-blur-sm flex items-center justify-center px-6" onClick={onClose}>
-      <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 20, opacity: 0 }} transition={{ duration: 0.3 }} className="bg-[#0f0f0f] border border-[#1a1a1a] p-8 w-full max-w-sm" onClick={(e) => e.stopPropagation()}>
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[100] bg-[#121316]/80 backdrop-blur-sm flex items-center justify-center px-6" onClick={onClose}>
+      <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 20, opacity: 0 }} transition={{ duration: 0.3 }} className="bg-[#16171B] border border-[#1D1E24] p-8 w-full max-w-sm" onClick={(e) => e.stopPropagation()}>
         <div className="text-center mb-8">
-          <span className="text-[10px] tracking-[0.3em] text-[#E2B93B] block mb-2" style={{ fontFamily: "monospace" }}>ADMIN ACCESS</span>
+          <span className="text-[10px] tracking-[0.3em] text-[#ECFF95] block mb-2" style={{ fontFamily: "monospace" }}>ADMIN ACCESS</span>
           <p className="text-[13px] text-[#555]" style={{ fontFamily: "monospace" }}>Enter your PIN to continue</p>
         </div>
         <motion.div animate={error ? { x: [-8, 8, -6, 6, -3, 3, 0] } : {}} transition={{ duration: 0.4 }} className="flex gap-3 justify-center mb-6">
           {digits.map((d, i) => (
-            <input key={i} ref={(el) => { inputRefs.current[i] = el; }} type="password" inputMode="numeric" maxLength={1} value={d} onChange={(e) => handleChange(i, e.target.value)} onKeyDown={(e) => handleKey(i, e)} className="w-12 h-12 text-center text-lg bg-transparent border outline-none transition-all" style={{ fontFamily: "monospace", borderColor: error ? "#ef4444" : d ? "#E2B93B" : "#222", color: "#fff", caretColor: "#E2B93B" }} />
+            <input key={i} ref={(el) => { inputRefs.current[i] = el; }} type="password" inputMode="numeric" maxLength={1} value={d} onChange={(e) => handleChange(i, e.target.value)} onKeyDown={(e) => handleKey(i, e)} className="w-12 h-12 text-center text-lg bg-transparent border outline-none transition-all" style={{ fontFamily: "monospace", borderColor: error ? "#ef4444" : d ? "#ECFF95" : "#222", color: "#fff", caretColor: "#ECFF95" }} />
           ))}
         </motion.div>
         {error && <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center text-[10px] tracking-[0.15em] text-[#ef4444] mb-4" style={{ fontFamily: "monospace" }}>INCORRECT PIN</motion.p>}
@@ -310,9 +310,9 @@ function AdminDrawer({
   };
 
   return (
-    <motion.div initial={{ x: "100%" }} animate={{ x: 0 }} exit={{ x: "100%" }} transition={{ type: "spring", stiffness: 300, damping: 35 }} className="fixed right-0 top-0 bottom-0 z-[90] bg-[#0a0a0a] border-l border-[#1a1a1a] w-full md:w-[440px] overflow-y-auto">
-      <div className="sticky top-0 bg-[#0a0a0a] border-b border-[#1a1a1a] px-6 py-4 flex items-center justify-between z-10">
-        <span className="text-[11px] tracking-[0.3em] text-[#E2B93B]" style={{ fontFamily: "monospace" }}>ADMIN PANEL</span>
+    <motion.div initial={{ x: "100%" }} animate={{ x: 0 }} exit={{ x: "100%" }} transition={{ type: "spring", stiffness: 300, damping: 35 }} className="fixed right-0 top-0 bottom-0 z-[90] bg-[#121316] border-l border-[#1D1E24] w-full md:w-[440px] overflow-y-auto">
+      <div className="sticky top-0 bg-[#121316] border-b border-[#1D1E24] px-6 py-4 flex items-center justify-between z-10">
+        <span className="text-[11px] tracking-[0.3em] text-[#ECFF95]" style={{ fontFamily: "monospace" }}>ADMIN PANEL</span>
         <button onClick={onClose} className="w-8 h-8 border border-[#222] flex items-center justify-center text-[#555] hover:text-white hover:border-[#444] transition-colors">×</button>
       </div>
       <div className="p-6 space-y-8">
@@ -323,7 +323,7 @@ function AdminDrawer({
               const cfg = STATUS_CONFIG[s];
               const active = s === currentStatus;
               return (
-                <button key={s} onClick={() => onStatusChange(s)} className="flex items-center gap-3 px-4 py-3 border text-left transition-all" style={{ borderColor: active ? cfg.color + "60" : "#1a1a1a", background: active ? cfg.color + "0d" : "transparent" }}>
+                <button key={s} onClick={() => onStatusChange(s)} className="flex items-center gap-3 px-4 py-3 border text-left transition-all" style={{ borderColor: active ? cfg.color + "60" : "#1D1E24", background: active ? cfg.color + "0d" : "transparent" }}>
                   <span style={{ fontSize: 14 }}>{cfg.emoji}</span>
                   <span className="text-[10px] tracking-[0.12em]" style={{ fontFamily: "monospace", color: active ? cfg.color : "#555" }}>{cfg.label}</span>
                   {active && <div className="ml-auto w-1.5 h-1.5 rounded-full" style={{ background: cfg.color }} />}
@@ -334,27 +334,27 @@ function AdminDrawer({
         </div>
         <div>
           <span className="text-[9px] tracking-[0.25em] text-[#444] block mb-3" style={{ fontFamily: "monospace" }}>CURRENT FOCUS</span>
-          <textarea value={focusValue} onChange={(e) => setFocusValue(e.target.value)} rows={2} className="w-full bg-transparent border border-[#1a1a1a] focus:border-[#E2B93B]/40 px-4 py-3 text-[12px] text-[#aaa] outline-none resize-none transition-colors" style={{ fontFamily: "monospace" }} placeholder="What are you building today?" />
-          <button onClick={handleSaveFocus} className="mt-2 text-[9px] tracking-[0.2em] transition-colors" style={{ fontFamily: "monospace", color: focusSaved ? "#22c55e" : "rgba(226,185,59,0.6)" }}>{focusSaved ? "✓ SAVED" : "SAVE FOCUS →"}</button>
+          <textarea value={focusValue} onChange={(e) => setFocusValue(e.target.value)} rows={2} className="w-full bg-transparent border border-[#1D1E24] focus:border-[#ECFF95]/40 px-4 py-3 text-[12px] text-[#aaa] outline-none resize-none transition-colors" style={{ fontFamily: "monospace" }} placeholder="What are you building today?" />
+          <button onClick={handleSaveFocus} className="mt-2 text-[9px] tracking-[0.2em] transition-colors" style={{ fontFamily: "monospace", color: focusSaved ? "#22c55e" : "rgba(236, 255, 149,0.6)" }}>{focusSaved ? "✓ SAVED" : "SAVE FOCUS →"}</button>
         </div>
         <div>
           <span className="text-[9px] tracking-[0.25em] text-[#444] block mb-4" style={{ fontFamily: "monospace" }}>LOG ACTIVITY</span>
           <div className="flex flex-wrap gap-2 mb-4">
             {ALL_ACTIVITY_TYPES.map((t) => {
               const cfg = ACTIVITY_CONFIG[t];
-              return <button key={t} onClick={() => setActivityType(t)} className="text-[9px] tracking-[0.15em] px-3 py-1.5 border transition-all" style={{ fontFamily: "monospace", borderColor: activityType === t ? cfg.color + "60" : "#1a1a1a", color: activityType === t ? cfg.color : "#444", background: activityType === t ? cfg.bg : "transparent" }}>{cfg.label}</button>;
+              return <button key={t} onClick={() => setActivityType(t)} className="text-[9px] tracking-[0.15em] px-3 py-1.5 border transition-all" style={{ fontFamily: "monospace", borderColor: activityType === t ? cfg.color + "60" : "#1D1E24", color: activityType === t ? cfg.color : "#444", background: activityType === t ? cfg.bg : "transparent" }}>{cfg.label}</button>;
             })}
           </div>
           <div className="space-y-2">
-            <input value={activityTool} onChange={(e) => setActivityTool(e.target.value)} placeholder="Tool (Figma, Cursor…)" className="w-full bg-transparent border border-[#1a1a1a] focus:border-[#E2B93B]/40 px-4 py-2.5 text-[12px] text-[#aaa] outline-none transition-colors" style={{ fontFamily: "monospace" }} />
-            <input value={activityDesc} onChange={(e) => setActivityDesc(e.target.value)} placeholder="What did you do?" className="w-full bg-transparent border border-[#1a1a1a] focus:border-[#E2B93B]/40 px-4 py-2.5 text-[12px] text-[#aaa] outline-none transition-colors" style={{ fontFamily: "monospace" }} />
-            <input value={activityDuration} onChange={(e) => setActivityDuration(e.target.value)} placeholder="Duration (e.g. 2h 30m)" className="w-full bg-transparent border border-[#1a1a1a] focus:border-[#E2B93B]/40 px-4 py-2.5 text-[12px] text-[#aaa] outline-none transition-colors" style={{ fontFamily: "monospace" }} />
+            <input value={activityTool} onChange={(e) => setActivityTool(e.target.value)} placeholder="Tool (Figma, Cursor…)" className="w-full bg-transparent border border-[#1D1E24] focus:border-[#ECFF95]/40 px-4 py-2.5 text-[12px] text-[#aaa] outline-none transition-colors" style={{ fontFamily: "monospace" }} />
+            <input value={activityDesc} onChange={(e) => setActivityDesc(e.target.value)} placeholder="What did you do?" className="w-full bg-transparent border border-[#1D1E24] focus:border-[#ECFF95]/40 px-4 py-2.5 text-[12px] text-[#aaa] outline-none transition-colors" style={{ fontFamily: "monospace" }} />
+            <input value={activityDuration} onChange={(e) => setActivityDuration(e.target.value)} placeholder="Duration (e.g. 2h 30m)" className="w-full bg-transparent border border-[#1D1E24] focus:border-[#ECFF95]/40 px-4 py-2.5 text-[12px] text-[#aaa] outline-none transition-colors" style={{ fontFamily: "monospace" }} />
           </div>
           <AnimatePresence mode="wait">
             {activityLogged ? (
               <motion.div key="logged" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="mt-3 text-[10px] tracking-[0.15em] text-[#22c55e]" style={{ fontFamily: "monospace" }}>✓ LOGGED</motion.div>
             ) : (
-              <motion.button key="btn" initial={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={handleLogActivity} disabled={!activityDesc} className="mt-3 text-[9px] tracking-[0.2em] px-5 py-2.5 border transition-all disabled:opacity-20 disabled:cursor-not-allowed" style={{ fontFamily: "monospace", borderColor: "#E2B93B40", color: "#E2B93B" }}>ADD ENTRY →</motion.button>
+              <motion.button key="btn" initial={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={handleLogActivity} disabled={!activityDesc} className="mt-3 text-[9px] tracking-[0.2em] px-5 py-2.5 border transition-all disabled:opacity-20 disabled:cursor-not-allowed" style={{ fontFamily: "monospace", borderColor: "#ECFF9540", color: "#ECFF95" }}>ADD ENTRY →</motion.button>
             )}
           </AnimatePresence>
         </div>
@@ -363,18 +363,18 @@ function AdminDrawer({
           <div className="flex flex-wrap gap-2 mb-3">
             {ALL_TODO_CATS.map((c) => {
               const cfg = TODO_CONFIG[c];
-              return <button key={c} onClick={() => setTodoCat(c)} className="text-[9px] tracking-[0.15em] px-3 py-1.5 border transition-all" style={{ fontFamily: "monospace", borderColor: todoCat === c ? cfg.color + "60" : "#1a1a1a", color: todoCat === c ? cfg.color : "#444", background: todoCat === c ? cfg.bg : "transparent" }}>{cfg.label}</button>;
+              return <button key={c} onClick={() => setTodoCat(c)} className="text-[9px] tracking-[0.15em] px-3 py-1.5 border transition-all" style={{ fontFamily: "monospace", borderColor: todoCat === c ? cfg.color + "60" : "#1D1E24", color: todoCat === c ? cfg.color : "#444", background: todoCat === c ? cfg.bg : "transparent" }}>{cfg.label}</button>;
             })}
           </div>
           <div className="space-y-2">
             <div className="flex gap-2">
-              <input value={todoStart} onChange={(e) => setTodoStart(e.target.value)} placeholder="09:00" className="w-24 bg-transparent border border-[#1a1a1a] focus:border-[#E2B93B]/40 px-3 py-2.5 text-[12px] text-[#aaa] outline-none transition-colors text-center" style={{ fontFamily: "monospace" }} />
+              <input value={todoStart} onChange={(e) => setTodoStart(e.target.value)} placeholder="09:00" className="w-24 bg-transparent border border-[#1D1E24] focus:border-[#ECFF95]/40 px-3 py-2.5 text-[12px] text-[#aaa] outline-none transition-colors text-center" style={{ fontFamily: "monospace" }} />
               <span className="text-[#333] self-center" style={{ fontFamily: "monospace" }}>–</span>
-              <input value={todoEnd} onChange={(e) => setTodoEnd(e.target.value)} placeholder="11:00" className="w-24 bg-transparent border border-[#1a1a1a] focus:border-[#E2B93B]/40 px-3 py-2.5 text-[12px] text-[#aaa] outline-none transition-colors text-center" style={{ fontFamily: "monospace" }} />
+              <input value={todoEnd} onChange={(e) => setTodoEnd(e.target.value)} placeholder="11:00" className="w-24 bg-transparent border border-[#1D1E24] focus:border-[#ECFF95]/40 px-3 py-2.5 text-[12px] text-[#aaa] outline-none transition-colors text-center" style={{ fontFamily: "monospace" }} />
             </div>
-            <input value={todoText} onChange={(e) => setTodoText(e.target.value)} placeholder="Task description" className="w-full bg-transparent border border-[#1a1a1a] focus:border-[#E2B93B]/40 px-4 py-2.5 text-[12px] text-[#aaa] outline-none transition-colors" style={{ fontFamily: "monospace" }} onKeyDown={(e) => e.key === "Enter" && handleAddTodo()} />
+            <input value={todoText} onChange={(e) => setTodoText(e.target.value)} placeholder="Task description" className="w-full bg-transparent border border-[#1D1E24] focus:border-[#ECFF95]/40 px-4 py-2.5 text-[12px] text-[#aaa] outline-none transition-colors" style={{ fontFamily: "monospace" }} onKeyDown={(e) => e.key === "Enter" && handleAddTodo()} />
           </div>
-          <button onClick={handleAddTodo} disabled={!todoText} className="mt-3 text-[9px] tracking-[0.2em] px-5 py-2.5 border transition-all disabled:opacity-20 disabled:cursor-not-allowed" style={{ fontFamily: "monospace", borderColor: "#E2B93B40", color: "#E2B93B" }}>ADD BLOCK →</button>
+          <button onClick={handleAddTodo} disabled={!todoText} className="mt-3 text-[9px] tracking-[0.2em] px-5 py-2.5 border transition-all disabled:opacity-20 disabled:cursor-not-allowed" style={{ fontFamily: "monospace", borderColor: "#ECFF9540", color: "#ECFF95" }}>ADD BLOCK →</button>
         </div>
         <div>
           <span className="text-[9px] tracking-[0.25em] text-[#444] block mb-4" style={{ fontFamily: "monospace" }}>TODAY&apos;S BLOCKS</span>
@@ -382,7 +382,7 @@ function AdminDrawer({
             {todos.map((todo) => {
               const cfg = TODO_CONFIG[todo.category];
               return (
-                <div key={todo.id} className="flex items-center gap-3 px-3 py-2.5 border transition-all" style={{ borderColor: todo.completed ? "#1a1a1a" : cfg.color + "30", background: todo.completed ? "transparent" : cfg.bg, opacity: todo.completed ? 0.4 : 1 }}>
+                <div key={todo.id} className="flex items-center gap-3 px-3 py-2.5 border transition-all" style={{ borderColor: todo.completed ? "#1D1E24" : cfg.color + "30", background: todo.completed ? "transparent" : cfg.bg, opacity: todo.completed ? 0.4 : 1 }}>
                   <button onClick={() => onToggleTodo(todo.id)} className="w-4 h-4 border flex-shrink-0 flex items-center justify-center transition-colors" style={{ borderColor: todo.completed ? "#333" : cfg.color + "60", background: todo.completed ? cfg.bg : "transparent" }}>
                     {todo.completed && <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M1 4l2 2 4-4" stroke={cfg.color} strokeWidth="1.5" /></svg>}
                   </button>
@@ -457,15 +457,15 @@ export default function NowClient({ initial, hasAdminPin = false }: { initial: N
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white pt-20">
+    <div className="min-h-screen bg-[#121316] text-white pt-20">
       <div className="fixed inset-0 pointer-events-none z-0" style={{ backgroundImage: `linear-gradient(rgba(255,255,255,0.012) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.012) 1px, transparent 1px)`, backgroundSize: "80px 80px" }} />
 
       <div ref={heroRef} className="relative z-10 px-6 md:px-14 lg:px-20 pt-16 pb-20">
         <div className="flex items-center justify-between mb-16">
-          <Link href="/" className="text-[10px] tracking-[0.2em] text-[#444] hover:text-[#E2B93B] transition-colors" style={{ fontFamily: "monospace" }}>← derondsgnr</Link>
+          <Link href="/" className="text-[10px] tracking-[0.2em] text-[#444] hover:text-[#ECFF95] transition-colors" style={{ fontFamily: "monospace" }}>← derondsgnr</Link>
           {hasAdminPin && (
-            <button onClick={() => setShowPin(true)} className="group flex items-center gap-2 text-[10px] tracking-[0.15em] text-[#2a2a2a] hover:text-[#E2B93B] transition-colors" style={{ fontFamily: "monospace" }}>
-              <svg width="12" height="14" viewBox="0 0 12 14" fill="none" className="group-hover:stroke-[#E2B93B] transition-colors" stroke="currentColor" strokeWidth="1.5"><rect x="1" y="6" width="10" height="7" rx="1" /><path d="M3.5 6V4a2.5 2.5 0 015 0v2" /></svg>
+            <button onClick={() => setShowPin(true)} className="group flex items-center gap-2 text-[10px] tracking-[0.15em] text-[#2a2a2a] hover:text-[#ECFF95] transition-colors" style={{ fontFamily: "monospace" }}>
+              <svg width="12" height="14" viewBox="0 0 12 14" fill="none" className="group-hover:stroke-[#ECFF95] transition-colors" stroke="currentColor" strokeWidth="1.5"><rect x="1" y="6" width="10" height="7" rx="1" /><path d="M3.5 6V4a2.5 2.5 0 015 0v2" /></svg>
               ADMIN
             </button>
           )}
@@ -482,7 +482,7 @@ export default function NowClient({ initial, hasAdminPin = false }: { initial: N
             </h1>
           </motion.div>
           <motion.div initial={{ opacity: 0, y: 20 }} animate={heroInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7, delay: 0.2 }} className="flex-shrink-0 text-right md:text-left">
-            <div className="text-5xl md:text-6xl lg:text-7xl leading-none" style={{ fontFamily: "var(--font-heading)", color: "#E2B93B", letterSpacing: "-0.02em" }}>{config.streak}</div>
+            <div className="text-5xl md:text-6xl lg:text-7xl leading-none" style={{ fontFamily: "var(--font-heading)", color: "#ECFF95", letterSpacing: "-0.02em" }}>{config.streak}</div>
             <span className="text-[9px] tracking-[0.25em] text-[#444] block mt-1" style={{ fontFamily: "monospace" }}>DAY STREAK</span>
           </motion.div>
         </div>
@@ -501,7 +501,7 @@ export default function NowClient({ initial, hasAdminPin = false }: { initial: N
           ))}
         </motion.div>
         {savingNow ? (
-          <p className="mt-3 text-[10px] tracking-[0.12em] text-[#E2B93B]/70" style={{ fontFamily: "monospace" }}>
+          <p className="mt-3 text-[10px] tracking-[0.12em] text-[#ECFF95]/70" style={{ fontFamily: "monospace" }}>
             Saving updates...
           </p>
         ) : null}
@@ -512,12 +512,12 @@ export default function NowClient({ initial, hasAdminPin = false }: { initial: N
         ) : null}
       </div>
 
-      <div className="h-px bg-gradient-to-r from-transparent via-[#1a1a1a] to-transparent mx-6 md:mx-14 lg:mx-20" />
+      <div className="h-px bg-gradient-to-r from-transparent via-[#1D1E24] to-transparent mx-6 md:mx-14 lg:mx-20" />
 
       <div className="relative z-10 px-6 md:px-14 lg:px-20 py-16">
         <div className="flex items-center gap-4 mb-8">
           <span className="text-[9px] tracking-[0.3em] text-[#444]" style={{ fontFamily: "monospace" }}>LAST 14 DAYS</span>
-          <div className="h-px flex-1 bg-[#1a1a1a]" />
+          <div className="h-px flex-1 bg-[#1D1E24]" />
           <div className="flex items-center gap-3">
             {(["design", "code", "writing"] as ActivityType[]).map((t) => (
               <div key={t} className="flex items-center gap-1.5">
@@ -530,28 +530,28 @@ export default function NowClient({ initial, hasAdminPin = false }: { initial: N
         <ActivityHeatmap activity={config.activity} />
       </div>
 
-      <div className="h-px bg-gradient-to-r from-transparent via-[#1a1a1a] to-transparent mx-6 md:mx-14 lg:mx-20" />
+      <div className="h-px bg-gradient-to-r from-transparent via-[#1D1E24] to-transparent mx-6 md:mx-14 lg:mx-20" />
 
       <div className="relative z-10 px-6 md:px-14 lg:px-20 py-16">
         <div className="flex items-center gap-4 mb-8">
           <span className="text-[9px] tracking-[0.3em] text-[#444]" style={{ fontFamily: "monospace" }}>RECENT ACTIVITY</span>
-          <div className="h-px flex-1 bg-[#1a1a1a]" />
+          <div className="h-px flex-1 bg-[#1D1E24]" />
         </div>
         <ActivityFeed activity={config.activity} />
       </div>
 
-      <div className="h-px bg-gradient-to-r from-transparent via-[#1a1a1a] to-transparent mx-6 md:mx-14 lg:mx-20" />
+      <div className="h-px bg-gradient-to-r from-transparent via-[#1D1E24] to-transparent mx-6 md:mx-14 lg:mx-20" />
 
       <div className="relative z-10 px-6 md:px-14 lg:px-20 py-16 pb-32">
         <div className="flex items-center gap-4 mb-8">
           <span className="text-[9px] tracking-[0.3em] text-[#444]" style={{ fontFamily: "monospace" }}>TODAY&apos;S BLOCKS</span>
-          <div className="h-px flex-1 bg-[#1a1a1a]" />
+          <div className="h-px flex-1 bg-[#1D1E24]" />
           <span className="text-[9px] tracking-[0.1em] text-[#333]" style={{ fontFamily: "monospace" }}>{config.todos.filter((t) => t.completed).length}/{config.todos.length} done</span>
         </div>
         <TimeBlocks todos={config.todos} />
 
         <div className="mt-8 h-px bg-[#111]">
-          <motion.div className="h-full bg-[#E2B93B]" initial={{ width: 0 }} animate={{ width: `${config.todos.length ? (config.todos.filter((t) => t.completed).length / config.todos.length) * 100 : 0}%` }} transition={{ duration: 1, delay: 0.5 }} />
+          <motion.div className="h-full bg-[#ECFF95]" initial={{ width: 0 }} animate={{ width: `${config.todos.length ? (config.todos.filter((t) => t.completed).length / config.todos.length) * 100 : 0}%` }} transition={{ duration: 1, delay: 0.5 }} />
         </div>
         <div className="flex justify-between mt-2">
           <span className="text-[9px] text-[#2a2a2a]" style={{ fontFamily: "monospace" }}>00:00</span>
@@ -566,7 +566,7 @@ export default function NowClient({ initial, hasAdminPin = false }: { initial: N
       <AnimatePresence>
         {adminOpen && (
           <>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setAdminOpen(false)} className="fixed inset-0 z-[80] bg-[#0a0a0a]/60 backdrop-blur-sm" />
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setAdminOpen(false)} className="fixed inset-0 z-[80] bg-[#121316]/60 backdrop-blur-sm" />
             <AdminDrawer onClose={() => setAdminOpen(false)} currentStatus={config.status} onStatusChange={handleStatusChange} currentFocus={config.focus} todos={config.todos} onToggleTodo={handleToggleTodo} onAddTodo={handleAddTodo} onLogActivity={handleLogActivity} onSaveFocus={handleSaveFocus} />
           </>
         )}

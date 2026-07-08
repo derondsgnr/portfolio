@@ -45,7 +45,7 @@ function px(format: StudioFormat, ratio: number): number {
 }
 
 const FALLBACK_PLATE =
-  "linear-gradient(145deg, #0a0a0a 0%, #0f0f0f 40%, #1a1208 100%)";
+  "linear-gradient(145deg, #121316 0%, #16171B 40%, #1a1208 100%)";
 
 /** Full-bleed photoreal scene + typography overlay (primary path). */
 function CinematicComposite({
@@ -77,7 +77,7 @@ function CinematicComposite({
       <div className="absolute z-[2] inset-0 flex flex-col justify-between p-[7%]">
         <div className="max-w-[88%]">
           <span
-            className="font-['Anton'] uppercase text-[#E2B93B] leading-[0.95] tracking-[0.04em] block"
+            className="font-['Anton'] uppercase text-[#ECFF95] leading-[0.95] tracking-[0.04em] block"
             style={{
               fontSize: px(format, 0.052),
               textShadow: "0 2px 40px rgba(0,0,0,0.85)",
@@ -98,7 +98,7 @@ function CinematicComposite({
           ) : null}
           {slide.cta ? (
             <span
-              className="mt-4 inline-flex font-mono uppercase tracking-[0.18em] text-[#E2B93B]/95 border border-[#E2B93B]/45 px-3 py-1.5 w-fit bg-black/35"
+              className="mt-4 inline-flex font-mono uppercase tracking-[0.18em] text-[#ECFF95]/95 border border-[#ECFF95]/45 px-3 py-1.5 w-fit bg-black/35"
               style={{ fontSize: px(format, 0.011) }}
             >
               {slide.cta}
@@ -130,7 +130,7 @@ function CinematicPlateCss({
       <SafeImg src={slide.environmentPlateUrl} alt="" className="w-full h-full object-cover" />
     </div>
   ) : (
-    <div className="absolute inset-0 bg-[#0A0A0A]" style={{ background: FALLBACK_PLATE }} />
+    <div className="absolute inset-0 bg-[#121316]" style={{ background: FALLBACK_PLATE }} />
   );
 
   const textBlock = (
@@ -138,7 +138,7 @@ function CinematicPlateCss({
       className={`flex flex-col z-10 ${mode === "tall" ? "p-[8%] pb-0 w-full" : "p-[7%] max-w-[55%]"}`}
     >
       <span
-        className="font-['Anton'] uppercase text-[#E2B93B] leading-[0.95] tracking-[0.04em]"
+        className="font-['Anton'] uppercase text-[#ECFF95] leading-[0.95] tracking-[0.04em]"
         style={{
           fontSize: px(format, 0.055),
           textShadow: "0 2px 40px rgba(0,0,0,0.8)",
@@ -159,7 +159,7 @@ function CinematicPlateCss({
       ) : null}
       {slide.cta ? (
         <span
-          className="mt-4 inline-flex font-mono uppercase tracking-[0.18em] text-[#E2B93B]/90 border border-[#E2B93B]/40 px-3 py-1.5 w-fit bg-black/20"
+          className="mt-4 inline-flex font-mono uppercase tracking-[0.18em] text-[#ECFF95]/90 border border-[#ECFF95]/40 px-3 py-1.5 w-fit bg-black/20"
           style={{ fontSize: px(format, 0.012) }}
         >
           {slide.cta}
@@ -269,7 +269,7 @@ function SpotlightComposite({ slide, format }: { slide: DeckSlide; format: Studi
       </div>
       {slide.cta ? (
         <div
-          className="absolute z-[2] bottom-[6%] left-0 right-0 text-center font-mono uppercase tracking-[0.2em] text-[#E2B93B]"
+          className="absolute z-[2] bottom-[6%] left-0 right-0 text-center font-mono uppercase tracking-[0.2em] text-[#ECFF95]"
           style={{ fontSize: px(format, 0.012) }}
         >
           {slide.cta}
@@ -290,10 +290,10 @@ function SpotlightDeviceCss({ slide, format }: { slide: DeckSlide; format: Studi
       style={{
         width: format.w,
         height: format.h,
-        background: "#0A0A0A",
+        background: "#121316",
         backgroundImage: slide.environmentPlateUrl
           ? undefined
-          : "radial-gradient(ellipse 80% 60% at 50% 35%, rgba(226,185,59,0.18) 0%, transparent 55%), radial-gradient(ellipse 100% 80% at 50% 100%, rgba(0,0,0,0.9) 0%, #0A0A0A 45%)",
+          : "radial-gradient(ellipse 80% 60% at 50% 35%, rgba(236, 255, 149,0.18) 0%, transparent 55%), radial-gradient(ellipse 100% 80% at 50% 100%, rgba(0,0,0,0.9) 0%, #121316 45%)",
         filter: grade.compFilter && grade.compFilter !== "none" ? grade.compFilter : undefined,
       }}
     >
@@ -342,7 +342,7 @@ function SpotlightDeviceCss({ slide, format }: { slide: DeckSlide; format: Studi
 
       {slide.cta ? (
         <div
-          className="relative z-10 pb-[6%] font-mono uppercase tracking-[0.2em] text-[#E2B93B]"
+          className="relative z-10 pb-[6%] font-mono uppercase tracking-[0.2em] text-[#ECFF95]"
           style={{ fontSize: px(format, 0.013) }}
         >
           {slide.cta}
@@ -377,7 +377,7 @@ function TypographyPoster({
       style={{
         width: format.w,
         height: format.h,
-        background: "#0A0A0A",
+        background: "#121316",
         filter: grade.compFilter && grade.compFilter !== "none" ? grade.compFilter : undefined,
       }}
     >
@@ -386,13 +386,13 @@ function TypographyPoster({
           <SafeImg src={slide.environmentPlateUrl} alt="" className="w-full h-full object-cover" />
         </div>
       ) : null}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#0A0A0A] via-transparent to-[#111]" />
+      <div className="absolute inset-0 bg-gradient-to-br from-[#121316] via-transparent to-[#111]" />
 
       <div
         className={`relative z-10 flex flex-1 flex-col ${mode === "tall" ? "p-[10%] justify-center" : "p-[8%] justify-center"}`}
       >
         <p
-          className="font-mono uppercase tracking-[0.2em] text-[#E2B93B]/70 mb-4"
+          className="font-mono uppercase tracking-[0.2em] text-[#ECFF95]/70 mb-4"
           style={{ fontSize: px(format, 0.011) }}
         >
           {slide.cta}

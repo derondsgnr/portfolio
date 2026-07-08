@@ -39,7 +39,7 @@ export default function AdminLoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-6" style={{ backgroundColor: "#0A0A0A", color: "#fff" }}>
+    <div className="min-h-screen flex items-center justify-center px-6" style={{ backgroundColor: "#121316", color: "#fff" }}>
       <div className="w-full max-w-sm">
         <h1 className="text-xl font-mono mb-6 tracking-wider" style={{ color: "#fff" }}>
           ADMIN
@@ -51,7 +51,7 @@ export default function AdminLoginPage() {
               name="password"
               placeholder="Password"
               autoFocus
-              className="w-full px-4 py-3 pr-12 border font-mono text-sm focus:outline-none focus:border-[#E2B93B]/50"
+              className="w-full px-4 py-3 pr-12 border font-mono text-sm focus:outline-none focus:border-[#ECFF95]/50"
               style={{ backgroundColor: "#111", borderColor: "rgba(255,255,255,0.1)", color: "#fff" }}
               disabled={loading}
             />
@@ -71,7 +71,7 @@ export default function AdminLoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 bg-[#E2B93B] text-[#0A0A0A] font-mono text-xs tracking-wider uppercase hover:bg-white transition-colors disabled:opacity-50"
+            className="w-full py-3 bg-[#ECFF95] text-[#121316] font-mono text-xs tracking-wider uppercase hover:bg-white transition-colors disabled:opacity-50"
           >
             {loading ? "CHECKING ACCESS..." : "ENTER"}
           </button>

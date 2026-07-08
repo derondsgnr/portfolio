@@ -35,7 +35,7 @@ export default function SeriesPage({
   const heroInView = useInView(heroRef, { once: true, amount: 0.3 });
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white pt-24">
+    <div className="min-h-screen bg-[#121316] text-white pt-24">
       {/* Signal grid */}
       <div
         className="fixed inset-0 pointer-events-none z-0"
@@ -62,7 +62,7 @@ export default function SeriesPage({
         >
           <SafeLink
             href="/blog"
-            className="text-[10px] tracking-[0.15em] text-[#555] hover:text-[#E2B93B] transition-colors"
+            className="text-[10px] tracking-[0.15em] text-[#555] hover:text-[#ECFF95] transition-colors"
             style={{ fontFamily: "monospace", textDecoration: "none" }}
           >
             ← WRITING
@@ -74,7 +74,7 @@ export default function SeriesPage({
           initial={{ opacity: 0, y: 10 }}
           animate={heroInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5 }}
-          className="text-[10px] tracking-[0.3em] text-[#E2B93B] block mb-4"
+          className="text-[10px] tracking-[0.3em] text-[#ECFF95] block mb-4"
           style={{ fontFamily: "monospace" }}
         >
           SERIES / {posts.length} PARTS · {totalReadingTime} MIN TOTAL
@@ -115,7 +115,7 @@ export default function SeriesPage({
           >
             <Link
               href={`/blog/${posts[0].slug}`}
-              className="inline-block text-[10px] tracking-[0.2em] px-6 py-3 border border-[#E2B93B] text-[#E2B93B] hover:bg-[#E2B93B] hover:text-[#0a0a0a] transition-all duration-300"
+              className="inline-block text-[10px] tracking-[0.2em] px-6 py-3 border border-[#ECFF95] text-[#ECFF95] hover:bg-[#ECFF95] hover:text-[#121316] transition-all duration-300"
               style={{ fontFamily: "monospace", textDecoration: "none" }}
             >
               START READING →
@@ -128,7 +128,7 @@ export default function SeriesPage({
           initial={{ scaleX: 0 }}
           animate={heroInView ? { scaleX: 1 } : {}}
           transition={{ duration: 1.2, delay: 0.5 }}
-          className="mt-12 h-px bg-gradient-to-r from-[#E2B93B] via-[#333] to-transparent origin-left"
+          className="mt-12 h-px bg-gradient-to-r from-[#ECFF95] via-[#333] to-transparent origin-left"
         />
       </div>
 
@@ -140,7 +140,7 @@ export default function SeriesPage({
             className="absolute left-[15px] md:left-[19px] top-0 bottom-0 w-px"
             style={{
               background:
-                "linear-gradient(to bottom, #E2B93B, rgba(226,185,59,0.2) 80%, transparent)",
+                "linear-gradient(to bottom, #ECFF95, rgba(236, 255, 149,0.2) 80%, transparent)",
             }}
           />
 
@@ -175,12 +175,12 @@ function TimelineItem({
     >
       {/* Dot */}
       <div
-        className="absolute left-[11px] md:left-[15px] top-1 w-[9px] h-[9px] rounded-full border-2 border-[#E2B93B] bg-[#0a0a0a]"
+        className="absolute left-[11px] md:left-[15px] top-1 w-[9px] h-[9px] rounded-full border-2 border-[#ECFF95] bg-[#121316]"
       />
 
       {/* Position number */}
       <span
-        className="text-[9px] tracking-[0.2em] text-[#E2B93B]/50 block mb-2"
+        className="text-[9px] tracking-[0.2em] text-[#ECFF95]/50 block mb-2"
         style={{ fontFamily: "monospace" }}
       >
         PART {index + 1} OF {total}
@@ -193,7 +193,7 @@ function TimelineItem({
       >
         {/* Title */}
         <h2
-          className="text-white text-2xl md:text-3xl uppercase leading-tight mb-3 group-hover:text-[#E2B93B] transition-colors duration-300"
+          className="text-white text-2xl md:text-3xl uppercase leading-tight mb-3 group-hover:text-[#ECFF95] transition-colors duration-300"
           style={{
             fontFamily: "var(--font-heading)",
             letterSpacing: "-0.02em",
@@ -219,7 +219,7 @@ function TimelineItem({
           </span>
           <span className="text-[#2a2a2a]">·</span>
           <span
-            className="text-[9px] tracking-[0.15em] px-2 py-0.5 border border-[#1a1a1a] text-[#333]"
+            className="text-[9px] tracking-[0.15em] px-2 py-0.5 border border-[#1D1E24] text-[#333]"
             style={{ fontFamily: "monospace" }}
           >
             {post.meta.category.toUpperCase()}
@@ -236,7 +236,7 @@ function TimelineItem({
 
         {/* Read CTA */}
         <span
-          className="text-[10px] tracking-[0.15em] text-[#444] group-hover:text-[#E2B93B] transition-colors mt-4 inline-flex items-center gap-2"
+          className="text-[10px] tracking-[0.15em] text-[#444] group-hover:text-[#ECFF95] transition-colors mt-4 inline-flex items-center gap-2"
           style={{ fontFamily: "monospace" }}
         >
           READ

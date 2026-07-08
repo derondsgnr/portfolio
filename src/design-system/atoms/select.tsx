@@ -9,7 +9,7 @@ const variantStyles: Record<SelectVariant, string> = {
   default:
     "bg-input-background border-input text-foreground focus-visible:border-ring",
   admin:
-    "w-full px-4 py-3 bg-white/[0.03] border border-white/[0.08] text-white text-sm focus:outline-none focus:border-[#E2B93B]/50 transition-colors font-['Instrument_Sans'] cursor-pointer",
+    "w-full px-4 py-3 bg-white/[0.03] border border-white/[0.08] text-white text-sm focus:outline-none focus:border-[#ECFF95]/50 transition-colors font-['Instrument_Sans'] cursor-pointer",
 };
 
 export interface SelectProps

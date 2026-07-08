@@ -10,7 +10,7 @@ import type { Exploration } from "@/lib/content/explorations";
 import type { MediaConfig } from "@/lib/content/media";
 import type { PageCopy } from "@/lib/content/copy";
 import { useBooking } from "../booking-context";
-import { ToolBadge, ToolBadges } from "@/components/tool-badge";
+import { ToolBadges, ToolChip } from "@/components/tool-badge";
 import { VideoEmbedFrame } from "../shared/youtube-video-frame";
 import { getVideoEmbedUrl } from "@/lib/media-url";
 import { PersonalProjectsGrid } from "../personal-projects-grid";
@@ -134,8 +134,8 @@ function ViewToggle({ mode, onToggle, labelA, labelB }: { mode: "a" | "b"; onTog
           fontSize: "11px",
           letterSpacing: "0.15em",
           textTransform: "uppercase",
-          color: mode === "a" ? "#0A0A0A" : "rgba(255,255,255,0.5)",
-          background: mode === "a" ? "#E2B93B" : "transparent",
+          color: mode === "a" ? "#121316" : "rgba(255,255,255,0.5)",
+          background: mode === "a" ? "#ECFF95" : "transparent",
         }}
       >
         {labelA}
@@ -149,8 +149,8 @@ function ViewToggle({ mode, onToggle, labelA, labelB }: { mode: "a" | "b"; onTog
           fontSize: "11px",
           letterSpacing: "0.15em",
           textTransform: "uppercase",
-          color: mode === "b" ? "#0A0A0A" : "rgba(255,255,255,0.5)",
-          background: mode === "b" ? "#E2B93B" : "transparent",
+          color: mode === "b" ? "#121316" : "rgba(255,255,255,0.5)",
+          background: mode === "b" ? "#ECFF95" : "transparent",
         }}
       >
         {labelB}
@@ -170,9 +170,9 @@ function AboutCTA({ copy }: { copy?: PageCopy }) {
   const subtext = copy?.cta?.subtext ?? "FREE 30-MINUTE DISCOVERY CALL";
   return (
     <section className="relative z-[2] py-16 sm:py-24 md:py-32 px-6 sm:px-8 md:px-10 overflow-hidden">
-      <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 60% 50% at 50% 40%, rgba(226,185,59,0.06) 0%, transparent 70%)" }} />
+      <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 60% 50% at 50% 40%, rgba(236, 255, 149,0.06) 0%, transparent 70%)" }} />
       <div className="max-w-4xl mx-auto text-center relative z-10">
-        <span style={{ fontFamily: "monospace", fontSize: "9px", letterSpacing: "0.3em", color: "rgba(226,185,59,0.3)" }}>{label}</span>
+        <span style={{ fontFamily: "monospace", fontSize: "9px", letterSpacing: "0.3em", color: "rgba(236, 255, 149,0.3)" }}>{label}</span>
         <motion.div initial={{ y: 40, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="mt-6">
           <span style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(3rem, 10vw, 8rem)", lineHeight: 0.95, letterSpacing: "-0.03em", textTransform: "uppercase", color: "#f0f0f0", display: "block" }}>
             <ScrambleText text={headline} speed={40} />
@@ -188,7 +188,7 @@ function AboutCTA({ copy }: { copy?: PageCopy }) {
           <button
             onClick={withSound(() => open("book"))}
             onMouseEnter={onHover}
-            className="text-[11px] tracking-[0.2em] text-[#0A0A0A] bg-[#E2B93B] px-6 sm:px-8 py-3.5 hover:bg-white transition-colors duration-300 w-full sm:w-auto"
+            className="text-[11px] tracking-[0.2em] text-[#121316] bg-[#ECFF95] px-6 sm:px-8 py-3.5 hover:bg-white transition-colors duration-300 w-full sm:w-auto"
             style={{ fontFamily: "monospace" }}
           >
             {ctaPrimary}
@@ -196,7 +196,7 @@ function AboutCTA({ copy }: { copy?: PageCopy }) {
           <button
             onClick={withSound(() => open("message"))}
             onMouseEnter={onHover}
-            className="text-[11px] tracking-[0.2em] text-[#E2B93B] border border-[#E2B93B]/30 px-6 sm:px-8 py-3.5 hover:bg-[#E2B93B]/10 transition-colors duration-300 w-full sm:w-auto"
+            className="text-[11px] tracking-[0.2em] text-[#ECFF95] border border-[#ECFF95]/30 px-6 sm:px-8 py-3.5 hover:bg-[#ECFF95]/10 transition-colors duration-300 w-full sm:w-auto"
             style={{ fontFamily: "monospace" }}
           >
             {ctaSecondary}
@@ -222,7 +222,7 @@ function SynthesisFooter() {
       </motion.div>
       <div className="flex justify-end gap-6 mt-4" style={{ transform: "rotate(1.5deg)" }}>
         {(socialLinks ?? []).map((link) => (
-          <a key={link.label} href={link.url} target="_blank" rel="noopener noreferrer" className="hover:text-[#E2B93B] transition-colors" style={{ fontFamily: "monospace", fontSize: "11px", letterSpacing: "0.15em", color: "rgba(255,255,255,0.45)", textTransform: "uppercase" }}>
+          <a key={link.label} href={link.url} target="_blank" rel="noopener noreferrer" className="hover:text-[#ECFF95] transition-colors" style={{ fontFamily: "monospace", fontSize: "11px", letterSpacing: "0.15em", color: "rgba(255,255,255,0.45)", textTransform: "uppercase" }}>
             {link.label}
           </a>
         ))}
@@ -254,7 +254,7 @@ function SignalWorkHero({ projects = V2_PROJECTS, copy }: { projects?: typeof V2
         animate={{ opacity: 1, clipPath: "inset(0 0% 0 0)" }}
         transition={{ duration: 1, ease: [0.77, 0, 0.175, 1] }}
       >
-        <span style={{ fontFamily: "monospace", fontSize: "10px", letterSpacing: "0.3em", color: "#E2B93B" }}>
+        <span style={{ fontFamily: "monospace", fontSize: "10px", letterSpacing: "0.3em", color: "#ECFF95" }}>
           {accessLabel}
         </span>
       </motion.div>
@@ -275,7 +275,7 @@ function SignalWorkHero({ projects = V2_PROJECTS, copy }: { projects?: typeof V2
         animate={{ scaleX: 1 }}
         transition={{ delay: 0.8, duration: 1.5, ease: [0.77, 0, 0.175, 1] }}
         className="h-px origin-left mt-8"
-        style={{ background: "linear-gradient(90deg, rgba(226,185,59,0.4), transparent)" }}
+        style={{ background: "linear-gradient(90deg, rgba(236, 255, 149,0.4), transparent)" }}
       />
 
       <motion.div
@@ -287,7 +287,7 @@ function SignalWorkHero({ projects = V2_PROJECTS, copy }: { projects?: typeof V2
         <span style={{ fontFamily: "monospace", fontSize: "11px", color: "rgba(255,255,255,0.45)", letterSpacing: "0.1em" }}>
           {projects.length} {countSuffix}
         </span>
-        <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#E2B93B" }}>
+        <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#ECFF95" }}>
           {activeLabel}{blink ? "_" : " "}
         </span>
       </motion.div>
@@ -301,16 +301,16 @@ function ComingSoonOverlay() {
     <>
       <div className="absolute right-4 bottom-4 z-[2]">
         <span
-          className="border border-[#E2B93B]/50 bg-[#0A0A0A]/80 px-2.5 py-1 backdrop-blur-sm"
-          style={{ fontFamily: "monospace", fontSize: "9px", letterSpacing: "0.18em", textTransform: "uppercase", color: "#E2B93B" }}
+          className="border border-[#ECFF95]/50 bg-[#121316]/80 px-2.5 py-1 backdrop-blur-sm"
+          style={{ fontFamily: "monospace", fontSize: "9px", letterSpacing: "0.18em", textTransform: "uppercase", color: "#ECFF95" }}
         >
           Coming soon
         </span>
       </div>
-      <div className="absolute inset-0 z-[2] flex items-center justify-center bg-[#0A0A0A]/0 opacity-0 transition-opacity duration-300 group-hover:bg-[#0A0A0A]/75 group-hover:opacity-100">
+      <div className="absolute inset-0 z-[2] flex items-center justify-center bg-[#121316]/0 opacity-0 transition-opacity duration-300 group-hover:bg-[#121316]/75 group-hover:opacity-100">
         <span
-          className="border border-[#E2B93B]/60 bg-[#0A0A0A]/90 px-5 py-2"
-          style={{ fontFamily: "monospace", fontSize: "11px", letterSpacing: "0.22em", textTransform: "uppercase", color: "#E2B93B" }}
+          className="border border-[#ECFF95]/60 bg-[#121316]/90 px-5 py-2"
+          style={{ fontFamily: "monospace", fontSize: "11px", letterSpacing: "0.22em", textTransform: "uppercase", color: "#ECFF95" }}
         >
           Coming soon
         </span>
@@ -348,14 +348,14 @@ function WorkListView({ projects = V2_PROJECTS }: { projects?: typeof V2_PROJECT
           {/* Mobile layout — stacked */}
           <div className="md:hidden py-6">
             <div className="flex items-center justify-between mb-2">
-              <span style={{ fontFamily: "monospace", fontSize: "11px", letterSpacing: "0.2em", color: hoveredIdx === i ? "#E2B93B" : "rgba(255,255,255,0.5)" }}>
+              <span style={{ fontFamily: "monospace", fontSize: "11px", letterSpacing: "0.2em", color: hoveredIdx === i ? "#ECFF95" : "rgba(255,255,255,0.5)" }}>
                 [{project.id}]
               </span>
               <span style={{ fontFamily: "monospace", fontSize: "11px", color: "rgba(255,255,255,0.45)" }}>
                 {project.year}
               </span>
             </div>
-            <span style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(2rem, 10vw, 3.5rem)", lineHeight: 1, letterSpacing: "-0.02em", textTransform: "uppercase", color: hoveredIdx === i ? "#E2B93B" : "rgba(255,255,255,0.85)", display: "block", marginBottom: "6px" }}>
+            <span style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(2rem, 10vw, 3.5rem)", lineHeight: 1, letterSpacing: "-0.02em", textTransform: "uppercase", color: hoveredIdx === i ? "#ECFF95" : "rgba(255,255,255,0.85)", display: "block", marginBottom: "6px" }}>
               <ScrambleText text={project.title} speed={20} />
             </span>
             <div className="flex items-center gap-2">
@@ -364,8 +364,8 @@ function WorkListView({ projects = V2_PROJECTS }: { projects?: typeof V2_PROJECT
               </span>
               {isComingSoon && (
                 <span
-                  className="border border-[#E2B93B]/50 px-1.5 py-0.5"
-                  style={{ fontFamily: "monospace", fontSize: "9px", letterSpacing: "0.18em", textTransform: "uppercase", color: "#E2B93B" }}
+                  className="border border-[#ECFF95]/50 px-1.5 py-0.5"
+                  style={{ fontFamily: "monospace", fontSize: "9px", letterSpacing: "0.18em", textTransform: "uppercase", color: "#ECFF95" }}
                 >
                   Coming soon
                 </span>
@@ -375,17 +375,17 @@ function WorkListView({ projects = V2_PROJECTS }: { projects?: typeof V2_PROJECT
 
           {/* Desktop layout — horizontal */}
           <div className="hidden md:flex py-10 items-baseline justify-between">
-            <span style={{ fontFamily: "monospace", fontSize: "11px", letterSpacing: "0.2em", color: hoveredIdx === i ? "#E2B93B" : "rgba(255,255,255,0.5)", transition: "color 0.3s" }}>
+            <span style={{ fontFamily: "monospace", fontSize: "11px", letterSpacing: "0.2em", color: hoveredIdx === i ? "#ECFF95" : "rgba(255,255,255,0.5)", transition: "color 0.3s" }}>
               [{project.id}]
             </span>
-            <span style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(2rem, 5vw, 4.5rem)", lineHeight: 1, letterSpacing: "-0.02em", textTransform: "uppercase", color: hoveredIdx === i ? "#E2B93B" : "rgba(255,255,255,0.8)", transition: "color 0.5s ease" }}>
+            <span style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(2rem, 5vw, 4.5rem)", lineHeight: 1, letterSpacing: "-0.02em", textTransform: "uppercase", color: hoveredIdx === i ? "#ECFF95" : "rgba(255,255,255,0.8)", transition: "color 0.5s ease" }}>
               <ScrambleText text={project.title} speed={20} />
             </span>
             <div className="text-right">
               {isComingSoon && (
                 <span
-                  className="mb-1 inline-block border border-[#E2B93B]/50 px-1.5 py-0.5"
-                  style={{ fontFamily: "monospace", fontSize: "9px", letterSpacing: "0.18em", textTransform: "uppercase", color: "#E2B93B" }}
+                  className="mb-1 inline-block border border-[#ECFF95]/50 px-1.5 py-0.5"
+                  style={{ fontFamily: "monospace", fontSize: "9px", letterSpacing: "0.18em", textTransform: "uppercase", color: "#ECFF95" }}
                 >
                   Coming soon
                 </span>
@@ -408,7 +408,7 @@ function WorkListView({ projects = V2_PROJECTS }: { projects?: typeof V2_PROJECT
                 transition={{ duration: 0.6, ease: [0.77, 0, 0.175, 1] }}
                 className="overflow-hidden border-x border-white/[0.06] border-b border-white/[0.06]"
               >
-                <div className="flex h-full min-h-[280px] flex-col bg-[#0A0A0A]">
+                <div className="flex h-full min-h-[280px] flex-col bg-[#121316]">
                   {/* Media strip — typography never sits on photography */}
                   <div className="relative min-h-[160px] flex-[1.15] shrink-0">
                     <img
@@ -429,7 +429,7 @@ function WorkListView({ projects = V2_PROJECTS }: { projects?: typeof V2_PROJECT
                         style={{
                           fontFamily: "monospace",
                           fontSize: "9px",
-                          color: "#E2B93B",
+                          color: "#ECFF95",
                           letterSpacing: "0.1em",
                           textShadow: "0 1px 4px rgba(0,0,0,0.9)",
                         }}
@@ -519,7 +519,7 @@ function WorkGridView({ projects = V2_PROJECTS }: { projects?: typeof V2_PROJECT
                 style={{
                   fontFamily: "monospace",
                   fontSize: "9px",
-                  color: "#E2B93B",
+                  color: "#ECFF95",
                   letterSpacing: "0.1em",
                   textShadow: "0 1px 4px rgba(0,0,0,0.9)",
                 }}
@@ -649,10 +649,10 @@ function CodeSnippetsView() {
             style={{ background: "rgba(255,255,255,0.015)", border: "1px solid rgba(255,255,255,0.06)" }}
           >
             {/* Hover accent line */}
-            <div className="absolute top-0 left-0 right-0 h-px transition-all duration-500" style={{ background: "rgba(226,185,59,0)" }} onMouseEnter={(e) => ((e.currentTarget as HTMLDivElement).style.background = "rgba(226,185,59,0.4)")} onMouseLeave={(e) => ((e.currentTarget as HTMLDivElement).style.background = "rgba(226,185,59,0)")} />
+            <div className="absolute top-0 left-0 right-0 h-px transition-all duration-500" style={{ background: "rgba(236, 255, 149,0)" }} onMouseEnter={(e) => ((e.currentTarget as HTMLDivElement).style.background = "rgba(236, 255, 149,0.4)")} onMouseLeave={(e) => ((e.currentTarget as HTMLDivElement).style.background = "rgba(236, 255, 149,0)")} />
 
             <div className="flex items-start justify-between gap-4">
-              <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#E2B93B", letterSpacing: "0.15em" }}>[{snippet.id}]</span>
+              <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#ECFF95", letterSpacing: "0.15em" }}>[{snippet.id}]</span>
               <span style={{ fontFamily: "monospace", fontSize: "10px", color: "rgba(255,255,255,0.5)", letterSpacing: "0.15em", textTransform: "uppercase", border: "1px solid rgba(255,255,255,0.12)", padding: "2px 8px" }}>
                 {snippet.type}
               </span>
@@ -678,7 +678,7 @@ function CodeSnippetsView() {
               <button
                 onClick={() => setActive(snippet)}
                 className="self-start transition-colors duration-300 hover:bg-white"
-                style={{ fontFamily: "monospace", fontSize: "9px", letterSpacing: "0.15em", textTransform: "uppercase", color: "#0A0A0A", background: "#E2B93B", padding: "8px 20px" }}
+                style={{ fontFamily: "monospace", fontSize: "9px", letterSpacing: "0.15em", textTransform: "uppercase", color: "#121316", background: "#ECFF95", padding: "8px 20px" }}
               >
                 Preview →
               </button>
@@ -699,16 +699,16 @@ function CodeSnippetsView() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[100] flex flex-col"
-            style={{ background: "#0A0A0A" }}
+            style={{ background: "#121316" }}
           >
             <div className="flex items-center justify-between px-6 py-4 border-b" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
               <div className="flex items-center gap-4">
-                <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#E2B93B", letterSpacing: "0.15em" }}>[{active.id}]</span>
+                <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#ECFF95", letterSpacing: "0.15em" }}>[{active.id}]</span>
                 <span style={{ fontFamily: "'Anton', sans-serif", fontSize: "1.2rem", letterSpacing: "-0.02em", textTransform: "uppercase", color: "#f0f0f0" }}>{active.title}</span>
               </div>
               <button
                 onClick={() => setActive(null)}
-                className="w-8 h-8 flex items-center justify-center hover:border-[#E2B93B] transition-colors"
+                className="w-8 h-8 flex items-center justify-center hover:border-[#ECFF95] transition-colors"
                 style={{ border: "1px solid rgba(255,255,255,0.15)" }}
               >
                 <span style={{ fontFamily: "monospace", fontSize: "14px", color: "rgba(255,255,255,0.6)" }}>×</span>
@@ -737,7 +737,7 @@ export function SynthesisWorkPage({ projects, copy }: { projects?: typeof V2_PRO
   const caseStudyProjects = allProjects.filter((p) => !p.projectType || p.projectType === "case-study");
 
   return (
-    <main className="relative bg-[#0A0A0A] min-h-screen">
+    <main className="relative bg-[#121316] min-h-screen">
       <SignalGrid />
       <ScanLines />
       <CipherBgLayer />
@@ -766,8 +766,8 @@ export function SynthesisWorkPage({ projects, copy }: { projects?: typeof V2_PRO
                   fontSize: "11px",
                   letterSpacing: "0.15em",
                   textTransform: "uppercase" as const,
-                  color: tab === "projects" ? "#0A0A0A" : "rgba(255,255,255,0.5)",
-                  background: tab === "projects" ? "#E2B93B" : "transparent",
+                  color: tab === "projects" ? "#121316" : "rgba(255,255,255,0.5)",
+                  background: tab === "projects" ? "#ECFF95" : "transparent",
                 }}
               >
                 Projects
@@ -780,8 +780,8 @@ export function SynthesisWorkPage({ projects, copy }: { projects?: typeof V2_PRO
                   fontSize: "11px",
                   letterSpacing: "0.15em",
                   textTransform: "uppercase" as const,
-                  color: tab === "code" ? "#0A0A0A" : "rgba(255,255,255,0.5)",
-                  background: tab === "code" ? "#E2B93B" : "transparent",
+                  color: tab === "code" ? "#121316" : "rgba(255,255,255,0.5)",
+                  background: tab === "code" ? "#ECFF95" : "transparent",
                 }}
               >
                 Code
@@ -861,7 +861,7 @@ function SynthesisCraftHero({ copy, heroBackground }: { copy?: PageCopy; heroBac
         />
       )}
       <div className="relative z-10">
-        <span style={{ fontFamily: "monospace", fontSize: "10px", letterSpacing: "0.3em", color: "#E2B93B" }}>
+        <span style={{ fontFamily: "monospace", fontSize: "10px", letterSpacing: "0.3em", color: "#ECFF95" }}>
           {label}
         </span>
         <motion.div
@@ -888,7 +888,7 @@ function SynthesisCraftHero({ copy, heroBackground }: { copy?: PageCopy; heroBac
           animate={{ scaleX: 1 }}
           transition={{ delay: 1.2, duration: 1.5, ease: [0.77, 0, 0.175, 1] }}
           className="h-px origin-left mt-8"
-          style={{ background: "linear-gradient(90deg, rgba(226,185,59,0.4), transparent)" }}
+          style={{ background: "linear-gradient(90deg, rgba(236, 255, 149,0.4), transparent)" }}
         />
       </div>
     </section>
@@ -934,7 +934,7 @@ function CraftListView({ craftItems }: { craftItems: CraftItem[] }) {
                   style={{
                     fontFamily: "monospace", fontSize: "8px",
                     letterSpacing: "0.2em", textTransform: "uppercase",
-                    color: "rgba(255,255,255,0.7)", background: "rgba(10,10,10,0.6)",
+                    color: "rgba(255,255,255,0.7)", background: "rgba(18, 19, 22,0.6)",
                     padding: "5px 10px", backdropFilter: "blur(4px)",
                   }}
                 >
@@ -943,7 +943,7 @@ function CraftListView({ craftItems }: { craftItems: CraftItem[] }) {
               </div>
             </div>
             <div className="md:col-span-1">
-              <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#E2B93B" }}>[{item.id.replace("c-", "")}]</span>
+              <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#ECFF95" }}>[{item.id.replace("c-", "")}]</span>
             </div>
             <div className="md:col-span-4">
               <ScrambleText
@@ -1013,38 +1013,38 @@ function ExplorationsGallery({ explorations, onOpen }: { explorations: Explorati
               style={{ filter: "grayscale(0.3)" }}
             />
             {/* Scan overlay */}
-            <div className="absolute inset-0 pointer-events-none" style={{ background: "repeating-linear-gradient(0deg, transparent 0px, transparent 3px, rgba(10,10,10,0.15) 3px, rgba(10,10,10,0.15) 4px)" }} />
+            <div className="absolute inset-0 pointer-events-none" style={{ background: "repeating-linear-gradient(0deg, transparent 0px, transparent 3px, rgba(18, 19, 22,0.15) 3px, rgba(18, 19, 22,0.15) 4px)" }} />
             {/* Type indicator */}
             {item.type === "video" && (
-              <div className="absolute top-3 right-3 flex items-center gap-1.5 px-2 py-1" style={{ background: "rgba(0,0,0,0.6)", border: "1px solid rgba(226,185,59,0.3)" }}>
-                <div className="w-0 h-0" style={{ borderLeft: "5px solid #E2B93B", borderTop: "3px solid transparent", borderBottom: "3px solid transparent" }} />
-                <span style={{ fontFamily: "monospace", fontSize: "8px", color: "#E2B93B", letterSpacing: "0.1em" }}>MOTION</span>
+              <div className="absolute top-3 right-3 flex items-center gap-1.5 px-2 py-1" style={{ background: "rgba(0,0,0,0.6)", border: "1px solid rgba(236, 255, 149,0.3)" }}>
+                <div className="w-0 h-0" style={{ borderLeft: "5px solid #ECFF95", borderTop: "3px solid transparent", borderBottom: "3px solid transparent" }} />
+                <span style={{ fontFamily: "monospace", fontSize: "8px", color: "#ECFF95", letterSpacing: "0.1em" }}>MOTION</span>
               </div>
             )}
             {item.type === "lottie" && (
-              <div className="absolute top-3 right-3 flex items-center gap-1.5 px-2 py-1" style={{ background: "rgba(0,0,0,0.6)", border: "1px solid rgba(226,185,59,0.3)" }}>
-                <div className="w-2 h-2 rounded-full" style={{ background: "#E2B93B", animation: "pulse 1.4s ease-in-out infinite" }} />
-                <span style={{ fontFamily: "monospace", fontSize: "8px", color: "#E2B93B", letterSpacing: "0.1em" }}>LOTTIE</span>
+              <div className="absolute top-3 right-3 flex items-center gap-1.5 px-2 py-1" style={{ background: "rgba(0,0,0,0.6)", border: "1px solid rgba(236, 255, 149,0.3)" }}>
+                <div className="w-2 h-2 rounded-full" style={{ background: "#ECFF95", animation: "pulse 1.4s ease-in-out infinite" }} />
+                <span style={{ fontFamily: "monospace", fontSize: "8px", color: "#ECFF95", letterSpacing: "0.1em" }}>LOTTIE</span>
               </div>
             )}
             {/* Expand affordance icon — visible on hover */}
             <div
               className="absolute top-3 left-3 w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-              style={{ background: "rgba(0,0,0,0.5)", border: "1px solid rgba(226,185,59,0.25)" }}
+              style={{ background: "rgba(0,0,0,0.5)", border: "1px solid rgba(236, 255, 149,0.25)" }}
             >
               <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M1 3.5V1h2.5M6.5 1H9v2.5M9 6.5V9H6.5M3.5 9H1V6.5" stroke="#E2B93B" strokeWidth="1" />
+                <path d="M1 3.5V1h2.5M6.5 1H9v2.5M9 6.5V9H6.5M3.5 9H1V6.5" stroke="#ECFF95" strokeWidth="1" />
               </svg>
             </div>
             {/* Hover overlay */}
-            <div className="absolute inset-0 flex items-end p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ background: "linear-gradient(to top, rgba(10,10,10,0.9) 0%, transparent 60%)" }}>
+            <div className="absolute inset-0 flex items-end p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ background: "linear-gradient(to top, rgba(18, 19, 22,0.9) 0%, transparent 60%)" }}>
               <div>
-                <span style={{ fontFamily: "monospace", fontSize: "8px", letterSpacing: "0.15em", color: "#E2B93B" }}>[{item.id.replace("ex-", "")}] {item.category.toUpperCase()}</span>
+                <span style={{ fontFamily: "monospace", fontSize: "8px", letterSpacing: "0.15em", color: "#ECFF95" }}>[{item.id.replace("ex-", "")}] {item.category.toUpperCase()}</span>
                 <span className="block mt-1" style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "0.8rem", color: "rgba(255,255,255,0.8)" }}>{item.title}</span>
               </div>
             </div>
             {/* Focus ring */}
-            <div className="absolute inset-0 pointer-events-none opacity-0 group-focus-visible:opacity-100 transition-opacity" style={{ boxShadow: "inset 0 0 0 2px #E2B93B" }} />
+            <div className="absolute inset-0 pointer-events-none opacity-0 group-focus-visible:opacity-100 transition-opacity" style={{ boxShadow: "inset 0 0 0 2px #ECFF95" }} />
           </div>
         </motion.div>
       ))}
@@ -1213,7 +1213,7 @@ function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: {
       exit={{ opacity: 0 }}
       transition={{ duration: reduced ? 0.1 : 0.4 }}
       className="fixed inset-0 z-[100] flex flex-col md:flex-row outline-none"
-      style={{ background: "#0A0A0A" }}
+      style={{ background: "#121316" }}
     >
       {/* SR live region */}
       <div className="sr-only" aria-live="polite" aria-atomic="true">{srAnnounce}</div>
@@ -1222,7 +1222,7 @@ function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: {
       <div className="absolute top-0 left-0 right-0 z-[115] h-[2px]" style={{ background: "rgba(255,255,255,0.03)" }}>
         <motion.div
           className="h-full"
-          style={{ background: "#E2B93B" }}
+          style={{ background: "#ECFF95" }}
           initial={false}
           animate={{ width: `${progress * 100}%` }}
           transition={{ duration: 0.35, ease: [0.77, 0, 0.175, 1] }}
@@ -1232,20 +1232,20 @@ function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: {
       {/* Signal grid bg */}
       <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px)", backgroundSize: "80px 80px" }} />
       {/* Scan lines */}
-      <div className="absolute inset-0 pointer-events-none" style={{ background: "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(226,185,59,0.008) 2px, rgba(226,185,59,0.008) 4px)" }} />
+      <div className="absolute inset-0 pointer-events-none" style={{ background: "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(236, 255, 149,0.008) 2px, rgba(236, 255, 149,0.008) 4px)" }} />
 
       {/* ═══ MOBILE TOP BAR ═══ */}
       <div className="md:hidden relative z-[110] flex items-center justify-between px-4 py-3 flex-shrink-0" style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
         <button
           onClick={onClose}
           aria-label="Close viewer"
-          className="w-8 h-8 flex items-center justify-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#E2B93B]"
+          className="w-8 h-8 flex items-center justify-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#ECFF95]"
           style={{ border: "1px solid rgba(255,255,255,0.15)" }}
         >
           <span style={{ fontFamily: "monospace", fontSize: "14px", color: "rgba(255,255,255,0.6)" }}>×</span>
         </button>
-        <div className="px-3 py-1 rounded-full" style={{ background: "rgba(226,185,59,0.1)", border: "1px solid rgba(226,185,59,0.2)" }}>
-          <span style={{ fontFamily: "monospace", fontSize: "10px", color: "#E2B93B", letterSpacing: "0.15em" }}>
+        <div className="px-3 py-1 rounded-full" style={{ background: "rgba(236, 255, 149,0.1)", border: "1px solid rgba(236, 255, 149,0.2)" }}>
+          <span style={{ fontFamily: "monospace", fontSize: "10px", color: "#ECFF95", letterSpacing: "0.15em" }}>
             {String(activeIndex + 1).padStart(2, "0")}/{String(explorations.length).padStart(2, "0")}
           </span>
         </div>
@@ -1253,10 +1253,10 @@ function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: {
           onClick={() => setShowMobileList(!showMobileList)}
           aria-label={showMobileList ? "Close item list" : "Browse all items"}
           aria-expanded={showMobileList}
-          className="w-8 h-8 flex items-center justify-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#E2B93B]"
+          className="w-8 h-8 flex items-center justify-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#ECFF95]"
           style={{ border: "1px solid rgba(255,255,255,0.15)" }}
         >
-          <span style={{ fontFamily: "monospace", fontSize: "10px", color: showMobileList ? "#E2B93B" : "rgba(255,255,255,0.6)" }}>{showMobileList ? "×" : "☰"}</span>
+          <span style={{ fontFamily: "monospace", fontSize: "10px", color: showMobileList ? "#ECFF95" : "rgba(255,255,255,0.6)" }}>{showMobileList ? "×" : "☰"}</span>
         </button>
       </div>
 
@@ -1264,7 +1264,7 @@ function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: {
       <button
         onClick={onClose}
         aria-label="Close viewer (Escape)"
-        className="hidden md:flex absolute top-6 right-6 z-[110] w-10 h-10 items-center justify-center cursor-pointer transition-all duration-200 hover:border-[#E2B93B] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#E2B93B]"
+        className="hidden md:flex absolute top-6 right-6 z-[110] w-10 h-10 items-center justify-center cursor-pointer transition-all duration-200 hover:border-[#ECFF95] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#ECFF95]"
         style={{ border: "1px solid rgba(255,255,255,0.15)", background: "rgba(0,0,0,0.3)" }}
       >
         <span style={{ fontFamily: "monospace", fontSize: "14px", color: "rgba(255,255,255,0.6)" }}>×</span>
@@ -1313,11 +1313,11 @@ function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: {
                   className="max-w-full max-h-[60vh] md:max-h-[75vh] object-contain"
                   style={{ filter: item.type === "video" ? "none" : "grayscale(0.15)" }}
                 />
-                <div className="absolute inset-0 pointer-events-none" style={{ background: "repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(10,10,10,0.08) 3px, rgba(10,10,10,0.08) 4px)" }} />
+                <div className="absolute inset-0 pointer-events-none" style={{ background: "repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(18, 19, 22,0.08) 3px, rgba(18, 19, 22,0.08) 4px)" }} />
                 {item.type === "video" && (
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <div className="w-12 h-12 md:w-16 md:h-16 flex items-center justify-center rounded-full" style={{ background: "rgba(0,0,0,0.6)", border: "1px solid rgba(226,185,59,0.4)" }}>
-                      <div className="w-0 h-0 ml-1" style={{ borderLeft: "10px solid #E2B93B", borderTop: "6px solid transparent", borderBottom: "6px solid transparent" }} />
+                    <div className="w-12 h-12 md:w-16 md:h-16 flex items-center justify-center rounded-full" style={{ background: "rgba(0,0,0,0.6)", border: "1px solid rgba(236, 255, 149,0.4)" }}>
+                      <div className="w-0 h-0 ml-1" style={{ borderLeft: "10px solid #ECFF95", borderTop: "6px solid transparent", borderBottom: "6px solid transparent" }} />
                     </div>
                   </div>
                 )}
@@ -1334,7 +1334,7 @@ function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: {
           className="hidden md:flex absolute bottom-20 left-1/2 -translate-x-1/2 flex-col items-center gap-2 pointer-events-none"
         >
           <span style={{ fontFamily: "monospace", fontSize: "8px", color: "rgba(255,255,255,0.25)", letterSpacing: "0.15em" }}>SCROLL TO NAVIGATE</span>
-          <motion.div animate={reduced ? {} : { y: [0, 6, 0] }} transition={{ repeat: Infinity, duration: 1.5 }} style={{ width: 1, height: 12, background: "rgba(226,185,59,0.4)" }} />
+          <motion.div animate={reduced ? {} : { y: [0, 6, 0] }} transition={{ repeat: Infinity, duration: 1.5 }} style={{ width: 1, height: 12, background: "rgba(236, 255, 149,0.4)" }} />
         </motion.div>
 
         {/* Desktop metadata — improved contrast */}
@@ -1345,7 +1345,7 @@ function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: {
           transition={{ delay: 0.2, duration: 0.4 }}
           className="hidden md:flex absolute bottom-8 left-16 right-[280px] items-center gap-8"
         >
-          <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#E2B93B", letterSpacing: "0.15em" }}>[{item.category.toUpperCase()}]</span>
+          <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#ECFF95", letterSpacing: "0.15em" }}>[{item.category.toUpperCase()}]</span>
           <span className="inline-flex items-center gap-2" style={{ fontFamily: "monospace", fontSize: "9px", color: "rgba(255,255,255,0.4)", letterSpacing: "0.1em" }}>TOOLS: <ToolBadges tools={item.tools} size={12} className="text-[#888]" /></span>
           <span style={{ fontFamily: "monospace", fontSize: "9px", color: "rgba(255,255,255,0.3)", letterSpacing: "0.1em" }}>{item.date}</span>
         </motion.div>
@@ -1356,7 +1356,7 @@ function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: {
         <div className="px-4 py-3">
           <span className="block" style={{ fontFamily: "'Anton', sans-serif", fontSize: "1.2rem", lineHeight: 1, letterSpacing: "-0.02em", textTransform: "uppercase", color: "#f0f0f0" }}>{item.title}</span>
           <div className="flex items-center gap-4 mt-2">
-            <span style={{ fontFamily: "monospace", fontSize: "8px", color: "#E2B93B", letterSpacing: "0.15em" }}>[{item.category.toUpperCase()}]</span>
+            <span style={{ fontFamily: "monospace", fontSize: "8px", color: "#ECFF95", letterSpacing: "0.15em" }}>[{item.category.toUpperCase()}]</span>
             <span className="inline-flex items-center gap-1.5" style={{ fontFamily: "monospace", fontSize: "8px", color: "rgba(255,255,255,0.35)", letterSpacing: "0.1em" }}>
             <ToolBadges tools={item.tools} size={10} />
           </span>
@@ -1371,8 +1371,8 @@ function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: {
               onClick={() => onNavigate(i)}
               aria-label={`View ${exp.title}`}
               aria-current={i === activeIndex ? "true" : undefined}
-              className="flex-shrink-0 cursor-pointer transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#E2B93B]"
-              style={{ width: 44, height: 44, border: i === activeIndex ? "2px solid #E2B93B" : "2px solid rgba(255,255,255,0.06)", opacity: i === activeIndex ? 1 : 0.5 }}
+              className="flex-shrink-0 cursor-pointer transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#ECFF95]"
+              style={{ width: 44, height: 44, border: i === activeIndex ? "2px solid #ECFF95" : "2px solid rgba(255,255,255,0.06)", opacity: i === activeIndex ? 1 : 0.5 }}
             >
               <img src={exp.image} alt="" className="w-full h-full object-cover" style={{ filter: i === activeIndex ? "none" : "grayscale(1)" }} />
             </button>
@@ -1403,13 +1403,13 @@ function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: {
               role="listbox"
               aria-label="Exploration archive list"
               className="md:hidden fixed inset-x-0 bottom-0 z-[120] overflow-y-auto"
-              style={{ background: "rgba(10,10,10,0.98)", maxHeight: "70vh", borderTop: "1px solid rgba(226,185,59,0.2)" }}
+              style={{ background: "rgba(18, 19, 22,0.98)", maxHeight: "70vh", borderTop: "1px solid rgba(236, 255, 149,0.2)" }}
             >
               <div className="flex justify-center py-3">
                 <div className="w-10 h-0.5 rounded-full" style={{ background: "rgba(255,255,255,0.2)" }} />
               </div>
               <div className="px-4 pb-2">
-                <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#E2B93B", letterSpacing: "0.2em" }}>ARCHIVE [{String(activeIndex + 1).padStart(2, "0")}/{String(explorations.length).padStart(2, "0")}]</span>
+                <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#ECFF95", letterSpacing: "0.2em" }}>ARCHIVE [{String(activeIndex + 1).padStart(2, "0")}/{String(explorations.length).padStart(2, "0")}]</span>
               </div>
               {explorations.map((exp, i) => (
                 <div
@@ -1418,22 +1418,22 @@ function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: {
                   aria-selected={i === activeIndex}
                   onClick={() => { onNavigate(i); setShowMobileList(false); }}
                   className="flex items-center gap-3 px-4 py-3.5 cursor-pointer transition-all duration-200"
-                  style={{ background: i === activeIndex ? "rgba(226,185,59,0.1)" : "transparent", borderLeft: i === activeIndex ? "2px solid #E2B93B" : "2px solid transparent" }}
+                  style={{ background: i === activeIndex ? "rgba(236, 255, 149,0.1)" : "transparent", borderLeft: i === activeIndex ? "2px solid #ECFF95" : "2px solid transparent" }}
                 >
-                  <div className="w-10 h-10 flex-shrink-0 overflow-hidden" style={{ border: i === activeIndex ? "1px solid rgba(226,185,59,0.3)" : "1px solid transparent" }}>
+                  <div className="w-10 h-10 flex-shrink-0 overflow-hidden" style={{ border: i === activeIndex ? "1px solid rgba(236, 255, 149,0.3)" : "1px solid transparent" }}>
                     <img src={exp.image} alt="" className="w-full h-full object-cover" style={{ filter: i === activeIndex ? "none" : "grayscale(1) brightness(0.5)" }} />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <span className="block truncate" style={{ fontFamily: "monospace", fontSize: "10px", letterSpacing: "0.05em", color: i === activeIndex ? "#E2B93B" : "rgba(255,255,255,0.35)" }}>
+                    <span className="block truncate" style={{ fontFamily: "monospace", fontSize: "10px", letterSpacing: "0.05em", color: i === activeIndex ? "#ECFF95" : "rgba(255,255,255,0.35)" }}>
                       {String(i + 1).padStart(2, "0")} — {exp.title}
                     </span>
-                    <span className="block mt-0.5" style={{ fontFamily: "monospace", fontSize: "8px", color: i === activeIndex ? "rgba(226,185,59,0.5)" : "rgba(255,255,255,0.15)", letterSpacing: "0.1em" }}>{exp.category}</span>
+                    <span className="block mt-0.5" style={{ fontFamily: "monospace", fontSize: "8px", color: i === activeIndex ? "rgba(236, 255, 149,0.5)" : "rgba(255,255,255,0.15)", letterSpacing: "0.1em" }}>{exp.category}</span>
                   </div>
                   {exp.type === "video" && (
-                    <div className="w-0 h-0 flex-shrink-0" style={{ borderLeft: "4px solid rgba(226,185,59,0.4)", borderTop: "2.5px solid transparent", borderBottom: "2.5px solid transparent" }} />
+                    <div className="w-0 h-0 flex-shrink-0" style={{ borderLeft: "4px solid rgba(236, 255, 149,0.4)", borderTop: "2.5px solid transparent", borderBottom: "2.5px solid transparent" }} />
                   )}
                   {exp.type === "lottie" && (
-                    <span style={{ fontFamily: "monospace", fontSize: "8px", color: "rgba(226,185,59,0.4)", letterSpacing: "0.08em" }}>✦</span>
+                    <span style={{ fontFamily: "monospace", fontSize: "8px", color: "rgba(236, 255, 149,0.4)", letterSpacing: "0.08em" }}>✦</span>
                   )}
                 </div>
               ))}
@@ -1454,7 +1454,7 @@ function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: {
             key={activeIndex}
             text={`ARCHIVE [${String(activeIndex + 1).padStart(2, "0")}/${String(explorations.length).padStart(2, "0")}]`}
             speed={25}
-            style={{ fontFamily: "monospace", fontSize: "9px", color: "#E2B93B", letterSpacing: "0.2em" }}
+            style={{ fontFamily: "monospace", fontSize: "9px", color: "#ECFF95", letterSpacing: "0.2em" }}
           />
         </div>
         <div ref={listRef} data-sidebar-list className="flex-1 overflow-y-auto" style={{ scrollbarWidth: "none" }} role="listbox" aria-label="Exploration items">
@@ -1468,28 +1468,28 @@ function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: {
               onClick={() => { setDirection(i > activeIndex ? 1 : -1); onNavigate(i); }}
               tabIndex={0}
               onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setDirection(i > activeIndex ? 1 : -1); onNavigate(i); } }}
-              className="flex items-center gap-3 px-4 py-3 cursor-pointer transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#E2B93B] focus-visible:outline-offset-[-2px]"
+              className="flex items-center gap-3 px-4 py-3 cursor-pointer transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#ECFF95] focus-visible:outline-offset-[-2px]"
               style={{
-                background: i === activeIndex ? "rgba(226,185,59,0.1)" : "transparent",
-                borderLeft: i === activeIndex ? "2px solid #E2B93B" : "2px solid transparent",
+                background: i === activeIndex ? "rgba(236, 255, 149,0.1)" : "transparent",
+                borderLeft: i === activeIndex ? "2px solid #ECFF95" : "2px solid transparent",
               }}
               onMouseEnter={(e) => { if (i !== activeIndex) (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.03)"; }}
               onMouseLeave={(e) => { if (i !== activeIndex) (e.currentTarget as HTMLElement).style.background = "transparent"; }}
             >
-              <div className="w-10 h-10 flex-shrink-0 overflow-hidden transition-all duration-300" style={{ border: i === activeIndex ? "1px solid rgba(226,185,59,0.3)" : "1px solid transparent" }}>
+              <div className="w-10 h-10 flex-shrink-0 overflow-hidden transition-all duration-300" style={{ border: i === activeIndex ? "1px solid rgba(236, 255, 149,0.3)" : "1px solid transparent" }}>
                 <img src={exp.image} alt="" className="w-full h-full object-cover transition-all duration-300" style={{ filter: i === activeIndex ? "none" : "grayscale(1) brightness(0.4)" }} />
               </div>
               <div className="flex-1 min-w-0">
-                <span className="block truncate transition-colors duration-200" style={{ fontFamily: "monospace", fontSize: "9px", letterSpacing: "0.05em", color: i === activeIndex ? "#E2B93B" : "rgba(255,255,255,0.35)" }}>
+                <span className="block truncate transition-colors duration-200" style={{ fontFamily: "monospace", fontSize: "9px", letterSpacing: "0.05em", color: i === activeIndex ? "#ECFF95" : "rgba(255,255,255,0.35)" }}>
                   {String(i + 1).padStart(2, "0")} — {exp.title}
                 </span>
-                <span className="block mt-0.5 transition-colors duration-200" style={{ fontFamily: "monospace", fontSize: "8px", color: i === activeIndex ? "rgba(226,185,59,0.5)" : "rgba(255,255,255,0.15)", letterSpacing: "0.1em" }}>{exp.category}</span>
+                <span className="block mt-0.5 transition-colors duration-200" style={{ fontFamily: "monospace", fontSize: "8px", color: i === activeIndex ? "rgba(236, 255, 149,0.5)" : "rgba(255,255,255,0.15)", letterSpacing: "0.1em" }}>{exp.category}</span>
               </div>
               {exp.type === "video" && (
-                <div className="w-0 h-0 flex-shrink-0" style={{ borderLeft: "4px solid rgba(226,185,59,0.4)", borderTop: "2.5px solid transparent", borderBottom: "2.5px solid transparent" }} />
+                <div className="w-0 h-0 flex-shrink-0" style={{ borderLeft: "4px solid rgba(236, 255, 149,0.4)", borderTop: "2.5px solid transparent", borderBottom: "2.5px solid transparent" }} />
               )}
               {exp.type === "lottie" && (
-                <span style={{ fontFamily: "monospace", fontSize: "8px", color: "rgba(226,185,59,0.4)", letterSpacing: "0.08em" }}>✦</span>
+                <span style={{ fontFamily: "monospace", fontSize: "8px", color: "rgba(236, 255, 149,0.4)", letterSpacing: "0.08em" }}>✦</span>
               )}
             </div>
           ))}
@@ -1499,7 +1499,7 @@ function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: {
             onClick={goPrev}
             disabled={activeIndex === 0}
             aria-label="Previous item"
-            className="flex-1 py-2 cursor-pointer transition-all duration-200 hover:border-[#E2B93B] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#E2B93B] disabled:hover:border-[rgba(255,255,255,0.08)]"
+            className="flex-1 py-2 cursor-pointer transition-all duration-200 hover:border-[#ECFF95] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#ECFF95] disabled:hover:border-[rgba(255,255,255,0.08)]"
             style={{ border: "1px solid rgba(255,255,255,0.08)", fontFamily: "monospace", fontSize: "9px", color: activeIndex === 0 ? "rgba(255,255,255,0.1)" : "rgba(255,255,255,0.4)", letterSpacing: "0.1em", background: "transparent" }}
           >
             ← PREV
@@ -1508,7 +1508,7 @@ function ExplorationViewer({ explorations, activeIndex, onClose, onNavigate }: {
             onClick={goNext}
             disabled={activeIndex === explorations.length - 1}
             aria-label="Next item"
-            className="flex-1 py-2 cursor-pointer transition-all duration-200 hover:border-[#E2B93B] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#E2B93B] disabled:hover:border-[rgba(255,255,255,0.08)]"
+            className="flex-1 py-2 cursor-pointer transition-all duration-200 hover:border-[#ECFF95] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#ECFF95] disabled:hover:border-[rgba(255,255,255,0.08)]"
             style={{ border: "1px solid rgba(255,255,255,0.08)", fontFamily: "monospace", fontSize: "9px", color: activeIndex === explorations.length - 1 ? "rgba(255,255,255,0.1)" : "rgba(255,255,255,0.4)", letterSpacing: "0.1em", background: "transparent" }}
           >
             NEXT →
@@ -1540,7 +1540,7 @@ export function SynthesisCraftPage({
   const totalCount = allCraftItems.length + explorations.length;
 
   return (
-    <main className="relative bg-[#0A0A0A] min-h-screen">
+    <main className="relative bg-[#121316] min-h-screen">
       <SignalGrid />
       <ScanLines />
       <CipherBgLayer />
@@ -1631,7 +1631,7 @@ export function SynthesisAboutPage({ copy }: { copy?: PageCopy } = {}) {
   const heroTagline = copy?.hero?.tagline ?? "PRODUCT_DESIGNER // BUILDER";
 
   return (
-    <main className="relative bg-[#0A0A0A] min-h-screen">
+    <main className="relative bg-[#121316] min-h-screen">
       <SignalGrid />
       <ScanLines />
       <CipherBgLayer />
@@ -1643,7 +1643,7 @@ export function SynthesisAboutPage({ copy }: { copy?: PageCopy } = {}) {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8 }}
         >
-          <span style={{ fontFamily: "monospace", fontSize: "10px", letterSpacing: "0.3em", color: "#E2B93B" }}>
+          <span style={{ fontFamily: "monospace", fontSize: "10px", letterSpacing: "0.3em", color: "#ECFF95" }}>
             {heroLabel}
           </span>
         </motion.div>
@@ -1662,7 +1662,7 @@ export function SynthesisAboutPage({ copy }: { copy?: PageCopy } = {}) {
           transition={{ delay: 0.6, duration: 1, ease: [0.77, 0, 0.175, 1] }}
           className="mt-4"
         >
-          <span style={{ fontFamily: "monospace", fontSize: "12px", letterSpacing: "0.5em", color: "#E2B93B", textTransform: "uppercase" }}>
+          <span style={{ fontFamily: "monospace", fontSize: "12px", letterSpacing: "0.5em", color: "#ECFF95", textTransform: "uppercase" }}>
             {heroTagline}
           </span>
         </motion.div>
@@ -1689,7 +1689,7 @@ export function SynthesisAboutPage({ copy }: { copy?: PageCopy } = {}) {
           animate={{ scaleX: 1 }}
           transition={{ delay: 1, duration: 1.5, ease: [0.77, 0, 0.175, 1] }}
           className="h-px origin-left mt-6"
-          style={{ background: "linear-gradient(90deg, rgba(226,185,59,0.4), transparent)" }}
+          style={{ background: "linear-gradient(90deg, rgba(236, 255, 149,0.4), transparent)" }}
         />
       </section>
 
@@ -1698,7 +1698,7 @@ export function SynthesisAboutPage({ copy }: { copy?: PageCopy } = {}) {
         <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16">
           {/* Left — bio decodes */}
           <div>
-            <span style={{ fontFamily: "monospace", fontSize: "10px", letterSpacing: "0.3em", color: "#E2B93B" }}>
+            <span style={{ fontFamily: "monospace", fontSize: "10px", letterSpacing: "0.3em", color: "#ECFF95" }}>
               [BIO.DECRYPT()]
             </span>
             {V2_ABOUT.bio.map((p, i) => (
@@ -1709,7 +1709,7 @@ export function SynthesisAboutPage({ copy }: { copy?: PageCopy } = {}) {
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.2, duration: 0.6 }}
                 className={i > 0 ? "mt-6" : "mt-4"}
-                style={{ borderLeft: "1px solid rgba(226,185,59,0.15)", paddingLeft: "1.5rem" }}
+                style={{ borderLeft: "1px solid rgba(236, 255, 149,0.15)", paddingLeft: "1.5rem" }}
               >
                 <p style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "0.9rem", lineHeight: 1.8, fontWeight: 300, color: "rgba(255,255,255,0.4)" }}>
                   <ScrambleText text={p} speed={3} />
@@ -1725,14 +1725,14 @@ export function SynthesisAboutPage({ copy }: { copy?: PageCopy } = {}) {
               transition={{ delay: 0.4, duration: 0.6 }}
               className="mt-12"
             >
-              <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#E2B93B", letterSpacing: "0.15em" }}>[CHANNELS.DECRYPT()]</span>
+              <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#ECFF95", letterSpacing: "0.15em" }}>[CHANNELS.DECRYPT()]</span>
               <div className="mt-3 space-y-3">
                 {V2_ABOUT.socials.map((s) => (
                   <a key={s.label} href={s.url} className="flex items-center gap-3 group cursor-pointer">
-                    <span className="group-hover:text-[#E2B93B] transition-colors duration-300" style={{ fontFamily: "monospace", fontSize: "11px", color: "rgba(255,255,255,0.3)", letterSpacing: "0.1em" }}>
+                    <span className="group-hover:text-[#ECFF95] transition-colors duration-300" style={{ fontFamily: "monospace", fontSize: "11px", color: "rgba(255,255,255,0.3)", letterSpacing: "0.1em" }}>
                       {s.label.toUpperCase()}
                     </span>
-                    <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ fontFamily: "monospace", fontSize: "9px", color: "rgba(226,185,59,0.5)" }}>
+                    <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ fontFamily: "monospace", fontSize: "9px", color: "rgba(236, 255, 149,0.5)" }}>
                       {s.handle}
                     </span>
                   </a>
@@ -1750,7 +1750,7 @@ export function SynthesisAboutPage({ copy }: { copy?: PageCopy } = {}) {
                   <ScrambleText
                     text={stat.value}
                     speed={50}
-                    style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(2rem, 4vw, 3rem)", lineHeight: 1, color: "#E2B93B", display: "block" }}
+                    style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(2rem, 4vw, 3rem)", lineHeight: 1, color: "#ECFF95", display: "block" }}
                   />
                   <span className="block mt-2" style={{ fontFamily: "monospace", fontSize: "9px", letterSpacing: "0.2em", color: "rgba(255,255,255,0.2)" }}>
                     [{stat.label}]
@@ -1761,12 +1761,10 @@ export function SynthesisAboutPage({ copy }: { copy?: PageCopy } = {}) {
 
             {/* Tools */}
             <div className="mb-12">
-              <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#E2B93B", letterSpacing: "0.15em" }}>[TOOLS.LIST()]</span>
+              <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#ECFF95", letterSpacing: "0.15em" }}>[TOOLS.LIST()]</span>
               <div className="flex flex-wrap gap-2 mt-3">
                 {V2_ABOUT.tools.map((tool) => (
-                  <span key={tool} className="inline-flex items-center gap-1.5" style={{ fontFamily: "monospace", fontSize: "10px", color: "rgba(255,255,255,0.3)", border: "1px solid rgba(255,255,255,0.06)", padding: "4px 10px" }}>
-                    <ToolBadge tool={tool} size={14} showLabel />
-                  </span>
+                  <ToolChip key={tool} tool={tool} />
                 ))}
               </div>
             </div>
@@ -1774,7 +1772,7 @@ export function SynthesisAboutPage({ copy }: { copy?: PageCopy } = {}) {
             {/* Location detail */}
             <div className="mb-12 p-6" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.04)" }}>
               <div className="flex justify-between items-start mb-4">
-                <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#E2B93B", letterSpacing: "0.1em" }}>NODE_INFO</span>
+                <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#ECFF95", letterSpacing: "0.1em" }}>NODE_INFO</span>
                 <span style={{ fontFamily: "monospace", fontSize: "9px", color: "rgba(255,255,255,0.15)" }}>[VERIFIED]</span>
               </div>
               <div style={{ fontFamily: "monospace", fontSize: "10px", color: "rgba(255,255,255,0.2)", lineHeight: 2 }}>
@@ -1786,7 +1784,7 @@ export function SynthesisAboutPage({ copy }: { copy?: PageCopy } = {}) {
                     <p>LNG: {V2_ABOUT.coordinates.lng}</p>
                   </>
                 ) : null}
-                <p>STATUS: <span style={{ color: "#E2B93B" }}>{V2_ABOUT.currently.toUpperCase()}</span></p>
+                <p>STATUS: <span style={{ color: "#ECFF95" }}>{V2_ABOUT.currently.toUpperCase()}</span></p>
               </div>
             </div>
           </div>
@@ -1796,7 +1794,7 @@ export function SynthesisAboutPage({ copy }: { copy?: PageCopy } = {}) {
       {/* Values — Cipher decode style */}
       <section className="relative z-[2] py-16 md:py-24 px-6 sm:px-8 md:px-10">
         <div className="max-w-4xl mx-auto">
-          <span style={{ fontFamily: "monospace", fontSize: "10px", letterSpacing: "0.3em", color: "#E2B93B" }}>[VALUES.DECRYPT()]</span>
+          <span style={{ fontFamily: "monospace", fontSize: "10px", letterSpacing: "0.3em", color: "#ECFF95" }}>[VALUES.DECRYPT()]</span>
           <div className="mt-8">
             {V2_ABOUT.values.map((v, i) => (
               <motion.div key={v.word} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.1, duration: 0.5 }}>
@@ -1807,7 +1805,7 @@ export function SynthesisAboutPage({ copy }: { copy?: PageCopy } = {}) {
                     <ScrambleText
                       text={v.word}
                       speed={30}
-                      style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(1.5rem, 6vw, 2.5rem)", lineHeight: 1, letterSpacing: "-0.02em", textTransform: "uppercase", color: i === 1 ? "#E2B93B" : "rgba(255,255,255,0.7)" }}
+                      style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(1.5rem, 6vw, 2.5rem)", lineHeight: 1, letterSpacing: "-0.02em", textTransform: "uppercase", color: i === 1 ? "#ECFF95" : "rgba(255,255,255,0.7)" }}
                     />
                   </div>
                   <span style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "0.82rem", fontWeight: 300, color: "rgba(255,255,255,0.45)", maxWidth: "300px", textAlign: "left" }} className="sm:text-right pl-[46px] sm:pl-0">

@@ -4,7 +4,7 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen text-white" style={{ backgroundColor: "#0A0A0A" }}>
+    <div className="min-h-screen text-white" style={{ backgroundColor: "#121316" }}>
       {children}
     </div>
   );

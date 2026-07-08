@@ -24,7 +24,7 @@ function FractureLoader({ onComplete }: { onComplete: () => void }) {
 
   return (
     <motion.div
-      className="fixed inset-0 z-[100] bg-[#0A0A0A] overflow-hidden"
+      className="fixed inset-0 z-[100] bg-[#121316] overflow-hidden"
       exit={{ opacity: 0 }}
       transition={{ duration: 0.6 }}
     >
@@ -34,14 +34,14 @@ function FractureLoader({ onComplete }: { onComplete: () => void }) {
         animate={phase >= 1 ? { scaleY: 1 } : {}}
         transition={{ duration: 0.5, ease: [0.77, 0, 0.175, 1] }}
         className="absolute left-1/2 top-0 bottom-0 w-px origin-center"
-        style={{ background: "rgba(226,185,59,0.5)" }}
+        style={{ background: "rgba(236, 255, 149,0.5)" }}
       />
       <motion.div
         initial={{ scaleX: 0 }}
         animate={phase >= 2 ? { scaleX: 1 } : {}}
         transition={{ duration: 0.5, ease: [0.77, 0, 0.175, 1] }}
         className="absolute top-1/2 left-0 right-0 h-px origin-center"
-        style={{ background: "rgba(226,185,59,0.5)" }}
+        style={{ background: "rgba(236, 255, 149,0.5)" }}
       />
       {phase >= 3 && (
         <motion.div
@@ -52,8 +52,8 @@ function FractureLoader({ onComplete }: { onComplete: () => void }) {
           style={{
             width: 100,
             height: 100,
-            background: "#0A0A0A",
-            border: "1px solid rgba(226,185,59,0.3)",
+            background: "#121316",
+            border: "1px solid rgba(236, 255, 149,0.3)",
           }}
         />
       )}
@@ -126,7 +126,7 @@ export function FractureHero() {
                 lineHeight: 0.85,
                 letterSpacing: "-0.03em",
                 textTransform: "uppercase",
-                color: "#E2B93B",
+                color: "#ECFF95",
               }}
             >
               ON
@@ -145,7 +145,7 @@ export function FractureHero() {
             style={{
               width: 60,
               height: 1,
-              background: "#E2B93B",
+              background: "#ECFF95",
               transform: "rotate(-30deg)",
             }}
           />
@@ -236,7 +236,7 @@ export function FractureProcess() {
                 lineHeight: 1,
                 letterSpacing: "-0.02em",
                 textTransform: "uppercase",
-                color: i === 2 ? "#E2B93B" : "rgba(255,255,255,0.12)",
+                color: i === 2 ? "#ECFF95" : "rgba(255,255,255,0.12)",
                 display: "inline-block",
                 transform: `rotate(${angles[i]}deg)`,
               }}
@@ -354,7 +354,7 @@ export function FractureWork({ projects }: { projects?: WorkProject[] } = {}) {
                     fontFamily: "'Instrument Sans', sans-serif",
                     fontSize: "10px",
                     letterSpacing: "0.15em",
-                    color: "#E2B93B",
+                    color: "#ECFF95",
                   }}
                 >
                   {project.year}
@@ -413,7 +413,7 @@ export function FracturePhilosophy() {
             }}
           >
             I break things apart so they can come together{" "}
-            <span style={{ color: "#E2B93B" }}>better</span>.
+            <span style={{ color: "#ECFF95" }}>better</span>.
           </p>
         </motion.div>
 
@@ -515,7 +515,7 @@ export function FractureTestimonials() {
               <div className="mt-6 flex items-center gap-3">
                 <div
                   className="w-8 h-8 rounded-full"
-                  style={{ background: "#E2B93B" }}
+                  style={{ background: "#ECFF95" }}
                 />
                 <div>
                   <p
@@ -586,7 +586,7 @@ export function FractureCTA() {
               lineHeight: 0.9,
               letterSpacing: "-0.03em",
               textTransform: "uppercase",
-              color: "#E2B93B",
+              color: "#ECFF95",
               display: "block",
             }}
           >
@@ -634,7 +634,7 @@ export function FractureVariation() {
   const [loaded, setLoaded] = useState(false);
 
   return (
-    <main className="relative bg-[#0A0A0A]">
+    <main className="relative bg-[#121316]">
       <AnimatePresence>
         {!loaded && <FractureLoader onComplete={() => setLoaded(true)} />}
       </AnimatePresence>

@@ -6,6 +6,7 @@ import { SplitText, RevealText } from "../shared/split-text";
 import Link from "next/link";
 import Image from "next/image";
 import { SafeLink } from "@/components/safe-link";
+import { PillChip } from "@/components/pill-chip";
 import type { BlogPost } from "@/types/blog";
 import type { BlogSeries } from "@/types/blog";
 import type { Slide } from "@/types/case-study";
@@ -39,7 +40,7 @@ function ShareButton({ title, slug, size = "sm" }: { title: string; slug: string
     return (
       <button
         onClick={handleShare}
-        className="text-[10px] tracking-[0.15em] text-[#444] hover:text-[#E2B93B] transition-colors"
+        className="text-[10px] tracking-[0.15em] text-[#444] hover:text-[#ECFF95] transition-colors"
         style={{ fontFamily: "monospace" }}
         title="Share this post"
       >
@@ -51,7 +52,7 @@ function ShareButton({ title, slug, size = "sm" }: { title: string; slug: string
   return (
     <button
       onClick={handleShare}
-      className="flex items-center gap-2 text-[10px] tracking-[0.15em] px-4 py-2 border border-[#1a1a1a] text-[#444] hover:text-[#E2B93B] hover:border-[#E2B93B]/30 transition-all"
+      className="flex items-center gap-2 text-[10px] tracking-[0.15em] px-4 py-2 border border-[#1D1E24] text-[#444] hover:text-[#ECFF95] hover:border-[#ECFF95]/30 transition-all"
       style={{ fontFamily: "monospace" }}
     >
       {copied ? "LINK COPIED ✓" : "SHARE →"}
@@ -122,7 +123,7 @@ function TOCSidebar({
               className="text-[9px] transition-colors flex-shrink-0"
               style={{
                 fontFamily: "monospace",
-                color: active ? "#E2B93B" : "#333",
+                color: active ? "#ECFF95" : "#333",
               }}
             >
               {String(item.number).padStart(2, "0")}
@@ -131,7 +132,7 @@ function TOCSidebar({
               className="text-[11px] leading-snug transition-colors"
               style={{
                 fontFamily: "monospace",
-                color: active ? "#E2B93B" : "#444",
+                color: active ? "#ECFF95" : "#444",
               }}
             >
               {item.title}
@@ -139,7 +140,7 @@ function TOCSidebar({
             {active && (
               <motion.div
                 layoutId="toc-indicator"
-                className="w-1 h-1 rounded-full bg-[#E2B93B] flex-shrink-0"
+                className="w-1 h-1 rounded-full bg-[#ECFF95] flex-shrink-0"
               />
             )}
           </motion.a>
@@ -192,7 +193,7 @@ function RelatedPosts({ posts }: { posts: BlogPost[] }) {
                 />
                 <div className="absolute top-3 left-3">
                   <span
-                    className="text-[9px] tracking-[0.2em] px-2.5 py-1 bg-[#0a0a0a]/80 text-[#E2B93B] border border-[#E2B93B]/30"
+                    className="text-[9px] tracking-[0.2em] px-2.5 py-1 bg-[#121316]/80 text-[#ECFF95] border border-[#ECFF95]/30"
                     style={{ fontFamily: "monospace" }}
                   >
                     {post.meta.category.toUpperCase()}
@@ -217,7 +218,7 @@ function RelatedPosts({ posts }: { posts: BlogPost[] }) {
               </div>
 
               <h3
-                className="text-white text-base leading-snug group-hover:text-[#E2B93B] transition-colors duration-300 mb-2"
+                className="text-white text-base leading-snug group-hover:text-[#ECFF95] transition-colors duration-300 mb-2"
                 style={{ fontFamily: "var(--font-heading)", letterSpacing: "-0.02em" }}
               >
                 {post.meta.title}
@@ -247,11 +248,11 @@ function AuthorBio() {
       initial={{ opacity: 0, y: 20 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.6 }}
-      className="border border-[#1a1a1a] p-6 md:p-8 flex flex-col md:flex-row items-start gap-6 mt-20"
+      className="border border-[#1D1E24] p-6 md:p-8 flex flex-col md:flex-row items-start gap-6 mt-20"
     >
-      <div className="w-14 h-14 border border-[#E2B93B]/30 bg-[#E2B93B]/5 flex-shrink-0 flex items-center justify-center">
+      <div className="w-14 h-14 border border-[#ECFF95]/30 bg-[#ECFF95]/5 flex-shrink-0 flex items-center justify-center">
         <span
-          className="text-[11px] tracking-[0.1em] text-[#E2B93B]"
+          className="text-[11px] tracking-[0.1em] text-[#ECFF95]"
           style={{ fontFamily: "monospace" }}
         >
           D
@@ -282,7 +283,7 @@ function AuthorBio() {
         <div className="flex items-center gap-4">
           <SafeLink
             href="/about"
-            className="text-[10px] tracking-[0.15em] text-[#E2B93B]/70 hover:text-[#E2B93B] transition-colors"
+            className="text-[10px] tracking-[0.15em] text-[#ECFF95]/70 hover:text-[#ECFF95] transition-colors"
             style={{ fontFamily: "monospace" }}
           >
             MORE ABOUT →
@@ -369,7 +370,7 @@ export function BlogReader({
 
   return (
     <CaseStudyMediaProvider slides={post.slides}>
-    <div className="relative bg-[#0A0A0A] min-h-screen">
+    <div className="relative bg-[#121316] min-h-screen">
       <div
         className="fixed inset-0 pointer-events-none z-0"
         style={{
@@ -381,21 +382,21 @@ export function BlogReader({
         }}
       />
 
-      <div className="fixed top-0 left-0 right-0 z-50 bg-[#0A0A0A]/90 backdrop-blur-sm border-b border-[#111]">
+      <div className="fixed top-0 left-0 right-0 z-50 bg-[#121316]/90 backdrop-blur-sm border-b border-[#111]">
         <motion.div
-          className="absolute top-0 left-0 right-0 h-[2px] bg-[#E2B93B] z-50 origin-left"
+          className="absolute top-0 left-0 right-0 h-[2px] bg-[#ECFF95] z-50 origin-left"
           style={{ scaleX }}
         />
         <div className="flex items-center justify-between px-6 md:px-10 py-3">
           <SafeLink
             href="/blog"
-            className="text-[10px] tracking-[0.15em] text-[#555] hover:text-[#E2B93B] transition-colors"
+            className="text-[10px] tracking-[0.15em] text-[#555] hover:text-[#ECFF95] transition-colors"
             style={{ fontFamily: "monospace" }}
           >
             ← WRITING
           </SafeLink>
           <span
-            className="text-[10px] tracking-[0.15em] text-[#E2B93B] hidden md:block"
+            className="text-[10px] tracking-[0.15em] text-[#ECFF95] hidden md:block"
             style={{ fontFamily: "monospace" }}
           >
             {post.meta.category.toUpperCase()} · {post.meta.readingTime} MIN READ
@@ -430,7 +431,7 @@ export function BlogReader({
               className="object-cover"
             />
           </motion.div>
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/40 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#121316] via-[#121316]/40 to-transparent" />
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -439,7 +440,7 @@ export function BlogReader({
             className="absolute bottom-8 left-6 md:left-14 lg:left-20 flex items-center gap-4"
           >
             <span
-              className="text-[10px] tracking-[0.25em] px-3 py-1.5 border border-[#E2B93B]/40 text-[#E2B93B] bg-[#0A0A0A]/60"
+              className="text-[10px] tracking-[0.25em] px-3 py-1.5 border border-[#ECFF95]/40 text-[#ECFF95] bg-[#121316]/60"
               style={{ fontFamily: "monospace" }}
             >
               {post.meta.category.toUpperCase()}
@@ -485,13 +486,7 @@ export function BlogReader({
 
             <div className="flex flex-wrap items-center gap-2 md:ml-auto flex-shrink-0">
               {post.meta.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="text-[9px] tracking-[0.15em] px-2.5 py-1 border border-[#1a1a1a] text-[#444]"
-                  style={{ fontFamily: "monospace" }}
-                >
-                  {tag}
-                </span>
+                <PillChip key={tag} variant="tag" label={tag} />
               ))}
               <ShareButton title={post.meta.title} slug={post.slug} size="md" />
             </div>

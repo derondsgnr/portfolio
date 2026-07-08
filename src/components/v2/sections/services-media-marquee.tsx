@@ -98,7 +98,7 @@ export function ServicesMediaMarquee({
               position: "relative",
               height: 150,
               flex: "0 0 auto",
-              background: "#111111",
+              background: "#17181C",
               border: "1px solid rgba(255,255,255,0.06)",
               overflow: "hidden",
             }}

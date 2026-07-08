@@ -65,7 +65,7 @@ export function AboutGlobe() {
       mapSamples: 16000,
       mapBrightness: 6,
       baseColor: [0.36, 0.34, 0.3],
-      markerColor: [0.886, 0.725, 0.231], // #E2B93B
+      markerColor: [0.886, 0.725, 0.231], // #ECFF95
       glowColor: [0.12, 0.1, 0.06],
       markers: MARKERS,
       onRender: (state) => {
@@ -116,7 +116,7 @@ export function AboutGlobe() {
             ...s.pos,
           }}
         >
-          <span style={{ width: 5, height: 5, borderRadius: "50%", background: "#E2B93B", boxShadow: "0 0 8px #E2B93B" }} />
+          <span style={{ width: 5, height: 5, borderRadius: "50%", background: "#ECFF95", boxShadow: "0 0 8px #ECFF95" }} />
           <span
             style={{
               fontFamily: "monospace",

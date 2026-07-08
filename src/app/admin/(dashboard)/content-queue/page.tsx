@@ -88,7 +88,7 @@ export default function AdminContentQueuePage() {
 
         <div className="mt-8 p-4 border border-white/[0.05] bg-white/[0.02]">
           <div className="flex items-start gap-2">
-            <Calendar size={14} className="text-[#E2B93B]/65 mt-0.5" />
+            <Calendar size={14} className="text-[#ECFF95]/65 mt-0.5" />
             <div>
               <p className="text-[10px] text-white/35 font-['Instrument_Sans'] tracking-[0.14em] uppercase">
                 Posting policy

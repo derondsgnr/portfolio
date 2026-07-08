@@ -14,9 +14,9 @@ export function VariationSwitcher({
   onChange,
 }: VariationSwitcherProps) {
   return (
-    <div className="sticky top-[56px] z-[60] bg-[#0a0a0a] border-b border-white/[0.06] px-6 md:px-10 py-3 flex items-center gap-6 overflow-x-auto">
+    <div className="sticky top-[56px] z-[60] bg-[#121316] border-b border-white/[0.06] px-6 md:px-10 py-3 flex items-center gap-6 overflow-x-auto">
       <span
-        className="text-[#e2b93b] text-[0.65rem] uppercase tracking-[0.3em] shrink-0"
+        className="text-[#ECFF95] text-[0.65rem] uppercase tracking-[0.3em] shrink-0"
         style={{ fontFamily: "var(--font-body)" }}
       >
         {sectionName}
@@ -28,7 +28,7 @@ export function VariationSwitcher({
             onClick={() => onChange(i)}
             className={`relative px-4 py-1.5 text-[0.75rem] uppercase tracking-[0.1em] transition-colors duration-300 shrink-0 ${
               current === i
-                ? "text-[#0a0a0a]"
+                ? "text-[#121316]"
                 : "text-white/40 hover:text-white/70"
             }`}
             style={{ fontFamily: "var(--font-body)" }}
@@ -36,7 +36,7 @@ export function VariationSwitcher({
             {current === i && (
               <motion.div
                 layoutId={`switcher-${sectionName}`}
-                className="absolute inset-0 bg-[#e2b93b] rounded-sm"
+                className="absolute inset-0 bg-[#ECFF95] rounded-sm"
                 transition={{ type: "spring", stiffness: 400, damping: 30 }}
               />
             )}

@@ -36,21 +36,21 @@ function HeroMonument() {
   return (
     <section className="relative min-h-screen flex flex-col justify-end overflow-hidden">
       {/* Atmospheric gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#0a0a0a]/60 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#121316]/60 pointer-events-none" />
 
       {/* Accent line — horizontal, bleeds across full width */}
       <motion.div
         initial={{ scaleX: 0 }}
         animate={{ scaleX: 1 }}
         transition={{ duration: 2.5, delay: 0.8, ease: [0.77, 0, 0.175, 1] }}
-        className="absolute top-[45%] left-0 w-full h-px bg-[#e2b93b]/[0.07] origin-left"
+        className="absolute top-[45%] left-0 w-full h-px bg-[#ECFF95]/[0.07] origin-left"
       />
 
       <div className="relative z-10 px-6 md:px-10 pb-12 md:pb-20">
         {/* Eyebrow — ultra wide tracking, tiny */}
         <Reveal delay={0.6}>
           <p
-            className="text-[#e2b93b]/80 mb-8"
+            className="text-[#ECFF95]/80 mb-8"
             style={{
               fontFamily: "var(--font-body)",
               fontSize: "0.55rem",
@@ -88,7 +88,7 @@ function HeroMonument() {
                 fontSize: "clamp(5rem, 18vw, 20rem)",
                 lineHeight: 0.82,
                 letterSpacing: "-0.02em",
-                WebkitTextStroke: "2px rgba(226,185,59,0.25)",
+                WebkitTextStroke: "2px rgba(236, 255, 149,0.25)",
                 color: "transparent",
               }}
             >
@@ -145,13 +145,13 @@ function HeroMonument() {
 function ProcessMonument() {
   return (
     <SectionTransition mode="scale">
-      <div className="py-20 md:py-32 px-6 md:px-10 bg-[#0d0d0d]">
+      <div className="py-20 md:py-32 px-6 md:px-10 bg-[#16171B]">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4">
           {PROCESS_WORDS.map((word, i) => (
             <Reveal key={word} delay={i * 0.1}>
               <div className="border-l border-white/[0.06] pl-4 md:pl-6">
                 <span
-                  className="text-[#e2b93b]/12 block"
+                  className="text-[#ECFF95]/12 block"
                   style={{
                     fontFamily: "var(--font-heading)",
                     fontSize: "clamp(4rem, 8vw, 8rem)",
@@ -193,7 +193,7 @@ function WorkMonument() {
             <div>
               <Reveal>
                 <p
-                  className="text-[#e2b93b]/80 mb-4"
+                  className="text-[#ECFF95]/80 mb-4"
                   style={{
                     fontFamily: "var(--font-body)",
                     fontSize: "0.55rem",
@@ -222,7 +222,7 @@ function WorkMonument() {
             <Reveal delay={0.2}>
               <SafeLink
                 href="/work"
-                className="text-white/30 hover:text-[#e2b93b] transition-colors duration-300 flex items-center gap-2"
+                className="text-white/30 hover:text-[#ECFF95] transition-colors duration-300 flex items-center gap-2"
                 style={{
                   fontFamily: "var(--font-body)",
                   fontSize: "0.55rem",
@@ -249,14 +249,14 @@ function WorkMonument() {
                 alt={project.title}
                 className="w-full aspect-[16/9] md:aspect-[21/9]"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent opacity-60" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#121316] via-transparent to-transparent opacity-60" />
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-700" />
 
               <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10">
                 <div className="flex items-end justify-between">
                   <div>
                     <span
-                      className="text-[#e2b93b]/40 block mb-3"
+                      className="text-[#ECFF95]/40 block mb-3"
                       style={{
                         fontFamily: "var(--font-body)",
                         fontSize: "0.5rem",
@@ -268,7 +268,7 @@ function WorkMonument() {
                       {project.id} — {project.category} — {project.year}
                     </span>
                     <h2
-                      className="text-white uppercase group-hover:text-[#e2b93b] transition-colors duration-500"
+                      className="text-white uppercase group-hover:text-[#ECFF95] transition-colors duration-500"
                       style={{
                         fontFamily: "var(--font-heading)",
                         fontSize: "clamp(2rem, 5vw, 5rem)",
@@ -281,7 +281,7 @@ function WorkMonument() {
                   </div>
                   <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                     <ArrowUpRight
-                      className="w-8 h-8 text-[#e2b93b]"
+                      className="w-8 h-8 text-[#ECFF95]"
                       strokeWidth={1}
                     />
                   </div>
@@ -303,7 +303,7 @@ function PhilosophyMonument() {
         <div className="py-16 md:py-24 px-6 md:px-10">
           <Reveal>
             <p
-              className="text-[#e2b93b]/80"
+              className="text-[#ECFF95]/80"
               style={{
                 fontFamily: "var(--font-body)",
                 fontSize: "0.55rem",
@@ -319,7 +319,7 @@ function PhilosophyMonument() {
       </SectionTransition>
 
       {PRINCIPLES.map((p, i) => {
-        const bgColors = ["#0a0a0a", "#0d0d0d", "#0a0a0a"];
+        const bgColors = ["#121316", "#16171B", "#121316"];
         return (
           <SectionTransition key={p.number} mode="parallax">
             <div
@@ -348,7 +348,7 @@ function PhilosophyMonument() {
               <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-10 w-full max-w-6xl">
                 <div>
                   <span
-                    className="text-[#e2b93b]/25 block mb-5"
+                    className="text-[#ECFF95]/25 block mb-5"
                     style={{
                       fontFamily: "var(--font-body)",
                       fontSize: "0.5rem",
@@ -392,7 +392,7 @@ function PhilosophyMonument() {
                   </Reveal>
                   <Reveal delay={0.3}>
                     <span
-                      className="text-[#e2b93b]/70 mt-8 inline-flex items-center gap-4"
+                      className="text-[#ECFF95]/70 mt-8 inline-flex items-center gap-4"
                       style={{
                         fontFamily: "var(--font-body)",
                         fontSize: "0.5rem",
@@ -401,7 +401,7 @@ function PhilosophyMonument() {
                         fontWeight: 400,
                       }}
                     >
-                      <span className="w-10 h-px bg-[#e2b93b]/20" />
+                      <span className="w-10 h-px bg-[#ECFF95]/20" />
                       {p.service}
                     </span>
                   </Reveal>
@@ -423,7 +423,7 @@ function AboutMonument() {
         <div className="w-full">
           <Reveal>
             <p
-              className="text-[#e2b93b]/80 mb-10"
+              className="text-[#ECFF95]/80 mb-10"
               style={{
                 fontFamily: "var(--font-body)",
                 fontSize: "0.55rem",
@@ -457,7 +457,7 @@ function AboutMonument() {
                 fontSize: "clamp(3rem, 9vw, 10rem)",
                 lineHeight: 0.85,
                 letterSpacing: "-0.02em",
-                WebkitTextStroke: "2px rgba(226,185,59,0.25)",
+                WebkitTextStroke: "2px rgba(236, 255, 149,0.25)",
                 color: "transparent",
               }}
             >
@@ -495,7 +495,7 @@ function AboutMonument() {
             </p>
             <SafeLink
               href="/about"
-              className="inline-flex items-center gap-4 text-[#e2b93b]/50 hover:text-[#e2b93b] transition-colors duration-300 mt-6"
+              className="inline-flex items-center gap-4 text-[#ECFF95]/50 hover:text-[#ECFF95] transition-colors duration-300 mt-6"
             >
               <span
                 style={{
@@ -526,7 +526,7 @@ function TestimonialsMonument() {
 
   return (
     <SectionTransition mode="fade">
-      <section className="relative min-h-[80vh] flex items-center px-6 md:px-10 py-24 md:py-40 bg-[#0d0d0d]">
+      <section className="relative min-h-[80vh] flex items-center px-6 md:px-10 py-24 md:py-40 bg-[#16171B]">
         <div className="w-full grid grid-cols-1 md:grid-cols-12 gap-10 items-start">
           {/* Left — counter + navigation */}
           <div className="md:col-span-2">
@@ -688,7 +688,7 @@ function FooterMonument() {
         <div className="mb-16 md:mb-24">
           <Reveal>
             <p
-              className="text-[#e2b93b]/80 mb-10"
+              className="text-[#ECFF95]/80 mb-10"
               style={{
                 fontFamily: "var(--font-body)",
                 fontSize: "0.55rem",
@@ -718,7 +718,7 @@ function FooterMonument() {
           <Reveal delay={0.3}>
             <button
               onClick={() => open("book")}
-              className="inline-block px-12 py-4 bg-[#e2b93b] text-[#0a0a0a] hover:bg-[#e2b93b]/80 transition-colors duration-300 mt-12 cursor-pointer"
+              className="inline-block px-12 py-4 bg-[#ECFF95] text-[#121316] hover:bg-[#ECFF95]/80 transition-colors duration-300 mt-12 cursor-pointer"
               style={{
                 fontFamily: "var(--font-body)",
                 fontSize: "0.55rem",
@@ -739,7 +739,7 @@ function FooterMonument() {
               <li key={link.label}>
                 <a
                   href={link.url}
-                  className="text-white/20 hover:text-[#e2b93b] transition-colors duration-300"
+                  className="text-white/20 hover:text-[#ECFF95] transition-colors duration-300"
                   style={{
                     fontFamily: "var(--font-body)",
                     fontSize: "0.55rem",

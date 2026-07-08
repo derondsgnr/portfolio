@@ -28,7 +28,7 @@ export function ScanLineOverlay() {
       className="fixed inset-0 pointer-events-none z-[1]"
       style={{
         background:
-          "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(226,185,59,0.012) 2px, rgba(226,185,59,0.012) 4px)",
+          "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(236, 255, 149,0.012) 2px, rgba(236, 255, 149,0.012) 4px)",
       }}
     />
   );
@@ -40,7 +40,7 @@ export function ScanLines() {
       className="fixed inset-0 pointer-events-none z-[1]"
       style={{
         background:
-          "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(226,185,59,0.012) 2px, rgba(226,185,59,0.012) 4px)",
+          "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(236, 255, 149,0.012) 2px, rgba(236, 255, 149,0.012) 4px)",
       }}
     />
   );

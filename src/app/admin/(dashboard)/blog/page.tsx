@@ -289,7 +289,7 @@ function PostListItem({
       onDoubleClick={onClick}
       onKeyDown={(event) => openOnKeyboard(event, onClick)}
       className={`group w-full flex items-center gap-3 px-4 py-3 border-b border-white/[0.05] transition-all cursor-pointer focus:outline-none focus:bg-white/[0.03] ${
-        isActive ? "bg-[#E2B93B]/[0.06] border-l-2 border-l-[#E2B93B]" : "hover:bg-white/[0.02]"
+        isActive ? "bg-[#ECFF95]/[0.06] border-l-2 border-l-[#ECFF95]" : "hover:bg-white/[0.02]"
       }`}
       title="Double-click or press Enter to edit"
     >
@@ -306,14 +306,14 @@ function PostListItem({
           <p className="text-[12px] font-['Instrument_Sans'] text-white/75 truncate">{post.meta.title}</p>
           <p className="text-[9px] text-white/25 font-['Instrument_Sans']">
             {post.meta.category} · {post.slides.length} slides
-            {post.meta.pinned && <span className="ml-1.5 text-[#E2B93B]/60">PINNED</span>}
-            {post.status === "draft" && <span className="ml-1.5 text-[#E2B93B]/40">DRAFT</span>}
-            {post.status === "scheduled" && <span className="ml-1.5 text-[#E2B93B]/55">SCHEDULED {post.meta.date}</span>}
+            {post.meta.pinned && <span className="ml-1.5 text-[#ECFF95]/60">PINNED</span>}
+            {post.status === "draft" && <span className="ml-1.5 text-[#ECFF95]/40">DRAFT</span>}
+            {post.status === "scheduled" && <span className="ml-1.5 text-[#ECFF95]/55">SCHEDULED {post.meta.date}</span>}
             {post.status === "archived" && <span className="ml-1.5 text-white/20">ARCHIVED</span>}
             <span className="ml-1.5 text-white/15 opacity-0 transition-opacity group-hover:opacity-100">OPEN</span>
           </p>
         </div>
-        <ChevronRight size={12} className={`shrink-0 transition-colors ${isActive ? "text-[#E2B93B]/60" : "text-white/15"}`} />
+        <ChevronRight size={12} className={`shrink-0 transition-colors ${isActive ? "text-[#ECFF95]/60" : "text-white/15"}`} />
       </button>
       <div className="flex items-center gap-1.5 shrink-0">
         <button
@@ -426,7 +426,7 @@ function PostEditor({
             {form.meta.title || "Untitled"}
           </h2>
           {hasUnsavedChanges ? (
-            <p className="mt-1 text-[9px] uppercase tracking-[0.16em] text-[#E2B93B]/70 font-['Instrument_Sans']">
+            <p className="mt-1 text-[9px] uppercase tracking-[0.16em] text-[#ECFF95]/70 font-['Instrument_Sans']">
               Unsaved changes · Cmd/Ctrl+S saves
             </p>
           ) : null}
@@ -437,10 +437,10 @@ function PostEditor({
             onChange={(e) => setForm((f) => ({ ...f, status: e.target.value as ManagedPost["status"] }))}
             className="text-[10px] font-['Instrument_Sans'] tracking-wider bg-white/[0.03] border border-white/[0.08] text-white/40 px-2 py-1.5 focus:outline-none cursor-pointer"
           >
-            <option value="published" style={{ background: "#0A0A0A" }}>Published</option>
-            <option value="draft" style={{ background: "#0A0A0A" }}>Draft</option>
-            <option value="scheduled" style={{ background: "#0A0A0A" }}>Scheduled</option>
-            <option value="archived" style={{ background: "#0A0A0A" }}>Archived</option>
+            <option value="published" style={{ background: "#121316" }}>Published</option>
+            <option value="draft" style={{ background: "#121316" }}>Draft</option>
+            <option value="scheduled" style={{ background: "#121316" }}>Scheduled</option>
+            <option value="archived" style={{ background: "#121316" }}>Archived</option>
           </select>
           <a
             href={`/blog/${post.slug}`}
@@ -453,7 +453,7 @@ function PostEditor({
           <button
             onClick={() => onSave(form)}
             disabled={isSaving}
-            className="px-5 py-1.5 bg-[#E2B93B] text-[#0A0A0A] font-['Anton'] text-[11px] tracking-[0.12em] hover:bg-white transition-colors disabled:opacity-50"
+            className="px-5 py-1.5 bg-[#ECFF95] text-[#121316] font-['Anton'] text-[11px] tracking-[0.12em] hover:bg-white transition-colors disabled:opacity-50"
           >
             {isSaving ? "SAVING..." : "SAVE"}
           </button>
@@ -499,18 +499,18 @@ function PostEditor({
                   <div className="grid grid-cols-2 gap-3">
                     <FormField label="Category">
                       <select className={adminCx.select} value={form.meta.category} onChange={(e) => setMeta("category", e.target.value)}>
-                        {categoryOptions.map((c) => <option key={c} value={c} style={{ background: "#0A0A0A" }}>{c}</option>)}
+                        {categoryOptions.map((c) => <option key={c} value={c} style={{ background: "#121316" }}>{c}</option>)}
                       </select>
                     </FormField>
                     <FormField label="Status">
                       <select className={adminCx.select} value={form.status} onChange={(e) => setForm((f) => ({ ...f, status: e.target.value as ManagedPost["status"] }))}>
-                        <option value="published" style={{ background: "#0A0A0A" }}>Published</option>
-                        <option value="draft" style={{ background: "#0A0A0A" }}>Draft</option>
-                        <option value="scheduled" style={{ background: "#0A0A0A" }}>Scheduled</option>
-                        <option value="archived" style={{ background: "#0A0A0A" }}>Archived</option>
+                        <option value="published" style={{ background: "#121316" }}>Published</option>
+                        <option value="draft" style={{ background: "#121316" }}>Draft</option>
+                        <option value="scheduled" style={{ background: "#121316" }}>Scheduled</option>
+                        <option value="archived" style={{ background: "#121316" }}>Archived</option>
                       </select>
                       {form.status === "scheduled" ? (
-                        <p className="mt-1 text-[10px] leading-relaxed text-[#E2B93B]/65 font-['Instrument_Sans']">
+                        <p className="mt-1 text-[10px] leading-relaxed text-[#ECFF95]/65 font-['Instrument_Sans']">
                           Uses the Date field as the publish date. The post stays hidden publicly until that date.
                         </p>
                       ) : null}
@@ -536,11 +536,11 @@ function PostEditor({
                     </div>
                   </FormField>
                   <label className="flex items-center gap-3 cursor-pointer lg:col-span-2">
-                    <input type="checkbox" checked={form.meta.featured ?? false} onChange={(e) => setMeta("featured", e.target.checked)} className="h-4 w-4 accent-[#E2B93B]" />
+                    <input type="checkbox" checked={form.meta.featured ?? false} onChange={(e) => setMeta("featured", e.target.checked)} className="h-4 w-4 accent-[#ECFF95]" />
                     <span className="text-[11px] text-white/40 font-['Instrument_Sans'] tracking-wider uppercase">Featured post</span>
                   </label>
                   <label className="flex items-center gap-3 cursor-pointer lg:col-span-2">
-                    <input type="checkbox" checked={form.meta.pinned ?? false} onChange={(e) => setMeta("pinned", e.target.checked)} className="h-4 w-4 accent-[#E2B93B]" />
+                    <input type="checkbox" checked={form.meta.pinned ?? false} onChange={(e) => setMeta("pinned", e.target.checked)} className="h-4 w-4 accent-[#ECFF95]" />
                     <span className="text-[11px] text-white/40 font-['Instrument_Sans'] tracking-wider uppercase">Pin this post to top of blog list</span>
                   </label>
 
@@ -564,9 +564,9 @@ function PostEditor({
                             }
                           }}
                         >
-                          <option value="" style={{ background: "#0A0A0A" }}>None</option>
+                          <option value="" style={{ background: "#121316" }}>None</option>
                           {seriesList.map((s) => (
-                            <option key={s.slug} value={s.slug} style={{ background: "#0A0A0A" }}>
+                            <option key={s.slug} value={s.slug} style={{ background: "#121316" }}>
                               {s.title} ({s.posts.length} parts)
                             </option>
                           ))}
@@ -601,7 +601,7 @@ function PostEditor({
           <div className="border border-white/[0.07] bg-white/[0.02] p-4">
             <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
               <div className="max-w-2xl">
-                <p className="text-[10px] tracking-[0.2em] text-[#E2B93B]/70 font-['Instrument_Sans'] uppercase">
+                <p className="text-[10px] tracking-[0.2em] text-[#ECFF95]/70 font-['Instrument_Sans'] uppercase">
                   Substack Distribution
                 </p>
                 <p className="mt-2 text-xs leading-relaxed text-white/55 font-['Instrument_Sans']">
@@ -622,7 +622,7 @@ function PostEditor({
                 <button
                   type="button"
                   onClick={() => copySubstackText("markdown")}
-                  className="flex items-center gap-1.5 border border-[#E2B93B]/30 bg-[#E2B93B]/10 px-3 py-2 text-[10px] font-['Instrument_Sans'] uppercase tracking-[0.12em] text-[#E2B93B]/80 transition-colors hover:bg-[#E2B93B]/15"
+                  className="flex items-center gap-1.5 border border-[#ECFF95]/30 bg-[#ECFF95]/10 px-3 py-2 text-[10px] font-['Instrument_Sans'] uppercase tracking-[0.12em] text-[#ECFF95]/80 transition-colors hover:bg-[#ECFF95]/15"
                 >
                   <Copy size={12} />
                   {substackCopyState === "markdown" ? "Copied" : "Copy Markdown"}
@@ -722,12 +722,12 @@ function SortableSeriesPostRow({
         type="button"
         {...attributes}
         {...listeners}
-        className="cursor-grab px-1 text-white/20 hover:text-[#E2B93B] active:cursor-grabbing transition-colors font-mono text-xs"
+        className="cursor-grab px-1 text-white/20 hover:text-[#ECFF95] active:cursor-grabbing transition-colors font-mono text-xs"
         aria-label={`Drag to reorder ${slug}`}
       >
         ::
       </button>
-      <span className="text-[10px] text-[#E2B93B]/50 font-['Instrument_Sans'] w-5">{index + 1}.</span>
+      <span className="text-[10px] text-[#ECFF95]/50 font-['Instrument_Sans'] w-5">{index + 1}.</span>
       <span className="text-[11px] text-white/50 font-['Instrument_Sans'] flex-1 truncate">{slug}</span>
       <button onClick={onRemove} className="text-white/20 hover:text-red-400/60 transition-colors"><X size={11} /></button>
     </div>
@@ -836,13 +836,13 @@ function SeriesManager({
           <button
             onClick={saveForm}
             disabled={isSaving || !form.title.trim()}
-            className="px-5 py-1.5 bg-[#E2B93B] text-[#0A0A0A] font-['Anton'] text-[11px] tracking-[0.12em] hover:bg-white transition-colors disabled:opacity-50"
+            className="px-5 py-1.5 bg-[#ECFF95] text-[#121316] font-['Anton'] text-[11px] tracking-[0.12em] hover:bg-white transition-colors disabled:opacity-50"
           >
             {isSaving ? "SAVING..." : "SAVE SERIES"}
           </button>
         </div>
         {hasUnsavedChanges ? (
-          <p className="mb-3 text-[9px] uppercase tracking-[0.16em] text-[#E2B93B]/70 font-['Instrument_Sans']">
+          <p className="mb-3 text-[9px] uppercase tracking-[0.16em] text-[#ECFF95]/70 font-['Instrument_Sans']">
             Unsaved changes · Cmd/Ctrl+S saves · Esc closes when not typing
           </p>
         ) : null}
@@ -867,7 +867,7 @@ function SeriesManager({
             <ImageFieldGuide role="blog-cover" imageUrl={form.cover} compact className="mt-3" />
           </FormField>
           <label className="flex items-center gap-3 cursor-pointer">
-            <input type="checkbox" checked={form.archived ?? false} onChange={(e) => setForm({ ...form, archived: e.target.checked })} className="h-4 w-4 accent-[#E2B93B]" />
+            <input type="checkbox" checked={form.archived ?? false} onChange={(e) => setForm({ ...form, archived: e.target.checked })} className="h-4 w-4 accent-[#ECFF95]" />
             <span className="text-[11px] text-white/40 font-['Instrument_Sans'] tracking-wider uppercase">Archived</span>
           </label>
           <FormField label="Posts in series (ordered)">
@@ -894,9 +894,9 @@ function SeriesManager({
                   }
                 }}
               >
-                <option value="" style={{ background: "#0A0A0A" }}>+ Add a post...</option>
+                <option value="" style={{ background: "#121316" }}>+ Add a post...</option>
                 {postSlugs.filter((s) => !form.posts.includes(s)).map((s) => (
-                  <option key={s} value={s} style={{ background: "#0A0A0A" }}>{s}</option>
+                  <option key={s} value={s} style={{ background: "#121316" }}>{s}</option>
                 ))}
               </select>
             </div>
@@ -914,7 +914,7 @@ function SeriesManager({
         </span>
         <button
           onClick={startNew}
-          className="flex items-center gap-2 px-4 py-2.5 bg-[#E2B93B] text-[#0A0A0A] font-['Anton'] text-[11px] tracking-[0.12em] hover:bg-white transition-colors"
+          className="flex items-center gap-2 px-4 py-2.5 bg-[#ECFF95] text-[#121316] font-['Anton'] text-[11px] tracking-[0.12em] hover:bg-white transition-colors"
         >
           <Plus size={13} /> NEW SERIES
         </button>
@@ -946,7 +946,7 @@ function SeriesManager({
             </div>
             <button
               onClick={() => startEdit(s)}
-              className="text-white/20 hover:text-[#E2B93B]/60 transition-colors p-1"
+              className="text-white/20 hover:text-[#ECFF95]/60 transition-colors p-1"
               title="Edit series"
             >
               <Pencil size={13} />
@@ -998,12 +998,12 @@ function SortableCategoryRow({
         type="button"
         {...attributes}
         {...listeners}
-        className="cursor-grab px-1 text-white/20 hover:text-[#E2B93B] active:cursor-grabbing transition-colors font-mono text-xs"
+        className="cursor-grab px-1 text-white/20 hover:text-[#ECFF95] active:cursor-grabbing transition-colors font-mono text-xs"
         aria-label={`Drag to reorder ${category}`}
       >
         ::
       </button>
-      <span className="text-[10px] text-[#E2B93B]/40 font-['Instrument_Sans'] w-4">{index + 1}</span>
+      <span className="text-[10px] text-[#ECFF95]/40 font-['Instrument_Sans'] w-4">{index + 1}</span>
       <span className="text-[12px] text-white/60 font-['Instrument_Sans'] flex-1">{category}</span>
       <button onClick={onRemove} className="text-white/20 hover:text-red-400/60 transition-colors"><X size={11} /></button>
     </div>
@@ -1087,7 +1087,7 @@ function CategoriesManager({
         <button
           onClick={addCategory}
           disabled={!newCat.trim() || items.includes(newCat.trim())}
-          className="flex items-center gap-1.5 px-4 py-2 bg-[#E2B93B] text-[#0A0A0A] font-['Anton'] text-[10px] tracking-[0.1em] hover:bg-white transition-colors disabled:opacity-50"
+          className="flex items-center gap-1.5 px-4 py-2 bg-[#ECFF95] text-[#121316] font-['Anton'] text-[10px] tracking-[0.1em] hover:bg-white transition-colors disabled:opacity-50"
         >
           <Plus size={12} /> ADD
         </button>
@@ -1356,9 +1356,9 @@ function AdminBlogPage() {
                 onClick={() => setTab(t)}
                 className="text-[10px] tracking-[0.15em] px-4 py-2 font-['Instrument_Sans'] uppercase transition-all border"
                 style={{
-                  borderColor: tab === t ? "rgba(226,185,59,0.4)" : "rgba(255,255,255,0.06)",
-                  color: tab === t ? "#E2B93B" : "rgba(255,255,255,0.25)",
-                  background: tab === t ? "rgba(226,185,59,0.06)" : "transparent",
+                  borderColor: tab === t ? "rgba(236, 255, 149,0.4)" : "rgba(255,255,255,0.06)",
+                  color: tab === t ? "#ECFF95" : "rgba(255,255,255,0.25)",
+                  background: tab === t ? "rgba(236, 255, 149,0.06)" : "transparent",
                 }}
               >
                 {t}
@@ -1374,7 +1374,7 @@ function AdminBlogPage() {
                 </span>
                 <button
                   onClick={newPost}
-                  className="flex items-center gap-2 px-4 py-2.5 bg-[#E2B93B] text-[#0A0A0A] font-['Anton'] text-[11px] tracking-[0.12em] hover:bg-white transition-colors"
+                  className="flex items-center gap-2 px-4 py-2.5 bg-[#ECFF95] text-[#121316] font-['Anton'] text-[11px] tracking-[0.12em] hover:bg-white transition-colors"
                 >
                   <Plus size={13} /> NEW POST
                 </button>
@@ -1391,20 +1391,20 @@ function AdminBlogPage() {
                   value={statusFilter}
                   onChange={(e) => setStatusFilter(e.target.value as "all" | ManagedPost["status"])}
                 >
-                  <option value="all" style={{ background: "#0A0A0A" }}>All statuses</option>
-                  <option value="published" style={{ background: "#0A0A0A" }}>Published</option>
-                  <option value="draft" style={{ background: "#0A0A0A" }}>Draft</option>
-                  <option value="scheduled" style={{ background: "#0A0A0A" }}>Scheduled</option>
-                  <option value="archived" style={{ background: "#0A0A0A" }}>Archived</option>
+                  <option value="all" style={{ background: "#121316" }}>All statuses</option>
+                  <option value="published" style={{ background: "#121316" }}>Published</option>
+                  <option value="draft" style={{ background: "#121316" }}>Draft</option>
+                  <option value="scheduled" style={{ background: "#121316" }}>Scheduled</option>
+                  <option value="archived" style={{ background: "#121316" }}>Archived</option>
                 </select>
                 <select
                   className={adminCx.select}
                   value={categoryFilter}
                   onChange={(e) => setCategoryFilter(e.target.value)}
                 >
-                  <option value="all" style={{ background: "#0A0A0A" }}>All categories</option>
+                  <option value="all" style={{ background: "#121316" }}>All categories</option>
                   {categoryList.map((category) => (
-                    <option key={category} value={category} style={{ background: "#0A0A0A" }}>
+                    <option key={category} value={category} style={{ background: "#121316" }}>
                       {category}
                     </option>
                   ))}
@@ -1437,7 +1437,7 @@ function AdminBlogPage() {
                         setStatusFilter("all");
                         setCategoryFilter("all");
                       }}
-                      className="mt-4 border border-white/[0.08] px-4 py-2 text-[10px] uppercase tracking-[0.14em] text-white/45 transition-colors hover:border-[#E2B93B]/35 hover:text-[#E2B93B]/80 font-['Instrument_Sans']"
+                      className="mt-4 border border-white/[0.08] px-4 py-2 text-[10px] uppercase tracking-[0.14em] text-white/45 transition-colors hover:border-[#ECFF95]/35 hover:text-[#ECFF95]/80 font-['Instrument_Sans']"
                     >
                       Clear filters
                     </button>
@@ -1520,7 +1520,7 @@ function AdminBlogPage() {
       ) : (
         /* Full editor view */
         <div className="-mx-6 lg:-mx-8 -mt-6 lg:-mt-8 -mb-6 lg:-mb-8 h-[calc(100dvh-3.5rem)] lg:h-[100dvh] flex flex-col">
-          <div className="px-6 py-2.5 border-b border-white/[0.05] flex items-center gap-3 bg-[#0A0A0A] shrink-0 sticky top-0 z-20">
+          <div className="px-6 py-2.5 border-b border-white/[0.05] flex items-center gap-3 bg-[#121316] shrink-0 sticky top-0 z-20">
             <button
               data-unsaved-guard-trigger
               onClick={closePostEditor}

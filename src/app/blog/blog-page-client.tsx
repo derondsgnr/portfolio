@@ -6,6 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import type { BlogPost, BlogCategory, BlogSeries } from "@/types/blog";
 import { SeriesBadge } from "@/components/v2/blog/series-badge";
+import { PillChip } from "@/components/pill-chip";
 
 /* ─── Types ──────────────────────────────────────────────────── */
 
@@ -57,12 +58,12 @@ function FeaturedCard({ post }: { post: BlogPost }) {
               className="absolute inset-0 pointer-events-none"
               style={{
                 background:
-                  "repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(226,185,59,0.015) 3px, rgba(226,185,59,0.015) 4px)",
+                  "repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(236, 255, 149,0.015) 3px, rgba(236, 255, 149,0.015) 4px)",
               }}
             />
             <div className="absolute top-4 left-4">
               <span
-                className="text-[9px] tracking-[0.25em] px-3 py-1.5 bg-[#E2B93B] text-[#0A0A0A]"
+                className="text-[9px] tracking-[0.25em] px-3 py-1.5 bg-[#ECFF95] text-[#121316]"
                 style={{ fontFamily: "monospace" }}
               >
                 FEATURED
@@ -70,15 +71,10 @@ function FeaturedCard({ post }: { post: BlogPost }) {
             </div>
           </div>
 
-          <div className="bg-[#0d0d0d] border border-[#1a1a1a] border-l-0 md:border-l-0 p-8 md:p-12 flex flex-col justify-between group-hover:border-[#E2B93B]/20 transition-colors duration-500">
+          <div className="bg-[#16171B] border border-[#1D1E24] border-l-0 md:border-l-0 p-8 md:p-12 flex flex-col justify-between group-hover:border-[#ECFF95]/20 transition-colors duration-500">
             <div>
               <div className="flex items-center gap-3 mb-8">
-                <span
-                  className="text-[10px] tracking-[0.2em] text-[#E2B93B]"
-                  style={{ fontFamily: "monospace" }}
-                >
-                  {post.meta.category.toUpperCase()}
-                </span>
+                <PillChip variant="tag" label={post.meta.category} />
                 <span className="text-[#2a2a2a]">·</span>
                 <span className="text-[10px] tracking-[0.1em] text-[#444]" style={{ fontFamily: "monospace" }}>
                   {formatDate(post.meta.date)}
@@ -90,7 +86,7 @@ function FeaturedCard({ post }: { post: BlogPost }) {
               </div>
 
               <h2
-                className="text-3xl md:text-4xl lg:text-5xl uppercase text-white leading-none mb-6 group-hover:text-[#E2B93B] transition-colors duration-500"
+                className="text-3xl md:text-4xl lg:text-5xl uppercase text-white leading-none mb-6 group-hover:text-[#ECFF95] transition-colors duration-500"
                 style={{ fontFamily: "var(--font-heading)", letterSpacing: "-0.03em" }}
               >
                 {post.meta.title}
@@ -104,12 +100,10 @@ function FeaturedCard({ post }: { post: BlogPost }) {
             <div className="flex items-end justify-between mt-10">
               <div className="flex flex-wrap gap-2">
                 {post.meta.tags.slice(0, 3).map((tag) => (
-                  <span key={tag} className="text-[9px] tracking-[0.12em] px-2 py-1 border border-[#1a1a1a] text-[#333]" style={{ fontFamily: "monospace" }}>
-                    {tag}
-                  </span>
+                  <PillChip key={tag} variant="tag" label={tag} />
                 ))}
               </div>
-              <span className="text-[11px] tracking-[0.15em] text-[#E2B93B] group-hover:gap-3 transition-all flex items-center gap-2" style={{ fontFamily: "monospace" }}>
+              <span className="text-[11px] tracking-[0.15em] text-[#ECFF95] group-hover:gap-3 transition-all flex items-center gap-2" style={{ fontFamily: "monospace" }}>
                 READ
                 <span className="inline-block group-hover:translate-x-2 transition-transform duration-300">→</span>
               </span>
@@ -152,12 +146,10 @@ function PostCard({
             className="object-cover opacity-50 group-hover:opacity-80 transition-opacity duration-500 scale-100 group-hover:scale-105 transition-transform duration-700"
           />
           <div className="absolute top-3 left-3">
-            <span className="text-[9px] tracking-[0.2em] px-2.5 py-1 bg-[#0a0a0a]/80 border border-[#E2B93B]/30 text-[#E2B93B]" style={{ fontFamily: "monospace" }}>
-              {post.meta.category.toUpperCase()}
-            </span>
+            <PillChip variant="tag" label={post.meta.category} />
           </div>
           <div className="absolute bottom-3 right-3">
-            <span className="text-[9px] tracking-[0.1em] px-2 py-1 bg-[#0a0a0a]/60 text-[#555]" style={{ fontFamily: "monospace" }}>
+            <span className="text-[9px] tracking-[0.1em] px-2 py-1 bg-[#121316]/60 text-[#555]" style={{ fontFamily: "monospace" }}>
               {post.meta.readingTime} MIN
             </span>
           </div>
@@ -175,7 +167,7 @@ function PostCard({
         </span>
 
         <h3
-          className="text-white text-xl md:text-2xl uppercase leading-tight mb-3 group-hover:text-[#E2B93B] transition-colors duration-400"
+          className="text-white text-xl md:text-2xl uppercase leading-tight mb-3 group-hover:text-[#ECFF95] transition-colors duration-400"
           style={{ fontFamily: "var(--font-heading)", letterSpacing: "-0.02em" }}
         >
           {post.meta.title}
@@ -187,9 +179,7 @@ function PostCard({
 
         <div className="flex flex-wrap gap-1.5">
           {post.meta.tags.slice(0, 3).map((tag) => (
-            <span key={tag} className="text-[8px] tracking-[0.1em] px-2 py-0.5 border border-[#1a1a1a] text-[#333]" style={{ fontFamily: "monospace" }}>
-              {tag}
-            </span>
+            <PillChip key={tag} variant="tag" label={tag} />
           ))}
         </div>
       </Link>
@@ -225,7 +215,7 @@ export default function BlogPageClient({ copy, categories, posts, series }: Blog
       : filtered.filter((p) => !p.meta.featured);
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white pt-24">
+    <div className="min-h-screen bg-[#121316] text-white pt-24">
       <div
         className="fixed inset-0 pointer-events-none z-0"
         style={{
@@ -245,7 +235,7 @@ export default function BlogPageClient({ copy, categories, posts, series }: Blog
               initial={{ opacity: 0, y: 10 }}
               animate={heroInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5 }}
-              className="text-[10px] tracking-[0.3em] text-[#E2B93B] block mb-4"
+              className="text-[10px] tracking-[0.3em] text-[#ECFF95] block mb-4"
               style={{ fontFamily: "monospace" }}
             >
               {copy.label} / {posts.length} PIECES
@@ -282,7 +272,7 @@ export default function BlogPageClient({ copy, categories, posts, series }: Blog
           initial={{ scaleX: 0 }}
           animate={heroInView ? { scaleX: 1 } : {}}
           transition={{ duration: 1.2, delay: 0.4 }}
-          className="mt-8 h-px bg-gradient-to-r from-[#E2B93B] via-[#333] to-transparent origin-left"
+          className="mt-8 h-px bg-gradient-to-r from-[#ECFF95] via-[#333] to-transparent origin-left"
         />
       </div>
 
@@ -303,20 +293,14 @@ export default function BlogPageClient({ copy, categories, posts, series }: Blog
                 }}
                 whileHover={{ y: -1 }}
                 whileTap={{ y: 0 }}
-                className="text-[10px] tracking-[0.15em] px-4 py-2 border transition-all duration-200"
-                style={{
-                  fontFamily: "monospace",
-                  borderColor: active ? "#E2B93B" : "#1a1a1a",
-                  color: active ? "#E2B93B" : "#444",
-                  background: active ? "rgba(226,185,59,0.08)" : "transparent",
-                }}
+                style={{ background: "none", border: "none", padding: 0, cursor: "pointer" }}
               >
-                {cat.toUpperCase()}
+                <PillChip variant="tag" label={cat} active={active} />
               </motion.button>
             );
           })}
 
-          {allSeries.length > 0 && <div className="w-px h-5 bg-[#1a1a1a] mx-1" />}
+          {allSeries.length > 0 && <div className="w-px h-5 bg-[#1D1E24] mx-1" />}
 
           {allSeries.length > 0 && (
             <motion.button
@@ -335,9 +319,9 @@ export default function BlogPageClient({ copy, categories, posts, series }: Blog
               className="text-[10px] tracking-[0.15em] px-4 py-2 border transition-all duration-200"
               style={{
                 fontFamily: "monospace",
-                borderColor: filterMode === "series" ? "#E2B93B" : "#1a1a1a",
-                color: filterMode === "series" ? "#E2B93B" : "#444",
-                background: filterMode === "series" ? "rgba(226,185,59,0.08)" : "transparent",
+                borderColor: filterMode === "series" ? "#ECFF95" : "#1D1E24",
+                color: filterMode === "series" ? "#ECFF95" : "#444",
+                background: filterMode === "series" ? "rgba(236, 255, 149,0.08)" : "transparent",
               }}
             >
               SERIES
@@ -361,8 +345,8 @@ export default function BlogPageClient({ copy, categories, posts, series }: Blog
                   transition={{ duration: 0.4 }}
                   className="flex-shrink-0 flex items-center gap-4 border p-3 pr-6 transition-all duration-300 text-left"
                   style={{
-                    borderColor: isActive ? "#E2B93B" : "#1a1a1a",
-                    background: isActive ? "rgba(226,185,59,0.05)" : "#0d0d0d",
+                    borderColor: isActive ? "#ECFF95" : "#1D1E24",
+                    background: isActive ? "rgba(236, 255, 149,0.05)" : "#16171B",
                   }}
                 >
                   {s.cover && (
@@ -377,8 +361,8 @@ export default function BlogPageClient({ copy, categories, posts, series }: Blog
                     <span className="text-[9px] tracking-[0.15em] text-[#555] block" style={{ fontFamily: "monospace" }}>
                       {s.posts.length} PARTS
                     </span>
-                    <div className="w-20 h-px bg-[#1a1a1a] mt-2 relative">
-                      <div className="absolute top-0 left-0 h-full bg-[#E2B93B]" style={{ width: "100%" }} />
+                    <div className="w-20 h-px bg-[#1D1E24] mt-2 relative">
+                      <div className="absolute top-0 left-0 h-full bg-[#ECFF95]" style={{ width: "100%" }} />
                     </div>
                   </div>
                 </motion.button>

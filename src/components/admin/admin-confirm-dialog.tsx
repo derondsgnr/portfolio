@@ -33,7 +33,7 @@ export function AdminConfirmAction({
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
-      <AlertDialogContent className="border-white/[0.08] bg-[#0A0A0A] text-white shadow-2xl">
+      <AlertDialogContent className="border-white/[0.08] bg-[#121316] text-white shadow-2xl">
         <AlertDialogHeader>
           <AlertDialogTitle className="font-['Anton'] text-xl uppercase tracking-[0.08em] text-white">
             {title}
@@ -51,7 +51,7 @@ export function AdminConfirmAction({
             className={
               destructive
                 ? "bg-red-400/15 font-['Instrument_Sans'] text-[10px] uppercase tracking-[0.14em] text-red-200 hover:bg-red-400/25"
-                : "bg-[#E2B93B] font-['Instrument_Sans'] text-[10px] uppercase tracking-[0.14em] text-[#0A0A0A] hover:bg-white"
+                : "bg-[#ECFF95] font-['Instrument_Sans'] text-[10px] uppercase tracking-[0.14em] text-[#121316] hover:bg-white"
             }
           >
             {confirmLabel}

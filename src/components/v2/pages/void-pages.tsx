@@ -12,7 +12,7 @@ export function VoidWorkPage() {
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
   return (
-    <main className="relative bg-[#0A0A0A] min-h-screen">
+    <main className="relative bg-[#121316] min-h-screen">
       {/* Hero — single word, massive isolation */}
       <section className="h-[70vh] flex items-center justify-center">
         <motion.div
@@ -91,7 +91,7 @@ export function VoidWorkPage() {
             {/* Project title — massive, centered */}
             <div className="text-center px-8">
               <motion.span
-                whileHover={{ color: "#E2B93B" }}
+                whileHover={{ color: "#ECFF95" }}
                 className="cursor-pointer"
                 onClick={() => setExpandedId(expandedId === project.id ? null : project.id)}
                 style={{
@@ -175,7 +175,7 @@ export function VoidWorkPage() {
 
       {/* Gold dot — end of void */}
       <div className="flex justify-center pb-32">
-        <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#E2B93B" }} />
+        <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#ECFF95" }} />
       </div>
     </main>
   );
@@ -184,7 +184,7 @@ export function VoidWorkPage() {
 /* ─── CRAFT PAGE ─────────────────────────────────────────────── */
 export function VoidCraftPage() {
   return (
-    <main className="relative bg-[#0A0A0A] min-h-screen">
+    <main className="relative bg-[#121316] min-h-screen">
       {/* Hero */}
       <section className="h-[60vh] flex items-center justify-center">
         <motion.div
@@ -272,7 +272,7 @@ export function VoidCraftPage() {
                       fontFamily: "'Instrument Sans', sans-serif",
                       fontSize: "10px",
                       letterSpacing: "0.3em",
-                      color: "rgba(226,185,59,0.4)",
+                      color: "rgba(236, 255, 149,0.4)",
                       textTransform: "uppercase",
                     }}
                   >
@@ -306,7 +306,7 @@ export function VoidAboutPage() {
   const dotScale = useTransform(scrollYProgress, [0, 0.5, 1], [1, 3, 1]);
 
   return (
-    <main ref={ref} className="relative bg-[#0A0A0A] min-h-screen">
+    <main ref={ref} className="relative bg-[#121316] min-h-screen">
       {/* Name — isolated in void */}
       <section className="h-screen flex flex-col items-center justify-center">
         <motion.span
@@ -345,7 +345,7 @@ export function VoidAboutPage() {
           style={{ scale: dotScale }}
           className="mt-12"
         >
-          <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#E2B93B" }} />
+          <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#ECFF95" }} />
         </motion.div>
       </section>
 
@@ -400,7 +400,7 @@ export function VoidAboutPage() {
               transition={{ delay: wi * 0.08, duration: 0.5 }}
               className="inline-block mr-[0.3em]"
               style={{
-                color: word === "judged" ? "#E2B93B" : undefined,
+                color: word === "judged" ? "#ECFF95" : undefined,
               }}
             >
               {word}
@@ -482,7 +482,7 @@ export function VoidAboutPage() {
               <a
                 key={s.label}
                 href={s.url}
-                className="hover:text-[#E2B93B] transition-colors duration-500"
+                className="hover:text-[#ECFF95] transition-colors duration-500"
                 style={{
                   fontFamily: "'Instrument Sans', sans-serif",
                   fontSize: "11px",

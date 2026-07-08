@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import { V2_PROJECTS, V2_CRAFT_ITEMS, V2_ABOUT, V2_SERVICES_DETAILED } from "../v2-data";
-import { ToolBadge } from "@/components/tool-badge";
+import { ToolChip } from "@/components/tool-badge";
 
 /* ═══════════════════════════════════════════════════════════════
    SIGNAL PAGES — Data transmission aesthetic applied to inner pages.
@@ -14,7 +14,7 @@ function SignalScanOverlay() {
       className="fixed inset-0 pointer-events-none z-[1]"
       style={{
         background:
-          "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(226,185,59,0.02) 2px, rgba(226,185,59,0.02) 4px)",
+          "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(236, 255, 149,0.02) 2px, rgba(236, 255, 149,0.02) 4px)",
       }}
     />
   );
@@ -44,7 +44,7 @@ export function SignalWorkPage() {
   }, []);
 
   return (
-    <main className="relative bg-[#0A0A0A] min-h-screen">
+    <main className="relative bg-[#121316] min-h-screen">
       <SignalGridBg />
       <SignalScanOverlay />
 
@@ -60,7 +60,7 @@ export function SignalWorkPage() {
               fontFamily: "monospace",
               fontSize: "10px",
               letterSpacing: "0.3em",
-              color: "#E2B93B",
+              color: "#ECFF95",
             }}
           >
             &gt; ACCESSING WORK_ARCHIVE...
@@ -94,7 +94,7 @@ export function SignalWorkPage() {
           animate={{ scaleX: 1 }}
           transition={{ delay: 0.8, duration: 1.5, ease: [0.77, 0, 0.175, 1] }}
           className="h-px origin-left mt-8"
-          style={{ background: "linear-gradient(90deg, rgba(226,185,59,0.4), transparent)" }}
+          style={{ background: "linear-gradient(90deg, rgba(236, 255, 149,0.4), transparent)" }}
         />
 
         <motion.div
@@ -117,7 +117,7 @@ export function SignalWorkPage() {
             style={{
               fontFamily: "monospace",
               fontSize: "9px",
-              color: "#E2B93B",
+              color: "#ECFF95",
             }}
           >
             SIGNAL: ACTIVE{blink ? "_" : " "}
@@ -159,7 +159,7 @@ export function SignalWorkPage() {
               {/* Info */}
               <div className="absolute inset-0 flex flex-col justify-between p-6">
                 <div className="flex justify-between">
-                  <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#E2B93B", letterSpacing: "0.1em" }}>
+                  <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#ECFF95", letterSpacing: "0.1em" }}>
                     FREQ_{project.id}
                   </span>
                   <span style={{ fontFamily: "monospace", fontSize: "9px", color: "rgba(255,255,255,0.3)", letterSpacing: "0.1em" }}>
@@ -225,7 +225,7 @@ export function SignalWorkPage() {
 /* ─── CRAFT PAGE ─────────────────────────────────────────────── */
 export function SignalCraftPage() {
   return (
-    <main className="relative bg-[#0A0A0A] min-h-screen">
+    <main className="relative bg-[#121316] min-h-screen">
       <SignalGridBg />
       <SignalScanOverlay />
 
@@ -236,7 +236,7 @@ export function SignalCraftPage() {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8 }}
         >
-          <span style={{ fontFamily: "monospace", fontSize: "10px", letterSpacing: "0.3em", color: "#E2B93B" }}>
+          <span style={{ fontFamily: "monospace", fontSize: "10px", letterSpacing: "0.3em", color: "#ECFF95" }}>
             &gt; INTERCEPTED_SIGNALS
           </span>
         </motion.div>
@@ -299,7 +299,7 @@ export function SignalCraftPage() {
 
                 {/* Meta */}
                 <div className="md:col-span-1">
-                  <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#E2B93B", letterSpacing: "0.1em" }}>
+                  <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#ECFF95", letterSpacing: "0.1em" }}>
                     PKT_{item.id.replace("c-", "")}
                   </span>
                 </div>
@@ -307,7 +307,7 @@ export function SignalCraftPage() {
                 {/* Title */}
                 <div className="md:col-span-4">
                   <span
-                    className="group-hover:text-[#E2B93B] transition-colors duration-300"
+                    className="group-hover:text-[#ECFF95] transition-colors duration-300"
                     style={{
                       fontFamily: "'Instrument Sans', sans-serif",
                       fontSize: "clamp(1rem, 1.5vw, 1.2rem)",
@@ -370,7 +370,7 @@ export function SignalAboutPage() {
   }, []);
 
   return (
-    <main className="relative bg-[#0A0A0A] min-h-screen">
+    <main className="relative bg-[#121316] min-h-screen">
       <SignalGridBg />
       <SignalScanOverlay />
 
@@ -381,7 +381,7 @@ export function SignalAboutPage() {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8 }}
         >
-          <span style={{ fontFamily: "monospace", fontSize: "10px", letterSpacing: "0.3em", color: "#E2B93B" }}>
+          <span style={{ fontFamily: "monospace", fontSize: "10px", letterSpacing: "0.3em", color: "#ECFF95" }}>
             &gt; OPERATOR_PROFILE.READ()
           </span>
         </motion.div>
@@ -407,7 +407,7 @@ export function SignalAboutPage() {
           transition={{ delay: 0.6, duration: 1, ease: [0.77, 0, 0.175, 1] }}
           className="mt-4"
         >
-          <span style={{ fontFamily: "monospace", fontSize: "12px", letterSpacing: "0.5em", color: "#E2B93B", textTransform: "uppercase" }}>
+          <span style={{ fontFamily: "monospace", fontSize: "12px", letterSpacing: "0.5em", color: "#ECFF95", textTransform: "uppercase" }}>
             PRODUCT_DESIGNER // BUILDER
           </span>
         </motion.div>
@@ -422,7 +422,7 @@ export function SignalAboutPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            style={{ borderLeft: "1px solid rgba(226,185,59,0.2)", paddingLeft: "2rem" }}
+            style={{ borderLeft: "1px solid rgba(236, 255, 149,0.2)", paddingLeft: "2rem" }}
           >
             <span style={{ fontFamily: "monospace", fontSize: "9px", color: "rgba(255,255,255,0.15)", letterSpacing: "0.15em" }}>
               // BIOGRAPHY
@@ -468,7 +468,7 @@ export function SignalAboutPage() {
                       fontFamily: "'Anton', sans-serif",
                       fontSize: "clamp(1.5rem, 3vw, 2.5rem)",
                       lineHeight: 1,
-                      color: "#E2B93B",
+                      color: "#ECFF95",
                       display: "block",
                     }}
                   >
@@ -486,32 +486,19 @@ export function SignalAboutPage() {
 
             {/* Tools */}
             <div className="mb-10">
-              <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#E2B93B", letterSpacing: "0.15em" }}>
+              <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#ECFF95", letterSpacing: "0.15em" }}>
                 &gt; TOOLS_STACK
               </span>
               <div className="flex flex-wrap gap-2 mt-3">
                 {V2_ABOUT.tools.map((tool) => (
-                  <span
-                    key={tool}
-                    className="inline-flex items-center gap-1.5"
-                    style={{
-                      fontFamily: "monospace",
-                      fontSize: "10px",
-                      color: "rgba(255,255,255,0.3)",
-                      border: "1px solid rgba(255,255,255,0.06)",
-                      padding: "4px 10px",
-                      letterSpacing: "0.05em",
-                    }}
-                  >
-                    <ToolBadge tool={tool} size={14} showLabel />
-                  </span>
+                  <ToolChip key={tool} tool={tool} />
                 ))}
               </div>
             </div>
 
             {/* Channels */}
             <div>
-              <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#E2B93B", letterSpacing: "0.15em" }}>
+              <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#ECFF95", letterSpacing: "0.15em" }}>
                 &gt; CHANNELS
               </span>
               <div className="mt-3 space-y-2">
@@ -522,7 +509,7 @@ export function SignalAboutPage() {
                     className="flex items-center gap-3 group cursor-pointer"
                   >
                     <span
-                      className="group-hover:text-[#E2B93B] transition-colors duration-300"
+                      className="group-hover:text-[#ECFF95] transition-colors duration-300"
                       style={{
                         fontFamily: "monospace",
                         fontSize: "11px",
@@ -534,7 +521,7 @@ export function SignalAboutPage() {
                     </span>
                     <span
                       className="opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                      style={{ fontFamily: "monospace", fontSize: "9px", color: "rgba(226,185,59,0.5)" }}
+                      style={{ fontFamily: "monospace", fontSize: "9px", color: "rgba(236, 255, 149,0.5)" }}
                     >
                       {s.handle}
                     </span>
@@ -549,7 +536,7 @@ export function SignalAboutPage() {
       {/* Values */}
       <section className="relative z-[2] py-24 px-8">
         <div className="max-w-4xl mx-auto">
-          <span style={{ fontFamily: "monospace", fontSize: "10px", letterSpacing: "0.3em", color: "#E2B93B" }}>
+          <span style={{ fontFamily: "monospace", fontSize: "10px", letterSpacing: "0.3em", color: "#ECFF95" }}>
             &gt; CORE_VALUES
           </span>
           <div className="mt-8">

@@ -95,7 +95,7 @@ export default function AdminAutomationsPage() {
           type="button"
           onClick={() => void runSweep()}
           disabled={running}
-          className="px-3 py-2 border border-[#E2B93B]/25 text-[#E2B93B]/75 hover:text-[#E2B93B] disabled:opacity-50 transition-colors text-[10px] font-['Instrument_Sans'] tracking-[0.14em] uppercase"
+          className="px-3 py-2 border border-[#ECFF95]/25 text-[#ECFF95]/75 hover:text-[#ECFF95] disabled:opacity-50 transition-colors text-[10px] font-['Instrument_Sans'] tracking-[0.14em] uppercase"
         >
           {running ? "Running sweep..." : "Run sweep now"}
         </button>
@@ -179,12 +179,12 @@ export default function AdminAutomationsPage() {
       <div className="max-w-5xl mt-5 grid gap-4 lg:grid-cols-2">
         <div className="p-4 border border-white/[0.05] bg-white/[0.02]">
           <div className="flex items-start gap-2">
-            <Bot size={14} className="text-[#E2B93B]/70 mt-0.5" />
+            <Bot size={14} className="text-[#ECFF95]/70 mt-0.5" />
             <div className="w-full">
               <p className="text-[10px] text-white/40 font-['Instrument_Sans'] leading-relaxed">
                 n8n or external job heartbeat target:
               </p>
-              <code className="block mt-2 text-[9px] text-[#E2B93B]/70 bg-black/20 border border-white/[0.06] px-2 py-2 break-all">
+              <code className="block mt-2 text-[9px] text-[#ECFF95]/70 bg-black/20 border border-white/[0.06] px-2 py-2 break-all">
                 {heartbeatUrl}
               </code>
               <p className="text-[10px] text-white/30 font-['Instrument_Sans'] mt-2">
@@ -196,12 +196,12 @@ export default function AdminAutomationsPage() {
 
         <div className="p-4 border border-white/[0.05] bg-white/[0.02]">
           <div className="flex items-start gap-2">
-            <Bot size={14} className="text-[#E2B93B]/70 mt-0.5" />
+            <Bot size={14} className="text-[#ECFF95]/70 mt-0.5" />
             <div className="w-full">
               <p className="text-[10px] text-white/40 font-['Instrument_Sans'] leading-relaxed">
                 Protected cron sweep endpoint:
               </p>
-              <code className="block mt-2 text-[9px] text-[#E2B93B]/70 bg-black/20 border border-white/[0.06] px-2 py-2 break-all">
+              <code className="block mt-2 text-[9px] text-[#ECFF95]/70 bg-black/20 border border-white/[0.06] px-2 py-2 break-all">
                 {monitorUrl}
               </code>
               <p className="text-[10px] text-white/30 font-['Instrument_Sans'] mt-2 leading-relaxed">

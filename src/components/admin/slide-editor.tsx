@@ -133,22 +133,22 @@ function NarratorEditor({
           if (open) { onChange(undefined); setOpen(false); }
           else { onChange({ text: "", label: "DESIGNER'S NOTE", mood: "neutral" }); setOpen(true); }
         }}
-        className="flex items-center gap-2 text-[10px] font-['Instrument_Sans'] tracking-[0.15em] uppercase text-white/25 hover:text-[#E2B93B]/60 transition-colors"
+        className="flex items-center gap-2 text-[10px] font-['Instrument_Sans'] tracking-[0.15em] uppercase text-white/25 hover:text-[#ECFF95]/60 transition-colors"
       >
-        <span className={`w-3 h-3 border rounded-sm flex items-center justify-center ${open ? "border-[#E2B93B]/50 bg-[#E2B93B]/10" : "border-white/15"}`}>
-          {open && <span className="w-1.5 h-1.5 bg-[#E2B93B]/60 rounded-sm" />}
+        <span className={`w-3 h-3 border rounded-sm flex items-center justify-center ${open ? "border-[#ECFF95]/50 bg-[#ECFF95]/10" : "border-white/15"}`}>
+          {open && <span className="w-1.5 h-1.5 bg-[#ECFF95]/60 rounded-sm" />}
         </span>
         Narrator commentary
       </button>
       {open && narrator && (
-        <div className="mt-3 space-y-3 p-3 border border-[#E2B93B]/10 bg-[#E2B93B]/[0.02]">
+        <div className="mt-3 space-y-3 p-3 border border-[#ECFF95]/10 bg-[#ECFF95]/[0.02]">
           <div className="grid grid-cols-2 gap-3">
             <FormField label="Label">
               <input className={adminCx.input} value={narrator.label ?? ""} onChange={(e) => onChange({ ...narrator, label: e.target.value })} placeholder="DESIGNER'S NOTE" />
             </FormField>
             <FormField label="Mood">
               <select className={adminCx.select} value={narrator.mood ?? "neutral"} onChange={(e) => onChange({ ...narrator, mood: e.target.value })}>
-                {NARRATOR_MOODS.map((m) => <option key={m} value={m} style={{ background: "#0A0A0A" }}>{m}</option>)}
+                {NARRATOR_MOODS.map((m) => <option key={m} value={m} style={{ background: "#121316" }}>{m}</option>)}
               </select>
             </FormField>
           </div>
@@ -197,7 +197,7 @@ function SlideForm({
           <div className="grid grid-cols-2 gap-3">
             <FormField label="Device Frame">
               <select className={adminCx.select} value={slide.device ?? "none"} onChange={(e) => set("device", e.target.value)}>
-                {DEVICE_OPTIONS.map((d) => <option key={d} value={d} style={{ background: "#0A0A0A" }}>{d}</option>)}
+                {DEVICE_OPTIONS.map((d) => <option key={d} value={d} style={{ background: "#121316" }}>{d}</option>)}
               </select>
             </FormField>
             <FormField label="Tags (comma-separated)">
@@ -275,7 +275,7 @@ function SlideForm({
                 <button type="button" onClick={() => set("metrics", slide.metrics.filter((_, idx) => idx !== i))} className="mt-3 text-white/20 hover:text-red-400/60 transition-colors"><Trash2 size={12} /></button>
               </div>
             ))}
-            <button type="button" onClick={() => set("metrics", [...slide.metrics, { label: "", value: "" }])} className="text-[10px] font-['Instrument_Sans'] tracking-wider uppercase text-[#E2B93B]/50 hover:text-[#E2B93B] transition-colors flex items-center gap-1.5">
+            <button type="button" onClick={() => set("metrics", [...slide.metrics, { label: "", value: "" }])} className="text-[10px] font-['Instrument_Sans'] tracking-wider uppercase text-[#ECFF95]/50 hover:text-[#ECFF95] transition-colors flex items-center gap-1.5">
               <Plus size={10} /> Add metric
             </button>
           </div>
@@ -292,7 +292,7 @@ function SlideForm({
             <ImageFieldGuide role="case-study-screenshot" imageUrl={slide.image} compact className="mt-3" />
           </FormField>
           <div className="grid grid-cols-2 gap-3">
-            <FormField label="Device Frame"><select className={adminCx.select} value={slide.device} onChange={(e) => set("device", e.target.value)}>{DEVICE_OPTIONS.map((d) => <option key={d} value={d} style={{ background: "#0A0A0A" }}>{d}</option>)}</select></FormField>
+            <FormField label="Device Frame"><select className={adminCx.select} value={slide.device} onChange={(e) => set("device", e.target.value)}>{DEVICE_OPTIONS.map((d) => <option key={d} value={d} style={{ background: "#121316" }}>{d}</option>)}</select></FormField>
             <FormField label="Caption"><RichTextEditor compact value={slide.caption ?? ""} onChange={(html) => set("caption", htmlOrUndefined(html))} placeholder="Caption" /></FormField>
           </div>
           <NarratorEditor narrator={(slide as { narrator?: { text: string; label?: string; mood?: string } }).narrator} onChange={(n) => set("narrator", n)} />
@@ -330,11 +330,11 @@ function SlideForm({
             {slide.mockups.map((m, i) => (
               <div key={i} className="grid grid-cols-[1fr_auto_auto] gap-2 items-start">
                 <input className={adminCx.input} value={m.image} onChange={(e) => { const ms = [...slide.mockups]; ms[i] = { ...ms[i], image: e.target.value }; set("mockups", ms); }} placeholder="Image URL" />
-                <select className={adminCx.select + " w-24"} value={m.device} onChange={(e) => { const ms = [...slide.mockups]; ms[i] = { ...ms[i], device: e.target.value as typeof m.device }; set("mockups", ms); }}>{DEVICE_OPTIONS.map((d) => <option key={d} value={d} style={{ background: "#0A0A0A" }}>{d}</option>)}</select>
+                <select className={adminCx.select + " w-24"} value={m.device} onChange={(e) => { const ms = [...slide.mockups]; ms[i] = { ...ms[i], device: e.target.value as typeof m.device }; set("mockups", ms); }}>{DEVICE_OPTIONS.map((d) => <option key={d} value={d} style={{ background: "#121316" }}>{d}</option>)}</select>
                 <button type="button" onClick={() => set("mockups", slide.mockups.filter((_, idx) => idx !== i))} className="mt-3 text-white/20 hover:text-red-400/60 transition-colors"><Trash2 size={12} /></button>
               </div>
             ))}
-            <button type="button" onClick={() => set("mockups", [...slide.mockups, { image: "", device: "phone" as const }])} className="text-[10px] font-['Instrument_Sans'] tracking-wider uppercase text-[#E2B93B]/50 hover:text-[#E2B93B] transition-colors flex items-center gap-1.5"><Plus size={10} /> Add screen</button>
+            <button type="button" onClick={() => set("mockups", [...slide.mockups, { image: "", device: "phone" as const }])} className="text-[10px] font-['Instrument_Sans'] tracking-wider uppercase text-[#ECFF95]/50 hover:text-[#ECFF95] transition-colors flex items-center gap-1.5"><Plus size={10} /> Add screen</button>
           </div>
           <NarratorEditor narrator={(slide as { narrator?: { text: string; label?: string; mood?: string } }).narrator} onChange={(n) => set("narrator", n)} />
         </>
@@ -354,7 +354,7 @@ function SlideForm({
                 <button type="button" onClick={() => set("screens", slide.screens.filter((_, idx) => idx !== i))} className="mt-3 text-white/20 hover:text-red-400/60 transition-colors"><Trash2 size={12} /></button>
               </div>
             ))}
-            <button type="button" onClick={() => set("screens", [...slide.screens, { image: "" }])} className="text-[10px] font-['Instrument_Sans'] tracking-wider uppercase text-[#E2B93B]/50 hover:text-[#E2B93B] transition-colors flex items-center gap-1.5"><Plus size={10} /> Add screen</button>
+            <button type="button" onClick={() => set("screens", [...slide.screens, { image: "" }])} className="text-[10px] font-['Instrument_Sans'] tracking-wider uppercase text-[#ECFF95]/50 hover:text-[#ECFF95] transition-colors flex items-center gap-1.5"><Plus size={10} /> Add screen</button>
           </div>
           <NarratorEditor narrator={(slide as { narrator?: { text: string; label?: string; mood?: string } }).narrator} onChange={(n) => set("narrator", n)} />
         </>
@@ -373,7 +373,7 @@ function SlideForm({
             <ImageFieldGuide role="case-study-screenshot" imageUrl={slide.posterImage} compact className="mt-3" />
           </FormField>
           <div className="grid grid-cols-2 gap-3">
-            <FormField label="Device"><select className={adminCx.select} value={slide.device ?? "none"} onChange={(e) => set("device", e.target.value)}>{DEVICE_OPTIONS.map((d) => <option key={d} value={d} style={{ background: "#0A0A0A" }}>{d}</option>)}</select></FormField>
+            <FormField label="Device"><select className={adminCx.select} value={slide.device ?? "none"} onChange={(e) => set("device", e.target.value)}>{DEVICE_OPTIONS.map((d) => <option key={d} value={d} style={{ background: "#121316" }}>{d}</option>)}</select></FormField>
             <FormField label="Caption"><RichTextEditor compact value={slide.caption ?? ""} onChange={(html) => set("caption", htmlOrUndefined(html))} placeholder="Caption" /></FormField>
           </div>
           <NarratorEditor narrator={(slide as { narrator?: { text: string; label?: string; mood?: string } }).narrator} onChange={(n) => set("narrator", n)} />
@@ -390,7 +390,7 @@ function SlideForm({
             <ImageFieldGuide role="case-study-screenshot" imageUrl={slide.fallbackImage} compact className="mt-3" />
           </FormField>
           <div className="grid grid-cols-2 gap-3">
-            <FormField label="Device"><select className={adminCx.select} value={slide.device ?? "browser"} onChange={(e) => set("device", e.target.value)}>{DEVICE_OPTIONS.map((d) => <option key={d} value={d} style={{ background: "#0A0A0A" }}>{d}</option>)}</select></FormField>
+            <FormField label="Device"><select className={adminCx.select} value={slide.device ?? "browser"} onChange={(e) => set("device", e.target.value)}>{DEVICE_OPTIONS.map((d) => <option key={d} value={d} style={{ background: "#121316" }}>{d}</option>)}</select></FormField>
             <FormField label="Caption"><RichTextEditor compact value={slide.caption ?? ""} onChange={(html) => set("caption", htmlOrUndefined(html))} placeholder="Caption" /></FormField>
           </div>
           <NarratorEditor narrator={(slide as { narrator?: { text: string; label?: string; mood?: string } }).narrator} onChange={(n) => set("narrator", n)} />
@@ -414,7 +414,7 @@ function SlideForm({
                 </div>
               </div>
             ))}
-            <button type="button" onClick={() => set("artifacts", [...slide.artifacts, { image: "", label: "" }])} className="text-[10px] font-['Instrument_Sans'] tracking-wider uppercase text-[#E2B93B]/50 hover:text-[#E2B93B] transition-colors flex items-center gap-1.5"><Plus size={10} /> Add artifact</button>
+            <button type="button" onClick={() => set("artifacts", [...slide.artifacts, { image: "", label: "" }])} className="text-[10px] font-['Instrument_Sans'] tracking-wider uppercase text-[#ECFF95]/50 hover:text-[#ECFF95] transition-colors flex items-center gap-1.5"><Plus size={10} /> Add artifact</button>
           </div>
           <NarratorEditor narrator={(slide as { narrator?: { text: string; label?: string; mood?: string } }).narrator} onChange={(n) => set("narrator", n)} />
         </>
@@ -439,7 +439,7 @@ function SlideForm({
           <FormField label="Caption"><RichTextEditor compact value={slide.caption ?? ""} onChange={(html) => set("caption", htmlOrUndefined(html))} placeholder="Caption shown below the animation" /></FormField>
           <FormField label="Loop">
             <label className="flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" checked={slide.loop ?? true} onChange={(e) => set("loop", e.target.checked)} className="accent-[#E2B93B]" />
+              <input type="checkbox" checked={slide.loop ?? true} onChange={(e) => set("loop", e.target.checked)} className="accent-[#ECFF95]" />
               <span className={adminCx.label} style={{ marginBottom: 0 }}>Loop animation</span>
             </label>
           </FormField>
@@ -534,11 +534,11 @@ function SlideNavItem({
       title="Click, double-click, or press Enter to edit"
       className={`group flex items-center gap-2 px-3 py-2.5 cursor-pointer transition-all border-l-2 ${
         isActive
-          ? "border-l-[#E2B93B] bg-white/[0.04] text-white"
+          ? "border-l-[#ECFF95] bg-white/[0.04] text-white"
           : "border-l-transparent hover:bg-white/[0.02] text-white/40 hover:text-white/70"
       } ${isDragging ? "opacity-60" : ""}`}
     >
-      <Icon size={11} className={`shrink-0 ${isActive ? "text-[#E2B93B]" : ""}`} />
+      <Icon size={11} className={`shrink-0 ${isActive ? "text-[#ECFF95]" : ""}`} />
       <div className="flex-1 min-w-0">
         <p className="text-[9px] tracking-[0.12em] uppercase font-['Instrument_Sans'] text-white/20 mb-0.5">
           {slide.type.replace(/-/g, " ")}
@@ -551,7 +551,7 @@ function SlideNavItem({
           {...attributes}
           {...listeners}
           onClick={(e) => e.stopPropagation()}
-          className="cursor-grab px-1 py-0.5 text-white/20 hover:text-[#E2B93B] active:cursor-grabbing transition-colors font-mono text-xs"
+          className="cursor-grab px-1 py-0.5 text-white/20 hover:text-[#ECFF95] active:cursor-grabbing transition-colors font-mono text-xs"
           aria-label="Drag to reorder slide"
         >
           ::
@@ -623,7 +623,7 @@ export function SlideEditor({ slides, onChange, label = "Slides" }: SlideEditorP
       <div className="w-[220px] shrink-0 border-r border-white/[0.07] flex flex-col bg-white/[0.01]">
         {/* Header */}
         <div className="px-3 py-3 border-b border-white/[0.06] flex items-center justify-between shrink-0">
-          <p className="text-[9px] tracking-[0.2em] text-[#E2B93B]/50 font-['Instrument_Sans'] uppercase">{label}</p>
+          <p className="text-[9px] tracking-[0.2em] text-[#ECFF95]/50 font-['Instrument_Sans'] uppercase">{label}</p>
           <span className="text-[9px] text-white/20 font-['Instrument_Sans']">{slides.length}</span>
         </div>
 
@@ -662,7 +662,7 @@ export function SlideEditor({ slides, onChange, label = "Slides" }: SlideEditorP
           <button
             type="button"
             onClick={() => setShowTypePicker((s) => !s)}
-            className="w-full flex items-center justify-center gap-2 py-2 border border-dashed border-white/[0.12] text-[10px] font-['Instrument_Sans'] tracking-wider uppercase text-white/25 hover:text-[#E2B93B]/60 hover:border-[#E2B93B]/20 transition-all"
+            className="w-full flex items-center justify-center gap-2 py-2 border border-dashed border-white/[0.12] text-[10px] font-['Instrument_Sans'] tracking-wider uppercase text-white/25 hover:text-[#ECFF95]/60 hover:border-[#ECFF95]/20 transition-all"
           >
             <Plus size={11} /> Add Slide
           </button>
@@ -680,7 +680,7 @@ export function SlideEditor({ slides, onChange, label = "Slides" }: SlideEditorP
                 const Icon = meta?.icon ?? FileText;
                 return (
                   <>
-                    <Icon size={14} className="text-[#E2B93B]/60" />
+                    <Icon size={14} className="text-[#ECFF95]/60" />
                     <div>
                       <p className="text-[13px] font-['Instrument_Sans'] text-white/70">{meta?.label}</p>
                       <p className="text-[10px] text-white/25 font-['Instrument_Sans']">Slide {activeIndex + 1} of {slides.length}</p>

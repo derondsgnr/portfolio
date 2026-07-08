@@ -45,7 +45,7 @@ export function MetaForm({ initial }: Props) {
     }
   }
 
-  const inputClass = "w-full px-4 py-2 bg-[#111] border border-white/10 text-white placeholder:text-white/40 font-mono text-sm focus:outline-none focus:border-[#E2B93B]/50";
+  const inputClass = "w-full px-4 py-2 bg-[#111] border border-white/10 text-white placeholder:text-white/40 font-mono text-sm focus:outline-none focus:border-[#ECFF95]/50";
   const labelClass = "block font-mono text-xs text-white/60 mb-1";
 
   return (

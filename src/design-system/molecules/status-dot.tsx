@@ -7,7 +7,7 @@ export type HealthStatus = "healthy" | "warning" | "empty";
 
 const statusColors: Record<HealthStatus, string> = {
   healthy: "bg-[#22c55e]",
-  warning: "bg-[#E2B93B]",
+  warning: "bg-[#ECFF95]",
   empty: "bg-white/20",
 };
 

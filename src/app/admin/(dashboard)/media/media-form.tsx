@@ -26,7 +26,7 @@ type Props = {
 };
 
 const inputClass =
-  "w-full px-4 py-2 bg-[#111] border border-white/10 text-white placeholder:text-white/40 font-mono text-sm focus:outline-none focus:border-[#E2B93B]/50";
+  "w-full px-4 py-2 bg-[#111] border border-white/10 text-white placeholder:text-white/40 font-mono text-sm focus:outline-none focus:border-[#ECFF95]/50";
 const labelClass = "block font-mono text-xs text-white/60 mb-1";
 
 export function MediaForm({ initialMedia, initialCraft, initialExplorations }: Props) {
@@ -390,8 +390,8 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
   return (
     <div className="space-y-12 max-w-3xl">
       {hasUnsavedChanges ? (
-        <div className="border border-[#E2B93B]/25 bg-[#E2B93B]/[0.05] px-4 py-3">
-          <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-[#E2B93B]/80">
+        <div className="border border-[#ECFF95]/25 bg-[#ECFF95]/[0.05] px-4 py-3">
+          <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-[#ECFF95]/80">
             Unsaved media changes · Cmd/Ctrl+S saves changed sections
           </p>
         </div>
@@ -480,7 +480,7 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
           <button
             type="submit"
             disabled={savingSection === "media"}
-            className="px-6 py-2 bg-[#E2B93B] text-[#0A0A0A] font-mono text-xs tracking-wider uppercase hover:bg-white transition-colors disabled:opacity-50"
+            className="px-6 py-2 bg-[#ECFF95] text-[#121316] font-mono text-xs tracking-wider uppercase hover:bg-white transition-colors disabled:opacity-50"
           >
             {savingSection === "media" ? "Saving…" : "Save global assets"}
           </button>
@@ -494,7 +494,7 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
           <button
             type="button"
             onClick={() => addCraftSection()}
-            className="px-4 py-1.5 border border-[#E2B93B]/40 font-mono text-[10px] uppercase tracking-[0.12em] text-[#E2B93B] hover:bg-[#E2B93B]/10 transition-colors"
+            className="px-4 py-1.5 border border-[#ECFF95]/40 font-mono text-[10px] uppercase tracking-[0.12em] text-[#ECFF95] hover:bg-[#ECFF95]/10 transition-colors"
           >
             Add section
           </button>
@@ -565,7 +565,7 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
                   return (
                     <div
                       key={`craft-item-${si}-${ii}`}
-                      className="rounded border border-white/[0.08] bg-[#0f0f0f] overflow-hidden"
+                      className="rounded border border-white/[0.08] bg-[#16171B] overflow-hidden"
                     >
                       {/* Collapsed row */}
                       <button
@@ -591,7 +591,7 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
                         </span>
                         <span className={`font-mono text-[9px] uppercase tracking-wider px-1.5 py-0.5 shrink-0 ${
                           itemStatus === "published"
-                            ? "text-[#E2B93B]/70 bg-[#E2B93B]/[0.07]"
+                            ? "text-[#ECFF95]/70 bg-[#ECFF95]/[0.07]"
                             : itemStatus === "draft"
                             ? "text-white/30 bg-white/[0.04]"
                             : "text-red-400/60 bg-red-400/[0.07]"
@@ -738,7 +738,7 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
                                   type="checkbox"
                                   checked={Boolean(item.featured)}
                                   onChange={(e) => updateCraftMeta(si, ii, { featured: e.target.checked })}
-                                  className="h-3.5 w-3.5 accent-[#E2B93B]"
+                                  className="h-3.5 w-3.5 accent-[#ECFF95]"
                                 />
                                 Featured
                               </label>
@@ -747,7 +747,7 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
                                   type="checkbox"
                                   checked={Boolean(item.pinned)}
                                   onChange={(e) => updateCraftMeta(si, ii, { pinned: e.target.checked })}
-                                  className="h-3.5 w-3.5 accent-[#E2B93B]"
+                                  className="h-3.5 w-3.5 accent-[#ECFF95]"
                                 />
                                 Pinned
                               </label>
@@ -769,7 +769,7 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
                   <button
                     type="button"
                     onClick={() => addCraftItem(si)}
-                    className="font-mono text-[10px] uppercase tracking-wider text-[#E2B93B]/90 hover:text-[#E2B93B]"
+                    className="font-mono text-[10px] uppercase tracking-wider text-[#ECFF95]/90 hover:text-[#ECFF95]"
                   >
                     + Add item
                   </button>
@@ -780,7 +780,7 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
           <button
             type="submit"
             disabled={savingSection === "craft"}
-            className="px-6 py-2 bg-[#E2B93B] text-[#0A0A0A] font-mono text-xs tracking-wider uppercase hover:bg-white transition-colors disabled:opacity-50"
+            className="px-6 py-2 bg-[#ECFF95] text-[#121316] font-mono text-xs tracking-wider uppercase hover:bg-white transition-colors disabled:opacity-50"
           >
             {savingSection === "craft" ? "Saving…" : "Save craft"}
           </button>
@@ -796,7 +796,7 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
           <button
             type="button"
             onClick={addExploration}
-            className="px-4 py-1.5 border border-[#E2B93B]/40 font-mono text-[10px] uppercase tracking-[0.12em] text-[#E2B93B] hover:bg-[#E2B93B]/10 transition-colors"
+            className="px-4 py-1.5 border border-[#ECFF95]/40 font-mono text-[10px] uppercase tracking-[0.12em] text-[#ECFF95] hover:bg-[#ECFF95]/10 transition-colors"
           >
             Add exploration
           </button>
@@ -816,7 +816,7 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
               return (
                 <div
                   key={`exploration-${exIdx}`}
-                  className="rounded border border-white/[0.08] bg-[#0f0f0f] overflow-hidden"
+                  className="rounded border border-white/[0.08] bg-[#16171B] overflow-hidden"
                 >
                   {/* Collapsed row */}
                   <button
@@ -847,7 +847,7 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
                       const s = item.status ?? "published";
                       return (
                         <span className={`font-mono text-[9px] uppercase tracking-wider px-1.5 py-0.5 shrink-0 ${
-                          s === "published" ? "text-[#E2B93B]/70 bg-[#E2B93B]/[0.07]"
+                          s === "published" ? "text-[#ECFF95]/70 bg-[#ECFF95]/[0.07]"
                           : s === "draft" ? "text-white/30 bg-white/[0.04]"
                           : "text-red-400/60 bg-red-400/[0.07]"
                         }`}>{s}</span>
@@ -1067,7 +1067,7 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
                               .map((t) => (
                                 <span
                                   key={t}
-                                  className="font-mono text-[9px] uppercase tracking-[0.12em] text-[#E2B93B]/80 border border-[#E2B93B]/20 px-2 py-0.5"
+                                  className="font-mono text-[9px] uppercase tracking-[0.12em] text-[#ECFF95]/80 border border-[#ECFF95]/20 px-2 py-0.5"
                                 >
                                   {t}
                                 </span>
@@ -1093,7 +1093,7 @@ export function MediaForm({ initialMedia, initialCraft, initialExplorations }: P
           <button
             type="submit"
             disabled={savingSection === "explorations"}
-            className="px-6 py-2 bg-[#E2B93B] text-[#0A0A0A] font-mono text-xs tracking-wider uppercase hover:bg-white transition-colors disabled:opacity-50"
+            className="px-6 py-2 bg-[#ECFF95] text-[#121316] font-mono text-xs tracking-wider uppercase hover:bg-white transition-colors disabled:opacity-50"
           >
             {savingSection === "explorations" ? "Saving…" : "Save explorations"}
           </button>

@@ -79,7 +79,7 @@ export function IntegrationsForm({ initial }: Props) {
   }
 
   const inputClass =
-    "w-full px-4 py-2 bg-[#111] border border-white/10 text-white placeholder:text-white/40 font-mono text-sm focus:outline-none focus:border-[#E2B93B]/50";
+    "w-full px-4 py-2 bg-[#111] border border-white/10 text-white placeholder:text-white/40 font-mono text-sm focus:outline-none focus:border-[#ECFF95]/50";
   const labelClass = "block font-mono text-xs text-white/60 mb-1";
 
   return (
@@ -95,7 +95,7 @@ export function IntegrationsForm({ initial }: Props) {
             name="gaEnabled"
             type="checkbox"
             defaultChecked={initial.googleAnalytics.enabled}
-            className="h-4 w-4 accent-[#E2B93B]"
+            className="h-4 w-4 accent-[#ECFF95]"
           />
           <label htmlFor="gaEnabled" className="font-mono text-sm text-white/80">
             Enable Google Analytics
@@ -127,7 +127,7 @@ export function IntegrationsForm({ initial }: Props) {
             name="gtmEnabled"
             type="checkbox"
             defaultChecked={initial.googleTagManager.enabled}
-            className="h-4 w-4 accent-[#E2B93B]"
+            className="h-4 w-4 accent-[#ECFF95]"
           />
           <label htmlFor="gtmEnabled" className="font-mono text-sm text-white/80">
             Enable Google Tag Manager
@@ -194,7 +194,7 @@ export function IntegrationsForm({ initial }: Props) {
                 type="checkbox"
                 checked={e.enabled}
                 onChange={(ev) => updateExtra(i, { enabled: ev.target.checked })}
-                className="h-4 w-4 accent-[#E2B93B]"
+                className="h-4 w-4 accent-[#ECFF95]"
               />
               <label htmlFor={`extra-${i}-enabled`} className="font-mono text-xs text-white/70">
                 Enabled

@@ -8,6 +8,7 @@ import { LottiePlayer } from "../shared/lottie-player";
 import { useCaseStudyMedia } from "./case-study-media-context";
 import { VideoEmbedFrame } from "../shared/youtube-video-frame";
 import { normalizeCloudinaryVideoUrl, getVideoEmbedUrl } from "@/lib/media-url";
+import { PillChip } from "@/components/pill-chip";
 import parseHtml from "html-react-parser";
 
 /* ─── Shared content widths ──────────────────────────────────────────────────
@@ -104,11 +105,11 @@ function NarratorStrip({ narrator }: { narrator: NarratorBlock }) {
       initial={{ opacity: 0, x: 20 }}
       animate={inView ? { opacity: 1, x: 0 } : {}}
       transition={{ duration: 0.6, delay: 0.3 }}
-      className="relative border-l-2 border-[#E2B93B] pl-4 py-3"
+      className="relative border-l-2 border-[#ECFF95] pl-4 py-3"
     >
       {narrator.label && (
         <span
-          className="block text-[10px] tracking-[0.2em] text-[#E2B93B] mb-2"
+          className="block text-[10px] tracking-[0.2em] text-[#ECFF95] mb-2"
           style={{ fontFamily: "monospace" }}
         >
           {narrator.label}
@@ -168,7 +169,7 @@ function ScanLines() {
       className="absolute inset-0 pointer-events-none z-10"
       style={{
         background:
-          "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(226,185,59,0.02) 2px, rgba(226,185,59,0.02) 4px)",
+          "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(236, 255, 149,0.02) 2px, rgba(236, 255, 149,0.02) 4px)",
       }}
     />
   );
@@ -201,7 +202,7 @@ function CaseStudyImage({
       <img src={src} alt={alt} className={className} />
       {showBadge && (
         <span
-          className="absolute left-2 top-2 z-20 border border-[#E2B93B]/40 bg-[#0A0A0A]/85 px-2 py-1 text-[9px] tracking-[0.14em] text-[#E2B93B]"
+          className="absolute left-2 top-2 z-20 border border-[#ECFF95]/40 bg-[#121316]/85 px-2 py-1 text-[9px] tracking-[0.14em] text-[#ECFF95]"
           style={{ fontFamily: "monospace" }}
         >
           PLACEHOLDER ASSET
@@ -217,11 +218,11 @@ function CaseStudyImage({
           aria-label={`Expand image${alt ? `: ${alt}` : ""}`}
           className="group/expand absolute inset-0 z-10 flex cursor-zoom-in items-end justify-center pb-4 md:items-center md:pb-0"
         >
-          <span className="flex items-center gap-2 border border-[#E2B93B]/40 bg-[#0A0A0A]/80 px-3 py-1.5 opacity-100 backdrop-blur-sm transition-opacity duration-300 md:opacity-0 md:group-hover/expand:opacity-100">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#E2B93B" strokeWidth="2">
+          <span className="flex items-center gap-2 border border-[#ECFF95]/40 bg-[#121316]/80 px-3 py-1.5 opacity-100 backdrop-blur-sm transition-opacity duration-300 md:opacity-0 md:group-hover/expand:opacity-100">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#ECFF95" strokeWidth="2">
               <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
             </svg>
-            <span className="text-[8px] tracking-[0.15em] text-[#E2B93B] md:text-[9px]" style={{ fontFamily: "monospace" }}>
+            <span className="text-[8px] tracking-[0.15em] text-[#ECFF95] md:text-[9px]" style={{ fontFamily: "monospace" }}>
               EXPAND
             </span>
           </span>
@@ -246,7 +247,7 @@ function CoverSlideComponent({ slide }: { slide: Extract<Slide, { type: "cover" 
       {slide.heroImage && (
         <div className="absolute inset-0 z-0">
           <CaseStudyImage src={slide.heroImage} alt="" className="w-full h-full object-cover opacity-15" wrapperClassName="w-full h-full" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/80 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#121316] via-[#121316]/80 to-transparent" />
           <ScanLines />
         </div>
       )}
@@ -261,13 +262,7 @@ function CoverSlideComponent({ slide }: { slide: Extract<Slide, { type: "cover" 
             className="flex flex-wrap gap-3 mb-8"
           >
             {slide.tags.map((tag) => (
-              <span
-                key={tag}
-                className="text-[10px] tracking-[0.2em] text-[#E2B93B] border border-[#E2B93B]/30 px-3 py-1"
-                style={{ fontFamily: "monospace" }}
-              >
-                {tag}
-              </span>
+              <PillChip key={tag} variant="tag" label={tag} />
             ))}
           </motion.div>
         )}
@@ -304,7 +299,7 @@ function CoverSlideComponent({ slide }: { slide: Extract<Slide, { type: "cover" 
           transition={{ duration: 0.6, delay: 0.3 }}
           className="mt-16 flex items-center gap-3"
         >
-          <div className="w-px h-8 bg-[#E2B93B]/40" />
+          <div className="w-px h-8 bg-[#ECFF95]/40" />
           <span className="text-[10px] tracking-[0.3em] text-[#555]" style={{ fontFamily: "monospace" }}>
             SCROLL TO EXPLORE
           </span>
@@ -338,8 +333,8 @@ function NarrativeSlideComponent({ slide }: { slide: Extract<Slide, { type: "nar
           </RevealText>
 
           {slide.annotation && (
-            <RevealText delay={slide.headline ? 0.38 : 0.1} className="mt-8 border-l-2 border-[#E2B93B]/50 pl-4">
-              <p className="text-[#E2B93B]/80 text-sm" style={{ fontFamily: "monospace" }}>
+            <RevealText delay={slide.headline ? 0.38 : 0.1} className="mt-8 border-l-2 border-[#ECFF95]/50 pl-4">
+              <p className="text-[#ECFF95]/80 text-sm" style={{ fontFamily: "monospace" }}>
                 <RichInline text={slide.annotation} />
               </p>
             </RevealText>
@@ -364,7 +359,7 @@ function NarrativeSlideComponent({ slide }: { slide: Extract<Slide, { type: "nar
                     href={ref.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:text-[#E2B93B] transition-colors duration-300"
+                    className="hover:text-[#ECFF95] transition-colors duration-300"
                     style={{ fontFamily: "monospace", fontSize: "10px", letterSpacing: "0.1em", color: "rgba(255,255,255,0.25)" }}
                   >
                     ↗ {ref.label}
@@ -415,9 +410,9 @@ function SingleMockupSlideComponent({ slide }: { slide: Extract<Slide, { type: "
                 initial={{ opacity: 0, x: 30 }}
                 animate={inView ? { opacity: 1, x: 0 } : {}}
                 transition={{ duration: 0.5, delay: 0.2 }}
-                className="relative md:absolute md:-right-4 lg:-right-64 md:top-1/2 md:-translate-y-1/2 max-w-[240px] bg-[#111] border border-[#E2B93B]/20 p-4 mt-4 md:mt-0 z-20"
+                className="relative md:absolute md:-right-4 lg:-right-64 md:top-1/2 md:-translate-y-1/2 max-w-[240px] bg-[#111] border border-[#ECFF95]/20 p-4 mt-4 md:mt-0 z-20"
               >
-                <div className="w-2 h-2 bg-[#E2B93B] rounded-full mb-2" />
+                <div className="w-2 h-2 bg-[#ECFF95] rounded-full mb-2" />
                 <p className="text-xs text-[#999]" style={{ fontFamily: "monospace", lineHeight: 1.6 }}>
                   <RichInline text={slide.annotation} />
                 </p>
@@ -490,22 +485,22 @@ function ComparisonSlideComponent({ slide }: { slide: Extract<Slide, { type: "co
 
             {/* Slider line */}
             <div
-              className="absolute top-0 bottom-0 w-px bg-[#E2B93B] z-10"
+              className="absolute top-0 bottom-0 w-px bg-[#ECFF95] z-10"
               style={{ left: `${sliderPos}%` }}
             >
-              <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-[#E2B93B] flex items-center justify-center">
-                <span className="text-[#0A0A0A] text-xs">&#8596;</span>
+              <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-[#ECFF95] flex items-center justify-center">
+                <span className="text-[#121316] text-xs">&#8596;</span>
               </div>
             </div>
 
             {/* Labels */}
             <div className="absolute bottom-4 left-4 z-10">
-              <span className="text-[10px] tracking-[0.2em] text-white bg-[#0A0A0A]/80 px-2 py-1" style={{ fontFamily: "monospace" }}>
+              <span className="text-[10px] tracking-[0.2em] text-white bg-[#121316]/80 px-2 py-1" style={{ fontFamily: "monospace" }}>
                 {slide.before.label}
               </span>
             </div>
             <div className="absolute bottom-4 right-4 z-10">
-              <span className="text-[10px] tracking-[0.2em] text-white bg-[#0A0A0A]/80 px-2 py-1" style={{ fontFamily: "monospace" }}>
+              <span className="text-[10px] tracking-[0.2em] text-white bg-[#121316]/80 px-2 py-1" style={{ fontFamily: "monospace" }}>
                 {slide.after.label}
               </span>
             </div>
@@ -545,11 +540,11 @@ function InsightSlideComponent({ slide }: { slide: Extract<Slide, { type: "insig
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={inView ? { opacity: 1, scale: 1, y: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="relative bg-[#111] border border-[#E2B93B]/20 p-6 md:p-8"
+            className="relative bg-[#111] border border-[#ECFF95]/20 p-6 md:p-8"
           >
-            <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-[#E2B93B] to-transparent" />
+            <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-[#ECFF95] to-transparent" />
             <span
-              className="text-[10px] tracking-[0.3em] text-[#E2B93B] block mb-3"
+              className="text-[10px] tracking-[0.3em] text-[#ECFF95] block mb-3"
               style={{ fontFamily: "monospace" }}
             >
               {slide.insightLabel}
@@ -565,6 +560,25 @@ function InsightSlideComponent({ slide }: { slide: Extract<Slide, { type: "insig
 }
 
 /* ─── METRIC ─────────────────────────────────────────────────── */
+/**
+ * Metric delta color — value semantics (matches the Figma): pink for a
+ * decrease/negative, neutral for positive/normal. `tone` overrides the sign
+ * inference for cases where the sign doesn't match the sentiment (e.g. a drop in
+ * load time is a win → set "positive").
+ */
+function deltaColor(delta: string, tone?: "positive" | "negative" | "neutral"): string {
+  const resolved =
+    tone ??
+    (/^[-−–]|▼|↓|\bdown\b/i.test(delta.trim())
+      ? "negative"
+      : /^\+|▲|↑|\bup\b/i.test(delta.trim())
+        ? "positive"
+        : "neutral");
+  if (resolved === "negative") return "#D34F79";
+  if (resolved === "positive") return "var(--text-2, #b8b9ba)";
+  return "var(--text-3, #919293)";
+}
+
 function MetricSlideComponent({ slide }: { slide: Extract<Slide, { type: "metric" }> }) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.3 });
@@ -591,7 +605,7 @@ function MetricSlideComponent({ slide }: { slide: Extract<Slide, { type: "metric
                 initial={{ opacity: 0, y: 30 }}
                 animate={inView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.6, delay: 0.2 + i * 0.1 }}
-                className="min-w-0 border-t border-[#E2B93B]/30 pt-4"
+                className="min-w-0 border-t border-[#ECFF95]/30 pt-4"
               >
                 <span
                   className="text-3xl md:text-5xl text-white block mb-2 break-words [overflow-wrap:anywhere]"
@@ -607,8 +621,8 @@ function MetricSlideComponent({ slide }: { slide: Extract<Slide, { type: "metric
                 </span>
                 {metric.delta && (
                   <span
-                    className="text-[10px] text-[#E2B93B]/60 block mt-1"
-                    style={{ fontFamily: "monospace" }}
+                    className="text-[10px] block mt-1"
+                    style={{ fontFamily: "monospace", color: deltaColor(metric.delta, metric.deltaTone) }}
                   >
                     {metric.delta}
                   </span>
@@ -636,7 +650,7 @@ function QuoteSlideComponent({ slide }: { slide: Extract<Slide, { type: "quote" 
             animate={inView ? { opacity: 1, scale: 1 } : {}}
             transition={{ duration: 0.8 }}
           >
-            <div className="text-[#E2B93B] text-6xl mb-6" style={{ fontFamily: "serif" }}>&ldquo;</div>
+            <div className="text-[#ECFF95] text-6xl mb-6" style={{ fontFamily: "serif" }}>&ldquo;</div>
             <div
               className="text-2xl md:text-4xl text-white mb-8"
               style={{ fontFamily: "'Instrument Sans', sans-serif", lineHeight: 1.4, fontStyle: "italic" }}
@@ -644,7 +658,7 @@ function QuoteSlideComponent({ slide }: { slide: Extract<Slide, { type: "quote" 
               <RichBody text={slide.quote} className="text-2xl md:text-4xl text-white" style={{ fontFamily: "'Instrument Sans', sans-serif", lineHeight: 1.4, fontStyle: "italic" }} />
             </div>
             <div className="flex flex-col items-center gap-1">
-              <span className="text-[#E2B93B] text-sm">{slide.attribution}</span>
+              <span className="text-[#ECFF95] text-sm">{slide.attribution}</span>
               {slide.role && (
                 <span className="text-[10px] text-[#666] tracking-[0.15em]" style={{ fontFamily: "monospace" }}>
                   {slide.role}
@@ -678,10 +692,10 @@ function FlowSlideComponent({ slide }: { slide: Extract<Slide, { type: "flow" }>
 
       {/* Swipe hint for mobile */}
       <div className="px-6 md:hidden mb-4 flex items-center gap-2">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E2B93B" strokeWidth="1.5" className="opacity-60">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ECFF95" strokeWidth="1.5" className="opacity-60">
           <path d="M5 12h14M12 5l7 7-7 7" />
         </svg>
-        <span className="text-[9px] tracking-[0.15em] text-[#E2B93B]/60" style={{ fontFamily: "monospace" }}>
+        <span className="text-[9px] tracking-[0.15em] text-[#ECFF95]/60" style={{ fontFamily: "monospace" }}>
           SWIPE TO EXPLORE
         </span>
       </div>
@@ -763,7 +777,7 @@ function EmbedSlideComponent({ slide }: { slide: Extract<Slide, { type: "embed" 
                   href={slide.embedUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-4 inline-flex items-center gap-2 text-[#E2B93B] text-sm hover:underline"
+                  className="mt-4 inline-flex items-center gap-2 text-[#ECFF95] text-sm hover:underline"
                   style={{ fontFamily: "monospace" }}
                 >
                   Open live demo &rarr;
@@ -854,8 +868,8 @@ function VideoSlideComponent({ slide }: { slide: Extract<Slide, { type: "video" 
                   {/* Play affordance — shown only when paused (e.g. autoplay blocked). */}
                   {!isPlaying && (
                     <div className="absolute inset-0 flex items-center justify-center bg-black/30 pointer-events-none">
-                      <div className="w-16 h-16 rounded-full border-2 border-[#E2B93B] flex items-center justify-center">
-                        <div className="w-0 h-0 border-l-[12px] border-l-[#E2B93B] border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent ml-1" />
+                      <div className="w-16 h-16 rounded-full border-2 border-[#ECFF95] flex items-center justify-center">
+                        <div className="w-0 h-0 border-l-[12px] border-l-[#ECFF95] border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent ml-1" />
                       </div>
                     </div>
                   )}
@@ -864,8 +878,8 @@ function VideoSlideComponent({ slide }: { slide: Extract<Slide, { type: "video" 
                 <div className="relative">
                   <CaseStudyImage src={slide.posterImage} alt={slide.headline || "Video"} className="w-full h-auto" wrapperClassName="w-full" />
                   <div className="absolute inset-0 flex items-center justify-center bg-black/30">
-                    <div className="w-16 h-16 rounded-full border-2 border-[#E2B93B] flex items-center justify-center">
-                      <div className="w-0 h-0 border-l-[12px] border-l-[#E2B93B] border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent ml-1" />
+                    <div className="w-16 h-16 rounded-full border-2 border-[#ECFF95] flex items-center justify-center">
+                      <div className="w-0 h-0 border-l-[12px] border-l-[#ECFF95] border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent ml-1" />
                     </div>
                   </div>
                 </div>
@@ -921,10 +935,10 @@ function MockupGallerySlideComponent({ slide }: { slide: Extract<Slide, { type: 
 
           {/* Hint — swipe (static row) or hover (marquee) */}
           <div className="px-6 mb-4 flex items-center gap-2">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E2B93B" strokeWidth="1.5" className="opacity-60">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ECFF95" strokeWidth="1.5" className="opacity-60">
               <path d="M5 12h14M12 5l7 7-7 7" />
             </svg>
-            <span className="text-[9px] tracking-[0.15em] text-[#E2B93B]/60" style={{ fontFamily: "monospace" }}>
+            <span className="text-[9px] tracking-[0.15em] text-[#ECFF95]/60" style={{ fontFamily: "monospace" }}>
               {animateMarquee ? "HOVER TO PAUSE · TAP TO EXPAND" : "SWIPE TO EXPLORE"}
             </span>
           </div>
@@ -967,11 +981,11 @@ function MockupGallerySlideComponent({ slide }: { slide: Extract<Slide, { type: 
                       </DeviceMockup>
                       {/* Expand affordance */}
                       <div className="absolute inset-0 flex items-end justify-center pb-6 md:items-center md:pb-0 opacity-100 md:opacity-0 group-hover/item:opacity-100 transition-opacity duration-300 pointer-events-none">
-                        <div className="bg-[#0A0A0A]/80 backdrop-blur-sm border border-[#E2B93B]/40 px-3 py-1.5 flex items-center gap-2">
-                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#E2B93B" strokeWidth="2">
+                        <div className="bg-[#121316]/80 backdrop-blur-sm border border-[#ECFF95]/40 px-3 py-1.5 flex items-center gap-2">
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#ECFF95" strokeWidth="2">
                             <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
                           </svg>
-                          <span className="text-[8px] md:text-[9px] tracking-[0.15em] text-[#E2B93B]" style={{ fontFamily: "monospace" }}>
+                          <span className="text-[8px] md:text-[9px] tracking-[0.15em] text-[#ECFF95]" style={{ fontFamily: "monospace" }}>
                             TAP TO EXPAND
                           </span>
                         </div>
@@ -1015,7 +1029,7 @@ function SectionBreakSlideComponent({ slide }: { slide: Extract<Slide, { type: "
         transition={{ duration: 0.7 }}
         className="relative z-10 text-center"
       >
-        <span className="text-[10px] tracking-[0.3em] text-[#E2B93B] block mb-4" style={{ fontFamily: "monospace" }}>
+        <span className="text-[10px] tracking-[0.3em] text-[#ECFF95] block mb-4" style={{ fontFamily: "monospace" }}>
           ACT {String(slide.actNumber).padStart(2, "0")}
         </span>
         <ScrambleHeading text={slide.actTitle} className="text-4xl md:text-6xl" />
@@ -1056,7 +1070,7 @@ function ProcessSlideComponent({ slide }: { slide: Extract<Slide, { type: "proce
                 initial={{ opacity: 0, y: 30 }}
                 animate={inView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.6, delay: 0.15 * i }}
-                className="group relative bg-[#111] border border-[#1a1a1a] overflow-hidden hover:border-[#E2B93B]/20 transition-colors"
+                className="group relative bg-[#111] border border-[#1D1E24] overflow-hidden hover:border-[#ECFF95]/20 transition-colors"
               >
                 <div className="relative aspect-[16/10] overflow-hidden">
                   <CaseStudyImage src={artifact.image} alt={artifact.label} className="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity" wrapperClassName="w-full h-full" expandable />
@@ -1064,7 +1078,7 @@ function ProcessSlideComponent({ slide }: { slide: Extract<Slide, { type: "proce
                 </div>
                 <div className="p-4">
                   <span
-                    className="text-[10px] tracking-[0.2em] text-[#E2B93B] block mb-2"
+                    className="text-[10px] tracking-[0.2em] text-[#ECFF95] block mb-2"
                     style={{ fontFamily: "monospace" }}
                   >
                     {artifact.label}

@@ -10,7 +10,7 @@ type Props = { initial: AboutContent };
 type SaveStatus = "idle" | "saving" | "ok" | "error";
 
 const inputClass =
-  "w-full px-4 py-2 bg-[#111] border border-white/10 text-white placeholder:text-white/40 font-mono text-sm focus:outline-none focus:border-[#E2B93B]/50";
+  "w-full px-4 py-2 bg-[#111] border border-white/10 text-white placeholder:text-white/40 font-mono text-sm focus:outline-none focus:border-[#ECFF95]/50";
 const labelClass = "block font-mono text-xs text-white/60 mb-1";
 const sectionClass = "space-y-4 border border-white/10 bg-white/[0.02] p-5";
 const h2Class = "font-mono text-sm text-white/80 uppercase tracking-wider";
@@ -184,7 +184,7 @@ export function AboutForm({ initial }: Props) {
               ) : null}
             </div>
           ))}
-          <button type="button" onClick={addFilm} className="px-4 py-1.5 border border-[#E2B93B]/40 font-mono text-[10px] uppercase tracking-[0.12em] text-[#E2B93B] hover:bg-[#E2B93B]/10">
+          <button type="button" onClick={addFilm} className="px-4 py-1.5 border border-[#ECFF95]/40 font-mono text-[10px] uppercase tracking-[0.12em] text-[#ECFF95] hover:bg-[#ECFF95]/10">
             + Add show
           </button>
         </div>
@@ -234,8 +234,8 @@ export function AboutForm({ initial }: Props) {
         <p className="font-mono text-[10px] text-white/40">Unchecked sections are removed from the page entirely.</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
           {SECTION_LABELS.map(({ key, label, note }) => (
-            <label key={key} className="flex items-start gap-3 border border-white/10 bg-[#0d0d0d] p-3 cursor-pointer">
-              <input type="checkbox" checked={data.sections[key]} onChange={() => toggleSection(key)} className="mt-0.5 h-4 w-4 accent-[#E2B93B]" />
+            <label key={key} className="flex items-start gap-3 border border-white/10 bg-[#16171B] p-3 cursor-pointer">
+              <input type="checkbox" checked={data.sections[key]} onChange={() => toggleSection(key)} className="mt-0.5 h-4 w-4 accent-[#ECFF95]" />
               <span>
                 <span className="block font-mono text-xs text-white/85">{label}</span>
                 <span className="block font-mono text-[10px] text-white/40 mt-0.5">{note}</span>
@@ -248,7 +248,7 @@ export function AboutForm({ initial }: Props) {
       <button
         type="submit"
         disabled={status === "saving"}
-        className="px-6 py-2 bg-[#E2B93B] text-[#0A0A0A] font-mono text-xs tracking-wider uppercase hover:bg-white transition-colors disabled:opacity-50"
+        className="px-6 py-2 bg-[#ECFF95] text-[#121316] font-mono text-xs tracking-wider uppercase hover:bg-white transition-colors disabled:opacity-50"
       >
         {status === "saving" ? "Saving…" : "Save About page"}
       </button>

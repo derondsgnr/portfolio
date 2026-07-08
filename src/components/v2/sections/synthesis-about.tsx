@@ -53,7 +53,7 @@ export function SynthesisAboutSection({
                 fontFamily: "monospace",
                 fontSize: "10px",
                 letterSpacing: "0.3em",
-                color: "#E2B93B",
+                color: "#ECFF95",
               }}
             >
               {label}
@@ -80,7 +80,7 @@ export function SynthesisAboutSection({
             >
               {headline}
               <br />
-              <span style={{ color: "#E2B93B" }}>{headlineAccent}</span>
+              <span style={{ color: "#ECFF95" }}>{headlineAccent}</span>
             </h2>
           </motion.div>
 
@@ -104,7 +104,7 @@ export function SynthesisAboutSection({
             {socialLinks.map((link) => (
               <div key={link.label} className="flex items-center gap-4 group cursor-pointer">
                 <span
-                  className="group-hover:text-[#E2B93B] transition-colors duration-300"
+                  className="group-hover:text-[#ECFF95] transition-colors duration-300"
                   style={{
                     fontFamily: "'Instrument Sans', sans-serif",
                     fontSize: "0.85rem",
@@ -121,7 +121,7 @@ export function SynthesisAboutSection({
                   style={{
                     fontFamily: "monospace",
                     fontSize: "9px",
-                    color: "rgba(226,185,59,0.5)",
+                    color: "rgba(236, 255, 149,0.5)",
                   }}
                 >
                   {link.handle}
@@ -138,7 +138,7 @@ export function SynthesisAboutSection({
             viewport={{ once: true }}
             transition={{ delay: 0.2, duration: 0.8 }}
             style={{
-              borderLeft: "1px solid rgba(226,185,59,0.2)",
+              borderLeft: "1px solid rgba(236, 255, 149,0.2)",
               paddingLeft: "2rem",
             }}
           >
@@ -168,7 +168,7 @@ export function SynthesisAboutSection({
                       fontFamily: "'Anton', sans-serif",
                       fontSize: "clamp(1.5rem, 3vw, 2.5rem)",
                       lineHeight: 1,
-                      color: "#E2B93B",
+                      color: "#ECFF95",
                       display: "block",
                     }}
                   />

@@ -28,7 +28,7 @@ export function CaseStudyCTA() {
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse 80% 60% at 50% 50%, rgba(226,185,59,0.03) 0%, transparent 70%)",
+            "radial-gradient(ellipse 80% 60% at 50% 50%, rgba(236, 255, 149,0.03) 0%, transparent 70%)",
         }}
       />
 
@@ -39,7 +39,7 @@ export function CaseStudyCTA() {
         className="max-w-2xl mx-auto text-center relative z-10"
       >
         <span
-          className="text-[9px] tracking-[0.3em] text-[#E2B93B]/40 block mb-4"
+          className="text-[9px] tracking-[0.3em] text-[#ECFF95]/40 block mb-4"
           style={{ fontFamily: "monospace" }}
         >
           [INTERESTED?]
@@ -69,14 +69,14 @@ export function CaseStudyCTA() {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
           <button
             onClick={() => open("book")}
-            className="text-[10px] tracking-[0.2em] text-[#0A0A0A] bg-[#E2B93B] px-6 py-3 hover:bg-white transition-colors duration-300"
+            className="text-[10px] tracking-[0.2em] text-[#121316] bg-[#ECFF95] px-6 py-3 hover:bg-white transition-colors duration-300"
             style={{ fontFamily: "monospace" }}
           >
             BOOK A CALL
           </button>
           <button
             onClick={() => open("message")}
-            className="text-[10px] tracking-[0.2em] text-[#E2B93B]/70 hover:text-[#E2B93B] transition-colors duration-300"
+            className="text-[10px] tracking-[0.2em] text-[#ECFF95]/70 hover:text-[#ECFF95] transition-colors duration-300"
             style={{ fontFamily: "monospace" }}
           >
             OR SEND A MESSAGE &rarr;
@@ -87,7 +87,7 @@ export function CaseStudyCTA() {
               download
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[10px] tracking-[0.2em] text-[#E2B93B]/70 hover:text-[#E2B93B] transition-colors duration-300"
+              className="text-[10px] tracking-[0.2em] text-[#ECFF95]/70 hover:text-[#ECFF95] transition-colors duration-300"
               style={{ fontFamily: "monospace" }}
             >
               DOWNLOAD CV
@@ -104,7 +104,7 @@ export function CaseStudyCTA() {
         className="h-px origin-center mt-16 mx-auto max-w-md"
         style={{
           background:
-            "linear-gradient(90deg, transparent, rgba(226,185,59,0.2), transparent)",
+            "linear-gradient(90deg, transparent, rgba(236, 255, 149,0.2), transparent)",
         }}
       />
     </div>

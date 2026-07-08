@@ -13,7 +13,7 @@ export function AdminNotice({
     kind === "error"
       ? "border-red-500/30 bg-red-500/10 text-red-300"
       : kind === "success"
-        ? "border-[#E2B93B]/25 bg-[#E2B93B]/5 text-[#E2B93B]/90"
+        ? "border-[#ECFF95]/25 bg-[#ECFF95]/5 text-[#ECFF95]/90"
         : "border-white/[0.08] bg-white/[0.03] text-white/60";
 
   return (

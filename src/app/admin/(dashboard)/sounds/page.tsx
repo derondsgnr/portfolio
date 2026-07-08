@@ -12,7 +12,7 @@ export default async function AdminSoundsPage() {
   );
   return (
     <div className="space-y-6">
-      <h1 className="font-mono text-lg tracking-wider text-[#E2B93B]">Sounds</h1>
+      <h1 className="font-mono text-lg tracking-wider text-[#ECFF95]">Sounds</h1>
       <p className="font-mono text-sm text-white/60 max-w-xl">
         URLs for each sound event. Leave empty to disable. Loader, button click, navigation, hover, and hero/header text reveal.
       </p>

@@ -78,7 +78,7 @@ export function BookingDrawer() {
             animate={{ y: 0 }}
             exit={{ y: "100%" }}
             transition={{ type: "spring", damping: 30, stiffness: 300 }}
-            className="fixed bottom-0 left-0 right-0 z-[101] bg-[#0A0A0A] border-t border-[#E2B93B]/20 rounded-t-2xl max-h-[92vh] overflow-hidden flex flex-col"
+            className="fixed bottom-0 left-0 right-0 z-[101] bg-[#121316] border-t border-[#ECFF95]/20 rounded-t-2xl max-h-[92vh] overflow-hidden flex flex-col"
             role="dialog"
             aria-modal="true"
             aria-label="Book a call or send a message"
@@ -92,7 +92,7 @@ export function BookingDrawer() {
             <div className="px-6 md:px-10 pt-2 pb-4 flex items-center justify-between">
               <div>
                 <span
-                  className="text-[9px] tracking-[0.3em] text-[#E2B93B] block mb-1"
+                  className="text-[9px] tracking-[0.3em] text-[#ECFF95] block mb-1"
                   style={{ fontFamily: "monospace" }}
                 >
                   [OPEN_CHANNEL]
@@ -110,7 +110,7 @@ export function BookingDrawer() {
               </div>
               <button
                 onClick={close}
-                className="w-10 h-10 flex items-center justify-center border border-[#222] hover:border-[#E2B93B]/40 text-[#666] hover:text-white transition-colors"
+                className="w-10 h-10 flex items-center justify-center border border-[#222] hover:border-[#ECFF95]/40 text-[#666] hover:text-white transition-colors"
                 aria-label="Close"
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -128,9 +128,9 @@ export function BookingDrawer() {
                   style={{
                     fontFamily: "monospace",
                     textTransform: "uppercase",
-                    color: activeTab === "book" ? "#0A0A0A" : "rgba(255,255,255,0.3)",
-                    background: activeTab === "book" ? "#E2B93B" : "transparent",
-                    border: activeTab === "book" ? "1px solid #E2B93B" : "1px solid rgba(255,255,255,0.08)",
+                    color: activeTab === "book" ? "#121316" : "rgba(255,255,255,0.3)",
+                    background: activeTab === "book" ? "#ECFF95" : "transparent",
+                    border: activeTab === "book" ? "1px solid #ECFF95" : "1px solid rgba(255,255,255,0.08)",
                   }}
                 >
                   BOOK A CALL
@@ -141,9 +141,9 @@ export function BookingDrawer() {
                 style={{
                   fontFamily: "monospace",
                   textTransform: "uppercase",
-                  color: activeTab === "message" ? "#0A0A0A" : "rgba(255,255,255,0.3)",
-                  background: activeTab === "message" ? "#E2B93B" : "transparent",
-                  border: activeTab === "message" ? "1px solid #E2B93B" : "1px solid rgba(255,255,255,0.08)",
+                  color: activeTab === "message" ? "#121316" : "rgba(255,255,255,0.3)",
+                  background: activeTab === "message" ? "#ECFF95" : "transparent",
+                  border: activeTab === "message" ? "1px solid #ECFF95" : "1px solid rgba(255,255,255,0.08)",
                 }}
               >
                 SEND A MESSAGE
@@ -199,13 +199,13 @@ function CalEmbed({ url }: { url: string }) {
 
       {/* Cal.com iframe */}
       <div
-        className="relative w-full bg-[#111] border border-[#1a1a1a] rounded-lg overflow-hidden"
+        className="relative w-full bg-[#111] border border-[#1D1E24] rounded-lg overflow-hidden"
         style={{ minHeight: "520px" }}
       >
         {!loaded && (
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-4">
             {/* Loading pulse */}
-            <div className="w-6 h-6 border-2 border-[#E2B93B]/30 border-t-[#E2B93B] rounded-full animate-spin" />
+            <div className="w-6 h-6 border-2 border-[#ECFF95]/30 border-t-[#ECFF95] rounded-full animate-spin" />
             <span
               className="text-[10px] tracking-[0.2em] text-[#555]"
               style={{ fontFamily: "monospace" }}
@@ -244,7 +244,7 @@ function CalEmbed({ url }: { url: string }) {
           href={url}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-[10px] tracking-[0.15em] text-[#E2B93B]/50 hover:text-[#E2B93B] transition-colors"
+          className="text-[10px] tracking-[0.15em] text-[#ECFF95]/50 hover:text-[#ECFF95] transition-colors"
           style={{ fontFamily: "monospace" }}
         >
           OPEN IN NEW TAB &rarr;
@@ -311,8 +311,8 @@ function ContactForm({ onSuccess }: { onSuccess: () => void }) {
         animate={{ opacity: 1, scale: 1 }}
         className="py-16 text-center"
       >
-        <div className="w-12 h-12 mx-auto mb-6 border-2 border-[#E2B93B] rounded-full flex items-center justify-center">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E2B93B" strokeWidth="2">
+        <div className="w-12 h-12 mx-auto mb-6 border-2 border-[#ECFF95] rounded-full flex items-center justify-center">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ECFF95" strokeWidth="2">
             <path d="M20 6L9 17l-5-5" />
           </svg>
         </div>
@@ -355,7 +355,7 @@ function ContactForm({ onSuccess }: { onSuccess: () => void }) {
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Your name"
-            className="w-full bg-[#0f0f0f] border border-[#222] px-4 py-3 text-sm text-white placeholder-[#333] focus:border-[#E2B93B]/40 focus:outline-none transition-colors"
+            className="w-full bg-[#16171B] border border-[#222] px-4 py-3 text-sm text-white placeholder-[#333] focus:border-[#ECFF95]/40 focus:outline-none transition-colors"
             style={{ fontFamily: "'Instrument Sans', sans-serif" }}
           />
         </div>
@@ -366,7 +366,7 @@ function ContactForm({ onSuccess }: { onSuccess: () => void }) {
             className="text-[10px] tracking-[0.15em] text-[#555] block mb-2"
             style={{ fontFamily: "monospace" }}
           >
-            EMAIL <span className="text-[#E2B93B]/50">*</span>
+            EMAIL <span className="text-[#ECFF95]/50">*</span>
           </label>
           <input
             type="email"
@@ -374,7 +374,7 @@ function ContactForm({ onSuccess }: { onSuccess: () => void }) {
             onChange={(e) => setEmail(e.target.value)}
             placeholder="you@company.com"
             required
-            className="w-full bg-[#0f0f0f] border border-[#222] px-4 py-3 text-sm text-white placeholder-[#333] focus:border-[#E2B93B]/40 focus:outline-none transition-colors"
+            className="w-full bg-[#16171B] border border-[#222] px-4 py-3 text-sm text-white placeholder-[#333] focus:border-[#ECFF95]/40 focus:outline-none transition-colors"
             style={{ fontFamily: "'Instrument Sans', sans-serif" }}
           />
         </div>
@@ -396,9 +396,9 @@ function ContactForm({ onSuccess }: { onSuccess: () => void }) {
                 className="px-3 py-1.5 text-[10px] tracking-[0.1em] transition-all duration-200"
                 style={{
                   fontFamily: "monospace",
-                  color: budget === opt ? "#0A0A0A" : "rgba(255,255,255,0.3)",
-                  background: budget === opt ? "#E2B93B" : "transparent",
-                  border: budget === opt ? "1px solid #E2B93B" : "1px solid rgba(255,255,255,0.08)",
+                  color: budget === opt ? "#121316" : "rgba(255,255,255,0.3)",
+                  background: budget === opt ? "#ECFF95" : "transparent",
+                  border: budget === opt ? "1px solid #ECFF95" : "1px solid rgba(255,255,255,0.08)",
                 }}
               >
                 {opt}
@@ -413,7 +413,7 @@ function ContactForm({ onSuccess }: { onSuccess: () => void }) {
             className="text-[10px] tracking-[0.15em] text-[#555] block mb-2"
             style={{ fontFamily: "monospace" }}
           >
-            YOUR MESSAGE <span className="text-[#E2B93B]/50">*</span>
+            YOUR MESSAGE <span className="text-[#ECFF95]/50">*</span>
           </label>
           <textarea
             value={message}
@@ -421,7 +421,7 @@ function ContactForm({ onSuccess }: { onSuccess: () => void }) {
             placeholder="Tell me about your project — what problem you're solving, timeline, any context that helps."
             rows={5}
             required
-            className="w-full bg-[#0f0f0f] border border-[#222] px-4 py-3 text-sm text-white placeholder-[#333] focus:border-[#E2B93B]/40 focus:outline-none transition-colors resize-none"
+            className="w-full bg-[#16171B] border border-[#222] px-4 py-3 text-sm text-white placeholder-[#333] focus:border-[#ECFF95]/40 focus:outline-none transition-colors resize-none"
             style={{ fontFamily: "'Instrument Sans', sans-serif", lineHeight: 1.7 }}
           />
         </div>
@@ -440,7 +440,7 @@ function ContactForm({ onSuccess }: { onSuccess: () => void }) {
           <button
             type="submit"
             disabled={submitting || !email.trim() || !message.trim()}
-            className="text-[10px] tracking-[0.15em] text-[#0A0A0A] bg-[#E2B93B] px-6 py-3 hover:bg-white disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            className="text-[10px] tracking-[0.15em] text-[#121316] bg-[#ECFF95] px-6 py-3 hover:bg-white disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
             style={{ fontFamily: "monospace" }}
           >
             {submitting ? "SENDING..." : "SEND MESSAGE"}

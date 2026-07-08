@@ -10,7 +10,7 @@ import { V2_PROJECTS, V2_CRAFT_ITEMS, V2_ABOUT } from "../v2-data";
 /* ─── WORK PAGE ──────────────────────────────────────────────── */
 export function FractureWorkPage() {
   return (
-    <main className="relative bg-[#0A0A0A] min-h-screen overflow-hidden">
+    <main className="relative bg-[#121316] min-h-screen overflow-hidden">
       {/* Hero — fractured title */}
       <section className="relative h-[70vh] flex items-center px-8">
         {/* Giant cropped background */}
@@ -68,7 +68,7 @@ export function FractureWorkPage() {
                 lineHeight: 0.85,
                 letterSpacing: "-0.03em",
                 textTransform: "uppercase",
-                color: "#E2B93B",
+                color: "#ECFF95",
               }}
             >
               ECTED
@@ -81,7 +81,7 @@ export function FractureWorkPage() {
             transition={{ delay: 0.8, duration: 0.8 }}
             className="mt-12 ml-[10vw] flex items-center gap-4"
           >
-            <div style={{ width: 60, height: 1, background: "#E2B93B", transform: "rotate(-30deg)" }} />
+            <div style={{ width: 60, height: 1, background: "#ECFF95", transform: "rotate(-30deg)" }} />
             <span
               style={{
                 fontFamily: "'Instrument Sans', sans-serif",
@@ -155,7 +155,7 @@ export function FractureWorkPage() {
                       {project.description}
                     </p>
                   </div>
-                  <span style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "10px", letterSpacing: "0.15em", color: "#E2B93B" }}>
+                  <span style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "10px", letterSpacing: "0.15em", color: "#ECFF95" }}>
                     {project.year}
                   </span>
                 </div>
@@ -186,7 +186,7 @@ export function FractureWorkPage() {
 /* ─── CRAFT PAGE ─────────────────────────────────────────────── */
 export function FractureCraftPage() {
   return (
-    <main className="relative bg-[#0A0A0A] min-h-screen overflow-hidden">
+    <main className="relative bg-[#121316] min-h-screen overflow-hidden">
       {/* Hero */}
       <section className="relative h-[50vh] flex items-end px-8 pb-16">
         <div>
@@ -271,7 +271,7 @@ export function FractureCraftPage() {
                   />
                 </div>
                 <div className="mt-3 flex items-center gap-3">
-                  <span style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "10px", letterSpacing: "0.15em", color: "#E2B93B" }}>
+                  <span style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "10px", letterSpacing: "0.15em", color: "#ECFF95" }}>
                     {item.category}
                   </span>
                   <span style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "0.8rem", color: "rgba(255,255,255,0.4)" }}>
@@ -290,7 +290,7 @@ export function FractureCraftPage() {
 /* ─── ABOUT PAGE ─────────────────────────────────────────────── */
 export function FractureAboutPage() {
   return (
-    <main className="relative bg-[#0A0A0A] min-h-screen overflow-hidden">
+    <main className="relative bg-[#121316] min-h-screen overflow-hidden">
       {/* Hero — fractured name */}
       <section className="relative h-[70vh] flex items-center px-8">
         <motion.div
@@ -321,7 +321,7 @@ export function FractureAboutPage() {
             transition={{ duration: 1, delay: 0.4 }}
             className="-mt-4"
           >
-            <span style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(4rem, 12vw, 12rem)", lineHeight: 0.85, letterSpacing: "-0.03em", textTransform: "uppercase", color: "#E2B93B" }}>
+            <span style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(4rem, 12vw, 12rem)", lineHeight: 0.85, letterSpacing: "-0.03em", textTransform: "uppercase", color: "#ECFF95" }}>
               ON
             </span>
           </motion.div>
@@ -332,7 +332,7 @@ export function FractureAboutPage() {
             transition={{ delay: 0.8, duration: 0.8 }}
             className="mt-12 ml-[15vw] flex items-center gap-4"
           >
-            <div style={{ width: 60, height: 1, background: "#E2B93B", transform: "rotate(-30deg)" }} />
+            <div style={{ width: 60, height: 1, background: "#ECFF95", transform: "rotate(-30deg)" }} />
             <span style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "12px", letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(255,255,255,0.4)" }}>
               {V2_ABOUT.title}
             </span>
@@ -410,7 +410,7 @@ export function FractureAboutPage() {
                     lineHeight: 1,
                     letterSpacing: "-0.02em",
                     textTransform: "uppercase",
-                    color: i === 1 ? "#E2B93B" : "rgba(255,255,255,0.15)",
+                    color: i === 1 ? "#ECFF95" : "rgba(255,255,255,0.15)",
                     display: "inline-block",
                     transform: `rotate(${angles[i]}deg)`,
                   }}
@@ -447,7 +447,7 @@ export function FractureAboutPage() {
             <div className="grid grid-cols-3 gap-8">
               {V2_ABOUT.stats.map((stat) => (
                 <div key={stat.label} style={{ transform: "rotate(-1deg)" }}>
-                  <span style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(2rem, 4vw, 3.5rem)", lineHeight: 1, color: "#E2B93B" }}>
+                  <span style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(2rem, 4vw, 3.5rem)", lineHeight: 1, color: "#ECFF95" }}>
                     {stat.value}
                   </span>
                   <span className="block mt-2" style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "10px", letterSpacing: "0.15em", color: "rgba(255,255,255,0.2)", textTransform: "uppercase" }}>
@@ -469,7 +469,7 @@ export function FractureAboutPage() {
               <a
                 key={s.label}
                 href={s.url}
-                className="hover:text-[#E2B93B] transition-colors duration-300"
+                className="hover:text-[#ECFF95] transition-colors duration-300"
                 style={{
                   fontFamily: "'Instrument Sans', sans-serif",
                   fontSize: "0.9rem",

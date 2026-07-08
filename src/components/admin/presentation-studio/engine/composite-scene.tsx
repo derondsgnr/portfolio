@@ -67,7 +67,7 @@ export function CompositeScene({
 
   return (
     <div
-      className="relative overflow-hidden bg-[#0A0A0A]"
+      className="relative overflow-hidden bg-[#121316]"
       style={{
         width: format.w,
         height: format.h,
@@ -96,7 +96,7 @@ export function CompositeScene({
             }}
           />
           <div
-            className="absolute overflow-hidden bg-[#0a0a0a]"
+            className="absolute overflow-hidden bg-[#121316]"
             style={{
               left: `${screen.x * 100}%`,
               top: `${screen.y * 100}%`,

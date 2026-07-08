@@ -9,7 +9,7 @@ interface SeriesBadgeProps {
 export function SeriesBadge({ seriesTitle, position, total }: SeriesBadgeProps) {
   return (
     <span
-      className="text-[8px] tracking-[0.12em] text-[#E2B93B]/60 block mb-1 pl-2 border-l-2 border-[#E2B93B]/30"
+      className="text-[8px] tracking-[0.12em] text-[#ECFF95]/60 block mb-1 pl-2 border-l-2 border-[#ECFF95]/30"
       style={{ fontFamily: "monospace" }}
     >
       PART {position} OF {total} · {seriesTitle.toUpperCase()}

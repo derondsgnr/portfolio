@@ -106,7 +106,7 @@ export function Navbar() {
         transition={{ delay: 0.4, duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
         className="fixed bottom-0 left-0 right-0 z-50 md:hidden"
         style={{
-          background: "rgba(10,10,10,0.95)",
+          background: "rgba(18, 19, 22,0.95)",
           backdropFilter: "blur(16px)",
           WebkitBackdropFilter: "blur(16px)",
           borderTop: "1px solid rgba(255,255,255,0.06)",
@@ -131,7 +131,7 @@ export function Navbar() {
                   fontSize: "9px",
                   letterSpacing: "0.12em",
                   textTransform: "uppercase",
-                  color: isActive ? "#E2B93B" : "rgba(255,255,255,0.45)",
+                  color: isActive ? "#ECFF95" : "rgba(255,255,255,0.45)",
                   transition: "color 0.2s",
                 }}
               >
@@ -145,7 +145,7 @@ export function Navbar() {
                   <motion.div
                     layoutId="mobile-nav-active"
                     className="absolute top-0 left-3 right-3 h-px"
-                    style={{ background: "#E2B93B" }}
+                    style={{ background: "#ECFF95" }}
                     transition={{ type: "spring", stiffness: 400, damping: 35 }}
                   />
                 )}

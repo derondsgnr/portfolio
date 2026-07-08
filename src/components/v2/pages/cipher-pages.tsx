@@ -13,20 +13,20 @@ import { V2_PROJECTS, V2_CRAFT_ITEMS, V2_ABOUT, V2_SERVICES_DETAILED } from "../
 
 import { ScrambleText, CHARS } from "../shared/scramble-text";
 import { CipherBg } from "../shared/texture-layers";
-import { ToolBadge } from "@/components/tool-badge";
+import { ToolChip } from "@/components/tool-badge";
 
 /* ─── WORK PAGE ──────────────────────────────────────────────── */
 export function CipherWorkPage() {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
 
   return (
-    <main className="relative bg-[#0A0A0A] min-h-screen">
+    <main className="relative bg-[#121316] min-h-screen">
       <CipherBg opacity={0.025} />
 
       {/* Header */}
       <section className="relative z-[2] pt-32 pb-16 px-8">
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8 }}>
-          <span style={{ fontFamily: "monospace", fontSize: "10px", letterSpacing: "0.3em", color: "#E2B93B" }}>
+          <span style={{ fontFamily: "monospace", fontSize: "10px", letterSpacing: "0.3em", color: "#ECFF95" }}>
             [PROJECTS.DECRYPT()]
           </span>
         </motion.div>
@@ -46,7 +46,7 @@ export function CipherWorkPage() {
           transition={{ delay: 0.8, duration: 0.5 }}
           className="mt-6"
         >
-          <span style={{ fontFamily: "monospace", fontSize: "9px", letterSpacing: "0.2em", color: "rgba(226,185,59,0.3)" }}>
+          <span style={{ fontFamily: "monospace", fontSize: "9px", letterSpacing: "0.2em", color: "rgba(236, 255, 149,0.3)" }}>
             [{V2_PROJECTS.length} PROJECTS FOUND — STATUS: DECRYPTED]
           </span>
         </motion.div>
@@ -62,7 +62,7 @@ export function CipherWorkPage() {
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1, duration: 0.6 }}
-              className="relative group cursor-pointer bg-[#0A0A0A]"
+              className="relative group cursor-pointer bg-[#121316]"
               style={{ aspectRatio: "4/3" }}
               onMouseEnter={() => setHoveredId(project.id)}
               onMouseLeave={() => setHoveredId(null)}
@@ -77,16 +77,16 @@ export function CipherWorkPage() {
                 className="absolute inset-0 transition-opacity duration-500 pointer-events-none"
                 style={{
                   opacity: hoveredId === project.id ? 0 : 0.6,
-                  background: "repeating-linear-gradient(0deg, transparent 0px, transparent 2px, rgba(10,10,10,0.5) 2px, rgba(10,10,10,0.5) 4px)",
+                  background: "repeating-linear-gradient(0deg, transparent 0px, transparent 2px, rgba(18, 19, 22,0.5) 2px, rgba(18, 19, 22,0.5) 4px)",
                 }}
               />
               <div className="absolute inset-0 flex flex-col justify-between p-6">
                 <div className="flex justify-between">
-                  <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#E2B93B", letterSpacing: "0.1em" }}>[{project.id}]</span>
+                  <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#ECFF95", letterSpacing: "0.1em" }}>[{project.id}]</span>
                   <span style={{ fontFamily: "monospace", fontSize: "9px", color: "rgba(255,255,255,0.3)", letterSpacing: "0.1em" }}>{project.year}</span>
                 </div>
                 <div>
-                  <span className="transition-colors duration-300" style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(1.5rem, 3vw, 2.5rem)", lineHeight: 1, letterSpacing: "-0.02em", textTransform: "uppercase", color: hoveredId === project.id ? "#E2B93B" : "rgba(255,255,255,0.7)", display: "block" }}>
+                  <span className="transition-colors duration-300" style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(1.5rem, 3vw, 2.5rem)", lineHeight: 1, letterSpacing: "-0.02em", textTransform: "uppercase", color: hoveredId === project.id ? "#ECFF95" : "rgba(255,255,255,0.7)", display: "block" }}>
                     {project.title}
                   </span>
                   <span className="block mt-2" style={{ fontFamily: "monospace", fontSize: "10px", color: "rgba(255,255,255,0.3)", letterSpacing: "0.05em" }}>
@@ -113,11 +113,11 @@ export function CipherWorkPage() {
 /* ─── CRAFT PAGE ─────────────────────────────────────────────── */
 export function CipherCraftPage() {
   return (
-    <main className="relative bg-[#0A0A0A] min-h-screen">
+    <main className="relative bg-[#121316] min-h-screen">
       <CipherBg opacity={0.025} />
 
       <section className="relative z-[2] pt-32 pb-16 px-8">
-        <span style={{ fontFamily: "monospace", fontSize: "10px", letterSpacing: "0.3em", color: "#E2B93B" }}>
+        <span style={{ fontFamily: "monospace", fontSize: "10px", letterSpacing: "0.3em", color: "#ECFF95" }}>
           [EXPERIMENTS.DECRYPT()]
         </span>
         <span className="block mt-8" style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(5rem, 16vw, 16rem)", lineHeight: 0.85, letterSpacing: "-0.03em", textTransform: "uppercase", color: "#f0f0f0" }}>
@@ -149,7 +149,7 @@ export function CipherCraftPage() {
                   />
                 </div>
                 <div className="md:col-span-1">
-                  <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#E2B93B" }}>[{item.id.replace("c-", "")}]</span>
+                  <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#ECFF95" }}>[{item.id.replace("c-", "")}]</span>
                 </div>
                 <div className="md:col-span-4">
                   <ScrambleText
@@ -187,7 +187,7 @@ export function CipherAboutPage() {
   useEffect(() => { setTimeout(() => setDecoded(true), 500); }, []);
 
   return (
-    <main className="relative bg-[#0A0A0A] min-h-screen">
+    <main className="relative bg-[#121316] min-h-screen">
       <CipherBg opacity={0.025} />
 
       {/* Hero */}
@@ -198,11 +198,11 @@ export function CipherAboutPage() {
           </span>
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8, duration: 0.5 }} className="mt-8">
             <span style={{ fontFamily: "monospace", fontSize: "12px", letterSpacing: "0.3em", textTransform: "uppercase" }}>
-              <ScrambleText text="PRODUCT DESIGNER & BUILDER" speed={25} style={{ color: "#E2B93B" }} />
+              <ScrambleText text="PRODUCT DESIGNER & BUILDER" speed={25} style={{ color: "#ECFF95" }} />
             </span>
           </motion.div>
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2, duration: 0.5 }} className="mt-6">
-            <span style={{ fontFamily: "monospace", fontSize: "9px", letterSpacing: "0.2em", color: "rgba(226,185,59,0.3)" }}>
+            <span style={{ fontFamily: "monospace", fontSize: "9px", letterSpacing: "0.2em", color: "rgba(236, 255, 149,0.3)" }}>
               [PROFILE: DECRYPTED]
             </span>
           </motion.div>
@@ -213,7 +213,7 @@ export function CipherAboutPage() {
       <section className="relative z-[2] py-32 px-8">
         <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16">
           <div>
-            <span style={{ fontFamily: "monospace", fontSize: "10px", letterSpacing: "0.3em", color: "#E2B93B" }}>
+            <span style={{ fontFamily: "monospace", fontSize: "10px", letterSpacing: "0.3em", color: "#ECFF95" }}>
               [BIO.DECRYPT()]
             </span>
             {V2_ABOUT.bio.map((p, i) => (
@@ -224,7 +224,7 @@ export function CipherAboutPage() {
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.2, duration: 0.6 }}
                 className={i > 0 ? "mt-6" : "mt-4"}
-                style={{ borderLeft: "1px solid rgba(226,185,59,0.15)", paddingLeft: "1.5rem" }}
+                style={{ borderLeft: "1px solid rgba(236, 255, 149,0.15)", paddingLeft: "1.5rem" }}
               >
                 <p style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "0.9rem", lineHeight: 1.8, fontWeight: 300, color: "rgba(255,255,255,0.4)" }}>
                   <ScrambleText text={p} speed={3} />
@@ -241,7 +241,7 @@ export function CipherAboutPage() {
                   <ScrambleText
                     text={stat.value}
                     speed={50}
-                    style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(2rem, 4vw, 3rem)", lineHeight: 1, color: "#E2B93B", display: "block" }}
+                    style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(2rem, 4vw, 3rem)", lineHeight: 1, color: "#ECFF95", display: "block" }}
                   />
                   <span className="block mt-2" style={{ fontFamily: "monospace", fontSize: "9px", letterSpacing: "0.2em", color: "rgba(255,255,255,0.2)" }}>
                     [{stat.label}]
@@ -252,26 +252,24 @@ export function CipherAboutPage() {
 
             {/* Tools */}
             <div className="mb-12">
-              <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#E2B93B", letterSpacing: "0.15em" }}>[TOOLS.LIST()]</span>
+              <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#ECFF95", letterSpacing: "0.15em" }}>[TOOLS.LIST()]</span>
               <div className="flex flex-wrap gap-2 mt-3">
                 {V2_ABOUT.tools.map((tool) => (
-                  <span key={tool} className="inline-flex items-center gap-1.5" style={{ fontFamily: "monospace", fontSize: "10px", color: "rgba(255,255,255,0.3)", border: "1px solid rgba(255,255,255,0.06)", padding: "4px 10px" }}>
-                    <ToolBadge tool={tool} size={14} showLabel />
-                  </span>
+                  <ToolChip key={tool} tool={tool} />
                 ))}
               </div>
             </div>
 
             {/* Socials */}
             <div>
-              <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#E2B93B", letterSpacing: "0.15em" }}>[CHANNELS.DECRYPT()]</span>
+              <span style={{ fontFamily: "monospace", fontSize: "9px", color: "#ECFF95", letterSpacing: "0.15em" }}>[CHANNELS.DECRYPT()]</span>
               <div className="mt-3 space-y-3">
                 {V2_ABOUT.socials.map((s) => (
                   <a key={s.label} href={s.url} className="flex items-center gap-3 group cursor-pointer">
-                    <span className="group-hover:text-[#E2B93B] transition-colors duration-300" style={{ fontFamily: "monospace", fontSize: "11px", color: "rgba(255,255,255,0.3)", letterSpacing: "0.1em" }}>
+                    <span className="group-hover:text-[#ECFF95] transition-colors duration-300" style={{ fontFamily: "monospace", fontSize: "11px", color: "rgba(255,255,255,0.3)", letterSpacing: "0.1em" }}>
                       {s.label.toUpperCase()}
                     </span>
-                    <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ fontFamily: "monospace", fontSize: "9px", color: "rgba(226,185,59,0.5)" }}>
+                    <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ fontFamily: "monospace", fontSize: "9px", color: "rgba(236, 255, 149,0.5)" }}>
                       {s.handle}
                     </span>
                   </a>
@@ -285,7 +283,7 @@ export function CipherAboutPage() {
       {/* Values — cipher decode */}
       <section className="relative z-[2] py-24 px-8">
         <div className="max-w-4xl mx-auto">
-          <span style={{ fontFamily: "monospace", fontSize: "10px", letterSpacing: "0.3em", color: "#E2B93B" }}>[VALUES.DECRYPT()]</span>
+          <span style={{ fontFamily: "monospace", fontSize: "10px", letterSpacing: "0.3em", color: "#ECFF95" }}>[VALUES.DECRYPT()]</span>
           <div className="mt-8">
             {V2_ABOUT.values.map((v, i) => (
               <motion.div key={v.word} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.1, duration: 0.5 }}>
@@ -296,7 +294,7 @@ export function CipherAboutPage() {
                     <ScrambleText
                       text={v.word}
                       speed={30}
-                      style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(1.5rem, 3vw, 2.5rem)", lineHeight: 1, letterSpacing: "-0.02em", textTransform: "uppercase", color: i === 1 ? "#E2B93B" : "rgba(255,255,255,0.6)" }}
+                      style={{ fontFamily: "'Anton', sans-serif", fontSize: "clamp(1.5rem, 3vw, 2.5rem)", lineHeight: 1, letterSpacing: "-0.02em", textTransform: "uppercase", color: i === 1 ? "#ECFF95" : "rgba(255,255,255,0.6)" }}
                     />
                   </div>
                   <span style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: "0.8rem", fontWeight: 300, color: "rgba(255,255,255,0.2)", maxWidth: "300px", textAlign: "right" }}>

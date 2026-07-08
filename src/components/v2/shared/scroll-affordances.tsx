@@ -46,7 +46,7 @@ export function ScrollAffordances() {
   };
 
   const buttonClass =
-    "flex h-9 w-9 items-center justify-center border border-[#E2B93B]/30 bg-[#0A0A0A]/85 text-[#E2B93B] backdrop-blur-sm transition-colors hover:border-[#E2B93B]/70 hover:bg-[#E2B93B]/10 disabled:cursor-default disabled:opacity-30 disabled:hover:border-[#E2B93B]/30 disabled:hover:bg-[#0A0A0A]/85";
+    "flex h-9 w-9 items-center justify-center border border-[#ECFF95]/30 bg-[#121316]/85 text-[#ECFF95] backdrop-blur-sm transition-colors hover:border-[#ECFF95]/70 hover:bg-[#ECFF95]/10 disabled:cursor-default disabled:opacity-30 disabled:hover:border-[#ECFF95]/30 disabled:hover:bg-[#121316]/85";
 
   return (
     <AnimatePresence>

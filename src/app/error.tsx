@@ -14,10 +14,10 @@ export default function Error({
   }, [error]);
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white flex items-center justify-center px-6">
+    <div className="min-h-screen bg-[#121316] text-white flex items-center justify-center px-6">
       <div className="text-center max-w-md">
         <span
-          className="text-[10px] tracking-[0.3em] text-[#E2B93B] block mb-6"
+          className="text-[10px] tracking-[0.3em] text-[#ECFF95] block mb-6"
           style={{ fontFamily: "monospace" }}
         >
           ERROR
@@ -36,7 +36,7 @@ export default function Error({
         </p>
         <button
           onClick={reset}
-          className="text-[10px] tracking-[0.2em] px-6 py-3 border border-[#E2B93B] text-[#E2B93B] hover:bg-[#E2B93B] hover:text-[#0a0a0a] transition-all duration-300"
+          className="text-[10px] tracking-[0.2em] px-6 py-3 border border-[#ECFF95] text-[#ECFF95] hover:bg-[#ECFF95] hover:text-[#121316] transition-all duration-300"
           style={{ fontFamily: "monospace" }}
         >
           TRY AGAIN

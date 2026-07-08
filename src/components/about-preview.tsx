@@ -17,7 +17,7 @@ export function AboutPreview() {
         <div className="md:col-span-7 md:col-start-1">
           <Reveal>
             <p
-              className="text-[#e2b93b] text-[0.75rem] uppercase tracking-[0.3em] mb-6"
+              className="text-[#ECFF95] text-[0.75rem] uppercase tracking-[0.3em] mb-6"
               style={{ fontFamily: "var(--font-body)" }}
             >
               About
@@ -34,7 +34,7 @@ export function AboutPreview() {
               className="mb-0"
               style={{
                 lineHeight: 1,
-                WebkitTextStroke: "1px rgba(226,185,59,0.3)",
+                WebkitTextStroke: "1px rgba(236, 255, 149,0.3)",
                 color: "transparent",
               }}
             >
@@ -64,7 +64,7 @@ export function AboutPreview() {
           <Reveal delay={0.5}>
             <Link
               href="/about"
-              className="group inline-flex items-center gap-3 text-[#e2b93b]/70 hover:text-[#e2b93b] transition-colors duration-300"
+              className="group inline-flex items-center gap-3 text-[#ECFF95]/70 hover:text-[#ECFF95] transition-colors duration-300"
             >
               <span
                 className="text-[0.8rem] uppercase tracking-[0.2em]"
