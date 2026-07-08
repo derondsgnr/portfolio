@@ -560,6 +560,25 @@ function InsightSlideComponent({ slide }: { slide: Extract<Slide, { type: "insig
 }
 
 /* ─── METRIC ─────────────────────────────────────────────────── */
+/**
+ * Metric delta color — value semantics (matches the Figma): pink for a
+ * decrease/negative, neutral for positive/normal. `tone` overrides the sign
+ * inference for cases where the sign doesn't match the sentiment (e.g. a drop in
+ * load time is a win → set "positive").
+ */
+function deltaColor(delta: string, tone?: "positive" | "negative" | "neutral"): string {
+  const resolved =
+    tone ??
+    (/^[-−–]|▼|↓|\bdown\b/i.test(delta.trim())
+      ? "negative"
+      : /^\+|▲|↑|\bup\b/i.test(delta.trim())
+        ? "positive"
+        : "neutral");
+  if (resolved === "negative") return "#D34F79";
+  if (resolved === "positive") return "var(--text-2, #b8b9ba)";
+  return "var(--text-3, #919293)";
+}
+
 function MetricSlideComponent({ slide }: { slide: Extract<Slide, { type: "metric" }> }) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.3 });
@@ -602,8 +621,8 @@ function MetricSlideComponent({ slide }: { slide: Extract<Slide, { type: "metric
                 </span>
                 {metric.delta && (
                   <span
-                    className="text-[10px] text-[#ECFF95]/60 block mt-1"
-                    style={{ fontFamily: "monospace" }}
+                    className="text-[10px] block mt-1"
+                    style={{ fontFamily: "monospace", color: deltaColor(metric.delta, metric.deltaTone) }}
                   >
                     {metric.delta}
                   </span>

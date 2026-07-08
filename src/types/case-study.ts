@@ -95,7 +95,9 @@ export interface MetricSlide {
   type: "metric";
   id: string;
   headline?: string;
-  metrics: { label: string; value: string; delta?: string }[];
+  // deltaTone overrides the sign-based color (e.g. "-40% load time" is a win →
+  // set "positive"). Omit to infer from the delta's leading sign / arrow.
+  metrics: { label: string; value: string; delta?: string; deltaTone?: "positive" | "negative" | "neutral" }[];
   image?: string;
   narrator?: NarratorBlock;
   cinematicCaption?: string;

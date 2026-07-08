@@ -105,7 +105,7 @@ export const V2_ABOUT = {
     { label: "PROJECTS", value: "40+" },
     { label: "CLIENTS", value: "25+" },
   ],
-  tools: ["Figma", "Figma Make", "Cursor", "Claude", "React", "Next.js", "TypeScript"],
+  tools: ["Figma", "Figma Make", "Cursor", "Claude", "React", "Next.js", "TypeScript", "Tailwind", "Supabase", "Vercel", "GitHub"],
   socials: [
     { label: "Twitter / X", handle: "@derondsgnr", url: "#" },
     { label: "LinkedIn", handle: "/in/derondsgnr", url: "#" },
